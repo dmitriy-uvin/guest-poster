@@ -43,6 +43,8 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import * as actions from '@/store/modules/user/types/actions';
 export default {
     name: 'SignInForm',
     mixins: [validationMixin],
@@ -61,10 +63,13 @@ export default {
         validForm: true
     }),
     methods: {
+        ...mapActions('user', {
+            signIn: actions.SIGN_IN
+        }),
         async onSignIn() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                console.log('Sign In');
+                await this.signIn(this.userData);
             }
         }
     },

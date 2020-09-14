@@ -1,11 +1,11 @@
 import requestService from '@/services/requestService';
 
-const API_PREFIX = '/user';
+const API_PREFIX = '/auth';
 
 const authService = {
     async signIn(userLoginData) {
         const response = await requestService.post(API_PREFIX + '/login', userLoginData);
-        this.setToken(response?.data?.data.access_token);
+        this.setToken(response?.data?.data?.access_token);
         return response?.data?.data;
     },
     async signUp(userRegData) {
