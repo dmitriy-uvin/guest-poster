@@ -47,11 +47,11 @@ final class AuthController extends ApiController
             )
         );
 
-        return $this->successResponse(['data' => [
+        return $this->successResponse([
             'access_token' => $response->getToken(),
             'token_type' => $response->getTokenType(),
             'expires_in' => $response->getExpiresIn(),
-        ]]);
+        ]);
     }
 
     public function register(RegisterFormRequest $request)
@@ -66,11 +66,9 @@ final class AuthController extends ApiController
             )
         );
 
-        return $this->successResponse([
-            'data' => $this->userPresenter->present(
-                $response->getUser()
-            )
-        ]);
+        return $this->successResponse($this->userPresenter->present(
+            $response->getUser()
+        ));
     }
 
     public function logout(): JsonResponse
@@ -83,8 +81,6 @@ final class AuthController extends ApiController
     public function me(): JsonResponse
     {
         $response = $this->getAuthenticatedUserAction->execute();
-        return $this->successResponse([
-            'data' => $this->userPresenter->present($response->getUser())
-        ]);
+        return $this->successResponse($this->userPresenter->present($response->getUser()));
     }
 }

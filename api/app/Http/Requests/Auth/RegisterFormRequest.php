@@ -14,8 +14,8 @@ class RegisterFormRequest extends ApiFormRequest
             'name' => 'required|string',
             'email' => 'required|string|email',
             'password' => 'required|string|min:8|confirmed',
-            'skype' => 'string',
-            'website' => 'string'
+            'skype' => 'string|nullable',
+            'website' => 'string|nullable'
         ];
     }
 }

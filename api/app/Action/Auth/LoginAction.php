@@ -38,7 +38,7 @@ final class LoginAction
         return new LoginResponse(
             $token,
             'bearer',
-            auth()->factory()->getTTL()
+            auth()->factory()->getTTL() * 60
         );
     }
 }
