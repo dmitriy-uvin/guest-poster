@@ -25,4 +25,6 @@ Route::group([
     Route::post('/register', [\App\Http\Controllers\Api\Auth\AuthController::class, 'register']);
     Route::get('/me', [\App\Http\Controllers\Api\Auth\AuthController::class, 'me'])->middleware('auth:api');
     Route::post('/logout', [\App\Http\Controllers\Api\Auth\AuthController::class, 'logout'])->middleware('auth:api');
+    Route::post('/email-verification', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'sendEmailVerification'])->middleware('auth:api');
+    Route::post('/email/verify', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'verifyEmail']);
 });

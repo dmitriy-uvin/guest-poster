@@ -28,4 +28,9 @@ final class UserRepository implements UserRepositoryInterface
     {
         $user->delete();
     }
+
+    public function markUserEmail(User $user): void
+    {
+        $user->markEmailAsVerified();
+    }
 }
