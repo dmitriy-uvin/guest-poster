@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Action\Auth\SendEmailVerifyAction;
 use App\Action\Auth\GetAuthenticatedUserAction;
 use App\Action\Auth\LoginAction;
 use App\Action\Auth\LoginRequest;
