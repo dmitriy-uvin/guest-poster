@@ -16,6 +16,7 @@
                 placeholder="your-email@domain.com"
                 :error-messages="emailErrors"
                 v-model="regUserData.email"
+                id="email"
             ></VTextField>
 
             <VTextField
@@ -26,6 +27,7 @@
                 @click:append="showPassword = !showPassword"
                 :error-messages="passwordErrors"
                 v-model="regUserData.password"
+                id="password"
             ></VTextField>
 
             <VTextField

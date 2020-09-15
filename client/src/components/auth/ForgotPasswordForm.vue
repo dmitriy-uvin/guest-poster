@@ -11,7 +11,7 @@
             ></VTextField>
         </div>
         <div class="buttons">
-            <VBtn block color="blue" large @click="onResetForm">
+            <VBtn block color="blue" large @click="onResetForm" :loading="btnLoad">
                 RESET PASSWORD
             </VBtn>
             <RouterLink :to="{ name: 'SignIn' }">
@@ -31,6 +31,8 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, email } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import * as actions from '@/store/modules/user/types/actions';
 export default {
     name: 'ForgotPasswordForm',
     mixins: [validationMixin],
@@ -39,12 +41,22 @@ export default {
     },
     data: () => ({
         userEmail: '',
+        btnLoad: false
     }),
     methods: {
+        ...mapActions('user', {
+            forgotPassword: actions.FORGOT_PASSWORD
+        }),
         async onResetForm() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                console.log('reset paswd');
+                this.btnLoad = true;
+                await this.forgotPassword({
+                    email: this.userEmail
+                });
+                this.btnLoad = false;
+                this.userEmail = '';
+                this.$v.$reset();
             }
         }
     },

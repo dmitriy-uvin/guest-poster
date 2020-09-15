@@ -18,5 +18,11 @@ export default {
     },
     [actions.VERIFY_EMAIL]: async (context, verifyData) => {
         await authService.verifyEmail(verifyData);
+    },
+    [actions.FORGOT_PASSWORD]: async (context, userEmail) => {
+        await authService.forgotPassword(userEmail);
+    },
+    [actions.RESET_PASSWORD]: async (context, newPasswordData) => {
+        await authService.resetPassword(newPasswordData);
     }
 }

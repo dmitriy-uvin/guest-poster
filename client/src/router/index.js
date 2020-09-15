@@ -29,6 +29,12 @@ const routes = [
                 meta: { handleAuth: true, layout: 'auth' }
             },
             {
+                path: '/reset-password',
+                name: 'ResetPassword',
+                component: () => import('../views/ResetPassword'),
+                meta: { requiresAuth: false, layout: 'auth' }
+            },
+            {
                 path: '/',
                 name: 'GuestPosting',
                 component: () => import('../views/GuestPosting'),

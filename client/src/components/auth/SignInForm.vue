@@ -8,6 +8,7 @@
                 placeholder="user-email@guest-poster.com"
                 v-model="userData.email"
                 :error-messages="emailErrors"
+                id="email"
             ></VTextField>
 
             <VTextField
@@ -18,6 +19,7 @@
                 @click:append="showPassword = !showPassword"
                 v-model="userData.password"
                 :error-messages="passwordErrors"
+                id="password"
             ></VTextField>
         </div>
         <div class="pb-7">
