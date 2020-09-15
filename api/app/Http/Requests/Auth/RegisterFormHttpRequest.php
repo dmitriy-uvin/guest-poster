@@ -6,7 +6,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\ApiFormRequest;
 
-class RegisterFormRequest extends ApiFormRequest
+class RegisterFormHttpRequest extends ApiFormRequest
 {
     public function rules(): array
     {

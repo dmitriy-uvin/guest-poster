@@ -27,4 +27,6 @@ Route::group([
     Route::post('/logout', [\App\Http\Controllers\Api\Auth\AuthController::class, 'logout'])->middleware('auth:api');
     Route::post('/email-verification', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'sendEmailVerification'])->middleware('auth:api');
     Route::post('/email/verify', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'verifyEmail']);
+    Route::post('/forgot-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'forgotPassword']);
+    Route::post('/reset-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'resetPassword']);
 });

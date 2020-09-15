@@ -13,8 +13,8 @@ use App\Action\Auth\RegisterAction;
 use App\Action\Auth\RegisterRequest;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Presenters\User\UserPresenter;
-use App\Http\Requests\Auth\LoginFormRequest;
-use App\Http\Requests\Auth\RegisterFormRequest;
+use App\Http\Requests\Auth\LoginFormHttpRequest;
+use App\Http\Requests\Auth\RegisterFormHttpRequest;
 use Illuminate\Http\JsonResponse;
 
 final class AuthController extends ApiController
@@ -39,7 +39,7 @@ final class AuthController extends ApiController
         $this->getAuthenticatedUserAction = $getAuthenticatedUserAction;
     }
 
-    public function login(LoginFormRequest $request): JsonResponse
+    public function login(LoginFormHttpRequest $request): JsonResponse
     {
         $response = $this->loginAction->execute(
             new LoginRequest(
@@ -55,7 +55,7 @@ final class AuthController extends ApiController
         ]);
     }
 
-    public function register(RegisterFormRequest $request)
+    public function register(RegisterFormHttpRequest $request)
     {
         $response = $this->registerAction->execute(
             new RegisterRequest(

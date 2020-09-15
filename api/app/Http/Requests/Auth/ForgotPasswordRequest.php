@@ -4,13 +4,12 @@ namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\ApiFormRequest;
 
-class LoginFormRequest extends ApiFormRequest
+class ForgotPasswordRequest extends ApiFormRequest
 {
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:8'
+            'email' => 'required|email'
         ];
     }
 }
