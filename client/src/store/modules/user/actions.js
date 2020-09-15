@@ -15,5 +15,8 @@ export default {
     },
     [actions.SIGN_OUT]: async ({ commit }) => {
         commit(mutations.USER_SIGN_OUT);
+    },
+    [actions.VERIFY_EMAIL]: async (context, verifyData) => {
+        await authService.verifyEmail(verifyData);
     }
 }

@@ -64,12 +64,15 @@ export default {
     }),
     methods: {
         ...mapActions('user', {
-            signIn: actions.SIGN_IN
+            signIn: actions.SIGN_IN,
+            fetchLoggedUser: actions.FETCH_LOGGED_USER
         }),
         async onSignIn() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 await this.signIn(this.userData);
+                await this.fetchLoggedUser();
+                this.$router.push({ name: 'GuestPosting' });
             }
         }
     },

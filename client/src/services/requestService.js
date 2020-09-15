@@ -1,11 +1,12 @@
 import axios from 'axios';
 import authService from '@/services/auth/authService';
+import router from '@/router';
 
 const API_URL = process.env.VUE_APP_API_URL;
 
 axios.interceptors.request.use(
     config => {
-        if (authService.hasToken()) {
+        if (authService.getToken()) {
             config.headers[
                 'Authorization'
                 ] = `Bearer ${authService.getToken()}`;
@@ -13,6 +14,18 @@ axios.interceptors.request.use(
         return config;
     },
     error => Promise.reject(error)
+);
+
+axios.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        if (error.response.status === 401) {
+            authService.removeToken();
+            router.push({ name: 'SignIn' });
+        }
+    }
 );
 
 const requestService = {
