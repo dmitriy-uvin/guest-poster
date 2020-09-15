@@ -9,9 +9,9 @@ use App\Action\Auth\SendLinkForgotPasswordRequest;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordHttpRequest;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
-class ForgotPasswordController extends ApiController
+final class ForgotPasswordController extends ApiController
 {
     private SendLinkForgotPasswordAction $sendLinkForgotPasswordAction;
     private ResetPasswordAction $resetPasswordAction;
@@ -24,7 +24,7 @@ class ForgotPasswordController extends ApiController
         $this->resetPasswordAction = $resetPasswordAction;
     }
 
-    public function forgotPassword(ForgotPasswordRequest $request)
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         $this->sendLinkForgotPasswordAction->execute(
             new SendLinkForgotPasswordRequest(
@@ -35,7 +35,7 @@ class ForgotPasswordController extends ApiController
         return $this->emptyResponse();
     }
 
-    public function resetPassword(ResetPasswordHttpRequest $request)
+    public function resetPassword(ResetPasswordHttpRequest $request): JsonResponse
     {
         $this->resetPasswordAction->execute(
             new ResetPasswordRequest(

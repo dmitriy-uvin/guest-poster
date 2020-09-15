@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class EmailVerificationController extends ApiController
+final class EmailVerificationController extends ApiController
 {
     private SendEmailVerifyAction $sendEmailVerifyAction;
     private EmailVerifyAction $emailVerifyAction;
