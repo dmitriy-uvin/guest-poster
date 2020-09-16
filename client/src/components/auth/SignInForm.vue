@@ -72,9 +72,15 @@ export default {
         async onSignIn() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                await this.signIn(this.userData);
-                await this.fetchLoggedUser();
-                this.$router.push({ name: 'GuestPosting' });
+                try {
+                    const response = await this.signIn(this.userData);
+                    if (response) {
+                        await this.fetchLoggedUser();
+                        this.$router.push({ name: 'GuestPosting' });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
     },

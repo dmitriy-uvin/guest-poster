@@ -38,7 +38,8 @@
                     >
                         Orders
                     </RouterLink>
-                    <span>UserName</span>
+
+                    <UserMenu />
                 </div>
             </VRow>
         </div>
@@ -46,8 +47,12 @@
 </template>
 
 <script>
+import UserMenu from '@/components/common/layouts/user/UserMenu';
 export default {
-    name: 'UserHeader'
+    name: 'UserHeader',
+    components: {
+        UserMenu
+    }
 }
 </script>
 

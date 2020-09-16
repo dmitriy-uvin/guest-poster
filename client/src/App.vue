@@ -28,7 +28,7 @@ export default {
         layout() {
             let layout = 'AuthLayout';
             if (this.user) {
-                layout = this.user.role.charAt(0).toUpperCase() + this.user.role.slice(1) + 'Layout';
+                layout = this.user?.role.charAt(0).toUpperCase() + this.user?.role.slice(1) + 'Layout';
             }
             if (this.$route.meta.layout === 'auth') layout = 'AuthLayout';
             return layout;

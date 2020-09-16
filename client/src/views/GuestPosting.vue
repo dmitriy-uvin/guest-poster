@@ -22,7 +22,7 @@ export default {
             user: getters.GET_LOGGED_USER
         }),
         isAdmin() {
-            return this.user.role === 'admin';
+            return this.user?.role === 'admin';
         },
     }
 }
