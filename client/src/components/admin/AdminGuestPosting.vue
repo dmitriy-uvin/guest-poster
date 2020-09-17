@@ -4,7 +4,6 @@
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
-        <VBtn @click="test"></VBtn>
         <table class="guest__table">
             <thead class="guest__head">
                 <tr>
@@ -250,6 +249,7 @@ export default {
     data: () => ({
         chosen: {},
         platformChosen: false,
+        selectedAll: false,
         page: 1,
         perPage: 3,
         sorting: 'created_at',
@@ -278,10 +278,8 @@ export default {
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
         }),
-        test() {
-            console.log(this.chosen);
-        },
         selectAll() {
+            this.selectedAll = !this.selectedAll;
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;
             });
@@ -290,6 +288,11 @@ export default {
                 newChosen[platform.id] = !this.chosen[platform.id];
             });
             this.chosen = newChosen;
+            if (!this.selectedAll) {
+                Object.values(this.platforms).map(platform => {
+                    this.chosen[platform.id] = null;
+                });
+            }
         },
         selectOne(id) {
             console.log(id);
@@ -321,9 +324,6 @@ export default {
         });
     },
     watch: {
-        platformChosen() {
-            return Object.values(this.chosen).filter(item => item).length !== 0;
-        },
         async page() {
             await this.fetchPlatforms({
                 page: this.page,
@@ -372,14 +372,6 @@ export default {
 .v-input--selection-controls {
      margin-top: 0;
      padding-top: 0;
-}
-.footer-request {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 20px;
-    background: #ff430f;
 }
 .pagination {
     list-style: none;

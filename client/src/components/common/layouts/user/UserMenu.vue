@@ -1,5 +1,5 @@
 <template>
-    <VMenu offset-y>
+    <VMenu offset-y rounded="b-xl">
         <template v-slot:activator="{ on, attrs }">
             <span
                 v-bind="attrs"
@@ -36,8 +36,8 @@ export default {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
         }),
-        async onLogOut() {
-            await this.signOut();
+        onLogOut() {
+            this.signOut();
             this.$router.push({ name: 'SignIn' });
         },
         onProfile() {
