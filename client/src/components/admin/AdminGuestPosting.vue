@@ -4,6 +4,7 @@
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
+        <VBtn @click="test"></VBtn>
         <table class="guest__table">
             <thead class="guest__head">
                 <tr>
@@ -277,6 +278,9 @@ export default {
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
         }),
+        test() {
+            console.log(this.chosen);
+        },
         selectAll() {
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;

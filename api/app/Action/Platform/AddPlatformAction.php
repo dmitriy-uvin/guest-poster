@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Action\Platform;
 
 use App\Models\Platform;
+use App\Models\Topic;
 use App\Repositories\Platform\PlatformRepositoryInterface;
 
 final class AddPlatformAction
@@ -36,6 +37,13 @@ final class AddPlatformAction
         $platform->comment = $request->getComment();
 
         $platform = $this->platformRepository->save($platform);
+
+        if ($request->getTopics()) {
+            $topics = collect($request->getTopics())->map(function ($topic) {
+                return new Topic(["name" => $topic]);
+            });
+            $this->platformRepository->saveTopics($platform, $topics->toArray());
+        }
 
         return new AddPlatformResponse($platform);
     }

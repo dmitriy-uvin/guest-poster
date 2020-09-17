@@ -44,6 +44,7 @@ class PlatformController extends ApiController
                 $request->price,
                 $request->email,
                 $request->comment,
+                $request->topics
             )
         );
 

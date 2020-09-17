@@ -252,9 +252,10 @@ export default {
                         price: this.price,
                         email: this.email,
                         comment: this.comment,
+                        topics: this.topics
                     });
                     this.setNotification({
-                        message: 'Platfrom was added!',
+                        message: 'Website was added!',
                         type: 'success'
                     });
                     this.websiteUrl = '';

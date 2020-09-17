@@ -19,6 +19,7 @@ final class AddPlatformRequest
     private float $price;
     private string $email;
     private string $comment;
+    private ?array $topics;
 
     public function __construct(
         string $website_url,
@@ -33,7 +34,8 @@ final class AddPlatformRequest
         string $contacts,
         float $price,
         string $email,
-        string $comment
+        string $comment,
+        ?array $topics
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
@@ -48,6 +50,7 @@ final class AddPlatformRequest
         $this->price = $price;
         $this->email = $email;
         $this->comment = $comment;
+        $this->topics = $topics;
     }
 
     public function getWebsiteUrl(): string
@@ -113,5 +116,10 @@ final class AddPlatformRequest
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    public function getTopics(): ?array
+    {
+        return $this->topics;
     }
 }
