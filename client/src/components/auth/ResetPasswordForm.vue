@@ -47,6 +47,8 @@ import { validationMixin } from 'vuelidate';
 import {required, minLength, sameAs} from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as notifyActions from '@/store/modules/notification/types/actions';
+
 export default {
     name: 'ResetPasswordForm',
     mixins: [validationMixin],
@@ -65,19 +67,33 @@ export default {
         ...mapActions('user', {
             resetPassword: actions.RESET_PASSWORD
         }),
+        ...mapActions('notification', {
+            setNotification: notifyActions.SET_NOTIFICATION
+        }),
         async onResetPassword() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                this.btnLoad = true;
-                this.resetPassword({
-                    password: this.password,
-                    password_confirmation: this.passwordConfirm,
-                    token: this.$route.query.token,
-                    email: this.$route.query.email
-                })
-                this.btnLoad = false;
-                this.passwordConfirm = this.password = '';
-                this.$v.$reset();
+                try {
+                    this.btnLoad = true;
+                    this.resetPassword({
+                        password: this.password,
+                        password_confirmation: this.passwordConfirm,
+                        token: this.$route.query.token,
+                        email: this.$route.query.email
+                    })
+                    this.btnLoad = false;
+                    this.passwordConfirm = this.password = '';
+                    this.$v.$reset();
+                    this.setNotification({
+                        message: 'Password was reset! You can Sign In!',
+                        type: 'success'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        message: error,
+                        type: 'error'
+                    });
+                }
             }
         }
     },

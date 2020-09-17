@@ -23,6 +23,7 @@
 <script>
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as notifyActions from '@/store/modules/notification/types/actions';
 
 export default {
     name: 'VerifiedEmailComponent',
@@ -32,11 +33,25 @@ export default {
     methods: {
         ...mapActions('user', {
             verifyEmail: actions.VERIFY_EMAIL
-        })
+        }),
+        ...mapActions('notification', {
+            setNotification: notifyActions.SET_NOTIFICATION
+        }),
     },
     async created() {
-        await this.verifyEmail(this.$route.query);
-        this.verified = true;
+        try {
+            await this.verifyEmail(this.$route.query);
+            this.verified = true;
+            this.setNotification({
+                message: 'Email was verified! Sign In!',
+                type: 'success'
+            });
+        } catch (error) {
+            this.setNotification({
+                message: error,
+                type: 'error'
+            });
+        }
     }
 }
 </script>
