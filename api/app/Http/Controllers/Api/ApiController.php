@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Presenters\Contracts\PresenterCollectionInterface;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
+use \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller;
 
 class ApiController extends Controller
@@ -30,5 +32,20 @@ class ApiController extends Controller
                 'message' => $message
             ]
         ], $status);
+    }
+
+    protected function createPaginatedResponse(
+        LengthAwarePaginator $paginator,
+        PresenterCollectionInterface $presenter
+    ): JsonResponse {
+        return new JsonResponse([
+            'data' => $presenter->presentCollection(collect($paginator->items())),
+            'meta' => [
+                'total' => $paginator->total(),
+                'last_page' => $paginator->lastPage(),
+                'current_page' => $paginator->currentPage(),
+                'per_page' => $paginator->perPage()
+            ]
+        ]);
     }
 }

@@ -33,7 +33,8 @@ Route::group([
 
 Route::group([
     'prefix' => 'platforms',
-    'middleware' => ['admin'],
 ], function () {
-    Route::post('/store', [\App\Http\Controllers\Api\Admin\PlatformController::class, 'savePlatform']);
+    Route::post('/store', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform'])->middleware('admin');
+    Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])->middleware('auth:api');
 });
+

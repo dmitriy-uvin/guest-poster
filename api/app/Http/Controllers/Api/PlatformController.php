@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Action\Platform\AddPlatformAction;
 use App\Action\Platform\AddPlatformRequest;
-use App\Http\Controllers\Api\ApiController;
+use App\Action\Platform\GetPlatformCollectionAction;
+use App\Action\Platform\GetPlatformCollectionRequest;
 use App\Http\Presenters\Platform\PlatformPresenter;
+use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
 use Illuminate\Http\Request;
 
@@ -13,13 +15,16 @@ class PlatformController extends ApiController
 {
     private PlatformPresenter $platformPresenter;
     private AddPlatformAction $addPlatformAction;
+    private GetPlatformCollectionAction $getPlatformCollectionAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
-        PlatformPresenter $platformPresenter
+        PlatformPresenter $platformPresenter,
+        GetPlatformCollectionAction $getPlatformCollectionAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
+        $this->getPlatformCollectionAction = $getPlatformCollectionAction;
     }
 
     public function savePlatform(AddPlatformHttpRequest $request)
@@ -43,5 +48,19 @@ class PlatformController extends ApiController
         );
 
         return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
+    }
+
+    public function getPlatformCollection(PaginatedHttpRequest $request)
+    {
+        $response = $this->getPlatformCollectionAction->execute(
+            new GetPlatformCollectionRequest(
+                (int)$request->query('page'),
+                (int)$request->query('perPage'),
+                $request->query('sorting'),
+                $request->query('direction'),
+            )
+        );
+
+        return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
     }
 }
