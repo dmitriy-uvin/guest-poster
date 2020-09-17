@@ -1,1 +1,1 @@
-export const getPlatforms = 'getPlatforms';
+export const GET_PLATFORMS = 'getPlatforms';
