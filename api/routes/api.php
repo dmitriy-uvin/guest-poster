@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('user:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('user:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::group([
     'prefix' => 'auth',
@@ -29,4 +29,11 @@ Route::group([
     Route::post('/email/verify', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'verifyEmail']);
     Route::post('/forgot-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'forgotPassword']);
     Route::post('/reset-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'resetPassword']);
+});
+
+Route::group([
+    'prefix' => 'platforms',
+    'middleware' => ['admin'],
+], function () {
+    Route::post('/store', [\App\Http\Controllers\Api\Admin\PlatformController::class, 'savePlatform']);
 });

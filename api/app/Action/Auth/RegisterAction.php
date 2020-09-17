@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Auth;
 
+use App\Exceptions\User\UserSuchEmailIsExistsException;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,10 @@ final class RegisterAction
 
     public function execute(RegisterRequest $request)
     {
+        if ($this->userRepository->getByEmail($request->getEmail())) {
+            throw new UserSuchEmailIsExistsException();
+        }
+
         $user = new User();
         $user->name = $request->getName();
         $user->password = Hash::make($request->getPassword());
