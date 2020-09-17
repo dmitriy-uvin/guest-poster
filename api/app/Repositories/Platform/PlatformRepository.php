@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 final class PlatformRepository implements PlatformRepositoryInterface
 {
     public const DEFAULT_PAGE = 1;
-    public const DEFAULT_PER_PAGE = 10;
+    public const DEFAULT_PER_PAGE = 5;
     public const DEFAULT_SORTING = 'created_at';
     public const DEFAULT_DIRECTION = 'desc';
 
