@@ -4,12 +4,7 @@ import authService from "@/services/auth/authService";
 
 export default {
     [actions.SIGN_IN]: async (context, userData) => {
-        try {
-            const response = await authService.signIn(userData);
-            return Promise.resolve(response);
-        } catch (error) {
-            return Promise.reject(error)
-        }
+        await authService.signIn(userData);
     },
     [actions.SIGN_UP]: async (context, userData) => {
         await authService.signUp(userData);

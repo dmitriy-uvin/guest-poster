@@ -80,6 +80,8 @@ import { validationMixin } from 'vuelidate';
 import { required, minLength, email, sameAs } from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as notifyActions from '@/store/modules/notification/types/actions';
+
 export default {
     name: 'SignUpForm',
     mixins: [validationMixin],
@@ -107,10 +109,31 @@ export default {
         ...mapActions('user', {
             signUp: actions.SIGN_UP,
         }),
+        ...mapActions('notification', {
+            setNotification: notifyActions.SET_NOTIFICATION
+        }),
         async onSignUp() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                await this.signUp(this.regUserData);
+                try {
+                    await this.signUp(this.regUserData);
+                    this.setNotification({
+                        message: 'Registered! Now you can Sign In!',
+                        type: 'success'
+                    });
+                    this.regUserData.name = '';
+                    this.regUserData.email = '';
+                    this.regUserData.password = '';
+                    this.regUserData.password_confirmation = '';
+                    this.regUserData.skype = '';
+                    this.regUserData.website = '';
+                    this.$v.$reset();
+                } catch (error) {
+                    this.setNotification({
+                        message: error,
+                        type: 'error'
+                    });
+                }
             }
         }
     },

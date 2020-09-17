@@ -1,5 +1,6 @@
 <template>
     <VApp>
+        <Alert />
         <component :is="layout">
             <RouterView></RouterView>
         </component>
@@ -13,13 +14,15 @@ import AuthLayout from '@/components/common/AuthLayout';
 import UserLayout from '@/components/common/layouts/user/UserLayout';
 import AdminLayout from '@/components/common/layouts/admin/AdminLayout';
 import ModeratorLayout from '@/components/common/layouts/moderator/ModeratorLayout';
+import Alert from '@/components/notification/Alert';
 export default {
     name: 'App',
     components: {
         AuthLayout,
         UserLayout,
         AdminLayout,
-        ModeratorLayout
+        ModeratorLayout,
+        Alert
     },
     computed: {
         ...mapGetters('user', {

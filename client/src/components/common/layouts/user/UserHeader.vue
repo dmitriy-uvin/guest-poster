@@ -4,7 +4,7 @@
             <VRow class="d-flex justify-space-between">
                 <div class="align-center">
                     <VToolbarTitle class="">
-                        <img :src="require('@/assets/logo.png')" />
+                        <img :src="require('@/assets/logo.png')" @click="onMain"/>
                     </VToolbarTitle>
                 </div>
                 <div class="menu-actions">
@@ -52,6 +52,11 @@ export default {
     name: 'UserHeader',
     components: {
         UserMenu
+    },
+    methods: {
+        onMain() {
+            this.$router.push({ name: 'GuestPosting' });
+        }
     }
 }
 </script>

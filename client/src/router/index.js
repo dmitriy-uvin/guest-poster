@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import authService from '@/services/auth/authService';
+import store from '@/store';
 
 Vue.use(VueRouter);
 import UserDataProvider from '@/components/guard/UserDataProvider';
@@ -45,6 +46,12 @@ const routes = [
                 name: 'VerifiedEmail',
                 component: () => import('../views/VerifiedEmail'),
                 meta: { requiresAuth: false, layout: 'auth' }
+            },
+            {
+                path: '/add-platform',
+                name: 'AddPlatform',
+                component: () => import('../views/AdminAddPlatform'),
+                meta: { requiresAuth: true, adminComponent: true }
             }
         ]
     }
@@ -60,7 +67,17 @@ router.beforeEach(
     (to, from, next) => {
         const isAuthorizedUser = to.matched.some(record => record.meta.requiresAuth);
         const isUnauthorizedUser = to.matched.some(record => record.meta.handleAuth);
+        const AdminComponent = to.matched.some(record => record.meta.adminComponent);
 
+        if (store.state.user.user?.role === 'admin' && AdminComponent) {
+            next();
+            return;
+        }
+
+        if (store.state.user.user?.role !== 'admin' && AdminComponent) {
+            next({ name: 'GuestPosting' });
+            return;
+        }
 
         if (isAuthorizedUser && !authService.hasToken()) {
             next({ name: 'SignIn' });

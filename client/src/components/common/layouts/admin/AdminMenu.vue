@@ -7,15 +7,15 @@
                 class="user-menu"
             >
                 {{ user.name }}
-                <VIcon color="#2F80ED">mdi-menu-down</VIcon>
+                <VIcon color="#ff430f">mdi-menu-down</VIcon>
             </span>
         </template>
         <VList>
-            <VListItem @click="onProfile">
-                <VListItemTitle>Profile</VListItemTitle>
-            </VListItem>
             <VListItem @click="onLogOut">
-                <VListItemTitle>Log Out</VListItemTitle>
+                <VListItemTitle>
+                    <VIcon left>mdi-logout-variant</VIcon>
+                    Log Out
+                </VListItemTitle>
             </VListItem>
         </VList>
     </VMenu>
@@ -26,12 +26,7 @@ import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 import * as actions from '@/store/modules/user/types/actions';
 export default {
-    name: "UserMenu",
-    computed: {
-        ...mapGetters('user', {
-            user: getters.GET_LOGGED_USER
-        })
-    },
+    name: 'AdminMenu',
     methods: {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
@@ -39,10 +34,12 @@ export default {
         async onLogOut() {
             await this.signOut();
             this.$router.push({ name: 'SignIn' });
-        },
-        onProfile() {
-            this.$router.push({ name: 'Profile' });
         }
+    },
+    computed: {
+        ...mapGetters('user', {
+            user: getters.GET_LOGGED_USER
+        })
     }
 }
 </script>
@@ -50,14 +47,14 @@ export default {
 <style scoped>
 .user-menu {
     text-transform: uppercase;
-    color: #2F80ED;
+    color: #ff430f;
     font-weight: 500;
     padding: 8px;
     transition: 0.5s;
     border-radius: 5px;
 }
 .user-menu:hover {
-    background: #EAF3FF;
+    background: #ffdbcf;
 }
 .v-list > div {
     cursor: pointer;

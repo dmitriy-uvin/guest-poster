@@ -4,7 +4,7 @@
             <VRow class="d-flex justify-space-between">
                 <div class="align-center">
                     <VToolbarTitle class="">
-                        <img :src="require('@/assets/logo.png')" />
+                        <img :src="require('@/assets/logo.png')" @click="onMain"/>
                     </VToolbarTitle>
                 </div>
                 <div class="menu-actions">
@@ -12,19 +12,7 @@
                         :to="{ name: 'GuestPosting' }"
                         :class="{'link-active': $route.name === 'GuestPosting'}"
                     >
-                        Guest Posting
-                    </RouterLink>
-                    <RouterLink
-                        :to="{ name: 'NicheEdit' }"
-                        :class="{'link-active': $route.name === 'NicheEdit'}"
-                    >
-                        Niche Edits
-                    </RouterLink>
-                    <RouterLink
-                        :to="{ name: 'Outreach' }"
-                        :class="{'link-active': $route.name === 'Outreach'}"
-                    >
-                        Outreach
+                        Platforms List
                     </RouterLink>
                     <RouterLink
                         :to="{ name: 'Backlinks' }"
@@ -38,7 +26,13 @@
                     >
                         Orders
                     </RouterLink>
-                    <span>LogOut</span>
+                    <RouterLink
+                        :to="{ name: 'Users' }"
+                        :class="{'link-active': $route.name === 'Users'}"
+                    >
+                        Users
+                    </RouterLink>
+                    <AdminMenu />
                 </div>
             </VRow>
         </div>
@@ -46,8 +40,17 @@
 </template>
 
 <script>
+import AdminMenu from '@/components/common/layouts/admin/AdminMenu';
 export default {
-name: "AdminHeader"
+    name: 'AdminHeader',
+    components: {
+        AdminMenu
+    },
+    methods: {
+        onMain() {
+            this.$router.push({ name: 'GuestPosting' });
+        }
+    }
 }
 </script>
 

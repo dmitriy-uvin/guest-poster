@@ -47,6 +47,8 @@ import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as notifyActions from '@/store/modules/notification/types/actions';
+
 export default {
     name: 'SignInForm',
     mixins: [validationMixin],
@@ -65,6 +67,9 @@ export default {
         validForm: true
     }),
     methods: {
+        ...mapActions('notification', {
+            setNotification: notifyActions.SET_NOTIFICATION
+        }),
         ...mapActions('user', {
             signIn: actions.SIGN_IN,
             fetchLoggedUser: actions.FETCH_LOGGED_USER
@@ -73,13 +78,18 @@ export default {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 try {
-                    const response = await this.signIn(this.userData);
-                    if (response) {
-                        await this.fetchLoggedUser();
-                        this.$router.push({ name: 'GuestPosting' });
-                    }
+                    await this.signIn(this.userData);
+                    await this.fetchLoggedUser();
+                    this.setNotification({
+                        message: 'Welcome!',
+                        type: 'success'
+                    });
+                    this.$router.push({ name: 'GuestPosting' });
                 } catch (error) {
-                    console.log(error);
+                    this.setNotification({
+                        message: error,
+                        type: 'error'
+                    });
                 }
             }
         }
