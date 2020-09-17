@@ -9,17 +9,18 @@ export default {
         }
     },
     [mutations.SET_PLATFORMS]: (state, platforms) => {
-        state.platforms = {
-            ...state.platforms,
-            ...platforms.reduce(
-                (prev, platform) => ({
-                    ...prev,
-                    [platform.id]: {
-                        ...platformMapper(platform)
-                    }
-                }),
-                {}
-            )
-        }
+        // state.platforms = {
+        //     ...state.platforms,
+        //     ...platforms.reduce(
+        //         (prev, platform) => ({
+        //             ...prev,
+        //             [platform.id]: {
+        //                 ...platformMapper(platform)
+        //             }
+        //         }),
+        //         {}
+        //     )
+        // }
+        state.platforms = platforms.map(platformMapper);
     }
 }

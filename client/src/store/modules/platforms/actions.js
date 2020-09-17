@@ -7,8 +7,8 @@ export default {
         const response = await platformService.createPlatform(platformData);
         commit(mutations.SET_PLATFORM, response);
     },
-    [actions.FETCH_PLATFORMS]: async ({ commit }) => {
-        const response = await platformService.fetchPlatforms();
+    [actions.FETCH_PLATFORMS]: async ({ commit }, params = {}) => {
+        const response = await platformService.fetchPlatforms(params);
         const platforms = response?.data;
         const metaData = response?.meta;
         commit(mutations.SET_PLATFORMS, platforms);

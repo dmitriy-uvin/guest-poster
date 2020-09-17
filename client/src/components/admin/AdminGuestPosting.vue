@@ -4,7 +4,7 @@
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
-<!--        <VBtn @click="test"></VBtn>-->
+        <VBtn @click="test"></VBtn>
         <table class="guest__table">
             <thead class="guest__head">
                 <tr>
@@ -13,23 +13,79 @@
                     </th>
                     <th class="guest__col">
                         Website
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-if="sorting === 'website_url' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
                     </th>
                     <th class="guest__col">
                         Topic
                     </th>
                     <th class="guest__col">
                         <div class="guest__col-wrap">
-                            A. DR
+                            DR
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('dr')"
+                                v-if="sorting === 'dr' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('dr')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
                         </div>
                     </th>
                     <th class="guest__col">
                         <div class="guest__col-wrap">
-                            M. DA
+                            MA
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('ma')"
+                                v-if="sorting === 'ma' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('ma')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
                         </div>
                     </th>
                     <th class="guest__col">
                         <div class="guest__col-wrap">
                             Organic traffic
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('organic_traffic')"
+                                v-if="sorting === 'organic_traffic' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('organic_traffic')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
                         </div>
                     </th>
                     <th class="guest__col">
@@ -38,6 +94,20 @@
                     <th class="guest__col">
                         <div class="guest__col-wrap">
                             Editorial fee
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('price')"
+                                v-if="sorting === 'price' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('price')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
                         </div>
                     </th>
                 </tr>
@@ -127,6 +197,43 @@
             </tr>
             </tbody>
         </table>
+
+        <ul class="pagination">
+            <li>
+                <VBtn :disabled="page === 1" @click="page -= 1">
+                    <VIcon left>mdi-chevron-left</VIcon>
+                    Prev
+                </VBtn>
+            </li>
+            <li v-for="firstPage in firstPages" :key="firstPage">
+                <VBtn
+                    small
+                    fab
+                    @click="onChangePage(firstPage)"
+                    :color="firstPage === page ? 'blue' : 'white'">{{ firstPage }}</VBtn>
+            </li>
+            <li v-if="this.pages.length > 4">
+                <VBtn small fab>...</VBtn>
+            </li>
+            <li v-for="lastPage in lastPages" :key="lastPage">
+                <VBtn
+                    small
+                    fab
+                    @click="onChangePage(lastPage)"
+                    :color="lastPage === page ? 'blue' : 'white'"
+                >{{ lastPage }}</VBtn>
+            </li>
+            <li>
+                <VBtn
+                    :disabled="page === lastPage"
+                    @click="page += 1"
+                >
+                    Next
+                    <VIcon right>mdi-chevron-right</VIcon>
+                </VBtn>
+            </li>
+        </ul>
+
         <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform">
             <VIcon color="white">mdi-plus</VIcon>
         </VBtn>
@@ -141,9 +248,30 @@ import * as getters from '@/store/modules/platforms/types/getters';
 export default {
     name: 'AdminGuestPosting',
     data: () => ({
-        chosen: {}
+        chosen: {},
+        platformChosen: false,
+        page: 1,
+        perPage: 3,
+        sorting: 'created_at',
+        direction: 'desc',
+        currentPage: 1,
+        lastPage: 1,
+        total: 1,
+        pages: [],
+        firstPages: [],
+        lastPages: []
     }),
     methods: {
+        async changeSortingAndDirection(sorting) {
+            this.sorting = sorting;
+            this.direction  = this.direction === 'desc' ? 'asc' : 'desc';
+            await this.fetchPlatforms({
+                page: this.page,
+                perPage: this.perPage,
+                sorting: this.sorting,
+                direction: this.direction,
+            });
+        },
         onAddPlatform() {
             this.$router.push({ name: 'AddPlatform' })
         },
@@ -151,7 +279,9 @@ export default {
             fetchPlatforms: actions.FETCH_PLATFORMS
         }),
         test() {
-            console.log(this.chosen);
+            console.log(this.pages);
+            console.log(this.firstPages);
+            console.log(this.lastPages);
         },
         selectAll() {
             const newChosen = {};
@@ -162,13 +292,48 @@ export default {
         },
         selectOne(id) {
             this.chosen[id] = !this.chosen[id];
+        },
+        onChangePage(page) {
+            this.page = page;
         }
     },
     async mounted() {
-        await this.fetchPlatforms();
+        const response = await this.fetchPlatforms({
+            page: this.page,
+            perPage: this.perPage,
+            sorting: this.sorting,
+            direction: this.direction,
+        });
+        this.currentPage = response.current_page;
+        this.lastPage = response.last_page;
+        this.total = response.total;
+        for (let page = 1; page <= this.lastPage; page++) {
+            this.pages.push(page);
+        }
+        if (this.pages.length > 4) {
+            this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+            this.lastPages = this.pages.slice(-2);
+        }
         Object.keys(this.platforms).map(key => {
             this.chosen[key] = null;
         });
+    },
+    watch: {
+        platformChosen() {
+            return Object.values(this.chosen).filter(item => item).length !== 0;
+        },
+        async page() {
+            await this.fetchPlatforms({
+                page: this.page,
+                perPage: this.perPage,
+                sorting: this.sorting,
+                direction: this.direction,
+            });
+            if (!this.lastPages.includes(this.page + 1) && this.page < this.lastPage) {
+                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+            }
+            this.lastPages = this.pages.slice(-2);
+        }
     },
     computed: {
         ...mapGetters('platforms', {
@@ -182,9 +347,9 @@ export default {
 @import "../../assets/styles/main.css";
 /*@import "../../assets/styles/mobile.css";*/
 .float-btn-action {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
 }
 .guest__table {
     width: 100%;
@@ -201,5 +366,28 @@ export default {
 .v-input--selection-controls {
      margin-top: 0;
      padding-top: 0;
+}
+.footer-request {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    background: #ff430f;
+}
+.pagination {
+    list-style: none;
+}
+.pagination li {
+    cursor: pointer;
+    display: inline-block;
+    /*padding: 7px 11px;*/
+    /*border-radius: 4px;*/
+    /*border: 2px solid #959595;*/
+    margin-right: 15px;
+    transition: 0.5s;
+}
+.pagination li:hover {
+    /*border: 2px solid #3080ed;*/
 }
 </style>
