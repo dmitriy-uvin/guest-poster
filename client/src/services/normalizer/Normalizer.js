@@ -1,4 +1,5 @@
 export const platformMapper = Platform => ({
+    id: Platform.id,
     websiteUrl: Platform.website_url,
     dr: Platform.dr,
     ma: Platform.ma,

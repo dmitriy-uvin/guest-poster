@@ -4,7 +4,6 @@
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
-        <VBtn @click="test"></VBtn>
         <table class="guest__table">
             <thead class="guest__head">
                 <tr>
@@ -115,7 +114,7 @@
             <tbody>
             <tr v-for="(platform, id) in platforms" :key="id">
                 <td>
-                    <VCheckbox :value="!!id" v-model="chosen[id]"></VCheckbox>
+                    <VCheckbox :value="!!id" v-model="chosen[platform.id]"></VCheckbox>
                 </td>
                 <td>
                     <div class="guest__col-wrap">
@@ -278,20 +277,19 @@ export default {
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
         }),
-        test() {
-            console.log(this.pages);
-            console.log(this.firstPages);
-            console.log(this.lastPages);
-        },
         selectAll() {
+            Object.values(this.platforms).map(platform => {
+                this.chosen[platform.id] = null;
+            });
             const newChosen = {};
-            Object.keys(this.platforms).map(key => {
-                newChosen[key] = !this.chosen[key];
+            Object.values(this.platforms).map(platform => {
+                newChosen[platform.id] = !this.chosen[platform.id];
             });
             this.chosen = newChosen;
         },
         selectOne(id) {
-            this.chosen[id] = !this.chosen[id];
+            console.log(id);
+            this.chosen[id] = !!this.chosen[id];
         },
         onChangePage(page) {
             this.page = page;
@@ -314,8 +312,8 @@ export default {
             this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
             this.lastPages = this.pages.slice(-2);
         }
-        Object.keys(this.platforms).map(key => {
-            this.chosen[key] = null;
+        Object.values(this.platforms).map(platform => {
+            this.chosen[platform.id] = null;
         });
     },
     watch: {
@@ -333,6 +331,10 @@ export default {
                 this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
             }
             this.lastPages = this.pages.slice(-2);
+            this.chosen = {};
+            Object.values(this.platforms).map(platform => {
+                this.chosen[platform.id] = null;
+            });
         }
     },
     computed: {
