@@ -257,7 +257,14 @@
                 </li>
             </ul>
             <VCol cols="2">
-                <VSelect solo dense :items="[5, 10, 15, 20, 25, 30]" label="Per page" @change="onSelectPerPage">
+                <VSelect
+                    solo
+                    dense
+                    :items="[5, 10, 15, 20, 25, 30]"
+                    label="Per page"
+                    @change="onSelectPerPage"
+                    v-model="perPage"
+                >
                 </VSelect>
             </VCol>
         </VRow>
