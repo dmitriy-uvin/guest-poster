@@ -215,52 +215,52 @@
             </tbody>
         </table>
 
-<!--        <VRow class="justify-space-between">-->
-<!--            <ul class="pagination">-->
-<!--                <li>-->
-<!--                    <VBtn :disabled="page === 1" @click="page -= 1">-->
-<!--                        <VIcon left>mdi-chevron-left</VIcon>-->
-<!--                        Prev-->
-<!--                    </VBtn>-->
-<!--                </li>-->
-<!--                <li v-for="firstPage in firstPages" :key="firstPage">-->
-<!--                    <VBtn-->
-<!--                        small-->
-<!--                        fab-->
-<!--                        @click="onChangePage(firstPage)"-->
-<!--                        :color="firstPage === page ? 'blue' : 'white'">{{ firstPage }}</VBtn>-->
-<!--                </li>-->
-<!--                <li v-if="pages.length > 4">-->
-<!--                    <VBtn small fab>...</VBtn>-->
-<!--                </li>-->
-<!--                <li v-if="pages.length > 4">-->
-<!--                    <ul class="pl-0">-->
-<!--                        <li v-for="lastPage in lastPages" :key="lastPage">-->
-<!--                            <VBtn-->
-<!--                                small-->
-<!--                                fab-->
-<!--                                @click="onChangePage(lastPage)"-->
-<!--                                :color="lastPage === page ? 'blue' : 'white'"-->
-<!--                            >{{ lastPage }}</VBtn>-->
-<!--                        </li>-->
+        <VRow class="justify-space-between">
+            <ul class="pagination">
+                <li>
+                    <VBtn :disabled="page === 1" @click="page -= 1">
+                        <VIcon left>mdi-chevron-left</VIcon>
+                        Prev
+                    </VBtn>
+                </li>
+                <li v-for="firstPage in firstPages" :key="firstPage">
+                    <VBtn
+                        small
+                        fab
+                        @click="onChangePage(firstPage)"
+                        :color="firstPage === page ? 'blue' : 'white'">{{ firstPage }}</VBtn>
+                </li>
+                <li v-if="pages.length > 4">
+                    <VBtn small fab>...</VBtn>
+                </li>
+                <li v-if="pages.length > 4">
+                    <ul class="pl-0">
+                        <li v-for="lastPage in lastPages" :key="lastPage">
+                            <VBtn
+                                small
+                                fab
+                                @click="onChangePage(lastPage)"
+                                :color="lastPage === page ? 'blue' : 'white'"
+                            >{{ lastPage }}</VBtn>
+                        </li>
 
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <VBtn-->
-<!--                        :disabled="page === lastPage"-->
-<!--                        @click="page += 1"-->
-<!--                    >-->
-<!--                        Next-->
-<!--                        <VIcon right>mdi-chevron-right</VIcon>-->
-<!--                    </VBtn>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <VCol cols="2">-->
-<!--                <VSelect solo dense :items="[5, 10, 15, 20, 25, 30]" label="Per page" @change="onSelectPerPage">-->
-<!--                </VSelect>-->
-<!--            </VCol>-->
-<!--        </VRow>-->
+                    </ul>
+                </li>
+                <li>
+                    <VBtn
+                        :disabled="page === lastPage"
+                        @click="page += 1"
+                    >
+                        Next
+                        <VIcon right>mdi-chevron-right</VIcon>
+                    </VBtn>
+                </li>
+            </ul>
+            <VCol cols="2">
+                <VSelect solo dense :items="[5, 10, 15, 20, 25, 30]" label="Per page" @change="onSelectPerPage">
+                </VSelect>
+            </VCol>
+        </VRow>
 
         <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform">
             <VIcon color="white">mdi-plus</VIcon>
@@ -280,9 +280,9 @@ export default {
         platformChosen: false,
         selectedAll: false,
         page: 1,
-        perPage: 50,
-        sorting: 'created_at',
-        direction: 'desc',
+        perPage: 10,
+        sorting: null,
+        direction: null,
         currentPage: 1,
         lastPage: 1,
         total: 1,
@@ -347,8 +347,10 @@ export default {
             this.pages.push(page);
         }
         if (this.pages.length > 4) {
-            this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
             this.lastPages = this.pages.slice(-2);
+            if (!this.lastPages.includes(this.page)) {
+                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+            }
         } else {
             this.firstPages = this.pages;
             this.lastPages = [];
@@ -371,8 +373,13 @@ export default {
                 this.pages.push(page);
             }
             if (this.pages.length > 4) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
                 this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 2, this.page);
+                    if (!this.lastPages.includes(this.page + 1)) {
+                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                    }
+                }
             } else {
                 this.firstPages = this.pages;
                 this.lastPages = [];
@@ -398,8 +405,16 @@ export default {
             }
             console.log(this.pages);
             if (this.pages.length > 4) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
                 this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 2, this.page);
+                    if (!this.lastPages.includes(this.page + 1)) {
+                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                    }
+                }
+            } else {
+                this.firstPages = this.pages;
+                this.lastPages = [];
             }
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;
@@ -444,13 +459,7 @@ export default {
 .pagination li {
     cursor: pointer;
     display: inline-block;
-    /*padding: 7px 11px;*/
-    /*border-radius: 4px;*/
-    /*border: 2px solid #959595;*/
     margin-right: 15px;
     transition: 0.5s;
-}
-.pagination li:hover {
-    /*border: 2px solid #3080ed;*/
 }
 </style>

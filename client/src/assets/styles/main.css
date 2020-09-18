@@ -12,7 +12,7 @@
 
 .guest__table th:nth-child(2),
 .guest__table tr:nth-child(2) {
-    width: 7%;
+    width: 5.5%;
 }
 .guest__table tr td:nth-child(2) {
     font-size: 14px;
@@ -68,9 +68,11 @@
 .guest__table th:first-child {
     padding: 19px 0 0 3px;
 }
-
+.guest__table td:nth-child(4) {
+    width: 15%;
+}
 .guest__table td:nth-child(3) {
-    width: 21%;
+    width: 15%;
     font-weight: bold;
     font-size: 14px;
     line-height: 24px;
