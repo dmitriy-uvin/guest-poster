@@ -3,6 +3,24 @@
     width: 3.5%;
 }
 
+.guest__table {
+    border-spacing: unset;
+}
+.guest__table tr:not(:last-child) td{
+    border-bottom: 1px solid #c7c7c7;
+}
+
+.guest__table th:nth-child(2),
+.guest__table tr:nth-child(2) {
+    width: 7%;
+}
+.guest__table tr td:nth-child(2) {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding-top: 17px;
+}
+
 .guest__table td:nth-child(even),
 .guest__table th:nth-child(even) {
     background: #F9F9F9;
@@ -51,30 +69,30 @@
     padding: 19px 0 0 3px;
 }
 
-.guest__table td:nth-child(2) {
+.guest__table td:nth-child(3) {
     width: 21%;
     font-weight: bold;
     font-size: 14px;
     line-height: 24px;
     color: #333333;
 }
-.guest__table td:nth-child(4),
-.guest__table td:nth-child(5) {
+.guest__table td:nth-child(5),
+.guest__table td:nth-child(6) {
     width: 9%;
     font-weight: 700;
     font-size: 14px;
     line-height: 16px;
 }
-.guest__table td:nth-child(6) {
+.guest__table td:nth-child(7) {
     width: 13%;
     font-weight: 700;
     font-size: 14px;
     line-height: 16px;
 }
-.guest__table td:nth-child(7) {
+.guest__table td:nth-child(8) {
     width: 15%;
 }
-.guest__table td:nth-child(8) {
+.guest__table td:nth-child(9) {
     width: 15%;
 }
 .guest__flag {
@@ -86,7 +104,7 @@
     margin-left: 14px;
 }
 
-.guest__table td:nth-child(3) span {
+.guest__table td:nth-child(4) span {
     font-size: 12px;
     line-height: 12px;
 }

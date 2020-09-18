@@ -1,5 +1,5 @@
 <template>
-    <VMenu offset-y rounded="b-xl">
+    <VMenu offset-y rounded>
         <template v-slot:activator="{ on, attrs }">
             <span
                 v-bind="attrs"
