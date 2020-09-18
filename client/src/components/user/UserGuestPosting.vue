@@ -6,9 +6,26 @@
         <VSpacer></VSpacer>
         <table class="guest__table">
             <thead class="guest__head">
-            <tr>
+            <tr style="border-bottom: 1px solid #000">
                 <th class="guest__col">
                     <VCheckbox @click="selectAll"></VCheckbox>
+                </th>
+                <th class="guest__col">
+                    #
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('id')"
+                        v-if="sorting === 'id' && direction === 'desc'"
+                    >
+                        mdi-chevron-down
+                    </VIcon>
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('id')"
+                        v-else
+                    >
+                        mdi-chevron-up
+                    </VIcon>
                 </th>
                 <th class="guest__col">
                     Website
@@ -116,6 +133,7 @@
                 <td>
                     <VCheckbox :value="!!id" v-model="chosen[platform.id]"></VCheckbox>
                 </td>
+                <td>{{ platform.id }}</td>
                 <td>
                     <div class="guest__col-wrap">
                         {{ platform.websiteUrl }}
@@ -197,41 +215,59 @@
             </tbody>
         </table>
 
-        <ul class="pagination">
-            <li>
-                <VBtn :disabled="page === 1" @click="page -= 1">
-                    <VIcon left>mdi-chevron-left</VIcon>
-                    Prev
-                </VBtn>
-            </li>
-            <li v-for="firstPage in firstPages" :key="firstPage">
-                <VBtn
-                    small
-                    fab
-                    @click="onChangePage(firstPage)"
-                    :color="firstPage === page ? 'blue' : 'white'">{{ firstPage }}</VBtn>
-            </li>
-            <li v-if="this.pages.length > 4">
-                <VBtn small fab>...</VBtn>
-            </li>
-            <li v-for="lastPage in lastPages" :key="lastPage">
-                <VBtn
-                    small
-                    fab
-                    @click="onChangePage(lastPage)"
-                    :color="lastPage === page ? 'blue' : 'white'"
-                >{{ lastPage }}</VBtn>
-            </li>
-            <li>
-                <VBtn
-                    :disabled="page === lastPage"
-                    @click="page += 1"
+        <VRow class="justify-space-between">
+            <ul class="pagination">
+                <li>
+                    <VBtn :disabled="page === 1" @click="page -= 1">
+                        <VIcon left>mdi-chevron-left</VIcon>
+                        Prev
+                    </VBtn>
+                </li>
+                <li v-for="firstPage in firstPages" :key="firstPage">
+                    <VBtn
+                        small
+                        fab
+                        @click="onChangePage(firstPage)"
+                        :color="firstPage === page ? 'blue' : 'white'">{{ firstPage }}</VBtn>
+                </li>
+                <li v-if="pages.length > 4">
+                    <VBtn small fab>...</VBtn>
+                </li>
+                <li v-if="pages.length > 4">
+                    <ul class="pl-0">
+                        <li v-for="lastPage in lastPages" :key="lastPage">
+                            <VBtn
+                                small
+                                fab
+                                @click="onChangePage(lastPage)"
+                                :color="lastPage === page ? 'blue' : 'white'"
+                            >{{ lastPage }}</VBtn>
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <VBtn
+                        :disabled="page === lastPage"
+                        @click="page += 1"
+                    >
+                        Next
+                        <VIcon right>mdi-chevron-right</VIcon>
+                    </VBtn>
+                </li>
+            </ul>
+            <VCol cols="2">
+                <VSelect
+                    solo
+                    dense
+                    :items="[5, 10, 15, 20, 25, 30]"
+                    label="Per page"
+                    @change="onSelectPerPage"
+                    v-model="perPage"
                 >
-                    Next
-                    <VIcon right>mdi-chevron-right</VIcon>
-                </VBtn>
-            </li>
-        </ul>
+                </VSelect>
+            </VCol>
+        </VRow>
     </div>
 </template>
 
@@ -247,9 +283,9 @@ export default {
         platformChosen: false,
         selectedAll: false,
         page: 1,
-        perPage: 3,
-        sorting: 'created_at',
-        direction: 'desc',
+        perPage: 10,
+        sorting: null,
+        direction: null,
         currentPage: 1,
         lastPage: 1,
         total: 1,
@@ -267,6 +303,9 @@ export default {
                 sorting: this.sorting,
                 direction: this.direction,
             });
+        },
+        onSelectPerPage(value) {
+            this.perPage = value;
         },
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
@@ -288,7 +327,6 @@ export default {
             }
         },
         selectOne(id) {
-            console.log(id);
             this.chosen[id] = !!this.chosen[id];
         },
         onChangePage(page) {
@@ -309,17 +347,19 @@ export default {
             this.pages.push(page);
         }
         if (this.pages.length > 4) {
-            this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
             this.lastPages = this.pages.slice(-2);
+            if (!this.lastPages.includes(this.page)) {
+                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+            }
+        } else {
+            this.firstPages = this.pages;
+            this.lastPages = [];
         }
         Object.values(this.platforms).map(platform => {
             this.chosen[platform.id] = null;
         });
     },
     watch: {
-        platformChosen() {
-            return Object.values(this.chosen).filter(item => item).length !== 0;
-        },
         async page() {
             await this.fetchPlatforms({
                 page: this.page,
@@ -327,11 +367,53 @@ export default {
                 sorting: this.sorting,
                 direction: this.direction,
             });
-            if (!this.lastPages.includes(this.page + 1) && this.page < this.lastPage) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+            this.pages = [];
+            for (let page = 1; page <= this.lastPage; page++) {
+                this.pages.push(page);
             }
-            this.lastPages = this.pages.slice(-2);
-            this.chosen = {};
+            if (this.pages.length > 4) {
+                this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 2, this.page);
+                    if (!this.lastPages.includes(this.page + 1)) {
+                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                    }
+                }
+            } else {
+                this.firstPages = this.pages;
+                this.lastPages = [];
+            }
+            Object.values(this.platforms).map(platform => {
+                this.chosen[platform.id] = null;
+            });
+        },
+        async perPage() {
+            const response = await this.fetchPlatforms({
+                page: this.page,
+                perPage: this.perPage,
+                sorting: this.sorting,
+                direction: this.direction,
+            });
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.pages = [];
+            for (let page = 1; page <= this.lastPage; page++) {
+                this.pages.push(page);
+            }
+            console.log(this.pages);
+            if (this.pages.length > 4) {
+                this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 2, this.page);
+                    if (!this.lastPages.includes(this.page + 1)) {
+                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                    }
+                }
+            } else {
+                this.firstPages = this.pages;
+                this.lastPages = [];
+            }
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;
             });
@@ -368,14 +450,6 @@ export default {
 .v-input--selection-controls {
     margin-top: 0;
     padding-top: 0;
-}
-.footer-request {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 20px;
-    background: #ff430f;
 }
 .pagination {
     list-style: none;

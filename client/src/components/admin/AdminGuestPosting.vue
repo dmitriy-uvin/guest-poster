@@ -362,7 +362,6 @@ export default {
             this.firstPages = this.pages;
             this.lastPages = [];
         }
-        console.log(this.pages);
         Object.values(this.platforms).map(platform => {
             this.chosen[platform.id] = null;
         });
@@ -391,7 +390,6 @@ export default {
                 this.firstPages = this.pages;
                 this.lastPages = [];
             }
-            console.log(this.pages);
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;
             });
@@ -410,7 +408,6 @@ export default {
             for (let page = 1; page <= this.lastPage; page++) {
                 this.pages.push(page);
             }
-            console.log(this.pages);
             if (this.pages.length > 4) {
                 this.lastPages = this.pages.slice(-2);
                 if (!this.lastPages.includes(this.page)) {
