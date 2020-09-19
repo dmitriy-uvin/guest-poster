@@ -218,9 +218,8 @@
         <VRow class="justify-space-between">
             <ul class="pagination">
                 <li>
-                    <VBtn :disabled="page === 1" @click="page -= 1">
-                        <VIcon left>mdi-chevron-left</VIcon>
-                        Prev
+                    <VBtn :disabled="page === 1" @click="page -= 1" fab small>
+                        <VIcon>mdi-chevron-left</VIcon>
                     </VBtn>
                 </li>
                 <li v-for="firstPage in firstPages" :key="firstPage">
@@ -250,9 +249,10 @@
                     <VBtn
                         :disabled="page === lastPage"
                         @click="page += 1"
+                        fab
+                        small
                     >
-                        Next
-                        <VIcon right>mdi-chevron-right</VIcon>
+                        <VIcon>mdi-chevron-right</VIcon>
                     </VBtn>
                 </li>
             </ul>

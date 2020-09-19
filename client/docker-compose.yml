@@ -1,0 +1,9 @@
+version: '3'
+services:
+  node:
+    image: node:12
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - 8085:8080
