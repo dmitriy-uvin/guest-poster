@@ -1,135 +1,136 @@
 <template>
     <div class="container">
-        <h1>Guest Posting and Niche edits list</h1>
+        <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
+        <h1 v-else>Guest Posting</h1>
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
         <table class="guest__table">
             <thead class="guest__head">
-                <tr style="border-bottom: 1px solid #000">
-                    <th class="guest__col">
-                        <VCheckbox @click="selectAll"></VCheckbox>
-                    </th>
-                    <th class="guest__col">
-                        #
+            <tr style="border-bottom: 1px solid #000">
+                <th class="guest__col">
+                    <VCheckbox @click="selectAll"></VCheckbox>
+                </th>
+                <th class="guest__col">
+                    #
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('id')"
+                        v-if="sorting === 'id' && direction === 'desc'"
+                    >
+                        mdi-chevron-down
+                    </VIcon>
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('id')"
+                        v-else
+                    >
+                        mdi-chevron-up
+                    </VIcon>
+                </th>
+                <th class="guest__col">
+                    Website
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('website_url')"
+                        v-if="sorting === 'website_url' && direction === 'desc'"
+                    >
+                        mdi-chevron-down
+                    </VIcon>
+                    <VIcon
+                        right
+                        @click="changeSortingAndDirection('website_url')"
+                        v-else
+                    >
+                        mdi-chevron-up
+                    </VIcon>
+                </th>
+                <th class="guest__col">
+                    Topic
+                </th>
+                <th class="guest__col">
+                    <div class="guest__col-wrap">
+                        DR
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('id')"
-                            v-if="sorting === 'id' && direction === 'desc'"
+                            @click="changeSortingAndDirection('dr')"
+                            v-if="sorting === 'dr' && direction === 'desc'"
                         >
                             mdi-chevron-down
                         </VIcon>
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('id')"
+                            @click="changeSortingAndDirection('dr')"
                             v-else
                         >
                             mdi-chevron-up
                         </VIcon>
-                    </th>
-                    <th class="guest__col">
-                        Website
+                    </div>
+                </th>
+                <th class="guest__col">
+                    <div class="guest__col-wrap">
+                        MA
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('website_url')"
-                            v-if="sorting === 'website_url' && direction === 'desc'"
+                            @click="changeSortingAndDirection('ma')"
+                            v-if="sorting === 'ma' && direction === 'desc'"
                         >
                             mdi-chevron-down
                         </VIcon>
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('website_url')"
+                            @click="changeSortingAndDirection('ma')"
                             v-else
                         >
                             mdi-chevron-up
                         </VIcon>
-                    </th>
-                    <th class="guest__col">
-                        Topic
-                    </th>
-                    <th class="guest__col">
-                        <div class="guest__col-wrap">
-                            DR
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('dr')"
-                                v-if="sorting === 'dr' && direction === 'desc'"
-                            >
-                                mdi-chevron-down
-                            </VIcon>
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('dr')"
-                                v-else
-                            >
-                                mdi-chevron-up
-                            </VIcon>
-                        </div>
-                    </th>
-                    <th class="guest__col">
-                        <div class="guest__col-wrap">
-                            MA
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('ma')"
-                                v-if="sorting === 'ma' && direction === 'desc'"
-                            >
-                                mdi-chevron-down
-                            </VIcon>
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('ma')"
-                                v-else
-                            >
-                                mdi-chevron-up
-                            </VIcon>
-                        </div>
-                    </th>
-                    <th class="guest__col">
-                        <div class="guest__col-wrap">
-                            Organic traffic
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('organic_traffic')"
-                                v-if="sorting === 'organic_traffic' && direction === 'desc'"
-                            >
-                                mdi-chevron-down
-                            </VIcon>
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('organic_traffic')"
-                                v-else
-                            >
-                                mdi-chevron-up
-                            </VIcon>
-                        </div>
-                    </th>
-                    <th class="guest__col">
-                        Features
-                    </th>
-                    <th class="guest__col">
-                        <div class="guest__col-wrap">
-                            Editorial fee
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('price')"
-                                v-if="sorting === 'price' && direction === 'desc'"
-                            >
-                                mdi-chevron-down
-                            </VIcon>
-                            <VIcon
-                                right
-                                @click="changeSortingAndDirection('price')"
-                                v-else
-                            >
-                                mdi-chevron-up
-                            </VIcon>
-                        </div>
-                    </th>
-                </tr>
+                    </div>
+                </th>
+                <th class="guest__col">
+                    <div class="guest__col-wrap">
+                        Organic traffic
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('organic_traffic')"
+                            v-if="sorting === 'organic_traffic' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('organic_traffic')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
+                    </div>
+                </th>
+                <th class="guest__col">
+                    Features
+                </th>
+                <th class="guest__col">
+                    <div class="guest__col-wrap">
+                        Editorial fee
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('price')"
+                            v-if="sorting === 'price' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('price')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
+                    </div>
+                </th>
+            </tr>
             </thead>
             <tbody>
-                <tr v-for="(platform, id) in platforms" :key="id">
+            <tr v-for="(platform, id) in platforms" :key="id">
                 <td>
                     <VCheckbox :value="!!id" v-model="chosen[platform.id]"></VCheckbox>
                 </td>
@@ -180,7 +181,7 @@
                             'not-available': !platform.nicheEditLinkActive}
                             "
                         >
-                           Niche Edit Link
+                            Niche Edit Link
                         </li>
                     </ul>
                 </td>
@@ -269,7 +270,7 @@
             </VCol>
         </VRow>
 
-        <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform">
+        <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform" v-if="isAdmin">
             <VIcon color="white">mdi-plus</VIcon>
         </VBtn>
     </div>
@@ -279,9 +280,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
+import * as userGetters from '@/store/modules/user/types/getters';
 
 export default {
-    name: 'AdminGuestPosting',
+    name: 'GuestPostingComponent',
     data: () => ({
         chosen: {},
         platformChosen: false,
@@ -312,7 +314,9 @@ export default {
             this.perPage = value;
         },
         onAddPlatform() {
-            this.$router.push({ name: 'AddPlatform' })
+            if (this.isAdmin) {
+                this.$router.push({ name: 'AddPlatform' })
+            }
         },
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
@@ -395,6 +399,7 @@ export default {
             });
         },
         async perPage() {
+            this.page = 1;
             const response = await this.fetchPlatforms({
                 page: this.page,
                 perPage: this.perPage,
@@ -428,7 +433,13 @@ export default {
     computed: {
         ...mapGetters('platforms', {
             platforms: getters.GET_PLATFORMS
-        })
+        }),
+        ...mapGetters('user', {
+            user: userGetters.GET_LOGGED_USER
+        }),
+        isAdmin() {
+            return this.user.role === 'admin';
+        }
     }
 }
 </script>
@@ -451,11 +462,11 @@ export default {
     border: 1px solid #000;
 }
 .v-application--is-ltr .v-input--selection-controls__input {
-     margin-right: 0;
+    margin-right: 0;
 }
 .v-input--selection-controls {
-     margin-top: 0;
-     padding-top: 0;
+    margin-top: 0;
+    padding-top: 0;
 }
 .pagination {
     list-style: none;

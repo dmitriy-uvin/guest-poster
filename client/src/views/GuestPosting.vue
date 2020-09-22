@@ -1,21 +1,16 @@
 <template>
-    <div>
-        <AdminGuestPosting v-if="isAdmin"/>
-        <UserGuestPosting v-else />
-    </div>
+    <GuestPostingComponent />
 </template>
 
 <script>
-import AdminGuestPosting from '@/components/admin/AdminGuestPosting';
-import UserGuestPosting from '@/components/user/UserGuestPosting';
+import GuestPostingComponent from '@/components/guest-posting/GuestPostingComponent';
 import { mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 
 export default {
     name: 'GuestPosting',
     components: {
-        AdminGuestPosting,
-        UserGuestPosting
+        GuestPostingComponent
     },
     computed: {
         ...mapGetters('user', {

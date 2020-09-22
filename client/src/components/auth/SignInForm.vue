@@ -9,6 +9,7 @@
                 v-model="userData.email"
                 :error-messages="emailErrors"
                 id="email"
+                aria-autocomplete="none"
             ></VTextField>
 
             <VTextField
@@ -20,6 +21,7 @@
                 v-model="userData.password"
                 :error-messages="passwordErrors"
                 id="password"
+                aria-autocomplete="none"
             ></VTextField>
         </div>
         <div class="pb-7">

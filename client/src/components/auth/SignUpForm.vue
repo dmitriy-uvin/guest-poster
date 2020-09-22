@@ -17,6 +17,7 @@
                 :error-messages="emailErrors"
                 v-model="regUserData.email"
                 id="email"
+                aria-autocomplete="none"
             ></VTextField>
 
             <VTextField
@@ -28,6 +29,7 @@
                 :error-messages="passwordErrors"
                 v-model="regUserData.password"
                 id="password"
+                aria-autocomplete="none"
             ></VTextField>
 
             <VTextField
