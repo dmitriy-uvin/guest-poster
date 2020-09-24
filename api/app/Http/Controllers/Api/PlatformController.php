@@ -33,9 +33,9 @@ class PlatformController extends ApiController
             new AddPlatformRequest(
                 $request->website_url,
                 $request->dr,
-                $request->ma,
+                $request->da,
                 $request->organic_traffic,
-                $request->do_follow_active,
+                $request->dofollow_active,
                 $request->free_home_featured_active,
                 $request->niche_edit_link_active,
                 $request->article_writing_price,
@@ -44,7 +44,11 @@ class PlatformController extends ApiController
                 $request->price,
                 $request->email,
                 $request->comment,
-                $request->topics
+                $request->topics,
+                $request->moz,
+                $request->alexa,
+                $request->semrush,
+                $request->majestic
             )
         );
 
