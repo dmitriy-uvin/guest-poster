@@ -15,43 +15,43 @@ const routes = [
                 path: '/sign-in',
                 name: 'SignIn',
                 component: () => import('../views/SignIn'),
-                meta: { handleAuth: true, layout: 'auth' }
+                meta: { notAuthorizedUser: true, layout: 'auth' }
             },
             {
                 path: '/sign-up',
                 name: 'SignUp',
                 component: () => import('../views/SignUp'),
-                meta: { handleAuth: true, layout: 'auth' }
+                meta: { notAuthorizedUser: true, layout: 'auth' }
             },
             {
                 path: '/forgot-password',
                 name: 'ForgotPassword',
                 component: () => import('../views/ForgotPassword'),
-                meta: { handleAuth: true, layout: 'auth' }
+                meta: { notAuthorizedUser: true, layout: 'auth' }
             },
             {
                 path: '/reset-password',
                 name: 'ResetPassword',
                 component: () => import('../views/ResetPassword'),
-                meta: { requiresAuth: false, layout: 'auth' }
+                meta: { notAuthorizedUser: true, layout: 'auth' }
             },
             {
                 path: '/',
                 name: 'GuestPosting',
                 component: () => import('../views/GuestPosting'),
-                meta: { requiresAuth: true }
+                meta: { AuthorizedUser: true }
             },
             {
                 path: '/verified-email',
                 name: 'VerifiedEmail',
                 component: () => import('../views/VerifiedEmail'),
-                meta: { requiresAuth: false, layout: 'auth' }
+                meta: { layout: 'auth' }
             },
             {
                 path: '/add-platform',
                 name: 'AddPlatform',
                 component: () => import('../views/AdminAddPlatform'),
-                meta: { requiresAuth: true, adminComponent: true }
+                meta: { AuthorizedUser: true, adminRoute: true }
             }
         ]
     }
@@ -64,22 +64,27 @@ const router = new VueRouter({
 
 router.beforeEach(
     (to, from, next) => {
-        const isAuthorizedUser = to.matched.some(record => record.meta.requiresAuth);
-        const isUnauthorizedUser = to.matched.some(record => record.meta.handleAuth);
-        const AdminComponent = to.matched.some(record => record.meta.adminComponent);
+        const isAuthorizedUser = to.matched.some(record => record.meta.AuthorizedUser);
+        const isUnauthorizedUser = to.matched.some(record => record.meta.notAuthorizedUser);
+        const isAdminRoute = to.matched.some(record => record.meta.adminRoute);
 
-        if (store.state.user.user?.role === 'admin' && AdminComponent) {
+        if (isAuthorizedUser && !authService.hasToken()) {
+            next({ name: 'SignIn' });
+            return;
+        }
+
+        if (isAuthorizedUser && authService.hasToken()) {
             next({ path: to });
             return;
         }
 
-        if (store.state.user.user?.role !== 'admin' && AdminComponent) {
-            next({ name: 'GuestPosting' });
+        if (isAdminRoute && store.state.user.user?.role === 'admin') {
+            next({ path: to });
             return;
         }
 
-        if (isAuthorizedUser && !authService.hasToken()) {
-            next({ name: 'SignIn' });
+        if (isAdminRoute && !store.state.user.user?.role !== 'admin') {
+            next(false);
             return;
         }
 
@@ -87,8 +92,6 @@ router.beforeEach(
             next({ name: 'GuestPosting' });
             return;
         }
-
-        next({ path: to });
     },
 );
 
