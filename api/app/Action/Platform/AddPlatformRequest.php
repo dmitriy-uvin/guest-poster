@@ -8,8 +8,8 @@ final class AddPlatformRequest
 {
     private string $website_url;
     private int $dr;
-    private int $ma;
-    private int $organic_traffic;
+    private int $da;
+    private int $organicTraffic;
     private bool $do_follow_active;
     private bool $free_home_featured_active;
     private bool $niche_edit_link_active;
@@ -20,30 +20,49 @@ final class AddPlatformRequest
     private string $email;
     private string $comment;
     private ?array $topics;
+    private int $mozDA;
+    private int $mozPA;
+    private int $mozLinksIn;
+    private float $mozRank;
+    private float $alexaRank;
+    private string $alexaCountry;
+    private float $semrushRank;
+    private float $semrushKeywordNum;
+    private int $semrushTraffic;
+    private int $semrushTrafficCosts;
+    private int $majesticExternalBacklinks;
+    private int $majesticExternalGov;
+    private int $majesticExternalEdu;
+    private int $majesticTF;
+    private int $majesticCF;
 
     public function __construct(
         string $website_url,
         int $dr,
-        int $ma,
-        int $organic_traffic,
-        bool $do_follow,
-        bool $free_home_featured,
-        bool $niche_edit_link,
+        int $da,
+        int $organicTraffic,
+        bool $do_follow_active,
+        bool $free_home_featured_active,
+        bool $niche_edit_link_active,
         float $article_writing_price,
         ?float $niche_edit_link_price,
         string $contacts,
         float $price,
         string $email,
         string $comment,
-        ?array $topics
+        ?array $topics,
+        array $moz,
+        array $alexa,
+        array $semrush,
+        array $majestic
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
-        $this->ma = $ma;
-        $this->organic_traffic = $organic_traffic;
-        $this->do_follow_active = $do_follow;
-        $this->free_home_featured_active = $free_home_featured;
-        $this->niche_edit_link_active = $niche_edit_link;
+        $this->da = $da;
+        $this->organicTraffic = $organicTraffic;
+        $this->do_follow_active = $do_follow_active;
+        $this->free_home_featured_active = $free_home_featured_active;
+        $this->niche_edit_link_active = $niche_edit_link_active;
         $this->article_writing_price = $article_writing_price;
         $this->niche_edit_link_price = $niche_edit_link_price;
         $this->contacts = $contacts;
@@ -51,6 +70,21 @@ final class AddPlatformRequest
         $this->email = $email;
         $this->comment = $comment;
         $this->topics = $topics;
+        $this->mozDA = (int)$moz['da'];
+        $this->mozPA = (int)$moz['pa'];
+        $this->mozRank = (float)$moz['mozrank'];
+        $this->mozLinksIn = (int)$moz['links_in'];
+        $this->alexaRank = (float)$alexa['rank'];
+        $this->alexaCountry = $alexa['country'];
+        $this->semrushRank = (float)$semrush['rank'];
+        $this->semrushKeywordNum = (int)$semrush['keyword_num'];
+        $this->semrushTraffic = (int)$semrush['traffic'];
+        $this->semrushTrafficCosts = (int)$semrush['traffic_costs'];
+        $this->majesticExternalBacklinks = (int)$majestic['external_backlinks'];
+        $this->majesticExternalGov = (int)$majestic['external_gov'];
+        $this->majesticExternalEdu = (int)$majestic['external_edu'];
+        $this->majesticTF = (int)$majestic['tf'];
+        $this->majesticCF = (int)$majestic['cf'];
     }
 
     public function getWebsiteUrl(): string
@@ -63,14 +97,14 @@ final class AddPlatformRequest
         return $this->dr;
     }
 
-    public function getMa(): int
+    public function getDa(): int
     {
-        return $this->ma;
+        return $this->da;
     }
 
     public function getOrganicTraffic(): int
     {
-        return $this->organic_traffic;
+        return $this->organicTraffic;
     }
 
     public function getDoFollowActive(): bool
@@ -122,4 +156,80 @@ final class AddPlatformRequest
     {
         return $this->topics;
     }
+
+    public function getMozDA(): int
+    {
+        return $this->mozDA;
+    }
+
+    public function getMozPA(): int
+    {
+        return $this->mozPA;
+    }
+
+    public function getMozLinksIn()
+    {
+        return $this->mozLinksIn;
+    }
+
+    public function getMozRank()
+    {
+        return $this->mozRank;
+    }
+
+    public function getAlexaRank()
+    {
+        return $this->alexaRank;
+    }
+
+    public function getAlexaCountry()
+    {
+        return $this->alexaCountry;
+    }
+
+    public function getSemrushRank()
+    {
+        return $this->semrushRank;
+    }
+
+    public function getSemrushKeywordNum()
+    {
+        return $this->semrushKeywordNum;
+    }
+
+    public function getSemrushTraffic()
+    {
+        return $this->semrushTraffic;
+    }
+
+    public function getSemrushTrafficCosts()
+    {
+        return $this->semrushTrafficCosts;
+    }
+
+    public function getMajesticExternalBacklinks()
+    {
+        return $this->majesticExternalBacklinks;
+    }
+
+    public function getMajesticExternalGov()
+    {
+        return $this->majesticExternalGov;
+    }
+
+    public function getMajesticExternalEdu()
+    {
+        return $this->majesticExternalEdu;
+    }
+
+    public function getMajesticTF()
+    {
+        return $this->majesticTF;
+    }
+
+    public function getMajesticCF()
+    {
+        return $this->majesticCF;
+    }
+
 }
