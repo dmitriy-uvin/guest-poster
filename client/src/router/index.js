@@ -59,7 +59,6 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.BASE_URL,
     routes: routes
 });
 
@@ -70,7 +69,7 @@ router.beforeEach(
         const AdminComponent = to.matched.some(record => record.meta.adminComponent);
 
         if (store.state.user.user?.role === 'admin' && AdminComponent) {
-            next();
+            next({ path: to });
             return;
         }
 
