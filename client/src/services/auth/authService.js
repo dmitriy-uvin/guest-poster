@@ -1,4 +1,4 @@
-import requestService from '@/services/requestService';
+import requestInternalService from '@/services/requestInternalService';
 
 const API_PREFIX = '/auth';
 
@@ -16,33 +16,33 @@ const authService = {
         localStorage.removeItem('auth.accessToken');
     },
     async signIn(userLoginData) {
-        const response = await requestService.post(API_PREFIX + '/login', userLoginData);
+        const response = await requestInternalService.post(API_PREFIX + '/login', userLoginData);
         this.setToken(response?.data?.data?.access_token);
         return response?.data?.data;
     },
     async signUp(userRegData) {
-        const response = await requestService.post(API_PREFIX + '/register', userRegData);
+        const response = await requestInternalService.post(API_PREFIX + '/register', userRegData);
         return response?.data?.data;
     },
     async fetchLoggedUser() {
-        const response = await requestService.get(API_PREFIX + '/me');
+        const response = await requestInternalService.get(API_PREFIX + '/me');
         return response?.data?.data;
     },
     async signOut() {
-        const response = await requestService.post(API_PREFIX + '/logout');
+        const response = await requestInternalService.post(API_PREFIX + '/logout');
         this.removeToken();
         return response?.data?.data;
     },
     async verifyEmail(verifyData) {
-        const response = await requestService.post(API_PREFIX + '/email/verify', verifyData);
+        const response = await requestInternalService.post(API_PREFIX + '/email/verify', verifyData);
         return response?.data?.data;
     },
     async forgotPassword(userEmail) {
-        const response = await requestService.post(API_PREFIX + '/forgot-password', userEmail);
+        const response = await requestInternalService.post(API_PREFIX + '/forgot-password', userEmail);
         return response?.data?.data;
     },
     async resetPassword(newPasswordData) {
-        const response = await requestService.post(API_PREFIX + '/reset-password', newPasswordData);
+        const response = await requestInternalService.post(API_PREFIX + '/reset-password', newPasswordData);
         return response?.data?.data;
     }
 };

@@ -29,7 +29,7 @@ axios.interceptors.response.use(
     }
 );
 
-const requestService = {
+const requestInternalService = {
     get(url, params = {}, headers = {}) {
         return axios.get(API_URL + url, {
             params,
@@ -47,4 +47,4 @@ const requestService = {
     }
 };
 
-export default requestService;
+export default requestInternalService;
