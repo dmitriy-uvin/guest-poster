@@ -5,15 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Majestic extends Model
 {
     use HasFactory;
 
+    protected $table = 'majestic';
+    public $timestamps = false;
+
     protected $fillable = [
         'platform_id',
-        'name'
+        'external_backlinks',
+        'external_gov',
+        'external_edu',
+        'tf',
+        'cf',
     ];
-    public $timestamps = false;
 
     public function platform()
     {

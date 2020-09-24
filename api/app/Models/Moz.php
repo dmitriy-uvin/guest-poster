@@ -5,15 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Moz extends Model
 {
     use HasFactory;
 
+    protected $table = 'moz';
+    public $timestamps = false;
+
     protected $fillable = [
         'platform_id',
-        'name'
+        'pa',
+        'da',
+        'rank',
+        'links_in',
     ];
-    public $timestamps = false;
 
     public function platform()
     {

@@ -5,15 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class SemRush extends Model
 {
     use HasFactory;
 
+    protected $table = 'semrush';
+    public $timestamps = false;
+
     protected $fillable = [
         'platform_id',
-        'name'
+        'rank',
+        'keyword_num',
+        'traffic',
+        'traffic_costs',
     ];
-    public $timestamps = false;
 
     public function platform()
     {
