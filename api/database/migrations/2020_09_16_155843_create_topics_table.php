@@ -17,7 +17,6 @@ class CreateTopicsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('platform_id');
-            $table->timestamps();
         });
     }
 

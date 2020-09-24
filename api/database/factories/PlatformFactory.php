@@ -25,9 +25,9 @@ class PlatformFactory extends Factory
         return [
             'website_url' => $this->faker->url,
             'dr' => $this->faker->numberBetween(10, 100),
-            'ma' => $this->faker->numberBetween(10, 100),
+            'da' => $this->faker->numberBetween(10, 100),
             'organic_traffic' => $this->faker->numberBetween(10, 10000),
-            'do_follow_active' => true,
+            'dofollow_active' => true,
             'free_home_featured_active' => false,
             'niche_edit_link_active' => true,
             'article_writing_price' => $this->faker->randomFloat(2, -100, 200),

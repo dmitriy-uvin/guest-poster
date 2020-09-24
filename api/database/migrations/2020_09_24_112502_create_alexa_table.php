@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignToTopicTable extends Migration
+class CreateAlexaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,12 @@ class AddForeignToTopicTable extends Migration
      */
     public function up()
     {
-        Schema::table('topics', function (Blueprint $table) {
+        Schema::create('alexa', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('platform_id');
+            $table->float('rank');
+            $table->string('country');
+
             $table
                 ->foreign('platform_id')
                 ->references('id')
@@ -29,8 +34,9 @@ class AddForeignToTopicTable extends Migration
      */
     public function down()
     {
-        Schema::table('topics', function (Blueprint $table) {
-            $table->dropForeign('topics_platform_id_foreign');
+        Schema::table('alexa', function (Blueprint $table) {
+            $table->dropForeign('alexa_platform_id_foreign');
         });
+        Schema::dropIfExists('alexa');
     }
 }

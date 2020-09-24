@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignToTopicTable extends Migration
+class CreateSemrushTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,14 @@ class AddForeignToTopicTable extends Migration
      */
     public function up()
     {
-        Schema::table('topics', function (Blueprint $table) {
+        Schema::create('semrush', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('platform_id');
+            $table->float('rank');
+            $table->integer('keyword_num');
+            $table->integer('traffic');
+            $table->integer('traffic_costs');
+
             $table
                 ->foreign('platform_id')
                 ->references('id')
@@ -29,8 +36,9 @@ class AddForeignToTopicTable extends Migration
      */
     public function down()
     {
-        Schema::table('topics', function (Blueprint $table) {
-            $table->dropForeign('topics_platform_id_foreign');
+        Schema::table('semrush', function (Blueprint $table) {
+            $table->dropForeign('semrush_platform_id_foreign');
         });
+        Schema::dropIfExists('semrush');
     }
 }
