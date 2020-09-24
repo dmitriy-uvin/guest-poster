@@ -4,11 +4,11 @@
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VRow>
-            <VCol cols="12" md="9">
+            <VCol cols="12" md="12">
                 <div class="mt-6">
                     <h2>General Information</h2>
                     <VRow>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="4">
                             <VTextField
                                 outlined
                                 label="Website URL"
@@ -18,17 +18,20 @@
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="4">
-                            <v-combobox
+                            <VCombobox
+                                id="custom-combobox"
                                 outlined
                                 :items="topics"
+                                search-input=""
                                 label="Topics"
                                 multiple
-                                chips
+                                small-chips
+                                hide-selected
                                 :error-messages="topicsErrors"
                                 v-model="topics"
-                            ></v-combobox>
+                            ></VCombobox>
                         </VCol>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <VTextField
                                 outlined
                                 label="Price"
@@ -38,8 +41,71 @@
                             ></VTextField>
                         </VCol>
                     </VRow>
-
                     <VSpacer></VSpacer>
+
+                    <h2>Tech characteristics</h2>
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>DA</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip DA</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="DA"
+                                v-model="da"
+                                :error-messages="daErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Country</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip DR</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="DR"
+                                v-model="dr"
+                                :error-messages="drErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Organic Traffic</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Organic Traffic</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Organic Traffic"
+                                v-model="organicTraffic"
+                                :error-messages="organicTrafficErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
 
                     <h2>Features</h2>
                     <VRow>
@@ -85,58 +151,327 @@
                             </VTextField>
                         </VCol>
                     </VRow>
-
                     <VSpacer></VSpacer>
 
-                    <h2>Technical characteristics</h2>
+                    <h2>SEO characteristics</h2>
+                    <h4 class="mt-4">MOZ</h4>
+                    <VDivider />
                     <VRow>
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label
+                                    <label>DA</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
                                         v-bind="attrs"
                                         v-on="on"
-                                    >A. DR</label>
-                                    <VTextField
-                                        outlined
-                                        v-model="dr"
-                                        :error-messages="drErrors"
-                                    ></VTextField>
+                                    >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip</span>
+                                <span>Tooltip DA</span>
                             </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="DA"
+                                v-model="moz.da"
+                                :error-messages="mozDaErrors"
+                            ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label
+                                    <label>PA</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
                                         v-bind="attrs"
                                         v-on="on"
-                                    >D. MA</label>
-                                    <VTextField
-                                        outlined
-                                        v-model="ma"
-                                        :error-messages="maErrors"
-                                    ></VTextField>
+                                    >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip</span>
+                                <span>Tooltip PA</span>
                             </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="PA"
+                                v-model="moz.pa"
+                                :error-messages="mozPaErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Links In</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Links In</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="from"
+                                v-model="moz.links_in"
+                                :error-messages="mozLinksInErrors"
+                            ></VTextField>
+
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>MozRank</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip MozRank</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="MozRank"
+                                v-model="moz.mozrank"
+                                :error-messages="mozRankErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
+
+                    <h4 class="mt-4">Alexa</h4>
+                    <VDivider />
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Rank</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Rank</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Rank"
+                                v-model="alexa.rank"
+                                :error-messages="alexaRankErrors"
+                            ></VTextField>
                         </VCol>
                         <VCol cols="12" md="3">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label
+                                    <label>Country</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
                                         v-bind="attrs"
                                         v-on="on"
-                                    >Organic Traffic</label>
-                                    <VTextField
-                                        outlined
-                                        v-model="organicTraffic"
-                                        :error-messages="organicTrafficErrors"
-                                    ></VTextField>
+                                    >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip</span>
+                                <span>Tooltip Country</span>
                             </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Country"
+                                v-model="alexa.country"
+                                :error-messages="alexaCountryErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
+
+                    <h4 class="mt-4">SemRush</h4>
+                    <VDivider />
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Rank</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Rank</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Rank"
+                                v-model="semrush.rank"
+                                :error-messages="semrushRankErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Keyword number</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Keyword number</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Keyword Number"
+                                v-model="semrush.keyword_num"
+                                :error-messages="semrushKeywordNumErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Traffic</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Traffic</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Traffic"
+                                v-model="semrush.traffic"
+                                :error-messages="semrushTrafficErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Traffic costs</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Traffic costs</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Traffic costs"
+                                v-model="semrush.traffic_costs"
+                                :error-messages="semrushTrafficCostsErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
+
+                    <h4 class="mt-4">Majestic</h4>
+                    <VDivider />
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>External Backlinks</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>External Backlinks</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="External Backlink"
+                                v-model="majestic.external_backlinks"
+                                :error-messages="majesticExternalBacklinksErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>External gov</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip External gov</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="External gov"
+                                v-model="majestic.external_gov"
+                                :error-messages="majesticExternalGovErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>External Edu</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip External Edu</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="External Edu"
+                                v-model="majestic.external_edu"
+                                :error-messages="majesticExternalEduErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>TF</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip TF</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="TF"
+                                v-model="majestic.tf"
+                                :error-messages="majesticTfErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>CF</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip CF</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="CF"
+                                v-model="majestic.cf"
+                                :error-messages="majesticCfErrors"
+                            ></VTextField>
                         </VCol>
                     </VRow>
 
@@ -144,7 +479,7 @@
 
                     <h2>Contacts</h2>
                     <VRow>
-                        <VCol cols="12" md="6">
+                        <VCol cols="12" md="5">
                             <VTextField
                                 outlined
                                 label="Email"
@@ -175,18 +510,18 @@
                         </VCol>
                     </VRow>
                 </div>
+                <VCol cols="12" class="text-center">
+                    <VBtn color="green" @click="onSave" dark>
+                        <VIcon left>mdi-plus</VIcon>
+                        Add Platform
+                    </VBtn>
+                </VCol>
             </VCol>
-            <VCol cols="12" md="3" class="text-center">
-                <VBtn color="primary" outlined>
-                    Fill Characteristics
-                </VBtn>
-                <br />
-                <br />
-                <VBtn color="green" @click="onSave">
-                    <VIcon left>mdi-plus</VIcon>
-                    Add Platform
-                </VBtn>
-            </VCol>
+<!--            <VCol cols="12" md="3" class="text-center">-->
+<!--                <VBtn color="primary" outlined>-->
+<!--                    Fill Characteristics-->
+<!--                </VBtn>-->
+<!--            </VCol>-->
         </VRow>
     </div>
 </template>
@@ -196,36 +531,112 @@ import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
-import { required, minLength, email, minValue } from 'vuelidate/lib/validators';
+import { required, minLength, email, minValue, maxValue } from 'vuelidate/lib/validators';
 export default {
     name: 'AdminAddPlatformComponent',
     mixins: [validationMixin],
     validations: {
         websiteUrl: { required, minLength: minLength(5) },
+        dr: { required },
+        da: { required },
+        organicTraffic: { required },
         topics: { required },
         price: { minValue: minValue(0), required },
-        dr: { required },
-        ma: { required },
-        organicTraffic: { required },
+        moz: {
+            da: {
+                required, minValue: minValue(0), maxValue: maxValue(100)
+            },
+            pa: {
+                required, minValue: minValue(0), maxValue: maxValue(100)
+            },
+            links_in: {
+                required, minValue: minValue(1), maxValue: maxValue(1000000)
+            },
+            mozrank: {
+                required, minValue: minValue(1)
+            },
+        },
+        alexa: {
+            rank: {
+                required, minValue: minValue(1)
+            },
+            country: {
+                required
+            }
+        },
+        semrush: {
+            rank: {
+                required, minValue: minValue(1)
+            },
+            keyword_num: {
+                required, minValue: minValue(0)
+            },
+            traffic: {
+                required, minValue: minValue(0)
+            },
+            traffic_costs: {
+                required, minValue: minValue(0)
+            },
+        },
+        majestic: {
+            external_backlinks: {
+                required, minValue: minValue(0)
+            },
+            external_gov: {
+                required, minValue: minValue(0)
+            },
+            external_edu: {
+                required, minValue: minValue(0)
+            },
+            tf: {
+                required, minValue: minValue(0), maxValue: maxValue(100)
+            },
+            cf: {
+                required, minValue: minValue(0), maxValue: maxValue(100)
+            },
+        },
         email: { required, email },
         contacts: { required },
         comment: { required }
     },
     data: () => ({
         websiteUrl: '',
+        dr: '',
+        da: '',
+        organicTraffic: '',
         topics: [],
-        price: 0,
+        price: '',
         doFollow: false,
         freeHomeFeatured: true,
         nicheEditLink: false,
         articleWritingPrice: 0,
         nicheEditLinkPrice: 0,
-        dr: 0,
-        ma: 0,
-        organicTraffic: 0,
         email: '',
         contacts: '',
-        comment: ''
+        comment: '',
+        moz: {
+            da: '',
+            pa: '',
+            links_in: '',
+            mozrank: '',
+        },
+        alexa: {
+            rank: '',
+            country: ''
+        },
+        semrush: {
+            rank: '',
+            keyword_num: '',
+            traffic: '',
+            traffic_costs: '',
+        },
+        majestic: {
+            external_backlinks: '',
+            external_gov: '',
+            external_edu: '',
+            tf: '',
+            cf: '',
+        }
     }),
     methods: {
         ...mapActions('platforms', {
@@ -241,9 +652,9 @@ export default {
                     await this.createPlatform({
                         website_url: this.websiteUrl,
                         dr: this.dr,
-                        ma: this.ma,
+                        da: this.da,
                         organic_traffic: this.organicTraffic,
-                        do_follow_active: this.doFollow,
+                        dofollow_active: this.doFollow,
                         free_home_featured_active: this.freeHomeFeatured,
                         niche_edit_link_active: this.nicheEditLink,
                         article_writing_price: this.articleWritingPrice,
@@ -252,7 +663,11 @@ export default {
                         price: this.price,
                         email: this.email,
                         comment: this.comment,
-                        topics: this.topics
+                        topics: this.topics,
+                        moz: this.moz,
+                        alexa: this.alexa,
+                        semrush: this.semrush,
+                        majestic: this.majestic
                     });
                     this.setNotification({
                         message: 'Website was added!',
@@ -266,12 +681,24 @@ export default {
                     this.nicheEditLink = false;
                     this.articleWritingPrice = 0;
                     this.nicheEditLinkPrice = 0;
-                    this.dr = 0;
-                    this.ma = 0;
-                    this.organicTraffic = 0;
                     this.email = '';
                     this.contacts = '';
                     this.comment = '';
+                    this.moz.da =
+                        this.moz.pa =
+                        this.moz.mozrank =
+                        this.moz.links_in = '';
+                    this.alexa.rank =
+                        this.alexa.country = '';
+                    this.semrush.traffic =
+                        this.semrush.traffic_costs =
+                        this.semrush.rank =
+                        this.semrush.keyword_num = '';
+                    this.majestic.cf =
+                        this.majestic.tf =
+                        this.majestic.external_backlinks =
+                        this.majestic.external_edu =
+                        this.majestic.external_gov = '';
                     this.$v.$reset();
                 } catch (error) {
                     this.setNotification({
@@ -323,33 +750,6 @@ export default {
                 errors.push('Price is required!');
             return errors;
         },
-        drErrors() {
-            const errors = [];
-            if (!this.$v.dr.$dirty) {
-                return errors;
-            }
-            !this.$v.dr.required &&
-                errors.push('DR is required!');
-            return errors;
-        },
-        maErrors() {
-            const errors = [];
-            if (!this.$v.ma.$dirty) {
-                return errors;
-            }
-            !this.$v.ma.required &&
-            errors.push('MA is required!');
-            return errors;
-        },
-        organicTrafficErrors() {
-            const errors = [];
-            if (!this.$v.organicTraffic.$dirty) {
-                return errors;
-            }
-            !this.$v.organicTraffic.required &&
-                errors.push('Organic Traffic is required!');
-            return errors;
-        },
         contactsErrors() {
             const errors = [];
             if (!this.$v.contacts.$dirty) {
@@ -366,6 +766,214 @@ export default {
             }
             !this.$v.comment.required &&
                 errors.push('Comment is required!');
+            return errors;
+        },
+        daErrors() {
+            const errors = [];
+            if (!this.$v.da.$dirty) {
+                return errors;
+            }
+            !this.$v.da.required &&
+                errors.push('DA is required!');
+            return errors;
+        },
+        drErrors() {
+            const errors = [];
+            if (!this.$v.dr.$dirty) {
+                return errors;
+            }
+            !this.$v.dr.required &&
+                errors.push('DR is required!');
+            return errors;
+        },
+        organicTrafficErrors() {
+            const errors = [];
+            if (!this.$v.organicTraffic.$dirty) {
+                return errors;
+            }
+            !this.$v.organicTraffic.required &&
+                errors.push('Organic Traffic is required!');
+            return errors;
+        },
+
+        // mozErrors
+        mozDaErrors() {
+            const errors = [];
+            if (!this.$v.moz.da.$dirty) {
+                return errors;
+            }
+            !this.$v.moz.da.required &&
+                errors.push('DA is required!');
+            !this.$v.moz.da.minValue &&
+                errors.push('DA must be more than 0!');
+            !this.$v.moz.da.maxValue &&
+                errors.push('DA must be less than 100!');
+            return errors;
+        },
+        mozPaErrors() {
+            const errors = [];
+            if (!this.$v.moz.pa.$dirty) {
+                return errors;
+            }
+            !this.$v.moz.pa.required &&
+                errors.push('PA is required!');
+            !this.$v.moz.pa.minValue &&
+                errors.push('PA must be more than 0!');
+            !this.$v.moz.pa.maxValue &&
+                errors.push('PA must be less than 100!');
+            return errors;
+        },
+        mozLinksInErrors() {
+            const errors = [];
+            if (!this.$v.moz.links_in.$dirty) {
+                return errors;
+            }
+            !this.$v.moz.links_in.required &&
+                errors.push('Links In is required!');
+            !this.$v.moz.links_in.minValue &&
+                errors.push('Links In must be more than 1!');
+            !this.$v.moz.links_in.maxValue &&
+                errors.push('Links In must be less than 1 000 000!');
+            return errors;
+        },
+        mozRankErrors() {
+            const errors = [];
+            if (!this.$v.moz.mozrank.$dirty) {
+                return errors;
+            }
+            !this.$v.moz.mozrank.required &&
+                errors.push('MozRank is required!');
+            !this.$v.moz.mozrank.minValue &&
+                errors.push('Links In must be more than 1!');
+            return errors;
+        },
+
+        // alexaErrors
+        alexaRankErrors() {
+            const errors = [];
+            if (!this.$v.alexa.rank.$dirty) {
+                return errors;
+            }
+            !this.$v.alexa.rank.required &&
+                errors.push('Rank is required!');
+            !this.$v.alexa.rank.minValue &&
+                errors.push('Rank must be more than 1!');
+            return errors;
+        },
+        alexaCountryErrors() {
+            const errors = [];
+            if (!this.$v.alexa.country.$dirty) {
+                return errors;
+            }
+            !this.$v.alexa.country.required &&
+                errors.push('Country is required!');
+            return errors;
+        },
+
+        // semrushErrors
+        semrushRankErrors() {
+            const errors = [];
+            if (!this.$v.semrush.rank.$dirty) {
+                return errors;
+            }
+            !this.$v.semrush.rank.required &&
+                errors.push('Rank is required!');
+            !this.$v.semrush.rank.minValue &&
+                errors.push('Rank must be more than 1!');
+            return errors;
+        },
+        semrushKeywordNumErrors() {
+            const errors = [];
+            if (!this.$v.semrush.keyword_num.$dirty) {
+                return errors;
+            }
+            !this.$v.semrush.keyword_num.required &&
+                errors.push('Rank is required!');
+            !this.$v.semrush.keyword_num.minValue &&
+                errors.push('Rank must be more than 0!');
+            return errors;
+        },
+        semrushTrafficErrors() {
+            const errors = [];
+            if (!this.$v.semrush.traffic.$dirty) {
+                return errors;
+            }
+            !this.$v.semrush.traffic.required &&
+                errors.push('Traffic is required!');
+            !this.$v.semrush.traffic.minValue &&
+                errors.push('Traffic must be more than 0!');
+            return errors;
+        },
+        semrushTrafficCostsErrors() {
+            const errors = [];
+            if (!this.$v.semrush.traffic_costs.$dirty) {
+                return errors;
+            }
+            !this.$v.semrush.traffic_costs.required &&
+                errors.push('Traffic Costs is required!');
+            !this.$v.semrush.traffic_costs.minValue &&
+                errors.push('Traffic Cost must be more than 0!');
+            return errors;
+        },
+
+        // majesticErrors
+        majesticExternalBacklinksErrors() {
+            const errors = [];
+            if (!this.$v.majestic.external_backlinks.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.external_backlinks.required &&
+                errors.push('External Backlinks is required!');
+            !this.$v.majestic.external_backlinks.minValue &&
+                errors.push('External Backlinks must be more than 0!');
+            return errors;
+        },
+        majesticExternalGovErrors() {
+            const errors = [];
+            if (!this.$v.majestic.external_gov.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.external_gov.required &&
+            errors.push('External Gov is required!');
+            !this.$v.majestic.external_gov.minValue &&
+            errors.push('External Gov must be more than 0!');
+            return errors;
+        },
+        majesticExternalEduErrors() {
+            const errors = [];
+            if (!this.$v.majestic.external_edu.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.external_edu.required &&
+                errors.push('External Edu is required!');
+            !this.$v.majestic.external_edu.minValue &&
+                errors.push('External Edu must be more than 0!');
+            return errors;
+        },
+        majesticTfErrors() {
+            const errors = [];
+            if (!this.$v.majestic.tf.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.tf.required &&
+                errors.push('TF is required!');
+            !this.$v.majestic.tf.minValue &&
+                errors.push('TF must be more than 0!');
+            !this.$v.majestic.tf.maxValue &&
+                errors.push('TF must be less than 100!');
+            return errors;
+        },
+        majesticCfErrors() {
+            const errors = [];
+            if (!this.$v.majestic.cf.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.cf.required &&
+            errors.push('CF is required!');
+            !this.$v.majestic.cf.minValue &&
+            errors.push('CF must be more than 0!');
+            !this.$v.majestic.cf.maxValue &&
+            errors.push('CF must be less than 100!');
             return errors;
         }
     }

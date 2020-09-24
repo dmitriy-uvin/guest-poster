@@ -1,7 +1,9 @@
 <template>
     <div class="container">
+
         <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
         <h1 v-else>Guest Posting</h1>
+
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
@@ -72,14 +74,14 @@
                         MA
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('ma')"
-                            v-if="sorting === 'ma' && direction === 'desc'"
+                            @click="changeSortingAndDirection('da')"
+                            v-if="sorting === 'da' && direction === 'desc'"
                         >
                             mdi-chevron-down
                         </VIcon>
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('ma')"
+                            @click="changeSortingAndDirection('da')"
                             v-else
                         >
                             mdi-chevron-up
@@ -152,7 +154,7 @@
                     {{ platform.dr }}
                 </td>
                 <td>
-                    {{ platform.ma }}
+                    {{ platform.da }}
                 </td>
                 <td>
                     {{ platform.organicTraffic }}
