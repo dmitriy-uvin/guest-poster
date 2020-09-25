@@ -12,9 +12,13 @@
         </template>
         <VList>
             <VListItem @click="onProfile">
-                <VListItemTitle>Profile</VListItemTitle>
+                <VListItemTitle>
+                    <VIcon left>mdi-account</VIcon>
+                    Profile
+                </VListItemTitle>
             </VListItem>
             <VListItem @click="onLogOut">
+                <VIcon left>mdi-logout-variant</VIcon>
                 <VListItemTitle>Log Out</VListItemTitle>
             </VListItem>
         </VList>

@@ -11,6 +11,12 @@
             </span>
         </template>
         <VList>
+            <VListItem @click="onProfile">
+                <VListItemTitle>
+                    <VIcon left>mdi-account</VIcon>
+                    Profile
+                </VListItemTitle>
+            </VListItem>
             <VListItem @click="onLogOut">
                 <VListItemTitle>
                     <VIcon left>mdi-logout-variant</VIcon>
@@ -34,6 +40,9 @@ export default {
         onLogOut() {
             this.signOut();
             this.$router.push({ name: 'SignIn' });
+        },
+        onProfile() {
+            this.$router.push({ name: 'Profile' });
         }
     },
     computed: {
