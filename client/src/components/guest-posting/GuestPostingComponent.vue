@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-
         <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
         <h1 v-else>Guest Posting</h1>
 
@@ -134,7 +133,7 @@
             <tbody>
             <tr v-for="(platform, id) in platforms" :key="id">
                 <td>
-                    <VCheckbox :value="!!id" v-model="chosen[platform.id]"></VCheckbox>
+                    <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>
                 </td>
                 <td>{{ platform.id }}</td>
                 <td>
@@ -275,6 +274,13 @@
         <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform" v-if="isAdmin">
             <VIcon color="white">mdi-plus</VIcon>
         </VBtn>
+
+        <SendRequestFooter
+            :chosen-platforms-ids="chosenPlatformsIds"
+            @unselected="unSelectAll"
+            v-if="!isAdmin"
+            @request-created="onRequestCreated"
+        />
     </div>
 </template>
 
@@ -283,12 +289,15 @@ import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as userGetters from '@/store/modules/user/types/getters';
+import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 
 export default {
     name: 'GuestPostingComponent',
+    components: {
+        SendRequestFooter
+    },
     data: () => ({
         chosen: {},
-        platformChosen: false,
         selectedAll: false,
         page: 1,
         perPage: 10,
@@ -339,11 +348,22 @@ export default {
                 });
             }
         },
-        selectOne(id) {
-            this.chosen[id] = !!this.chosen[id];
+        unSelectAll() {
+            Object.values(this.platforms).map(platform => {
+                this.chosen[platform.id] = null;
+            });
         },
         onChangePage(page) {
             this.page = page;
+        },
+        selectPlatform(platformId) {
+            this.chosen = {
+                ...this.chosen,
+                [platformId]: !this.chosen[platformId]
+            }
+        },
+        onRequestCreated() {
+            this.unSelectAll();
         }
     },
     async mounted() {
@@ -430,7 +450,7 @@ export default {
             Object.values(this.platforms).map(platform => {
                 this.chosen[platform.id] = null;
             });
-        }
+        },
     },
     computed: {
         ...mapGetters('platforms', {
@@ -441,6 +461,9 @@ export default {
         }),
         isAdmin() {
             return this.user.role === 'admin';
+        },
+        chosenPlatformsIds() {
+            return Object.keys(this.chosen).filter(id => this.chosen[id]);
         }
     }
 }
@@ -478,5 +501,17 @@ export default {
     display: inline-block;
     margin-right: 15px;
     transition: 0.5s;
+}
+.order-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow:
+        0px 2px 4px 4px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 5px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 4px rgba(0, 0, 0, 0.12);
+    display: none;
 }
 </style>
