@@ -68,7 +68,7 @@
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label>Country</label>
+                                    <label>DR</label>
                                     <VIcon
                                         class="ml-1 align-center"
                                         small
@@ -109,19 +109,19 @@
 
                     <h2>Features</h2>
                     <VRow>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <div class="d-flex justify-space-between">
                                 <span class="d-flex align-center">Dofollow</span>
                                 <VSwitch inset v-model="doFollow"></VSwitch>
                             </div>
                         </VCol>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <div class="d-flex justify-space-between">
                                 <span class="d-flex align-center">Free Home Featured</span>
                                 <VSwitch inset v-model="freeHomeFeatured"></VSwitch>
                             </div>
                         </VCol>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <div class="d-flex justify-space-between">
                                 <span class="d-flex align-center">Niche Edit Link</span>
                                 <VSwitch inset v-model="nicheEditLink"></VSwitch>
@@ -131,7 +131,7 @@
 
                     <h2>Feature Prices</h2>
                     <VRow>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <VTextField
                                 outlined
                                 label="Article Writing Price"
@@ -140,7 +140,7 @@
                             >
                             </VTextField>
                         </VCol>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <VTextField
                                 outlined
                                 label="Niche Edit Link Price"
@@ -212,7 +212,7 @@
                             </VTooltip>
                             <VTextField
                                 outlined
-                                placeholder="from"
+                                placeholder="Links In"
                                 v-model="moz.links_in"
                                 :error-messages="mozLinksInErrors"
                             ></VTextField>
@@ -263,7 +263,7 @@
                                 :error-messages="alexaRankErrors"
                             ></VTextField>
                         </VCol>
-                        <VCol cols="12" md="3">
+                        <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
                                     <label>Country</label>
@@ -369,7 +369,14 @@
                             ></VTextField>
                         </VCol>
                     </VRow>
-
+                    <VBtn
+                        @click="fillMozAlexaSr"
+                        color="primary"
+                        :loading="fillMozAlexaSrLoading"
+                        :disabled="!websiteUrl"
+                    >
+                        Fill Moz, Alexa, Sr
+                    </VBtn>
                     <h4 class="mt-4">Majestic</h4>
                     <VDivider />
                     <VRow>
@@ -474,7 +481,15 @@
                             ></VTextField>
                         </VCol>
                     </VRow>
-
+                    <VBtn
+                        @click="fillMajestic"
+                        color="orange"
+                        :loading="fillMajesticLoading"
+                        :disabled="!websiteUrl"
+                        class="text-white"
+                    >
+                        Fill Majestic
+                    </VBtn>
                     <VSpacer></VSpacer>
 
                     <h2>Contacts</h2>
@@ -517,11 +532,6 @@
                     </VBtn>
                 </VCol>
             </VCol>
-<!--            <VCol cols="12" md="3" class="text-center">-->
-<!--                <VBtn color="primary" outlined>-->
-<!--                    Fill Characteristics-->
-<!--                </VBtn>-->
-<!--            </VCol>-->
         </VRow>
     </div>
 </template>
@@ -532,6 +542,9 @@ import * as actions from '@/store/modules/platforms/types/actions';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email, minValue, maxValue } from 'vuelidate/lib/validators';
+import requestExternalService from '@/services/requestExternalService';
+import { ErrorStatus } from '@/services/requestExternalService';
+
 export default {
     name: 'AdminAddPlatformComponent',
     mixins: [validationMixin],
@@ -600,6 +613,8 @@ export default {
         comment: { required }
     },
     data: () => ({
+        fillMozAlexaSrLoading: false,
+        fillMajesticLoading: false,
         websiteUrl: '',
         dr: '',
         da: '',
@@ -645,6 +660,67 @@ export default {
         ...mapActions('notification', {
             setNotification: notifyActions.SET_NOTIFICATION
         }),
+        async fillMajestic() {
+            try {
+                if (this.websiteUrl) {
+                    this.fillMajesticLoading = true;
+                    const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
+                    const responseData = response?.data;
+                    if (ErrorStatus.includes(responseData)) {
+                        this.setNotification({
+                            message: "Status: " + responseData,
+                            type: 'error'
+                        });
+                    }
+                    this.majestic.external_backlinks = responseData.ExtBackLinks;
+                    this.majestic.external_gov = responseData.ExtBackLinksGOV;
+                    this.majestic.external_edu = responseData.ExtBackLinksEDU;
+                    this.majestic.tf = responseData.TrustFlow;
+                    this.majestic.cf = responseData.CitationFlow;
+                    this.fillMajesticLoading = false;
+                }
+            } catch (error) {
+                this.setNotification({
+                    message: error,
+                    type: 'error'
+                });
+                this.fillMajesticLoading = false;
+            }
+        },
+        async fillMozAlexaSr() {
+            try {
+                if (this.websiteUrl) {
+                    this.fillMozAlexaSrLoading = true;
+                    const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
+                    const responseData = response?.data;
+                    if (ErrorStatus.includes(responseData)) {
+                        this.setNotification({
+                            message: "Status: " + responseData,
+                            type: 'error'
+                        });
+                    }
+                    this.moz.pa = responseData.pa !== 'notfound' ? responseData.pa : '';
+                    this.moz.da = responseData.da !== 'notfound' ? responseData.da : '';
+                    this.moz.mozrank = responseData.mozrank !== 'notfound' ? responseData.mozrank : '';
+                    this.moz.links_in = responseData.links !== 'notfound' ? responseData.links : '';
+
+                    this.alexa.rank = responseData.a_rank !== 'N/A' ? responseData.a_rank : '';
+                    this.alexa.country = responseData.a_cnt !== 'N/A' ? responseData.a_cnt : '';
+
+                    this.semrush.rank = responseData.sr_rank !== 'notfound' ? responseData.sr_rank : '';
+                    this.semrush.keyword_num = responseData.sr_kwords !== 'notfound' ? responseData.sr_kwords : '';
+                    this.semrush.traffic = responseData.sr_traffic !== 'notfound' ? responseData.sr_traffic : '';
+                    this.semrush.traffic_costs = responseData.sr_costs !== 'notfound' ? responseData.sr_costs : '';
+                    this.fillMozAlexaSrLoading = false;
+                }
+            } catch (error) {
+                this.setNotification({
+                    message: error,
+                    type: 'error'
+                });
+                this.fillMozAlexaSrLoading = false;
+            }
+        },
         async onSave() {
             this.$v.$touch();
             if (!this.$v.$invalid) {

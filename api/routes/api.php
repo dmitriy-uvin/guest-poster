@@ -38,3 +38,10 @@ Route::group([
     Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])->middleware('auth:api');
 });
 
+Route::group([
+    'prefix' => 'seo-rank',
+    'middleware' => 'admin'
+], function () {
+    Route::get('/moz-alexa-sr', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMozAlexaSr']);
+    Route::get('/majestic', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMajestic']);
+});
