@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Platform;
 
+use App\Models\Ahrefs;
 use App\Models\Alexa;
 use App\Models\Majestic;
 use App\Models\Moz;
@@ -28,7 +29,7 @@ final class AddPlatformAction
         $platform->dr = $request->getDr();
         $platform->da = $request->getDa();
         $platform->organic_traffic = $request->getOrganicTraffic();
-        $platform->do_follow_active = $request->getDoFollowActive();
+        $platform->dofollow_active = $request->getDoFollowActive();
         $platform->free_home_featured_active = $request->getFreeHomeFeaturedActive();
         $platform->niche_edit_link_active = $request->getNicheEditLinkActive();
         if ($request->getNicheEditLinkActive()) {
@@ -82,6 +83,19 @@ final class AddPlatformAction
             'cf' => $request->getMajesticCF(),
         ]);
         $majestic->save();
+
+        if ($request->getAhrefsStatus()) {
+            $ahrefs = new Ahrefs([
+                'platform_id' => $platform->id,
+                'rank' => $request->getAhrefsRank(),
+                'dr' => $request->getAhrefsDr(),
+                'eb' => $request->getAhrefsEb(),
+                'rd' => $request->getAhrefsRd(),
+                'dofollow' => $request->getAhrefsDofollow(),
+                'ips' => $request->getAhrefsIps(),
+            ]);
+            $ahrefs->save();
+        }
 
         return new AddPlatformResponse($platform);
     }

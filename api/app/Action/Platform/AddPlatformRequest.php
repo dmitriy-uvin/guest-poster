@@ -35,6 +35,13 @@ final class AddPlatformRequest
     private int $majesticExternalEdu;
     private int $majesticTF;
     private int $majesticCF;
+    private ?string $ahrefsStatus;
+    private ?float $ahrefsRank;
+    private ?float $ahrefsDr;
+    private ?int $ahrefsEb;
+    private ?int $ahrefsRd;
+    private ?int $ahrefsDofollow;
+    private ?int $ahrefsIps;
 
     public function __construct(
         string $website_url,
@@ -54,7 +61,8 @@ final class AddPlatformRequest
         array $moz,
         array $alexa,
         array $semrush,
-        array $majestic
+        array $majestic,
+        ?array $ahrefs
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
@@ -85,7 +93,52 @@ final class AddPlatformRequest
         $this->majesticExternalEdu = (int)$majestic['external_edu'];
         $this->majesticTF = (int)$majestic['tf'];
         $this->majesticCF = (int)$majestic['cf'];
+
+        // TODO: Must be tested and fixed if needed
+        $this->ahrefsStatus = $ahrefs['status'];
+        $this->ahrefsRank = (float)$ahrefs['rank'];
+        $this->ahrefsDr = (float)$ahrefs['dr'];
+        $this->ahrefsEb = (int)$ahrefs['eb'];
+        $this->ahrefsRd = (int)$ahrefs['rd'];
+        $this->ahrefsDofollow = (int)$ahrefs['dofollow'];
+        $this->ahrefsIps = (int)$ahrefs['ips'];
     }
+
+    public function getAhrefsStatus()
+    {
+        return $this->ahrefsStatus;
+    }
+
+    public function getAhrefsRank(): ?float
+    {
+        return $this->ahrefsRank;
+    }
+
+    public function getAhrefsDr(): ?float
+    {
+        return $this->ahrefsDr;
+    }
+
+    public function getAhrefsEb(): ?int
+    {
+        return $this->ahrefsEb;
+    }
+
+    public function getAhrefsRd(): ?int
+    {
+        return $this->ahrefsRd;
+    }
+
+    public function getAhrefsDofollow(): ?int
+    {
+        return $this->ahrefsDofollow;
+    }
+
+    public function getAhrefsIps(): ?int
+    {
+        return $this->ahrefsIps;
+    }
+
 
     public function getWebsiteUrl(): string
     {
