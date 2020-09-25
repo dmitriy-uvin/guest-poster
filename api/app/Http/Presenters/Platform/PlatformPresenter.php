@@ -60,7 +60,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
             'alexa' => $this->alexaPresenter->present($platform->alexa),
             'semrush' => $this->semRushPresenter->present($platform->semrush),
             'majestic' => $this->majesticPresenter->present($platform->majestic),
-            'ahrefs' => $this->ahrefsPresenter->present($platform->ahrefs)
+            'ahrefs' => $platform->ahrefs ? $this->ahrefsPresenter->present($platform->ahrefs) : null
         ];
     }
 

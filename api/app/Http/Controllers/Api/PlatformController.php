@@ -48,7 +48,8 @@ class PlatformController extends ApiController
                 $request->moz,
                 $request->alexa,
                 $request->semrush,
-                $request->majestic
+                $request->majestic,
+                $request->ahrefs
             )
         );
 

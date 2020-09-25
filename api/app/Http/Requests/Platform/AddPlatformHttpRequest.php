@@ -10,7 +10,10 @@ class AddPlatformHttpRequest extends ApiFormRequest
     {
         return [
             'website_url' => 'required|string',
-            'do_follow_active' => 'required|boolean',
+            'da' => 'required|integer',
+            'dr' => 'required|integer',
+            'organic_traffic' => 'required|integer',
+            'dofollow_active' => 'required|boolean',
             'free_home_featured_active' => 'required|boolean',
             'niche_edit_link_active' => 'required|boolean',
             'article_writing_price' => 'required|numeric',
@@ -39,6 +42,14 @@ class AddPlatformHttpRequest extends ApiFormRequest
             'majestic.external_backlinks' => 'required|integer',
             'majestic.external_edu' => 'required|integer',
             'majestic.external_gov' => 'required|integer',
+            'ahrefs' => 'nullable',
+            'ahrefs.status' => 'nullable|string',
+            'ahrefs.rank' => 'nullable|numeric',
+            'ahrefs.dr' => 'nullable|numeric',
+            'ahrefs.eb' => 'nullable|integer',
+            'ahrefs.rd' => 'nullable|integer',
+            'ahrefs.dofollow' => 'nullable|integer',
+            'ahrefs.ips' => 'nullable|integer',
         ];
     }
 }
