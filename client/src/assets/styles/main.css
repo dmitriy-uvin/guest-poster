@@ -199,5 +199,6 @@
 }
 
 .text-green {
+    font-weight: bold;
     color: #219653;
 }

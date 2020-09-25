@@ -2,7 +2,7 @@
 
 /* 1376-1650px */
 @media screen and (max-width: 1650px) {
-  
+
 }
 
 /* 1200-1375px */
@@ -33,7 +33,7 @@
 }
 
 }
- 
+
 /* 769-992px */
 @media screen and (max-width: 992px) {
   .container {
@@ -86,7 +86,7 @@
     color: #333;
     text-transform: uppercase;
     font-weight: 700;
-    
+
   }
   body.open {
     overflow: hidden;
@@ -118,8 +118,8 @@
   .header__nav__list .sub-menu > li {
     text-align: left;
   }
- 
-  
+
+
   .header_nav > ul > li.menu-item-has-children::after {
     display: none;
   }
