@@ -14,6 +14,7 @@
                                 label="Website URL"
                                 prepend-inner-icon="mdi-earth"
                                 v-model="websiteUrl"
+                                @keydown="onWebsiteUrlKeydown"
                                 :error-messages="websiteUrlErrors"
                             ></VTextField>
                         </VCol>
@@ -783,6 +784,16 @@ export default {
                     });
                 }
             }
+        },
+        onWebsiteUrlKeydown(e) {
+            if (/[^0-9a-zA-Z:.\\/_-]/.test(e.key)) {
+                e.preventDefault();
+            }
+        }
+    },
+    watch: {
+        websiteUrl(newValue) {
+            this.websiteUrl = newValue.replace(/[^0-9a-zA-Z:.\\/_-]/, '');
         }
     },
     computed: {

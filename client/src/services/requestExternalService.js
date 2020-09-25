@@ -4,14 +4,29 @@ const API_URL_ENDPOINT = process.env.VUE_APP_API_URL;
 
 const requestExternalService = {
     async fetchSeoRankInfoForDomainMozAlexaSr(domainUrl) {
-        const protocol = domainUrl.split("://")[0];
-        const domain = domainUrl.split("://")[1];
-        return await axios.get(API_URL_ENDPOINT + '/seo-rank/moz-alexa-sr?domain=' + domain + "&protocol=" + protocol);
+        const domainData = this.getProtocolDomain(domainUrl);
+        return await axios.get(
+            API_URL_ENDPOINT +
+            '/seo-rank/moz-alexa-sr?domain=' + domainData.domain
+            + "&protocol=" + domainData.protocol);
     },
     async fetchSeoRankInfoForDomainMajestic(domainUrl) {
-        const protocol = domainUrl.split("://")[0];
-        const domain = domainUrl.split("://")[1];
-        return await axios.get( API_URL_ENDPOINT + '/seo-rank/majestic?domain=' + domain + "&protocol=" + protocol);
+        const domainData = this.getProtocolDomain(domainUrl);
+        return await axios.get(
+            API_URL_ENDPOINT +
+            '/seo-rank/majestic?domain=' + domainData.domain
+            + "&protocol=" + domainData.protocol);
+    },
+    getProtocolDomain(domainUrl) {
+        const domainData = {
+            protocol: 'http',
+            domain: domainUrl
+        }
+        if (domainUrl.includes('http')) {
+            domainData.protocol = domainUrl.split("://")[0];
+            domainData.domain = domainUrl.split("://")[1];
+        }
+        return domainData;
     }
 };
 
