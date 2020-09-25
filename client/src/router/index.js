@@ -36,7 +36,7 @@ const routes = [
                 meta: { notAuthorizedUser: true, layout: 'auth' }
             },
             {
-                path: '/',
+                path: '',
                 name: 'GuestPosting',
                 component: () => import('../views/GuestPosting'),
                 meta: { AuthorizedUser: true }
@@ -52,6 +52,18 @@ const routes = [
                 name: 'AddPlatform',
                 component: () => import('../views/AdminAddPlatform'),
                 meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'orders',
+                name: 'Orders',
+                component: () => import('../views/Orders'),
+                meta: { AuthorizedUser: true }
+            },
+            {
+                path: 'profile',
+                name: 'Profile',
+                component: () => import('../views/Profile'),
+                meta: { AuthorizedUser: true }
             }
         ]
     }
@@ -83,7 +95,7 @@ router.beforeEach(
             return;
         }
 
-        if (isAdminRoute && !store.state.user.user?.role !== 'admin') {
+        if (isAdminRoute && store.state.user.user?.role !== 'admin') {
             next(false);
             return;
         }
@@ -92,6 +104,8 @@ router.beforeEach(
             next({ name: 'GuestPosting' });
             return;
         }
+
+        next({ path: to});
     },
 );
 
