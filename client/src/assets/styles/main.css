@@ -2,9 +2,12 @@
 .guest__table tr:first-child {
     width: 3.5%;
 }
-
+.guest__table tr {
+    border-bottom: 1px solid lightgray;
+}
 .guest__table {
-    border-spacing: unset;
+    border-collapse: collapse;
+    width: 100%;
 }
 .guest__table tr:not(:last-child) td{
     border-bottom: 1px solid #c7c7c7;
@@ -40,7 +43,7 @@
 
 .guest__table tr:not(:last-child),
 .guest__head {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid lightgray;
 }
 
 .guest__table td,
