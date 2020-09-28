@@ -37,7 +37,13 @@ final class OrderPresenter
             "type" => $order->type,
             "order_status" => $order->status,
             "comment" => $order->comment,
-            "user_id" => $order->user->id,
+            "user" => [
+                "id" => $order->user->id,
+                "name" => $order->user->name,
+                "email" => $order->user->email,
+                "skype" => $order->user->skype,
+                "website" => $order->user->website,
+            ],
             "created_at" => $order->created_at,
             "total_price" => $totalPrice,
             "items" => $this->orderItemPresenter->presentCollection($order->orderItems)
