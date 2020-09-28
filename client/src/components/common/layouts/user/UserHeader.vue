@@ -4,7 +4,7 @@
             <VRow class="d-flex justify-space-between">
                 <div class="align-center">
                     <VToolbarTitle class="">
-                        <img :src="require('@/assets/logo.png')" @click="onMain"/>
+                        <img :src="require('@/assets/logo.png')" @click="onMain" class="logo"/>
                     </VToolbarTitle>
                 </div>
                 <div class="menu-actions">
@@ -77,5 +77,8 @@ export default {
 }
 .link-active {
     background: #F2F2F2;
+}
+.logo {
+    cursor: pointer;
 }
 </style>
