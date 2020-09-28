@@ -6,24 +6,27 @@
         </VBtn>
         <div class="mt-8 row justify-space-between align-center">
             <div class="left-info">
-                <h1>Request for guest posting</h1>
-                <span>Created: 22 May 2020 | 10:00</span>
+                <h1>Request for {{ order.type.toLowerCase() }}</h1>
+                <span>{{ createdAt(order.createdAt) }}</span>
             </div>
             <div class="right-info">
                 <div class="row">
                     <div class="price">
-                        <p>Not defined</p>
+                        <p>{{ totalPrice(order.totalPrice) }} $</p>
                         <span>Price</span>
                     </div>
                     <div class="status">
-                        <p>Completed</p>
+                        <p style="color: #009c00;" v-if="order.status === 'Completed'">Completed</p>
+                        <p style="color: #003acd" v-else-if="order.status === 'New'">New</p>
+                        <p style="color: #e50005" v-else-if="order.status === 'Canceled'">Canceled</p>
+                        <p style="color: #000" v-else>In process</p>
                         <span>Status</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="platform-table mt-6 mb-10">
-            <h3>{{ Object.values(platforms).length }} selected platforms:</h3>
+            <h3>{{ order.items.length }} selected platforms:</h3>
 
             <table class="guest__table mt-6">
                 <thead class="guest__head">
@@ -148,7 +151,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(platform, id) in platforms" :key="id">
+                <tr v-for="platform in order.items" :key="platform.id">
                     <td></td>
                     <td>{{ platform.id }}</td>
                     <td>
@@ -242,7 +245,7 @@
                             <VIcon color="#bbbbbb">mdi-account</VIcon>
                         </div>
                         <div>
-                            <p class="mb-0">Dmitriy Uvin</p>
+                            <p class="mb-0">{{ order.user.name }}</p>
                             <span class="name">Name</span>
                         </div>
                     </VRow>
@@ -254,7 +257,7 @@
                             <VIcon>mdi-skype</VIcon>
                         </div>
                         <div>
-                            <p class="mb-0">dmitriyuvin</p>
+                            <p class="mb-0">{{ order.user.skype }}</p>
                             <span class="skype">Skype</span>
                         </div>
                     </VRow>
@@ -266,7 +269,7 @@
                             <VIcon>mdi-email</VIcon>
                         </div>
                         <div>
-                            <p class="mb-0">dmitriyuvin@gmail.com</p>
+                            <p class="mb-0">{{ order.user.email }}</p>
                             <span class="email">Email</span>
                         </div>
                     </VRow>
@@ -279,7 +282,7 @@
                         </div>
                         <div>
                             <p class="mb-0">
-                                <a href="" target="_blank">dmitriyuvin.com</a>
+                                <a :href="'https://' + removeProtocol(order.user.website)" target="_blank">{{ order.user.website }}</a>
                             </p>
                             <span class="website">Website</span>
                         </div>
@@ -287,11 +290,9 @@
                 </VCol>
             </VRow>
         </VCol>
-        <VCol cols="12" md="4">
+        <VCol cols="12" md="4" v-if="order.comment">
             <h3 class="mb-6">Commentary: </h3>
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-            </p>
+            <p>{{ order.comment }}</p>
         </VCol>
         <VBtn depressed @click="backToOrders" color="#eaf3ff" class="mt-6">
             <VIcon left color="#408bef">mdi-chevron-left</VIcon>
@@ -301,44 +302,32 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import * as actions from '@/store/modules/order/types/actions';
+import * as getters from '@/store/modules/order/types/getters';
+import valueFormatMixin from '@/mixins/valueFormatMixin';
 export default {
     name: 'AdminOrderDetails',
+    mixins: [valueFormatMixin],
     data: () => ({
         orderId: '',
-        platforms: [
-            {
-                id: 1,
-                websiteUrl: 'google.com',
-                topics: [
-                    {
-                        name: 'Health',
-                    },
-                    {
-                        name: 'General',
-                    },
-                    {
-                        name: 'Engine'
-                    }
-                ],
-                dr: 5,
-                da: 5,
-                organicTraffic: 12345,
-                doFollowActive: true,
-                freeHomeFeaturedActive: true,
-                nicheEditLinkActive: false,
-                price: 12.34,
-                articleWritingPrice: 12,
-
-            }
-        ]
     }),
     methods: {
         backToOrders() {
             this.$router.push({ name: 'Orders' });
-        }
+        },
+        ...mapActions('order', {
+            fetchOrderById: actions.FETCH_ORDER_BY_ID
+        })
+    },
+    computed: {
+        ...mapGetters('order', {
+            order: getters.GET_ORDER_BY_ID
+        }),
     },
     async mounted() {
         this.orderId = this.$route.params.id;
+        await this.fetchOrderById(this.orderId);
     }
 }
 </script>

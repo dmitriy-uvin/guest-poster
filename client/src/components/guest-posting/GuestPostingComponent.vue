@@ -10,7 +10,7 @@
             <thead class="guest__head">
             <tr>
                 <th class="guest__col">
-                    <VCheckbox @click="selectAll" :value="chosenPlatformsIds.length === perPage"></VCheckbox>
+                    <VCheckbox @click="selectAll"></VCheckbox>
                 </th>
                 <th class="guest__col">
                     #
@@ -131,7 +131,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(platform, id) in platforms" :key="id">
+            <tr v-for="platform in platforms" :key="platform.id">
                 <td>
                     <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>
                 </td>
@@ -280,6 +280,7 @@
             @unselected="unSelectAll"
             v-if="!isAdmin"
             @request-created="onRequestCreated"
+            @platform-removed="onPlatformRemoved"
         />
     </div>
 </template>
@@ -335,22 +336,22 @@ export default {
         }),
         selectAll() {
             this.selectedAll = !this.selectedAll;
-            Object.values(this.platforms).map(platform => {
+            this.platforms.map(platform => {
                 this.chosen[platform.id] = null;
             });
             const newChosen = {};
-            Object.values(this.platforms).map(platform => {
+            this.platforms.map(platform => {
                 newChosen[platform.id] = !this.chosen[platform.id];
             });
             this.chosen = newChosen;
             if (!this.selectedAll) {
-                Object.values(this.platforms).map(platform => {
+                this.platforms.map(platform => {
                     this.chosen[platform.id] = null;
                 });
             }
         },
         unSelectAll() {
-            Object.values(this.platforms).map(platform => {
+            this.platforms.map(platform => {
                 this.chosen[platform.id] = null;
             });
         },
@@ -365,6 +366,9 @@ export default {
         },
         onRequestCreated() {
             this.unSelectAll();
+        },
+        onPlatformRemoved(platformId) {
+            this.chosen[platformId] = false;
         }
     },
     async mounted() {
@@ -389,7 +393,7 @@ export default {
             this.firstPages = this.pages;
             this.lastPages = [];
         }
-        Object.values(this.platforms).map(platform => {
+        this.platforms.map(platform => {
             this.chosen[platform.id] = null;
         });
     },
@@ -417,7 +421,7 @@ export default {
                 this.firstPages = this.pages;
                 this.lastPages = [];
             }
-            Object.values(this.platforms).map(platform => {
+            this.platforms.map(platform => {
                 this.chosen[platform.id] = null;
             });
         },
@@ -448,7 +452,7 @@ export default {
                 this.firstPages = this.pages;
                 this.lastPages = [];
             }
-            Object.values(this.platforms).map(platform => {
+            this.platforms.map(platform => {
                 this.chosen[platform.id] = null;
             });
         },

@@ -85,7 +85,7 @@
                             outlined
                             placeholder="Your Comment"
                             rows="3"
-                            v-model="order_comment"
+                            v-model="orderComment"
                         >
                         </VTextarea>
                     </div>
@@ -162,9 +162,6 @@
         >
             <VCard>
                 <VToolbar dark color="white">
-                    <VToolbarTitle>
-                        <span class="text-black"></span>
-                    </VToolbarTitle>
                     <VSpacer></VSpacer>
                     <VToolbarItems>
                         <VBtn light text @click="checkListDialog = false">
@@ -172,9 +169,9 @@
                         </VBtn>
                     </VToolbarItems>
                 </VToolbar>
-                <VCardText class="mt-8 container">
+                <VCardText class="mt-8 container" v-if="platforms.length">
                     <h1 class="mb-4">PLATFORMS WHICH YOU SELECTED</h1>
-                    <span class="text-black">{{ chosenPlatformsCounter }} platforms</span>
+                    <span class="text-black">{{ platforms.length }} platforms</span>
 
                     <div class="">
                         <table class="guest__table">
@@ -302,7 +299,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(platform, id) in platforms" :key="id">
+                                <tr v-for="platform in platforms" :key="platform.id">
                                 <td class="text-center remove-icon">
                                     <VIcon
                                         @click="deletePlatform(platform.id)"
@@ -393,6 +390,9 @@
                         </table>
                     </div>
                 </VCardText>
+                <VCardText class="mt-8 container text-center" v-else>
+                    <h1>There is no platform! Chose platforms please!</h1>
+                </VCardText>
 
                 <div class="action-buttons mx-0 row justify-space-between">
                     <div class="left">
@@ -407,7 +407,12 @@
                             <VIcon left>mdi-arrow-left</VIcon>
                             Back to list
                         </VBtn>
-                        <VBtn depressed large @click="removeAll">Remove all</VBtn>
+                        <VBtn
+                            depressed
+                            large
+                            @click="removeAll"
+                            :disabled="!platforms.length"
+                        >Remove all</VBtn>
                     </div>
                     <div class="right">
                         <VBtn
@@ -415,6 +420,7 @@
                             depressed
                             large
                             @click="checkListDialog = false; orderFormDialog = true"
+                            :disabled="!platforms.length"
                         >
                             <span style="text-transform: none">Send request</span>
                             <VIcon right>mdi-arrow-right</VIcon>
@@ -429,6 +435,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
+import * as platformGetters from '@/store/modules/platforms/types/getters';
 import { GUEST_POSTING_TYPE } from '@/services/types/orderTypes';
 import orderService from '@/services/order/orderService';
 import notificationMixin from '@/mixins/notificationMixin';
@@ -445,33 +452,8 @@ export default {
         dialogResult: false,
         checkListDialog: false,
         orderFormDialog: false,
-        order_comment: '',
-        platforms: [
-            {
-                id: 1,
-                websiteUrl: 'google.com',
-                topics: [
-                    {
-                        name: 'Health',
-                    },
-                    {
-                        name: 'General',
-                    },
-                    {
-                        name: 'Engine'
-                    }
-                ],
-                dr: 5,
-                da: 5,
-                organicTraffic: 12345,
-                doFollowActive: true,
-                freeHomeFeaturedActive: true,
-                nicheEditLinkActive: false,
-                price: 12.34,
-                articleWritingPrice: 12,
-
-            }
-        ]
+        orderComment: '',
+        platforms: {}
     }),
     methods: {
         onUnselectAll() {
@@ -482,7 +464,7 @@ export default {
                 await orderService.createOrderRequest({
                     type: GUEST_POSTING_TYPE,
                     platform_ids: this.chosenPlatformsIds,
-                    comment: this.order_comment
+                    comment: this.orderComment
                 });
                 this.$emit('request-created');
                 this.dialogResult = true;
@@ -506,11 +488,31 @@ export default {
             this.checkListDialog = false;
         },
         deletePlatform(platformId) {
-            alert(platformId);
+            this.$emit('platform-removed', platformId);
+            const index = this.platforms.findIndex(platform => platform.id === platformId);
+            this.platforms = [
+                ...this.platforms.slice(0, index),
+                ...this.platforms.slice(index, 1),
+                ...this.platforms.slice(index + 1),
+            ];
+            if (!this.platforms.length) {
+                this.onUnselectAll();
+            }
         },
         removeAll() {
-            alert('removeALl');
+            this.platforms = {};
+            this.onUnselectAll();
         }
+    },
+    watch: {
+        chosenPlatformsIds() {
+            const platforms = this.getPlatforms;
+            this.platforms = platforms.filter(
+                platform => this.chosenPlatformsIds.includes(
+                    platform.id.toString()
+                )
+            );
+        },
     },
     computed: {
         chosenPlatformsCounter() {
@@ -518,6 +520,9 @@ export default {
         },
         ...mapGetters('user', {
             user: getters.GET_LOGGED_USER
+        }),
+        ...mapGetters('platforms', {
+            getPlatforms: platformGetters.GET_PLATFORMS
         }),
     }
 }

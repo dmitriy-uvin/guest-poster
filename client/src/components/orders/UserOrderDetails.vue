@@ -255,33 +255,7 @@ export default {
     name: 'UserOrderDetails',
     mixins: [valueFormatMixin],
     data: () => ({
-        orderId: '',
-        platforms: [
-            {
-                id: 1,
-                websiteUrl: 'google.com',
-                topics: [
-                    {
-                        name: 'Health',
-                    },
-                    {
-                        name: 'General',
-                    },
-                    {
-                        name: 'Engine'
-                    }
-                ],
-                dr: 5,
-                da: 5,
-                organicTraffic: 12345,
-                doFollowActive: true,
-                freeHomeFeaturedActive: true,
-                nicheEditLinkActive: false,
-                price: 12.34,
-                articleWritingPrice: 12,
-
-            }
-        ]
+        orderId: ''
     }),
     methods: {
         backToOrders() {

@@ -73,7 +73,7 @@ export default {
     },
     computed: {
         ...mapGetters('order', {
-            orders: getters.GET_ORDERS_BY_AUTH_USER
+            orders: getters.GET_ORDERS
         }),
     }
 }

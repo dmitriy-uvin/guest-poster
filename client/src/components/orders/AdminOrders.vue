@@ -16,80 +16,30 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>2</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>Dmitriy Uvin</td>
+                <tr v-for="order in orders" :key="order.id">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.type }}</td>
+                    <td>{{ createdAt(order.createdAt) }}</td>
+                    <td>{{ order.user.name }}</td>
                     <td class="price">
-                        <span>53,00 $</span>
+                        <span>{{ totalPrice(order.totalPrice) }} $</span>
                     </td>
                     <td class="">
                         <VSelect
                             style="width: 80%"
-                            :items="['', 'Cancelled', 'New', 'In Proccess', 'Completed']"
+                            :items="['Canceled', 'New', 'In process', 'Completed']"
                             outlined
+                            v-model="order.status"
                             dense
                             hide-details
+                            @change="onChangeStatus(order.id, order.status)"
                         ></VSelect>
                     </td>
                     <td>
                         <VBtn
                             color="#ebf3ff"
                             depressed
-                        >
-                            <span style="color: #5295f0">DETAILS</span>
-                        </VBtn>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>Konstantin Voznerok</td>
-                    <td class="price">
-                        <span>Not defined</span>
-                    </td>
-                    <td class="">
-                        <VSelect
-                            style="width: 80%"
-                            :items="['', 'Cancelled', 'New', 'In Proccess', 'Completed']"
-                            outlined
-                            dense
-                            hide-details
-                        ></VSelect>
-                    </td>
-                    <td>
-                        <VBtn
-                            color="#ebf3ff"
-                            depressed
-                            @click="onOrderDetails"
-                        >
-                            <span style="color: #5295f0">DETAILS</span>
-                        </VBtn>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>Oleg Petrov</td>
-                    <td class="price">
-                        <span>53,00 $</span>
-                    </td>
-                    <td class="">
-                        <VSelect
-                            style="width: 80%"
-                            :items="['', 'Cancelled', 'New', 'In Proccess', 'Completed']"
-                            outlined
-                            dense
-                            hide-details
-                        ></VSelect>
-                    </td>
-                    <td>
-                        <VBtn
-                            color="#ebf3ff"
-                            depressed
+                            @click="onOrderDetails(order.id)"
                         >
                             <span style="color: #5295f0">DETAILS</span>
                         </VBtn>
@@ -101,12 +51,43 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import * as actions from '@/store/modules/order/types/actions';
+import * as getters from '@/store/modules/order/types/getters';
+import valueFormatMixin from '@/mixins/valueFormatMixin';
+import notificationMixin from '@/mixins/notificationMixin';
 export default {
     name: 'AdminOrders',
+    mixins: [valueFormatMixin, notificationMixin],
     methods: {
         onOrderDetails(orderId) {
             this.$router.push({ path: '/orders/' + orderId + '/details' });
+        },
+        ...mapActions('order', {
+            fetchAllOrders: actions.FETCH_ALL_ORDERS,
+            updateStatus: actions.UPDATE_STATUS
+        }),
+        async onChangeStatus(orderId, orderStatus) {
+            try {
+                await this.updateStatus({
+                    orderId: orderId,
+                    status: orderStatus
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                })
+            }
         }
+    },
+    computed: {
+        ...mapGetters('order', {
+            orders: getters.GET_ORDERS
+        })
+    },
+    async mounted() {
+        await this.fetchAllOrders();
     }
 }
 </script>
