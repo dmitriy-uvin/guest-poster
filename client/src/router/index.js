@@ -60,6 +60,12 @@ const routes = [
                 meta: { AuthorizedUser: true }
             },
             {
+                path: 'orders/:id/details',
+                name: 'OrderDetails',
+                component: () => import('../views/OrderDetails'),
+                meta: { AuthorizedUser: true }
+            },
+            {
                 path: 'profile',
                 name: 'Profile',
                 component: () => import('../views/Profile'),
