@@ -25,11 +25,21 @@ final class OrderPresenter
     }
 
     public function present(Order $order) {
+        $totalPrice = $order->orderItems->reduce(
+            function($sum, $orderItem) {
+                return $sum + $orderItem->platform->price
+                    + $orderItem->platform->article_writing_price
+                    + $orderItem->platform->niche_edit_link_price;
+            });
+
         return [
             "id" => $order->id,
             "type" => $order->type,
             "order_status" => $order->status,
+            "comment" => $order->comment,
             "user_id" => $order->user->id,
+            "created_at" => $order->created_at,
+            "total_price" => $totalPrice,
             "items" => $this->orderItemPresenter->presentCollection($order->orderItems)
         ];
     }
