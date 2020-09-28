@@ -6,8 +6,7 @@
 <script>
 import AdminOrders from '@/components/orders/AdminOrders';
 import UserOrders from '@/components/orders/UserOrders';
-import { mapGetters } from 'vuex';
-import * as getters from '@/store/modules/user/types/getters';
+import rolemixin from '@/mixins/rolemixin';
 
 export default {
     name: 'Orders',
@@ -15,14 +14,7 @@ export default {
         AdminOrders,
         UserOrders
     },
-    computed: {
-        ...mapGetters('user', {
-            user: getters.GET_LOGGED_USER
-        }),
-        isAdmin() {
-            return this.user.role === 'admin';
-        }
-    }
+    mixins: [rolemixin]
 }
 </script>
 
