@@ -19,5 +19,18 @@ export default {
             API_PREFIX + '/' + orderId
         );
         return response?.data?.data;
+    },
+    async fetchAllOrders() {
+        const response = await requestInternalService.get(
+            API_PREFIX
+        );
+        return response?.data?.data;
+    },
+    async updateStatus(orderId, status) {
+        const response = await requestInternalService.put(
+            API_PREFIX + '/' + orderId + '/status',
+            status
+        );
+        return response?.data?.data;
     }
 };
