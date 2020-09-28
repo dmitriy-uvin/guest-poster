@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Constants;
 
-class UserRoles
+final class UserRoles
 {
     public const USER = 'user';
     public const MODERATOR = 'moderator';
