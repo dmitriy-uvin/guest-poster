@@ -52,31 +52,13 @@ export const topicMapper = Topic => ({
     name: Topic.name
 });
 
-export const platformAPIMapper = PlatformData => ({
-    websiteUrl: PlatformData.websiteUrl,
-    doFollowActive: PlatformData.dofollow_active,
-    freeHomeFeaturedActive: PlatformData.free_home_featured_active,
-    nicheEditLinkActive: PlatformData.niche_edit_link_active,
-    articleWritingPrice: PlatformData.article_writing_price,
-    nicheEditLinkPrice: PlatformData.niche_edit_link_price,
-    topics: PlatformData.topics,
-    contacts: PlatformData.contacts,
-    price: PlatformData.price,
-    email: PlatformData.email,
-    comment: PlatformData.comment,
-    moz: {
-        da: PlatformData.moz.da,
-        pa: PlatformData.moz.pa,
-        links_in: PlatformData.moz.links_in,
-        mozrank: PlatformData.moz.mozrank
-    },
-    alexa: {
-
-    },
-    semrush: {
-
-    },
-    majestic: {
-
-    }
+export const orderMapper = Order => ({
+    id: Order.id,
+    type: Order.type,
+    status: Order.order_status,
+    comment: Order.comment,
+    userId: Order.user_id,
+    createdAt: Order.created_at,
+    totalPrice: Order.total_price,
+    items: Order.items.map(item => platformMapper(item[0]))
 });
