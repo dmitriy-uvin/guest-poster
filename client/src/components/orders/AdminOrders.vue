@@ -63,6 +63,7 @@
                         <VBtn
                             color="#ebf3ff"
                             depressed
+                            @click="onOrderDetails"
                         >
                             <span style="color: #5295f0">DETAILS</span>
                         </VBtn>
@@ -101,7 +102,12 @@
 
 <script>
 export default {
-    name: 'AdminOrders'
+    name: 'AdminOrders',
+    methods: {
+        onOrderDetails(orderId) {
+            this.$router.push({ path: '/orders/' + orderId + '/details' });
+        }
+    }
 }
 </script>
 

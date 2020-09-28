@@ -1,0 +1,391 @@
+<template>
+    <div class="container">
+        <VBtn depressed @click="backToOrders" color="#eaf3ff" class="mt-6">
+            <VIcon left color="#408bef">mdi-chevron-left</VIcon>
+            <span style="color: #408bef;">BACK TO ORDER LIST</span>
+        </VBtn>
+        <div class="mt-8 row justify-space-between align-center">
+            <div class="left-info">
+                <h1>Request for guest posting</h1>
+                <span>Created: 22 May 2020 | 10:00</span>
+            </div>
+            <div class="right-info">
+                <div class="row">
+                    <div class="price">
+                        <p>Not defined</p>
+                        <span>Price</span>
+                    </div>
+                    <div class="status">
+                        <p>Completed</p>
+                        <span>Status</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="platform-table mt-6 mb-10">
+            <h3>{{ Object.values(platforms).length }} selected platforms:</h3>
+
+            <table class="guest__table mt-6">
+                <thead class="guest__head">
+                <tr>
+                    <th></th>
+                    <th class="guest__col text-left">
+                        #
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('id')"
+                            v-if="sorting === 'id' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('id')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
+                    </th>
+                    <th class="guest__col">
+                        Website
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-if="sorting === 'website_url' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
+                    </th>
+                    <th class="guest__col">
+                        Topic
+                    </th>
+                    <th class="guest__col">
+                        <div class="guest__col-wrap">
+                            DR
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('dr')"
+                                v-if="sorting === 'dr' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('dr')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
+                        </div>
+                    </th>
+                    <th class="guest__col">
+                        <div class="guest__col-wrap">
+                            MA
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('da')"
+                                v-if="sorting === 'da' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('da')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
+                        </div>
+                    </th>
+                    <th class="guest__col">
+                        <div class="guest__col-wrap">
+                            Organic traffic
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('organic_traffic')"
+                                v-if="sorting === 'organic_traffic' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('organic_traffic')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
+                        </div>
+                    </th>
+                    <th class="guest__col">
+                        Features
+                    </th>
+                    <th class="guest__col">
+                        <div class="guest__col-wrap">
+                            Editorial fee
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('price')"
+                                v-if="sorting === 'price' && direction === 'desc'"
+                            >
+                                mdi-chevron-down
+                            </VIcon>
+                            <VIcon
+                                right
+                                @click="changeSortingAndDirection('price')"
+                                v-else
+                            >
+                                mdi-chevron-up
+                            </VIcon>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(platform, id) in platforms" :key="id">
+                    <td></td>
+                    <td>{{ platform.id }}</td>
+                    <td>
+                        <div class="guest__col-wrap">
+                            {{ platform.websiteUrl }}
+                            <a href="#" class="guest__web">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" xmlns:v="https://vecta.io/nano"><path d="M7.333 0v1.333h2.393L3.173 7.887l.94.94 6.553-6.553v2.393H12V0H7.333zm3.333 10.667H1.333V1.333H6V0H1.333C.98 0 .64.14.39.39S0 .98 0 1.333v9.333c0 .354.14.693.39.943s.59.4.943.4h9.333c.354 0 .693-.14.943-.4s.4-.59.4-.943V6h-1.333v4.667z" fill="#bdbdbd"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <VChip v-for="(topic, id) in platform.topics" :key="id">
+                            {{ topic.name }}
+                        </VChip>
+                    </td>
+                    <td>
+                        {{ platform.dr }}
+                    </td>
+                    <td>
+                        {{ platform.da }}
+                    </td>
+                    <td>
+                        {{ platform.organicTraffic }}
+                    </td>
+                    <td>
+                        <ul style="list-style: none" class="pl-0">
+                            <li
+                                :class="{
+                            'available' : platform.doFollowActive,
+                            'not-available': !platform.doFollowActive}
+                            "
+                            >
+                                Do Follow
+                            </li>
+                            <li
+                                :class="{
+                            'available' : platform.freeHomeFeaturedActive,
+                            'not-available': !platform.freeHomeFeaturedActive}
+                            "
+                            >
+                                Free Home Featured
+                            </li>
+                            <li
+                                :class="{
+                            'available' : platform.nicheEditLinkActive,
+                            'not-available': !platform.nicheEditLinkActive}
+                            "
+                            >
+                                Niche Edit Link
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                                                <span class="guest__price">
+                                                    {{ platform.price }} $
+                                                </span>
+                        <span class="guest__wrap mb-1 d-block">
+                                                    <span>
+                                                        Article writing:
+                                                    </span>
+                                                    <span v-if="platform.articleWritingPrice > 0" class="text-orange">
+                                                        + {{ platform.articleWritingPrice.toFixed(2) }} $
+                                                    </span>
+                                                    <span v-else class="text-green">
+                                                        - {{ Math.abs(platform.articleWritingPrice).toFixed(2) }} $
+                                                    </span>
+                                                </span>
+                        <span class="guest__wrap" v-if="platform.nicheEditLinkActive">
+                                                    <span>
+                                                        Existing article:
+                                                    </span>
+                                                    <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">
+                                                        + {{ platform.nicheEditLinkPrice.toFixed(2) }} $
+                                                    </span>
+                                                    <span v-else class="text-green">
+                                                        - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $
+                                                    </span>
+                                                </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <VCol cols="12">
+            <h3 class="mb-3">From: </h3>
+            <VRow>
+                <VCol cols="12" md="1" class="mr-10">
+                    <VRow>
+                        <span style="color: #bbbbbb"></span>
+                        <div class="mx-4">
+                            <VIcon color="#bbbbbb">mdi-account</VIcon>
+                        </div>
+                        <div>
+                            <p class="mb-0">Dmitriy Uvin</p>
+                            <span class="name">Name</span>
+                        </div>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="1" class="mr-10">
+                    <VRow>
+                        <span style="color: #bbbbbb"></span>
+                        <div class="mx-4">
+                            <VIcon>mdi-skype</VIcon>
+                        </div>
+                        <div>
+                            <p class="mb-0">dmitriyuvin</p>
+                            <span class="skype">Skype</span>
+                        </div>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="2">
+                    <VRow>
+                        <span style="color: #bbbbbb"></span>
+                        <div class="mx-4">
+                            <VIcon>mdi-email</VIcon>
+                        </div>
+                        <div>
+                            <p class="mb-0">dmitriyuvin@gmail.com</p>
+                            <span class="email">Email</span>
+                        </div>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="2">
+                    <VRow>
+                        <span style="color: #bbbbbb"></span>
+                        <div class="mx-4">
+                            <VIcon>mdi-web</VIcon>
+                        </div>
+                        <div>
+                            <p class="mb-0">
+                                <a href="" target="_blank">dmitriyuvin.com</a>
+                            </p>
+                            <span class="website">Website</span>
+                        </div>
+                    </VRow>
+                </VCol>
+            </VRow>
+        </VCol>
+        <VCol cols="12" md="4">
+            <h3 class="mb-6">Commentary: </h3>
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+            </p>
+        </VCol>
+        <VBtn depressed @click="backToOrders" color="#eaf3ff" class="mt-6">
+            <VIcon left color="#408bef">mdi-chevron-left</VIcon>
+            <span style="color: #408bef;">BACK TO ORDER LIST</span>
+        </VBtn>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'AdminOrderDetails',
+    data: () => ({
+        orderId: '',
+        platforms: [
+            {
+                id: 1,
+                websiteUrl: 'google.com',
+                topics: [
+                    {
+                        name: 'Health',
+                    },
+                    {
+                        name: 'General',
+                    },
+                    {
+                        name: 'Engine'
+                    }
+                ],
+                dr: 5,
+                da: 5,
+                organicTraffic: 12345,
+                doFollowActive: true,
+                freeHomeFeaturedActive: true,
+                nicheEditLinkActive: false,
+                price: 12.34,
+                articleWritingPrice: 12,
+
+            }
+        ]
+    }),
+    methods: {
+        backToOrders() {
+            this.$router.push({ name: 'Orders' });
+        }
+    },
+    async mounted() {
+        this.orderId = this.$route.params.id;
+    }
+}
+</script>
+
+<style scoped>
+@import "../../assets/styles/main.css";
+th, td {
+    text-align: left;
+}
+.guest__table {
+    width: 100%;
+}
+.right-info span {
+    font-size: 14px;
+}
+.price p {
+    font-weight: bold;
+    font-size: 21px;
+    color: #000;
+    margin-bottom: 0;
+}
+.status p {
+    font-weight: bold;
+    font-size: 21px;
+    color: #009c00;
+    margin-bottom: 0;
+}
+.right-info {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 20px 30px;
+}
+.right-info .price,
+.right-info .status {
+    padding: 0 10px;
+}
+.right-info .price {
+    border-right: 1px solid lightgray;
+    padding-right: 20px;
+}
+.right-info .status {
+    padding-left: 20px;
+}
+.name,
+.skype,
+.email,
+.website {
+    font-size: 12px;
+}
+</style>
