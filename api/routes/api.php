@@ -56,4 +56,11 @@ Route::group([
         Route::get('/users/me', [\App\Http\Controllers\Api\OrderController::class, 'getOrdersForAuthorizedUser']);
     });
     Route::get('/{id}', [\App\Http\Controllers\Api\OrderController::class, 'getOrderById']);
+
+    Route::group([
+        'middleware' => 'admin'
+    ], function () {
+        Route::get('/', [\App\Http\Controllers\Api\OrderController::class, 'getAllOrders']);
+        Route::put('/{id}/status', [\App\Http\Controllers\Api\OrderController::class, 'changeStatus']);
+    });
 });
