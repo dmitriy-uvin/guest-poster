@@ -85,6 +85,7 @@
                             outlined
                             placeholder="Your Comment"
                             rows="3"
+                            v-model="order_comment"
                         >
                         </VTextarea>
                     </div>
@@ -413,7 +414,7 @@
                             color="primary"
                             depressed
                             large
-                            @click="checkListDialog = false"
+                            @click="checkListDialog = false; orderFormDialog = true"
                         >
                             <span style="text-transform: none">Send request</span>
                             <VIcon right>mdi-arrow-right</VIcon>
@@ -428,8 +429,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
+import { GUEST_POSTING_TYPE } from '@/services/types/orderTypes';
+import orderService from '@/services/order/orderService';
+import notificationMixin from '@/mixins/notificationMixin';
+
 export default {
     name: 'SendRequestFooter',
+    mixins: [notificationMixin],
     props: {
         chosenPlatformsIds: {
             required: true
@@ -439,6 +445,7 @@ export default {
         dialogResult: false,
         checkListDialog: false,
         orderFormDialog: false,
+        order_comment: '',
         platforms: [
             {
                 id: 1,
@@ -471,9 +478,21 @@ export default {
             this.$emit('unselected');
         },
         async onSendRequest() {
-            this.dialogResult = true;
-            this.$emit('request-created');
-            this.orderFormDialog = false;
+            try {
+                await orderService.createOrderRequest({
+                    type: GUEST_POSTING_TYPE,
+                    platform_ids: this.chosenPlatformsIds,
+                    comment: this.order_comment
+                });
+                this.$emit('request-created');
+                this.dialogResult = true;
+                this.orderFormDialog = false;
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
         },
         onOrderList() {
             this.dialogResult = false;
