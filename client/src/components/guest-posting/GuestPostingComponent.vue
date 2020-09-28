@@ -8,9 +8,9 @@
         <VSpacer></VSpacer>
         <table class="guest__table">
             <thead class="guest__head">
-            <tr style="border-bottom: 1px solid #000">
+            <tr>
                 <th class="guest__col">
-                    <VCheckbox @click="selectAll"></VCheckbox>
+                    <VCheckbox @click="selectAll" :value="chosenPlatformsIds.length === perPage"></VCheckbox>
                 </th>
                 <th class="guest__col">
                     #
@@ -288,19 +288,20 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
-import * as userGetters from '@/store/modules/user/types/getters';
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
+import rolemixin from '@/mixins/rolemixin';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
         SendRequestFooter
     },
+    mixins: [rolemixin],
     data: () => ({
         chosen: {},
         selectedAll: false,
         page: 1,
-        perPage: 10,
+        perPage: 5,
         sorting: null,
         direction: null,
         currentPage: 1,
@@ -456,12 +457,6 @@ export default {
         ...mapGetters('platforms', {
             platforms: getters.GET_PLATFORMS
         }),
-        ...mapGetters('user', {
-            user: userGetters.GET_LOGGED_USER
-        }),
-        isAdmin() {
-            return this.user.role === 'admin';
-        },
         chosenPlatformsIds() {
             return Object.keys(this.chosen).filter(id => this.chosen[id]);
         }
@@ -477,15 +472,10 @@ export default {
     bottom: 25px;
     right: 25px;
 }
-.guest__table {
-    width: 100%;
-}
 .v-chip {
     height: 24px;
 }
-.guest__table tr {
-    border: 1px solid #000;
-}
+
 .v-application--is-ltr .v-input--selection-controls__input {
     margin-right: 0;
 }

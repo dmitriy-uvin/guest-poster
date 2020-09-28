@@ -19,9 +19,7 @@
                         <span class="black--text">
                             You had selected {{ chosenPlatformsCounter }} platforms
                         </span>
-                        <RouterLink :to="{ name: 'OrderRequestCheckList' }">
-                            Check List
-                        </RouterLink>
+                        <span class="check-list" @click="$emit('on-check-list')">Check List</span>
                     </div>
                 </div>
                 <div class="form mt-5">
@@ -120,7 +118,7 @@ export default {
     computed: {
         ...mapGetters('user', {
             user: getters.GET_LOGGED_USER
-        })
+        }),
     }
 }
 </script>
@@ -130,5 +128,11 @@ export default {
     background: #f5f5f5;
     padding: 15px;
     border-radius: 5px;
+}
+.check-list {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #5b9bf0;
+    font-weight: bold;
 }
 </style>
