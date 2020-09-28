@@ -2,7 +2,6 @@
     <div class="container">
         <h1 class="mt-6">My Orders</h1>
         <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-
         <table>
             <thead>
                 <tr>
@@ -16,82 +15,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>3 platforms</td>
+                <tr v-for="order in orders" :key="order.id">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.type }}</td>
+                    <td>
+                        {{ createdAt(order.createdAt) }}
+                    </td>
+                    <td>{{ order.items.length }} platforms</td>
                     <td class="price">
-                        <span>53,00 $</span>
+                        <span>{{ totalPrice(order.totalPrice) }} $</span>
                     </td>
                     <td class="status">
-                        <span style="color: #e50005">Cancelled</span>
+                        <span style="color: #e50005" v-if="order.status === 'Canceled'">
+                            {{ order.status }}
+                        </span>
+                        <span style="color: #003acd" v-else-if="order.status === 'New'">
+                            {{ order.status }}
+                        </span>
+                        <span style="color: #009c00" v-else-if="order.status === 'Completed'">
+                            {{ order.status }}
+                        </span>
+                        <span style="color: #000" v-else>{{ order.status }}</span>
                     </td>
                     <td>
                         <VBtn
                             color="#ebf3ff"
                             depressed
-                            @click="onDetails(1)"
-                        >
-                            <span style="color: #5295f0">DETAILS</span>
-                        </VBtn>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>3 platforms</td>
-                    <td class="price">
-                        <span>53,00 $</span>
-                    </td>
-                    <td class="status">
-                        <span style="color: #003acd">New</span>
-                    </td>
-                    <td>
-                        <VBtn
-                            color="#ebf3ff"
-                            depressed
-                        >
-                            <span style="color: #5295f0">DETAILS</span>
-                        </VBtn>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>3 platforms</td>
-                    <td class="price">
-                        <span>53,00 $</span>
-                    </td>
-                    <td class="status">
-                        <span style="color: #009c00">Completed</span>
-                    </td>
-                    <td>
-                        <VBtn
-                            color="#ebf3ff"
-                            depressed
-                        >
-                            <span style="color: #5295f0">DETAILS</span>
-                        </VBtn>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Guest Posting</td>
-                    <td>22 May 2020 | 12:45</td>
-                    <td>3 platforms</td>
-                    <td class="price">
-                        <span>53,00 $</span>
-                    </td>
-                    <td class="status">
-                        <span style="color: #000000">In process</span>
-                    </td>
-                    <td>
-                        <VBtn
-                            color="#ebf3ff"
-                            depressed
+                            @click="onDetails(order.id)"
                         >
                             <span style="color: #5295f0">DETAILS</span>
                         </VBtn>
@@ -103,12 +53,28 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import * as getters from '@/store/modules/order/types/getters';
+import * as actions from '@/store/modules/order/types/actions';
+import valueFormatMixin from '@/mixins/valueFormatMixin';
 export default {
     name: 'UserOrders',
+    mixins: [valueFormatMixin],
     methods: {
         onDetails(orderId) {
             this.$router.push({ path: '/orders/' + orderId + '/details' });
-        }
+        },
+        ...mapActions('order', {
+            fetchOrdersByAuthUser: actions.FETCH_ORDERS_BY_AUTH_USER
+        })
+    },
+    async mounted() {
+        await this.fetchOrdersByAuthUser();
+    },
+    computed: {
+        ...mapGetters('order', {
+            orders: getters.GET_ORDERS_BY_AUTH_USER
+        }),
     }
 }
 </script>
