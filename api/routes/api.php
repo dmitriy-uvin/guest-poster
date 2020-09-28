@@ -45,3 +45,14 @@ Route::group([
     Route::get('/moz-alexa-sr', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMozAlexaSr']);
     Route::get('/majestic', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMajestic']);
 });
+
+Route::group([
+    'prefix' => 'orders'
+], function () {
+    Route::group([
+        'middleware' => 'user'
+    ], function () {
+        Route::post('/', [\App\Http\Controllers\Api\OrderController::class, 'createOrder']);
+        Route::get('/users/me', [\App\Http\Controllers\Api\OrderController::class, 'getOrdersForAuthorizedUser']);
+    });
+});
