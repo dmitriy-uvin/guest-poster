@@ -95,13 +95,13 @@ final class AddPlatformRequest
         $this->majesticCF = (int)$majestic['cf'];
 
         // TODO: Must be tested and fixed if needed
-        $this->ahrefsStatus = $ahrefs['status'];
-        $this->ahrefsRank = (float)$ahrefs['rank'];
-        $this->ahrefsDr = (float)$ahrefs['dr'];
-        $this->ahrefsEb = (int)$ahrefs['eb'];
-        $this->ahrefsRd = (int)$ahrefs['rd'];
-        $this->ahrefsDofollow = (int)$ahrefs['dofollow'];
-        $this->ahrefsIps = (int)$ahrefs['ips'];
+        $this->ahrefsStatus = $ahrefs ? $ahrefs['status'] : null;
+        $this->ahrefsRank = $ahrefs ? (float)$ahrefs['rank'] : null;
+        $this->ahrefsDr = $ahrefs ? (float)$ahrefs['dr'] : null;
+        $this->ahrefsEb = $ahrefs ? (int)$ahrefs['eb'] : null;
+        $this->ahrefsRd = $ahrefs ? (int)$ahrefs['rd'] : null;
+        $this->ahrefsDofollow = $ahrefs ? (int)$ahrefs['dofollow'] : null;
+        $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
     public function getAhrefsStatus()
