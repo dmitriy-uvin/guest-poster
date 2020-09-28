@@ -6,8 +6,8 @@ namespace App\Models\Constants;
 
 final class OrderStatus
 {
-    public const NEW = 'new';
-    public const IN_PROCESS = 'in_process';
-    public const CANCELED = 'canceled';
-    public const COMPLETED = 'completed';
+    public const NEW = 'New';
+    public const IN_PROCESS = 'In process';
+    public const CANCELED = 'Canceled';
+    public const COMPLETED = 'Completed';
 }

@@ -55,4 +55,5 @@ Route::group([
         Route::post('/', [\App\Http\Controllers\Api\OrderController::class, 'createOrder']);
         Route::get('/users/me', [\App\Http\Controllers\Api\OrderController::class, 'getOrdersForAuthorizedUser']);
     });
+    Route::get('/{id}', [\App\Http\Controllers\Api\OrderController::class, 'getOrderById']);
 });
