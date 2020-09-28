@@ -52,12 +52,20 @@ export const topicMapper = Topic => ({
     name: Topic.name
 });
 
+export const userMapper = User => ({
+    id: User.id,
+    name: User.name,
+    email: User.email,
+    skype: User.skype,
+    website: User.website
+});
+
 export const orderMapper = Order => ({
     id: Order.id,
     type: Order.type,
     status: Order.order_status,
     comment: Order.comment,
-    userId: Order.user_id,
+    user: userMapper(Order.user),
     createdAt: Order.created_at,
     totalPrice: Order.total_price,
     items: Order.items.map(item => platformMapper(item[0]))
