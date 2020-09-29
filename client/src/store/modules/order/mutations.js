@@ -3,16 +3,6 @@ import { orderMapper } from '@/services/normalizer/Normalizer';
 
 export default {
     [mutations.SET_ORDERS]: (state, orders) => {
-        // state.orders = {
-        //     ...state.orders,
-        //     ...orders.reduce(
-        //         (prev, order) => ({
-        //             ...prev,
-        //             [order.id]: orderMapper(order)
-        //         }),
-        //         {}
-        //     )
-        // };
         state.orders = orders.map(orderMapper);
     },
     [mutations.SET_ORDER_BY_ID]: (state, orderById) => {
@@ -22,8 +12,9 @@ export default {
         orderId,
         status
     }) => {
-        const orders = { ...state.orders };
-        orders[orderId].status = status;
+        const index = state.orders.findIndex(order => order.id === orderId);
+        const orders = [...state.orders];
+        orders[index].status = status;
         state.orders = orders;
     }
 };

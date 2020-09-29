@@ -7,8 +7,8 @@ export default {
         const orders = await orderService.fetchOrdersByAuthUser();
         commit(mutations.SET_ORDERS, orders);
     },
-    [actions.FETCH_ORDER_BY_ID]: async ({ commit }, id) => {
-        const order = await orderService.fetchOrderById(id);
+    [actions.FETCH_ORDER_BY_ID]: async ({ commit }, data) => {
+        const order = await orderService.fetchOrderById(data);
         commit(mutations.SET_ORDER_BY_ID, order);
     },
     [actions.FETCH_ALL_ORDERS]: async ({ commit }) => {

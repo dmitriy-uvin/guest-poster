@@ -14,9 +14,10 @@ export default {
         );
         return response?.data?.data;
     },
-    async fetchOrderById(orderId) {
+    async fetchOrderById(data) {
         const response = await requestInternalService.get(
-            API_PREFIX + '/' + orderId
+            API_PREFIX + '/' + data.orderId,
+            { sorting: data.sorting, direction: data.direction }
         );
         return response?.data?.data;
     },
