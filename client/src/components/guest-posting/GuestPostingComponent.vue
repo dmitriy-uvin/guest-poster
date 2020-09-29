@@ -315,7 +315,7 @@ export default {
     methods: {
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
-            this.direction  = this.direction === 'desc' ? 'asc' : 'desc';
+            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
             await this.fetchPlatforms({
                 page: this.page,
                 perPage: this.perPage,

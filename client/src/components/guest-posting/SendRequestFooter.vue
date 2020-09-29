@@ -182,37 +182,9 @@
                                 </th>
                                 <th class="guest__col">
                                     #
-                                    <VIcon
-                                        right
-                                        @click="changeSortingAndDirection('id')"
-                                        v-if="sorting === 'id' && direction === 'desc'"
-                                    >
-                                        mdi-chevron-down
-                                    </VIcon>
-                                    <VIcon
-                                        right
-                                        @click="changeSortingAndDirection('id')"
-                                        v-else
-                                    >
-                                        mdi-chevron-up
-                                    </VIcon>
                                 </th>
                                 <th class="guest__col">
                                     Website
-                                    <VIcon
-                                        right
-                                        @click="changeSortingAndDirection('website_url')"
-                                        v-if="sorting === 'website_url' && direction === 'desc'"
-                                    >
-                                        mdi-chevron-down
-                                    </VIcon>
-                                    <VIcon
-                                        right
-                                        @click="changeSortingAndDirection('website_url')"
-                                        v-else
-                                    >
-                                        mdi-chevron-up
-                                    </VIcon>
                                 </th>
                                 <th class="guest__col">
                                     Topic
@@ -220,58 +192,16 @@
                                 <th class="guest__col">
                                     <div class="guest__col-wrap">
                                         DR
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('dr')"
-                                            v-if="sorting === 'dr' && direction === 'desc'"
-                                        >
-                                            mdi-chevron-down
-                                        </VIcon>
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('dr')"
-                                            v-else
-                                        >
-                                            mdi-chevron-up
-                                        </VIcon>
                                     </div>
                                 </th>
                                 <th class="guest__col">
                                     <div class="guest__col-wrap">
                                         MA
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('da')"
-                                            v-if="sorting === 'da' && direction === 'desc'"
-                                        >
-                                            mdi-chevron-down
-                                        </VIcon>
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('da')"
-                                            v-else
-                                        >
-                                            mdi-chevron-up
-                                        </VIcon>
                                     </div>
                                 </th>
                                 <th class="guest__col">
                                     <div class="guest__col-wrap">
                                         Organic traffic
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('organic_traffic')"
-                                            v-if="sorting === 'organic_traffic' && direction === 'desc'"
-                                        >
-                                            mdi-chevron-down
-                                        </VIcon>
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('organic_traffic')"
-                                            v-else
-                                        >
-                                            mdi-chevron-up
-                                        </VIcon>
                                     </div>
                                 </th>
                                 <th class="guest__col">
@@ -280,20 +210,6 @@
                                 <th class="guest__col">
                                     <div class="guest__col-wrap">
                                         Editorial fee
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('price')"
-                                            v-if="sorting === 'price' && direction === 'desc'"
-                                        >
-                                            mdi-chevron-down
-                                        </VIcon>
-                                        <VIcon
-                                            right
-                                            @click="changeSortingAndDirection('price')"
-                                            v-else
-                                        >
-                                            mdi-chevron-up
-                                        </VIcon>
                                     </div>
                                 </th>
                             </tr>
