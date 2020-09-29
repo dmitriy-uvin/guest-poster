@@ -15,4 +15,5 @@ interface OrderRepositoryInterface
     public function delete(Order $order): void;
     public function getAll(): Collection;
     public function findByCriteria(EloquentCriterion ...$criteria);
+    public function findOneByCriteria(EloquentCriterion ...$criteria): ?Order;
 }
