@@ -30,4 +30,13 @@ final class OrderItemPresenter
             $this->platformPresenter->present($orderItem->platform)
         ];
     }
+
+    public function presentArray(array $orderItems)
+    {
+        $result = [];
+        foreach ($orderItems as $orderItem) {
+            $result[] = $this->present(OrderItem::find($orderItem['id']));
+        }
+        return $result;
+    }
 }
