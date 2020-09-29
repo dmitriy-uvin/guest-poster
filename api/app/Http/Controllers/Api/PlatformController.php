@@ -66,6 +66,7 @@ final class PlatformController extends ApiController
                 (int)$request->query('perPage'),
                 $request->query('sorting'),
                 $request->query('direction'),
+                json_decode($request->query('filter'), true)
             )
         );
 
