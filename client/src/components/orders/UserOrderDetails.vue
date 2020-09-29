@@ -27,7 +27,6 @@
         </div>
         <div class="platform-table mt-6 mb-10">
             <h3>{{ order.items.length }} selected platforms:</h3>
-
             <table class="guest__table mt-6">
                 <thead class="guest__head">
                 <tr>
@@ -247,33 +246,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import * as actions from '@/store/modules/order/types/actions';
-import * as getters from '@/store/modules/order/types/getters';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
+import sortOrderDetailsMixin from '@/mixins/sortOrderDetailsMixin';
 export default {
     name: 'UserOrderDetails',
-    mixins: [valueFormatMixin],
-    data: () => ({
-        orderId: ''
-    }),
+    mixins: [valueFormatMixin, sortOrderDetailsMixin],
     methods: {
         backToOrders() {
             this.$router.push({ name: 'Orders' });
         },
-        ...mapActions('order', {
-            fetchOrderById: actions.FETCH_ORDER_BY_ID
-        })
     },
-    computed: {
-        ...mapGetters('order', {
-            order: getters.GET_ORDER_BY_ID
-        }),
-    },
-    async mounted() {
-        this.orderId = this.$route.params.id;
-        await this.fetchOrderById(this.orderId);
-    }
 }
 </script>
 

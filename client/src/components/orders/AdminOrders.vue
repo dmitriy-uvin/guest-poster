@@ -69,6 +69,8 @@ export default {
         }),
         async onChangeStatus(orderId, orderStatus) {
             try {
+                // console.log(orderId);
+                // console.log(orderStatus);
                 await this.updateStatus({
                     orderId: orderId,
                     status: orderStatus
