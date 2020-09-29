@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Action\Platform\AddPlatformAction;
@@ -11,7 +13,7 @@ use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
 use Illuminate\Http\Request;
 
-class PlatformController extends ApiController
+final class PlatformController extends ApiController
 {
     private PlatformPresenter $platformPresenter;
     private AddPlatformAction $addPlatformAction;
