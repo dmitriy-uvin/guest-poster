@@ -1,9 +1,351 @@
 <template>
     <div class="container">
-        <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
-        <h1 v-else>Guest Posting</h1>
+        <div class="row justify-space-between align-center">
+            <div class="left">
+                <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
+                <h1 v-else>Guest Posting</h1>
+                <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+            </div>
+            <div class="right">
+                <VBtn color="primary" outlined depressed @click="openFilters" v-if="!filtersOpened">
+                    <VIcon left>mdi-filter</VIcon>
+                    Filters
+                </VBtn>
+                <VBtn color="gray" outlined depressed @click="openFilters" v-else>
+                    <VIcon left>mdi-filter</VIcon>
+                    Hide Filters
+                </VBtn>
+            </div>
+        </div>
 
-        <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+        <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
+            <VRow class="">
+                <VCol cols="12" md="5" class="">
+                    <VSelect
+                        multiple
+                        small-chips
+                        deletable-chips
+                        :items="[1, 2, 3, 4]"
+                        outlined
+                        dense
+                        label="Topics"
+                        v-model="filter.topics"
+                    >
+                    </VSelect>
+                </VCol>
+                <VCol cols="12" md="7" class="text-right">
+                    <VBtn
+                        color="primary"
+                        outlined
+                        :disabled="!filter.topics.length"
+                        @click="filter.topics = []"
+                    >
+                        <VIcon left>mdi-close</VIcon>
+                        Clear Topics
+                    </VBtn>
+                </VCol>
+            </VRow>
+
+            <h4>MOZ</h4>
+            <VRow>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">DA</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined
+                                dense hide-details
+                                v-model="filter.moz.da_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To" outlined
+                                dense hide-details
+                                v-model="filter.moz.da_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">PA</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From"
+                                        outlined dense hide-details
+                                        v-model="filter.moz.pa_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.pa_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">MozRank</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.moz.rank_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.rank_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Links In</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.moz.links_in_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.links_in_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+            <VDivider></VDivider>
+
+            <h4 class="mt-3">Alexa</h4>
+            <VRow>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Rank</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined dense
+                                hide-details
+                                v-model="filter.alexa.rank_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.alexa.rank_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Country</span>
+                    <VRow>
+                        <VCol>
+                            <VSelect
+                                outlined dense
+                                hide-details
+                                :items="Object.keys(countries)"
+                                v-model="filter.alexa.country"
+                            ></VSelect>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+            <VDivider></VDivider>
+
+            <h4 class="mt-3">SemRush</h4>
+            <VRow>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Rank</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.rank_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.rank_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Keyword Num</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.keyword_num_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.keyword_num_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Traffic</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.traffic_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.traffic_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Traffic Costs</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.traffic_costs_from">
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.traffic_costs_to">
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+            <VDivider></VDivider>
+
+            <h4 class="mt-3">Majestic</h4>
+            <VRow>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">External Backlinks</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.external_backlinks_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.external_backlinks_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">External Gov</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From"
+                                outlined
+                                dense hide-details
+                                v-model="filter.majestic.external_gov_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.external_gov_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">External Edu</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.external_edu_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.external_edu_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">TF</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.tf_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.tf_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">CF</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.cf_from"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To"
+                                outlined dense
+                                hide-details
+                                v-model="filter.majestic.cf_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+
+            <VRow>
+                <VCol cols="12" md="3">
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VBtn color="primary" large depressed block @click="applyFilters">
+                                <span class="not-uppercase">Apply</span>
+                            </VBtn>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VBtn color="gray" large depressed block @click="clearAllFilters">
+                                <span class="not-uppercase">Clear All</span>
+                            </VBtn>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+        </VCol>
         <VDivider></VDivider>
         <VSpacer></VSpacer>
         <table class="guest__table">
@@ -291,13 +633,15 @@ import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
+import filterMixin from '@/mixins/filterMixin';
+import { countries } from "@/helpers/countries";
 
 export default {
     name: 'GuestPostingComponent',
     components: {
         SendRequestFooter
     },
-    mixins: [rolemixin],
+    mixins: [rolemixin, filterMixin],
     data: () => ({
         chosen: {},
         selectedAll: false,
@@ -310,17 +654,27 @@ export default {
         total: 1,
         pages: [],
         firstPages: [],
-        lastPages: []
+        lastPages: [],
     }),
     methods: {
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
             this.direction = this.direction === 'desc' ? 'asc' : 'desc';
-            await this.fetchPlatforms({
+            await this.loadPlatforms();
+        },
+        async loadPlatforms() {
+            return await this.fetchPlatforms({
                 page: this.page,
                 perPage: this.perPage,
                 sorting: this.sorting,
                 direction: this.direction,
+                filter: {
+                    ...this.filter,
+                    alexa: {
+                        ...this.filter.alexa,
+                        country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
+                    }
+                }
             });
         },
         onSelectPerPage(value) {
@@ -369,15 +723,34 @@ export default {
         },
         onPlatformRemoved(platformId) {
             this.chosen[platformId] = false;
-        }
+        },
+        async applyFilters() {
+            this.page = 1;
+            this.filtersOpened = false;
+            const response = await this.loadPlatforms();
+            this.pages = [];
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            for (let page = 1; page <= this.lastPage; page++) {
+                this.pages.push(page);
+            }
+            if (this.pages.length > 4) {
+                this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                }
+            } else {
+                this.firstPages = this.pages;
+                this.lastPages = [];
+            }
+            this.platforms.map(platform => {
+                this.chosen[platform.id] = null;
+            });
+        },
     },
     async mounted() {
-        const response = await this.fetchPlatforms({
-            page: this.page,
-            perPage: this.perPage,
-            sorting: this.sorting,
-            direction: this.direction,
-        });
+        const response = await this.loadPlatforms();
         this.currentPage = response.current_page;
         this.lastPage = response.last_page;
         this.total = response.total;
@@ -399,12 +772,7 @@ export default {
     },
     watch: {
         async page() {
-            await this.fetchPlatforms({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-            });
+            await this.loadPlatforms();
             this.pages = [];
             for (let page = 1; page <= this.lastPage; page++) {
                 this.pages.push(page);
@@ -427,12 +795,7 @@ export default {
         },
         async perPage() {
             this.page = 1;
-            const response = await this.fetchPlatforms({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-            });
+            const response = await this.loadPlatforms();
             this.currentPage = response.current_page;
             this.lastPage = response.last_page;
             this.total = response.total;
@@ -507,5 +870,13 @@ export default {
         0px 4px 5px 5px rgba(0, 0, 0, 0.14),
         0px 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
+}
+.filters {
+    border-radius: 10px;
+    border: 2px solid #2f80ed;
+    padding-left: 30px;
+}
+.not-uppercase {
+    text-transform: none;
 }
 </style>
