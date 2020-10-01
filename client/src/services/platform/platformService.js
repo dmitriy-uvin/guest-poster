@@ -11,6 +11,10 @@ const platformService = {
         const response = await requestInternalService.get(API_PREFIX, params);
         return response?.data;
     },
+    async fetchTopics() {
+        const response = await requestInternalService.get('/topics');
+        return response?.data?.data;
+    }
 };
 
 export default platformService;

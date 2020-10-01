@@ -2,7 +2,7 @@ export const platformMapper = Platform => ({
     id: Platform.id,
     websiteUrl: Platform.website_url,
     dr: Platform.dr,
-    da: Platform.da,
+    ma: Platform.ma,
     organicTraffic: Platform.organic_traffic,
     doFollowActive: Platform.dofollow_active,
     freeHomeFeaturedActive: Platform.free_home_featured_active,
