@@ -581,14 +581,14 @@
                         MA
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('da')"
-                            v-if="sorting === 'da' && direction === 'desc'"
+                            @click="changeSortingAndDirection('ma')"
+                            v-if="sorting === 'ma' && direction === 'desc'"
                         >
                             mdi-chevron-down
                         </VIcon>
                         <VIcon
                             right
-                            @click="changeSortingAndDirection('da')"
+                            @click="changeSortingAndDirection('ma')"
                             v-else
                         >
                             mdi-chevron-up

@@ -162,7 +162,12 @@
                         </div>
                     </td>
                     <td>
-                        <VChip v-for="(topic, id) in platform.topics" :key="id">
+                        <VChip
+                                v-for="(topic, id) in platform.topics"
+                                :key="id"
+                                class="mr-1 mb-1"
+                                small
+                        >
                             {{ topic.name }}
                         </VChip>
                     </td>
@@ -170,7 +175,7 @@
                         {{ platform.dr }}
                     </td>
                     <td>
-                        {{ platform.da }}
+                        {{ platform.ma }}
                     </td>
                     <td>
                         {{ platform.organicTraffic }}
