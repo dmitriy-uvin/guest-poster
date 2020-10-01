@@ -31,6 +31,9 @@ Route::group([
     Route::post('/reset-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'resetPassword']);
 });
 
+Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTopicCollection'])
+    ->middleware('auth');
+
 Route::group([
     'prefix' => 'platforms',
 ], function () {

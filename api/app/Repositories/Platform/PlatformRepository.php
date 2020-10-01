@@ -32,11 +32,11 @@ final class PlatformRepository implements PlatformRepositoryInterface
         $platform->delete();
     }
 
-    public function saveTopics(Platform $platform,array $topics): void
+    public function saveTopics(Platform $platform,array $topicsIds): void
     {
         $platform
             ->topics()
-            ->createMany($topics);
+            ->attach($topicsIds);
     }
 
     public function getAll(): Collection
