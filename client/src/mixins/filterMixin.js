@@ -215,6 +215,9 @@ export default {
                         from: this.filter.majestic.cf_from,
                         to: this.filter.majestic.cf_to,
                     },
+                    'Dofollow': this.filter.dofollow,
+                    'Niche Edit Link': this.filter.niche_edit_link,
+                    'Home Featured': this.filter.home_featured
                 };
             }
         },
@@ -295,6 +298,20 @@ export default {
                 case 'Majestic CF':
                     this.filter.majestic.cf_from = this.filter.majestic.cf_to = '';
                     this.filterChips['Majestic CF'].from = this.filterChips['Majestic CF'].to = '';
+                    break;
+                case 'Dofollow':
+                    this.filter.dofollow = this.filterChips['Dofollow'] = 'all';
+                    break;
+                case 'Niche Edit Link':
+                    this.filter.niche_edit_link = this.filterChips['Niche Edit Link'] = 'all';
+                    break;
+                case 'Home Featured':
+                    this.filter.home_featured = this.filterChips['Home Featured'] = 'all';
+                    break;
+                default:
+                    if (value[0] === 'Topics') {
+                        this.filter.topics = this.filter.topics.filter(item => item !== value[1]);
+                    }
                     break;
             }
             await this.applyFilters();
