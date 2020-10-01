@@ -44,7 +44,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
             'id' => $platform->id,
             'website_url' => $platform->website_url,
             'dr' => $platform->dr,
-            'da' => $platform->da,
+            'ma' => $platform->ma,
             'organic_traffic' => $platform->organic_traffic,
             'dofollow_active' => $platform->dofollow_active,
             'free_home_featured_active' => $platform->free_home_featured_active,
