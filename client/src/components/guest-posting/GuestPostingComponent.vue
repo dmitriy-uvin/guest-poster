@@ -20,29 +20,148 @@
 
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="">
-                <VCol cols="12" md="5" class="">
+                <VCol cols="12" md="12" class="">
                     <VSelect
                         multiple
                         small-chips
                         deletable-chips
-                        :items="[1, 2, 3, 4]"
+                        :items="Object.keys(topics)"
                         outlined
                         dense
+                        clearable
                         label="Topics"
                         v-model="filter.topics"
                     >
                     </VSelect>
                 </VCol>
-                <VCol cols="12" md="7" class="text-right">
-                    <VBtn
-                        color="primary"
-                        outlined
-                        :disabled="!filter.topics.length"
-                        @click="filter.topics = []"
-                    >
-                        <VIcon left>mdi-close</VIcon>
-                        Clear Topics
-                    </VBtn>
+<!--                <VCol cols="12" md="3" class="text-right">-->
+<!--                    <VBtn-->
+<!--                        color="primary"-->
+<!--                        outlined-->
+<!--                        :disabled="!filter.topics.length"-->
+<!--                        @click="filter.topics = []"-->
+<!--                    >-->
+<!--                        <VIcon left>mdi-close</VIcon>-->
+<!--                        Clear Topics-->
+<!--                    </VBtn>-->
+<!--                </VCol>-->
+            </VRow>
+
+            <VRow>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Price</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined
+                                dense
+                                v-model="filter.platform.price_from"
+                                :error-messages="priceFromErrors"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To" outlined
+                                dense
+                                v-model="filter.platform.price_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">DR</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined
+                                dense
+                                v-model="filter.platform.dr_from"
+                                :error-messages="drFromErrors"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To" outlined
+                                dense
+                                v-model="filter.platform.dr_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">MA</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined
+                                dense
+                                v-model="filter.platform.ma_from"
+                                :error-messages="maFromErrors"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To" outlined
+                                dense
+                                v-model="filter.platform.ma_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <span class="subtitle-2">Organic Traffic</span>
+                    <VRow>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="From" outlined
+                                dense
+                                v-model="filter.platform.organic_traffic_from"
+                                :error-messages="organicTrafficFromErrors"
+                            >
+                            </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="6">
+                            <VTextField
+                                label="To" outlined
+                                dense
+                                v-model="filter.platform.organic_traffic_to"
+                            >
+                            </VTextField>
+                        </VCol>
+                    </VRow>
+                </VCol>
+            </VRow>
+
+            <VRow>
+                <VCol cols="12" md="3">
+                    <label>Do Follow</label>
+                    <VRadioGroup row class="mt-3" v-model="filter.dofollow">
+                        <VRadio label="Yes" color="green" value="yes"></VRadio>
+                        <VRadio label="No" color="red" value="no"></VRadio>
+                        <VRadio label="All" value="all"></VRadio>
+                    </VRadioGroup>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <label>Niche Edit Link</label>
+                    <VRadioGroup row class="mt-3" v-model="filter.niche_edit_link">
+                        <VRadio label="Yes" color="green" value="yes"></VRadio>
+                        <VRadio label="No" color="red" value="no"></VRadio>
+                        <VRadio label="All" value="all"></VRadio>
+                    </VRadioGroup>
+                </VCol>
+                <VCol cols="12" md="3">
+                    <label>Home Featured</label>
+                    <VRadioGroup row class="mt-3" v-model="filter.home_featured">
+                        <VRadio label="Yes" color="green" value="yes"></VRadio>
+                        <VRadio label="No" color="red" value="no"></VRadio>
+                        <VRadio label="All" value="all"></VRadio>
+                    </VRadioGroup>
                 </VCol>
             </VRow>
 
@@ -54,15 +173,16 @@
                         <VCol cols="12" md="6">
                             <VTextField
                                 label="From" outlined
-                                dense hide-details
+                                dense
                                 v-model="filter.moz.da_from"
+                                :error-messages="mozDaFromErrors"
                             >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
                             <VTextField
                                 label="To" outlined
-                                dense hide-details
+                                dense
                                 v-model="filter.moz.da_to"
                             >
                             </VTextField>
@@ -74,12 +194,15 @@
                     <VRow>
                         <VCol cols="12" md="6">
                             <VTextField label="From"
-                                        outlined dense hide-details
-                                        v-model="filter.moz.pa_from">
+                                        outlined dense
+                                        v-model="filter.moz.pa_from"
+                                        :error-messages="mozPaFromErrors"
+                            >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.pa_to">
+                            <VTextField label="To" outlined dense
+                                        v-model="filter.moz.pa_to">
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -88,11 +211,16 @@
                     <span class="subtitle-2">MozRank</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.moz.rank_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.moz.rank_from"
+                            :error-messages="mozRankFromErrors">
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.rank_to">
+                            <VTextField label="To"
+                                        outlined dense
+                                        v-model="filter.moz.rank_to">
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -101,11 +229,15 @@
                     <span class="subtitle-2">Links In</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.moz.links_in_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.moz.links_in_from"
+                            :error-messages="mozLinksInFromErrors">
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.moz.links_in_to">
+                            <VTextField label="To" outlined dense
+                                        v-model="filter.moz.links_in_to">
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -121,8 +253,8 @@
                         <VCol cols="12" md="6">
                             <VTextField
                                 label="From" outlined dense
-                                hide-details
                                 v-model="filter.alexa.rank_from"
+                                :error-messages="alexaRankFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -130,7 +262,6 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.alexa.rank_to"
                             >
                             </VTextField>
@@ -159,11 +290,18 @@
                     <span class="subtitle-2">Rank</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.rank_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.semRush.rank_from"
+                                        :error-messages="semRushRankFromErrors"
+                            >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.rank_to">
+                            <VTextField label="To"
+                                        outlined dense
+                                        v-model="filter.semRush.rank_to"
+                            >
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -172,11 +310,18 @@
                     <span class="subtitle-2">Keyword Num</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.keyword_num_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.semRush.keyword_num_from"
+                                        :error-messages="semRushKeywordNumFromErrors"
+                            >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.keyword_num_to">
+                            <VTextField label="To"
+                                        outlined dense
+                                        v-model="filter.semRush.keyword_num_to"
+                            >
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -185,11 +330,17 @@
                     <span class="subtitle-2">Traffic</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.traffic_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.semRush.traffic_from"
+                                        :error-messages="semRushTrafficFromErrors"
+                            >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.traffic_to">
+                            <VTextField label="To"
+                                        outlined dense
+                                        v-model="filter.semRush.traffic_to">
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -198,11 +349,18 @@
                     <span class="subtitle-2">Traffic Costs</span>
                     <VRow>
                         <VCol cols="12" md="6">
-                            <VTextField label="From" outlined dense hide-details v-model="filter.semRush.traffic_costs_from">
+                            <VTextField label="From"
+                                        outlined dense
+                                        v-model="filter.semRush.traffic_costs_from"
+                                        :error-messages="semRushTrafficCostsFromErrors"
+                            >
                             </VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
-                            <VTextField label="To" outlined dense hide-details v-model="filter.semRush.traffic_costs_to">
+                            <VTextField label="To"
+                                        outlined dense
+                                        v-model="filter.semRush.traffic_costs_to"
+                            >
                             </VTextField>
                         </VCol>
                     </VRow>
@@ -219,8 +377,8 @@
                             <VTextField
                                 label="From"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.external_backlinks_from"
+                                :error-messages="majesticExtBacklinksFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -228,7 +386,6 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.external_backlinks_to"
                             >
                             </VTextField>
@@ -242,8 +399,9 @@
                             <VTextField
                                 label="From"
                                 outlined
-                                dense hide-details
+                                dense
                                 v-model="filter.majestic.external_gov_from"
+                                :error-messages="majesticExtGovFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -251,7 +409,6 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.external_gov_to"
                             >
                             </VTextField>
@@ -265,8 +422,8 @@
                             <VTextField
                                 label="From"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.external_edu_from"
+                                :error-messages="majesticExtEduFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -274,7 +431,6 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.external_edu_to"
                             >
                             </VTextField>
@@ -288,8 +444,8 @@
                             <VTextField
                                 label="From"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.tf_from"
+                                :error-messages="majesticTfFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -297,8 +453,8 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.tf_to"
+                                :error-messages="majesticTfToErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -311,8 +467,8 @@
                             <VTextField
                                 label="From"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.cf_from"
+                                :error-messages="majesticCfFromErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -320,8 +476,8 @@
                             <VTextField
                                 label="To"
                                 outlined dense
-                                hide-details
                                 v-model="filter.majestic.cf_to"
+                                :error-messages="majesticCfToErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -346,9 +502,19 @@
                 </VCol>
             </VRow>
         </VCol>
+
+        <div class="filter-chips mb-4">
+            <h5 class="mb-4">{{ total }} platforms found</h5>
+            <FilterChips
+                :filter-chips="filterChips"
+                @delete-filter="onDeleteFilter"
+                :filters-applied="filtersApplied"
+            />
+        </div>
+
         <VDivider></VDivider>
-        <VSpacer></VSpacer>
-        <table class="guest__table">
+
+        <table class="guest__table" v-if="Object.keys(platforms).length">
             <thead class="guest__head">
             <tr>
                 <th class="guest__col">
@@ -495,7 +661,7 @@
                     {{ platform.dr }}
                 </td>
                 <td>
-                    {{ platform.da }}
+                    {{ platform.ma }}
                 </td>
                 <td>
                     {{ platform.organicTraffic }}
@@ -558,8 +724,9 @@
             </tr>
             </tbody>
         </table>
+        <h1 v-else class="text-center">Platforms weren't found:( ...</h1>
 
-        <VRow class="justify-space-between">
+        <VRow class="justify-space-between" v-if="Object.keys(platforms).length">
             <ul class="pagination">
                 <li>
                     <VBtn :disabled="page === 1" @click="page -= 1" fab small>
@@ -635,11 +802,13 @@ import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import { countries } from "@/helpers/countries";
+import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
-        SendRequestFooter
+        SendRequestFooter,
+        FilterChips
     },
     mixins: [rolemixin, filterMixin],
     data: () => ({
@@ -673,7 +842,8 @@ export default {
                     alexa: {
                         ...this.filter.alexa,
                         country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
-                    }
+                    },
+                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
                 }
             });
         },
@@ -723,30 +893,6 @@ export default {
         },
         onPlatformRemoved(platformId) {
             this.chosen[platformId] = false;
-        },
-        async applyFilters() {
-            this.page = 1;
-            this.filtersOpened = false;
-            const response = await this.loadPlatforms();
-            this.pages = [];
-            this.currentPage = response.current_page;
-            this.lastPage = response.last_page;
-            this.total = response.total;
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
         },
     },
     async mounted() {

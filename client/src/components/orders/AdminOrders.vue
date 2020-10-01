@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <h1 class="mt-6">My Orders</h1>
+        <h1 class="mt-6">Orders</h1>
         <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 
-        <table>
+        <table v-if="Object.keys(orders).length">
             <thead>
             <tr>
                 <th>#</th>
@@ -47,6 +47,7 @@
                 </tr>
             </tbody>
         </table>
+        <h1 class="text-center" v-else>There is no order...</h1>
     </div>
 </template>
 

@@ -22,10 +22,11 @@
                             <VCombobox
                                 id="custom-combobox"
                                 outlined
-                                :items="topics"
+                                :items="Object.keys(allTopics)"
                                 search-input=""
                                 label="Topics"
                                 multiple
+                                deletable-chips
                                 small-chips
                                 hide-selected
                                 :error-messages="topicsErrors"
@@ -538,8 +539,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
+import * as getters from '@/store/modules/platforms/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email, minValue, maxValue } from 'vuelidate/lib/validators';
@@ -564,7 +566,7 @@ export default {
                 required, minValue: minValue(0), maxValue: maxValue(100)
             },
             links_in: {
-                required, minValue: minValue(1), maxValue: maxValue(1000000)
+                required, minValue: minValue(1)
             },
             mozrank: {
                 required, minValue: minValue(1)
@@ -656,7 +658,8 @@ export default {
     }),
     methods: {
         ...mapActions('platforms', {
-            createPlatform: actions.CREATE_PLATFORM
+            createPlatform: actions.CREATE_PLATFORM,
+            fetchTopics: actions.FETCH_TOPICS
         }),
         ...mapActions('notification', {
             setNotification: notifyActions.SET_NOTIFICATION
@@ -740,7 +743,7 @@ export default {
                         price: this.price,
                         email: this.email,
                         comment: this.comment,
-                        topics: this.topics,
+                        topics: this.topics.map(topic => this.allTopics[topic]),
                         moz: this.moz,
                         alexa: this.alexa,
                         semrush: this.semrush,
@@ -796,7 +799,13 @@ export default {
             this.websiteUrl = newValue.replace(/[^0-9a-zA-Z:.\\/_-]/, '');
         }
     },
+    async mounted() {
+        await this.fetchTopics();
+    },
     computed: {
+        ...mapGetters('platforms', {
+            allTopics: getters.GET_TOPICS
+        }),
         websiteUrlErrors() {
             const errors = [];
             if (!this.$v.websiteUrl.$dirty) {
@@ -919,8 +928,6 @@ export default {
                 errors.push('Links In is required!');
             !this.$v.moz.links_in.minValue &&
                 errors.push('Links In must be more than 1!');
-            !this.$v.moz.links_in.maxValue &&
-                errors.push('Links In must be less than 1 000 000!');
             return errors;
         },
         mozRankErrors() {
