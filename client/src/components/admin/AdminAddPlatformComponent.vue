@@ -19,19 +19,17 @@
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="4">
-                            <VCombobox
+                            <VSelect
                                 id="custom-combobox"
                                 outlined
                                 :items="Object.keys(allTopics)"
-                                search-input=""
                                 label="Topics"
                                 multiple
                                 deletable-chips
                                 small-chips
-                                hide-selected
                                 :error-messages="topicsErrors"
                                 v-model="topics"
-                            ></VCombobox>
+                            ></VSelect>
                         </VCol>
                         <VCol cols="12" md="2">
                             <VTextField
@@ -50,7 +48,7 @@
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label>DA</label>
+                                    <label>MA</label>
                                     <VIcon
                                         class="ml-1 align-center"
                                         small
@@ -58,13 +56,13 @@
                                         v-on="on"
                                     >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip DA</span>
+                                <span>Tooltip MA</span>
                             </VTooltip>
                             <VTextField
                                 outlined
-                                placeholder="DA"
-                                v-model="da"
-                                :error-messages="daErrors"
+                                placeholder="MA"
+                                v-model="ma"
+                                :error-messages="maErrors"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -554,7 +552,7 @@ export default {
     validations: {
         websiteUrl: { required, minLength: minLength(5) },
         dr: { required },
-        da: { required },
+        ma: { required },
         organicTraffic: { required },
         topics: { required },
         price: { minValue: minValue(0), required },
@@ -620,7 +618,7 @@ export default {
         fillMajesticLoading: false,
         websiteUrl: '',
         dr: '',
-        da: '',
+        ma: '',
         organicTraffic: '',
         topics: [],
         price: '',
@@ -732,7 +730,7 @@ export default {
                     await this.createPlatform({
                         website_url: this.websiteUrl,
                         dr: this.dr,
-                        da: this.da,
+                        ma: this.ma,
                         organic_traffic: this.organicTraffic,
                         dofollow_active: this.doFollow,
                         free_home_featured_active: this.freeHomeFeatured,
@@ -864,13 +862,13 @@ export default {
                 errors.push('Comment is required!');
             return errors;
         },
-        daErrors() {
+        maErrors() {
             const errors = [];
-            if (!this.$v.da.$dirty) {
+            if (!this.$v.ma.$dirty) {
                 return errors;
             }
-            !this.$v.da.required &&
-                errors.push('DA is required!');
+            !this.$v.ma.required &&
+                errors.push('MA is required!');
             return errors;
         },
         drErrors() {

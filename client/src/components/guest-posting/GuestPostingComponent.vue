@@ -520,39 +520,41 @@
                 <th class="guest__col">
                     <VCheckbox @click="selectAll"></VCheckbox>
                 </th>
+<!--                <th class="guest__col">-->
+<!--                    #-->
+<!--                    <VIcon-->
+<!--                        right-->
+<!--                        @click="changeSortingAndDirection('id')"-->
+<!--                        v-if="sorting === 'id' && direction === 'desc'"-->
+<!--                    >-->
+<!--                        mdi-chevron-down-->
+<!--                    </VIcon>-->
+<!--                    <VIcon-->
+<!--                        right-->
+<!--                        @click="changeSortingAndDirection('id')"-->
+<!--                        v-else-->
+<!--                    >-->
+<!--                        mdi-chevron-up-->
+<!--                    </VIcon>-->
+<!--                </th>-->
                 <th class="guest__col">
-                    #
-                    <VIcon
-                        right
-                        @click="changeSortingAndDirection('id')"
-                        v-if="sorting === 'id' && direction === 'desc'"
-                    >
-                        mdi-chevron-down
-                    </VIcon>
-                    <VIcon
-                        right
-                        @click="changeSortingAndDirection('id')"
-                        v-else
-                    >
-                        mdi-chevron-up
-                    </VIcon>
-                </th>
-                <th class="guest__col">
-                    Website
-                    <VIcon
-                        right
-                        @click="changeSortingAndDirection('website_url')"
-                        v-if="sorting === 'website_url' && direction === 'desc'"
-                    >
-                        mdi-chevron-down
-                    </VIcon>
-                    <VIcon
-                        right
-                        @click="changeSortingAndDirection('website_url')"
-                        v-else
-                    >
-                        mdi-chevron-up
-                    </VIcon>
+                    <div class="guest__col-wrap">
+                        Website
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-if="sorting === 'website_url' && direction === 'desc'"
+                        >
+                            mdi-chevron-down
+                        </VIcon>
+                        <VIcon
+                            right
+                            @click="changeSortingAndDirection('website_url')"
+                            v-else
+                        >
+                            mdi-chevron-up
+                        </VIcon>
+                    </div>
                 </th>
                 <th class="guest__col">
                     Topic
@@ -643,17 +645,17 @@
                 <td>
                     <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>
                 </td>
-                <td>{{ platform.id }}</td>
                 <td>
                     <div class="guest__col-wrap">
                         {{ platform.websiteUrl }}
-                        <a href="#" class="guest__web">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" xmlns:v="https://vecta.io/nano"><path d="M7.333 0v1.333h2.393L3.173 7.887l.94.94 6.553-6.553v2.393H12V0H7.333zm3.333 10.667H1.333V1.333H6V0H1.333C.98 0 .64.14.39.39S0 .98 0 1.333v9.333c0 .354.14.693.39.943s.59.4.943.4h9.333c.354 0 .693-.14.943-.4s.4-.59.4-.943V6h-1.333v4.667z" fill="#bdbdbd"/></svg>
-                        </a>
                     </div>
                 </td>
                 <td>
-                    <VChip v-for="(topic, id) in platform.topics" :key="id">
+                    <VChip v-for="(topic, id) in platform.topics"
+                           :key="id"
+                           x-small
+                           class="pa-0 px-2 mr-1 mb-1"
+                    >
                         {{ topic.name }}
                     </VChip>
                 </td>
@@ -716,7 +718,7 @@
                         <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">
                             + {{ platform.nicheEditLinkPrice.toFixed(2) }} $
                         </span>
-                        <span v-else class="text-green">
+                        <span v-else class="text-green  ">
                             - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $
                         </span>
                     </span>
@@ -726,7 +728,7 @@
         </table>
         <h1 v-else class="text-center">Platforms weren't found:( ...</h1>
 
-        <VRow class="justify-space-between" v-if="Object.keys(platforms).length">
+        <VRow class="justify-space-between mt-4" v-if="Object.keys(platforms).length">
             <ul class="pagination">
                 <li>
                     <VBtn :disabled="page === 1" @click="page -= 1" fab small>

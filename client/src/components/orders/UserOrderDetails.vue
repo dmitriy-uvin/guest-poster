@@ -30,7 +30,6 @@
             <table class="guest__table mt-6">
                 <thead class="guest__head">
                 <tr>
-                    <th></th>
                     <th class="guest__col text-left">
                         #
                         <VIcon
@@ -151,8 +150,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="(platform, id) in order.items" :key="id">
-                    <td></td>
-                    <td>{{ platform.id }}</td>
+                    <td class="text-center">{{ platform.id }}</td>
                     <td>
                         <div class="guest__col-wrap">
                             {{ platform.websiteUrl }}
@@ -165,7 +163,7 @@
                         <VChip
                                 v-for="(topic, id) in platform.topics"
                                 :key="id"
-                                class="mr-1 mb-1"
+                                class="mr-1 mb-1 pa-0 px-2"
                                 small
                         >
                             {{ topic.name }}

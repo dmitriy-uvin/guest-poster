@@ -31,7 +31,6 @@
             <table class="guest__table mt-6">
                 <thead class="guest__head">
                 <tr>
-                    <th></th>
                     <th class="guest__col text-left">
                         #
                         <VIcon
@@ -152,8 +151,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="platform in order.items" :key="platform.id">
-                    <td></td>
-                    <td>{{ platform.id }}</td>
+                    <td class="text-center">{{ platform.id }}</td>
                     <td>
                         <div class="guest__col-wrap">
                             {{ platform.websiteUrl }}
@@ -166,7 +164,7 @@
                         <VChip
                                 v-for="(topic, id) in platform.topics"
                                 :key="id"
-                        class="mr-1 mb-1" small>
+                        class="mr-1 mb-1" x-small>
                             {{ topic.name }}
                         </VChip>
                     </td>
@@ -241,7 +239,7 @@
         <VCol cols="12">
             <h3 class="mb-3">From: </h3>
             <VRow>
-                <VCol cols="12" md="1" class="mr-10">
+                <VCol cols="12" md="2">
                     <VRow>
                         <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
@@ -253,7 +251,7 @@
                         </div>
                     </VRow>
                 </VCol>
-                <VCol cols="12" md="1" class="mr-10" v-if="order.user.skype">
+                <VCol cols="12" md="2" v-if="order.user.skype">
                     <VRow>
                         <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
