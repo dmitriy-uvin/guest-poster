@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 final class OrderRepository implements OrderRepositoryInterface
 {
     public const DEFAULT_SORTING = 'id';
-    public const DEFAULT_DIRECTION = 'asc';
+    public const DEFAULT_DIRECTION = 'desc';
 
     public function getById(int $id): ?Order
     {
@@ -31,7 +31,7 @@ final class OrderRepository implements OrderRepositoryInterface
 
     public function getAll(): Collection
     {
-        return Order::all();
+        return Order::orderBy(self::DEFAULT_SORTING, self::DEFAULT_DIRECTION)->get();
     }
 
     public function findByCriteria(EloquentCriterion ...$criteria)
@@ -42,7 +42,7 @@ final class OrderRepository implements OrderRepositoryInterface
             $query = $criterion->build($query);
         }
 
-        return $query->get();
+        return $query->orderBy(self::DEFAULT_SORTING, self::DEFAULT_DIRECTION)->get();
     }
 
     public function findOneByCriteria(EloquentCriterion ...$criteria): ?Order

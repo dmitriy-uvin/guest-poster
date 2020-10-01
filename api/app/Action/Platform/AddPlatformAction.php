@@ -27,7 +27,7 @@ final class AddPlatformAction
         $platform = new Platform();
         $platform->website_url = $request->getWebsiteUrl();
         $platform->dr = $request->getDr();
-        $platform->da = $request->getDa();
+        $platform->ma = $request->getMa();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
         $platform->free_home_featured_active = $request->getFreeHomeFeaturedActive();

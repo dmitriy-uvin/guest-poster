@@ -8,7 +8,7 @@ final class AddPlatformRequest
 {
     private string $website_url;
     private int $dr;
-    private int $da;
+    private int $ma;
     private int $organicTraffic;
     private bool $do_follow_active;
     private bool $free_home_featured_active;
@@ -46,7 +46,7 @@ final class AddPlatformRequest
     public function __construct(
         string $website_url,
         int $dr,
-        int $da,
+        int $ma,
         int $organicTraffic,
         bool $do_follow_active,
         bool $free_home_featured_active,
@@ -66,7 +66,7 @@ final class AddPlatformRequest
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
-        $this->da = $da;
+        $this->ma = $ma;
         $this->organicTraffic = $organicTraffic;
         $this->do_follow_active = $do_follow_active;
         $this->free_home_featured_active = $free_home_featured_active;
@@ -150,9 +150,9 @@ final class AddPlatformRequest
         return $this->dr;
     }
 
-    public function getDa(): int
+    public function getMa(): int
     {
-        return $this->da;
+        return $this->ma;
     }
 
     public function getOrganicTraffic(): int
@@ -284,5 +284,4 @@ final class AddPlatformRequest
     {
         return $this->majesticCF;
     }
-
 }
