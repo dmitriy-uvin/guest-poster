@@ -20,8 +20,10 @@ class PlatformSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(TopicSeeder::class);
         Platform::factory(10)->create()->each(function ($platform) {
-            Topic::factory(2)->create(['platform_id' => $platform->id]);
+            $platform->topics()->attach(random_int(1, 32));
+            $platform->topics()->attach(random_int(1, 32));
             Ahrefs::factory(1)->create(['platform_id' => $platform->id]);
             Alexa::factory(1)->create(['platform_id' => $platform->id]);
             Majestic::factory(1)->create(['platform_id' => $platform->id]);

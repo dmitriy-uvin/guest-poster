@@ -16,7 +16,7 @@ class CreateTopicsTable extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('platform_id');
+            $table->string('alias');
         });
     }
 

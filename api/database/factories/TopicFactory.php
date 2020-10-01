@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Constants\Topics;
 use App\Models\Model;
 use App\Models\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,8 +24,10 @@ class TopicFactory extends Factory
      */
     public function definition()
     {
+        $topic = $this->faker->randomElement(Topics::getTopics());
         return [
-            'name' => $this->faker->word
+            'name' => $topic,
+            'alias' => str_replace(' ', '-', mb_strtolower($topic))
         ];
     }
 }

@@ -17,7 +17,7 @@ class CreatePlatformsTable extends Migration
             $table->id();
             $table->string('website_url');
             $table->integer('dr');
-            $table->integer('da');
+            $table->integer('ma');
             $table->integer('organic_traffic');
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');
