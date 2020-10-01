@@ -7,13 +7,19 @@ export default {
             user: getters.GET_LOGGED_USER
         }),
         isAdmin() {
-            return this.user.role === 'admin';
+            if (this.user) {
+                return this.user.role === 'admin';
+            }
         },
         isUser() {
-            return this.user.role === 'user';
+            if (this.user) {
+                return this.user.role === 'user';
+            }
         },
         isModerator() {
-            return this.user.role === 'moderator';
+            if (this.user) {
+                return this.user.role === 'moderator';
+            }
         }
     }
 };

@@ -30,6 +30,6 @@ const requestExternalService = {
     }
 };
 
-export const ErrorStatus = ['bad_url', 'not_found', 'empty', 'no_data'];
+export const ErrorStatus = ['bad_url', 'not_found', 'empty', 'no_data', 'error_internal'];
 
 export default requestExternalService;
