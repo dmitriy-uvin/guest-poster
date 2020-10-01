@@ -12,7 +12,7 @@ class Platform extends Model
     protected $fillable = [
         'website_url',
         'dr',
-        'da',
+        'ma',
         'organic_traffic',
         'dofollow_active',
         'free_home_featured_active',
@@ -32,7 +32,7 @@ class Platform extends Model
 
     public function topics()
     {
-        return $this->hasMany(Topic::class);
+        return $this->belongsToMany(Topic::class);
     }
 
     public function moz()

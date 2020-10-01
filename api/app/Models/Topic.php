@@ -10,13 +10,14 @@ class Topic extends Model
     use HasFactory;
 
     protected $fillable = [
-        'platform_id',
-        'name'
+        'name',
+        'alias'
     ];
+
     public $timestamps = false;
 
-    public function platform()
+    public function platforms()
     {
-        return $this->belongsTo(Platform::class);
+        return $this->belongsToMany(Platform::class);
     }
 }
