@@ -11,6 +11,21 @@ final class GetPlatformCollectionRequest
     private ?string $sorting;
     private ?string $direction;
     private array $filter;
+
+    //Platform
+    private ?int $drFrom;
+    private ?int $drTo;
+    private ?int $maFrom;
+    private ?int $maTo;
+    private ?int $organicTrafficFrom;
+    private ?int $organicTrafficTo;
+    private ?float $priceFrom;
+    private ?float $priceTo;
+
+    private string $dofollow;
+    private string $nicheEditLink;
+    private string $homeFeatured;
+
     // MOZ
     private ?int $mozDaFrom;
     private ?int $mozDaTo;
@@ -62,6 +77,19 @@ final class GetPlatformCollectionRequest
         $this->sorting = $sorting;
         $this->direction = $direction;
 
+        $this->drFrom = (int)$filter['platform']['dr_from'];
+        $this->drTo = (int)$filter['platform']['dr_to'];
+        $this->maFrom = (int)$filter['platform']['ma_from'];
+        $this->maTo = (int)$filter['platform']['ma_to'];
+        $this->organicTrafficFrom = (int)$filter['platform']['organic_traffic_from'];
+        $this->organicTrafficTo = (int)$filter['platform']['organic_traffic_to'];
+        $this->priceFrom = (float)$filter['platform']['price_from'];
+        $this->priceTo = (float)$filter['platform']['price_to'];
+
+        $this->dofollow = $filter['dofollow'];
+        $this->nicheEditLink = $filter['niche_edit_link'];
+        $this->homeFeatured = $filter['home_featured'];
+
         $this->mozDaFrom = (int)$filter['moz']['da_from'];
         $this->mozDaTo = (int)$filter['moz']['da_to'];
         $this->mozPaFrom = (int)$filter['moz']['pa_from'];
@@ -94,6 +122,7 @@ final class GetPlatformCollectionRequest
         $this->semRushTrafficTo = (int)$filter['semRush']['traffic_to'];
         $this->semRushTrafficCostsFrom = (int)$filter['semRush']['traffic_costs_from'];
         $this->semRushTrafficCostsTo = (int)$filter['semRush']['traffic_costs_to'];
+
         $this->topics = $filter['topics'];
     }
 
@@ -120,6 +149,61 @@ final class GetPlatformCollectionRequest
     public function getFilter(): array
     {
         return $this->filter;
+    }
+
+    public function getDrFrom(): ?int
+    {
+        return $this->drFrom;
+    }
+
+    public function getDrTo(): ?int
+    {
+        return $this->drTo;
+    }
+
+    public function getMaFrom(): ?int
+    {
+        return $this->maFrom;
+    }
+
+    public function getMaTo(): ?int
+    {
+        return $this->maTo;
+    }
+
+    public function getOrganicTrafficFrom(): ?int
+    {
+        return $this->organicTrafficFrom;
+    }
+
+    public function getOrganicTrafficTo(): ?int
+    {
+        return $this->organicTrafficTo;
+    }
+
+    public function getPriceFrom(): ?float
+    {
+        return $this->priceFrom;
+    }
+
+    public function getPriceTo(): ?float
+    {
+        return $this->priceTo;
+    }
+
+    public function getDofollow(): string
+    {
+        return $this->dofollow;
+    }
+
+    public function getNicheEditLink(): string
+    {
+        return $this->nicheEditLink;
+    }
+
+    public function getHomeFeatured(): string
+    {
+        return $this->homeFeatured;
     }
 
     public function getMozDaFrom(): ?int
@@ -177,9 +261,6 @@ final class GetPlatformCollectionRequest
         return $this->alexaRankTo;
     }
 
-    /**
-     * @return int|mixed|null
-     */
     public function getMajesticTfFrom(): ?int
     {
         return $this->majesticTfFrom;

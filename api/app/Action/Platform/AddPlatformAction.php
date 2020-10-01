@@ -43,10 +43,7 @@ final class AddPlatformAction
         $platform = $this->platformRepository->save($platform);
 
         if ($request->getTopics()) {
-            $topics = collect($request->getTopics())->map(function ($topic) {
-                return new Topic(["name" => $topic]);
-            });
-            $this->platformRepository->saveTopics($platform, $topics->toArray());
+            $this->platformRepository->saveTopics($platform, $request->getTopics());
         }
 
         $moz = new Moz([
