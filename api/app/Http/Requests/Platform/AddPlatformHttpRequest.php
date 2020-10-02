@@ -10,7 +10,7 @@ class AddPlatformHttpRequest extends ApiFormRequest
     {
         return [
             'website_url' => 'required|string',
-            'da' => 'required|integer',
+            'ma' => 'required|integer',
             'dr' => 'required|integer',
             'organic_traffic' => 'required|integer',
             'dofollow_active' => 'required|boolean',
