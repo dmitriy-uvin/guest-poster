@@ -23,11 +23,25 @@ class Platform extends Model
         'price',
         'email',
         'comment',
+        'description',
+        'article_requirements',
+        'deadline',
+        'where_posted',
+        'domain_zone'
     ];
 
     protected $with = [
         'topics',
         'moz'
+    ];
+
+    protected $attributes = [
+        'comment' => null,
+        'contacts' => null
+    ];
+
+    protected $casts = [
+        'deadline' => 'integer'
     ];
 
     public function topics()
