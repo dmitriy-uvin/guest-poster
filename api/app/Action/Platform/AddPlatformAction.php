@@ -36,10 +36,15 @@ final class AddPlatformAction
             $platform->niche_edit_link_price = $request->getNicheEditLinkPrice();
         }
         $platform->article_writing_price = $request->getArticleWritingPrice();
+        $platform->article_requirements = $request->getArticleRequirements();
+        $platform->deadline = $request->getDeadLine();
+        $platform->where_posted = $request->getWherePosted();
         $platform->contacts = $request->getContacts();
-        $platform->price = $request->getPrice();
-        $platform->email = $request->getEmail();
         $platform->comment = $request->getComment();
+        $platform->price = $request->getPrice();
+        $platform->description = $request->getDescription();
+        $platform->email = $request->getEmail();
+        $platform->domain_zone = $this->getDomainZone($request->getWebsiteUrl());
         $platform = $this->platformRepository->save($platform);
 
         if ($request->getTopics()) {
@@ -95,5 +100,17 @@ final class AddPlatformAction
         }
 
         return new AddPlatformResponse($platform);
+    }
+
+    private function getDomainZone(string $websiteUrl): string
+    {
+        $string = trim($websiteUrl, '/');
+        $string = mb_ereg_replace("http[s]?:[\/]{2}", '', $string);
+        $domain = explode('/', $string)[0];
+        $domainParts = explode('.', $domain);
+
+        if (isset($domainParts[count($domainParts) - 1])) {
+            return $domainParts[count($domainParts) - 1];
+        }
     }
 }

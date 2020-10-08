@@ -15,10 +15,14 @@ final class AddPlatformRequest
     private bool $niche_edit_link_active;
     private float $article_writing_price;
     private ?float $niche_edit_link_price;
-    private string $contacts;
+    private ?string $contacts;
     private float $price;
+    private string $description;
+    private string $article_requirements;
+    private int $deadLine;
+    private string $wherePosted;
     private string $email;
-    private string $comment;
+    private ?string $comment;
     private ?array $topics;
     private int $mozDA;
     private int $mozPA;
@@ -53,16 +57,20 @@ final class AddPlatformRequest
         bool $niche_edit_link_active,
         float $article_writing_price,
         ?float $niche_edit_link_price,
-        string $contacts,
+        ?string $contacts,
         float $price,
         string $email,
-        string $comment,
+        ?string $comment,
         ?array $topics,
         array $moz,
         array $alexa,
         array $semrush,
         array $majestic,
-        ?array $ahrefs
+        ?array $ahrefs,
+        string $description,
+        string $article_requirements,
+        int $deadLine,
+        string $where_posted
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
@@ -75,6 +83,10 @@ final class AddPlatformRequest
         $this->niche_edit_link_price = $niche_edit_link_price;
         $this->contacts = $contacts;
         $this->price = $price;
+        $this->description = $description;
+        $this->article_requirements = $article_requirements;
+        $this->deadLine = $deadLine;
+        $this->wherePosted = $where_posted;
         $this->email = $email;
         $this->comment = $comment;
         $this->topics = $topics;
@@ -139,7 +151,6 @@ final class AddPlatformRequest
         return $this->ahrefsIps;
     }
 
-
     public function getWebsiteUrl(): string
     {
         return $this->website_url;
@@ -170,6 +181,11 @@ final class AddPlatformRequest
         return $this->free_home_featured_active;
     }
 
+    public function getWherePosted(): string
+    {
+        return $this->wherePosted;
+    }
+
     public function getNicheEditLinkActive(): bool
     {
         return $this->niche_edit_link_active;
@@ -180,14 +196,24 @@ final class AddPlatformRequest
         return $this->article_writing_price;
     }
 
+    public function getArticleRequirements(): string
+    {
+        return $this->article_requirements;
+    }
+
     public function getNicheEditLinkPrice(): ?float
     {
         return $this->niche_edit_link_price;
     }
 
-    public function getContacts(): string
+    public function getContacts(): ?string
     {
         return $this->contacts;
+    }
+
+    public function getDeadLine(): int
+    {
+        return $this->deadLine;
     }
 
     public function getPrice(): float
@@ -195,12 +221,17 @@ final class AddPlatformRequest
         return $this->price;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
