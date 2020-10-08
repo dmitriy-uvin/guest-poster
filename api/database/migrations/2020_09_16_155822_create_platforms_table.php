@@ -22,12 +22,17 @@ class CreatePlatformsTable extends Migration
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');
             $table->boolean('niche_edit_link_active');
-            $table->double('article_writing_price');
             $table->double('niche_edit_link_price')->nullable();
-            $table->string('contacts');
+            $table->double('article_writing_price');
+            $table->string('article_requirements');
+            $table->integer('deadline');
             $table->double('price');
+            $table->string('description');
             $table->string('email');
-            $table->string('comment');
+            $table->string('where_posted');
+            $table->string('domain_zone');
+            $table->string('contacts')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

@@ -36,6 +36,11 @@ class PlatformFactory extends Factory
             'price' => $this->faker->numberBetween(10, 100),
             'email' => $this->faker->email,
             'comment' => $this->faker->sentence(5),
+            'description' => $this->faker->sentence(5),
+            'article_requirements' => $this->faker->sentence(5),
+            'deadline' => $this->faker->numberBetween(1, 60),
+            'where_posted' => $this->faker->sentence(5),
+            'domain_zone' => $this->faker->domainName
         ];
     }
 }
