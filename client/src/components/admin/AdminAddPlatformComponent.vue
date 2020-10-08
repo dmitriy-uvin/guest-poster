@@ -8,7 +8,7 @@
                 <div class="mt-6">
                     <h2>General Information</h2>
                     <VRow>
-                        <VCol cols="12" md="4">
+                        <VCol cols="12" md="5">
                             <VTextField
                                 outlined
                                 label="Website URL"
@@ -18,7 +18,7 @@
                                 :error-messages="websiteUrlErrors"
                             ></VTextField>
                         </VCol>
-                        <VCol cols="12" md="4">
+                        <VCol cols="12" md="5">
                             <VSelect
                                 id="custom-combobox"
                                 outlined
@@ -31,6 +31,42 @@
                                 v-model="topics"
                             ></VSelect>
                         </VCol>
+                    </VRow>
+                    <VRow>
+                        <VCol cols="12" md="5">
+                            <VTextarea
+                                outlined
+                                no-resize
+                                rows="3"
+                                label="Description"
+                                v-model="description"
+                                :error-messages="descriptionErrors"
+                            ></VTextarea>
+                        </VCol>
+                        <VCol cols="12" md="5">
+                            <VTextarea
+                                outlined
+                                no-resize
+                                rows="3"
+                                label="Article Requirements"
+                                v-model="articleRequirements"
+                                :error-messages="articleRequirementsErrors"
+                            ></VTextarea>
+                        </VCol>
+                    </VRow>
+                    <VRow>
+                        <VCol cols="12" md="5">
+                            <VTextarea
+                                outlined
+                                no-resize
+                                rows="3"
+                                label="Where Posted"
+                                v-model="wherePosted"
+                                :error-messages="wherePostedErrors"
+                            ></VTextarea>
+                        </VCol>
+                    </VRow>
+                    <VRow>
                         <VCol cols="12" md="2">
                             <VTextField
                                 outlined
@@ -40,9 +76,16 @@
                                 :error-messages="priceErrors"
                             ></VTextField>
                         </VCol>
+                        <VCol cols="12" md="2">
+                            <VTextField
+                                outlined
+                                label="DeadLine"
+                                prepend-inner-icon="mdi-calendar"
+                                v-model="deadLine"
+                                :error-messages="deadLineErrors"
+                            ></VTextField>
+                        </VCol>
                     </VRow>
-                    <VSpacer></VSpacer>
-
                     <h2>Tech characteristics</h2>
                     <VRow>
                         <VCol cols="12" md="2">
@@ -490,9 +533,9 @@
                     >
                         Fill Majestic
                     </VBtn>
-                    <VSpacer></VSpacer>
+                    <VDivider class="my-6"></VDivider>
 
-                    <h2>Contacts</h2>
+                    <h2>Additional information</h2>
                     <VRow>
                         <VCol cols="12" md="5">
                             <VTextField
@@ -510,6 +553,7 @@
                                 outlined
                                 label="Contacts"
                                 no-resize
+                                rows="3"
                                 v-model="contacts"
                                 :error-messages="contactsErrors"
                             ></VTextarea>
@@ -519,6 +563,7 @@
                                 outlined
                                 label="Comment"
                                 no-resize
+                                rows="3"
                                 v-model="comment"
                                 :error-messages="commentErrors"
                             ></VTextarea>
@@ -542,20 +587,25 @@ import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
-import { required, minLength, email, minValue, maxValue } from 'vuelidate/lib/validators';
+import { required, minLength, maxLength, email, minValue, maxValue, url } from 'vuelidate/lib/validators';
 import requestExternalService from '@/services/requestExternalService';
 import { ErrorStatus } from '@/services/requestExternalService';
+
 
 export default {
     name: 'AdminAddPlatformComponent',
     mixins: [validationMixin],
     validations: {
-        websiteUrl: { required, minLength: minLength(5) },
+        websiteUrl: { required, minLength: minLength(5), url },
         dr: { required },
         ma: { required },
         organicTraffic: { required },
         topics: { required },
         price: { minValue: minValue(0), required },
+        description: { required, maxLength: maxLength(255) },
+        articleRequirements: { required, maxLength: maxLength(255) },
+        wherePosted: { required, maxLength: maxLength(255) },
+        deadLine: { required, minValue: minValue(1), maxValue: maxValue(60) },
         moz: {
             da: {
                 required, minValue: minValue(0), maxValue: maxValue(100)
@@ -610,8 +660,8 @@ export default {
             },
         },
         email: { required, email },
-        contacts: { required },
-        comment: { required }
+        contacts: { maxLength: maxLength(255) },
+        comment: { maxLength: maxLength(255) }
     },
     data: () => ({
         fillMozAlexaSrLoading: false,
@@ -622,6 +672,10 @@ export default {
         organicTraffic: '',
         topics: [],
         price: '',
+        description: '',
+        articleRequirements: '',
+        deadLine: 1,
+        wherePosted: '',
         doFollow: false,
         freeHomeFeatured: true,
         nicheEditLink: false,
@@ -739,6 +793,10 @@ export default {
                         niche_edit_link_price: this.nicheEditLinkPrice,
                         contacts: this.contacts,
                         price: this.price,
+                        description: this.description,
+                        article_requirements: this.articleRequirements,
+                        deadline: this.deadLine,
+                        where_posted: this.wherePosted,
                         email: this.email,
                         comment: this.comment,
                         topics: this.topics.map(topic => this.allTopics[topic]),
@@ -751,17 +809,16 @@ export default {
                         message: 'Website was added!',
                         type: 'success'
                     });
-                    this.websiteUrl = '';
+                    this.websiteUrl = this.description = this.wherePosted = '';
                     this.topics = [];
                     this.price = 0;
+                    this.deadLine = 1;
                     this.doFollow = false;
                     this.freeHomeFeatured = true;
                     this.nicheEditLink = false;
                     this.articleWritingPrice = 0;
                     this.nicheEditLinkPrice = 0;
-                    this.email = '';
-                    this.contacts = '';
-                    this.comment = '';
+                    this.email = this.contacts = this.comment = '';
                     this.moz.da =
                         this.moz.pa =
                         this.moz.mozrank =
@@ -811,6 +868,8 @@ export default {
             }
             !this.$v.websiteUrl.required &&
                 errors.push('Website URL is required!');
+            !this.$v.websiteUrl.url &&
+                errors.push('Website URL must be valid URL!');
             return errors;
         },
         topicsErrors() {
@@ -844,13 +903,24 @@ export default {
                 errors.push('Price is required!');
             return errors;
         },
+        descriptionErrors() {
+            const errors = [];
+            if (!this.$v.description.$dirty) {
+                return errors;
+            }
+            !this.$v.description.maxLength &&
+                errors.push('Description must be less 255 characters length!');
+            !this.$v.description.required &&
+                errors.push('Description field is required!');
+            return errors;
+        },
         contactsErrors() {
             const errors = [];
             if (!this.$v.contacts.$dirty) {
                 return errors;
             }
-            !this.$v.contacts.required &&
-                errors.push('Contacts is required!');
+            !this.$v.contacts.maxLength &&
+                errors.push('Contacts must be less 255 characters length!');
             return errors;
         },
         commentErrors() {
@@ -858,8 +928,43 @@ export default {
             if (!this.$v.comment.$dirty) {
                 return errors;
             }
-            !this.$v.comment.required &&
-                errors.push('Comment is required!');
+            !this.$v.comment.maxLength &&
+                errors.push('Comment must be less 255 characters length!');
+            return errors;
+        },
+        articleRequirementsErrors() {
+            const errors = [];
+            if (!this.$v.comment.$dirty) {
+                return errors;
+            }
+            !this.$v.articleRequirements.required &&
+                errors.push('Article Requirements are required!');
+            !this.$v.articleRequirements.maxLength &&
+                errors.push('Article Requirements must be less 255 characters length!');
+            return errors;
+        },
+        wherePostedErrors() {
+            const errors = [];
+            if (!this.$v.wherePosted.$dirty) {
+                return errors;
+            }
+            !this.$v.wherePosted.required &&
+            errors.push('Where Posted is required!');
+            !this.$v.wherePosted.maxLength &&
+            errors.push('Where Posted must be less 255 characters length!');
+            return errors;
+        },
+        deadLineErrors() {
+            const errors = [];
+            if (!this.$v.deadLine.$dirty) {
+                return errors;
+            }
+            !this.$v.deadLine.required &&
+                errors.push('DeadLine field is required!');
+            !this.$v.deadLine.minValue &&
+                errors.push('DeadLine must be minimum 1 day!');
+            !this.$v.deadLine.maxValue &&
+                errors.push('DeadLine can be maximum 60 days!');
             return errors;
         },
         maErrors() {
