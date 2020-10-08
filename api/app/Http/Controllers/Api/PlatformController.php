@@ -51,7 +51,11 @@ final class PlatformController extends ApiController
                 $request->alexa,
                 $request->semrush,
                 $request->majestic,
-                $request->ahrefs
+                $request->ahrefs,
+                $request->description,
+                $request->article_requirements,
+                (int)$request->deadline,
+                $request->where_posted
             )
         );
 
