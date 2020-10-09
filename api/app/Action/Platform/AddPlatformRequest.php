@@ -36,11 +36,17 @@ final class AddPlatformRequest
     private float $semrushKeywordNum;
     private int $semrushTraffic;
     private int $semrushTrafficCosts;
+    private int $fbComments;
+    private int $fbReac;
+    private int $fbShares;
     private int $majesticExternalBacklinks;
     private int $majesticExternalGov;
     private int $majesticExternalEdu;
     private int $majesticTF;
     private int $majesticCF;
+    private int $majesticRefD;
+    private int $majesticRefD_EDU;
+    private int $majesticRefD_GOV;
     private ?string $ahrefsStatus;
     private ?float $ahrefsRank;
     private ?float $ahrefsDr;
@@ -72,7 +78,8 @@ final class AddPlatformRequest
         string $description,
         string $article_requirements,
         int $deadLine,
-        string $where_posted
+        string $where_posted,
+        array $fb
     ) {
         $this->website_url = $website_url;
         $this->dr = $dr;
@@ -104,11 +111,17 @@ final class AddPlatformRequest
         $this->semrushKeywordNum = (int)$semrush['keyword_num'];
         $this->semrushTraffic = (int)$semrush['traffic'];
         $this->semrushTrafficCosts = (int)$semrush['traffic_costs'];
+        $this->fbComments = (int)$fb['fb_comments'];
+        $this->fbReac = (int)$fb['fb_reac'];
+        $this->fbShares = (int)$fb['fb_shares'];
         $this->majesticExternalBacklinks = (int)$majestic['external_backlinks'];
         $this->majesticExternalGov = (int)$majestic['external_gov'];
         $this->majesticExternalEdu = (int)$majestic['external_edu'];
         $this->majesticTF = (int)$majestic['tf'];
         $this->majesticCF = (int)$majestic['cf'];
+        $this->majesticRefD = (int)$majestic['refd'];
+        $this->majesticRefD_EDU = (int)$majestic['refd_edu'];
+        $this->majesticRefD_GOV = (int)$majestic['refd_gov'];
 
         // TODO: Must be tested and fixed if needed
         $this->ahrefsStatus = $ahrefs ? $ahrefs['status'] : null;
@@ -305,6 +318,21 @@ final class AddPlatformRequest
         return $this->semrushTrafficCosts;
     }
 
+    public function getFbComments(): int
+    {
+        return $this->fbComments;
+    }
+
+    public function getFbReac(): int
+    {
+        return $this->fbReac;
+    }
+
+    public function getFbShares(): int
+    {
+        return $this->fbShares;
+    }
+
     public function getMajesticExternalBacklinks(): int
     {
         return $this->majesticExternalBacklinks;
@@ -328,5 +356,20 @@ final class AddPlatformRequest
     public function getMajesticCF(): int
     {
         return $this->majesticCF;
+    }
+
+    public function getMajesticRefD(): int
+    {
+        return $this->majesticRefD;
+    }
+
+    public function getMajesticRefDEDU(): int
+    {
+        return $this->majesticRefD_EDU;
+    }
+
+    public function getMajesticRefDGOV(): int
+    {
+        return $this->majesticRefD_GOV;
     }
 }

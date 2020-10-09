@@ -6,6 +6,7 @@ namespace App\Action\Platform;
 
 use App\Models\Ahrefs;
 use App\Models\Alexa;
+use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
 use App\Models\Platform;
@@ -78,6 +79,14 @@ final class AddPlatformAction
         ]);
         $semrush->save();
 
+        $facebook = new Facebook([
+            'platform_id' => $platform->id,
+            'fb_comments' => $request->getFbComments(),
+            'fb_reac' => $request->getFbReac(),
+            'fb_shares' => $request->getFbShares()
+        ]);
+        $facebook->save();
+
         $majestic = new Majestic([
             'platform_id' => $platform->id,
             'external_backlinks' => $request->getMajesticExternalBacklinks(),
@@ -85,6 +94,9 @@ final class AddPlatformAction
             'external_edu' => $request->getMajesticExternalEdu(),
             'tf' => $request->getMajesticTF(),
             'cf' => $request->getMajesticCF(),
+            'refd' => $request->getMajesticRefD(),
+            'refd_edu' => $request->getMajesticRefDEDU(),
+            'refd_gov' => $request->getMajesticRefDGOV(),
         ]);
         $majestic->save();
 
