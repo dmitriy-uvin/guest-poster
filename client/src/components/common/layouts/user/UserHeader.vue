@@ -55,7 +55,9 @@ export default {
     },
     methods: {
         onMain() {
-            this.$router.push({ name: 'GuestPosting' });
+            if (this.$route.name !== 'GuestPosting') {
+                this.$router.push({ name: 'GuestPosting' });
+            }
         }
     }
 }
