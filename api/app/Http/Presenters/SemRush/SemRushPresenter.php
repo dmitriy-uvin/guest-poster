@@ -13,7 +13,6 @@ final class SemRushPresenter
         return [
             'rank' => $semRush->rank,
             'keyword_num' => $semRush->keyword_num,
-            'traffic' => $semRush->traffic,
             'traffic_costs' => $semRush->traffic_costs,
         ];
     }
