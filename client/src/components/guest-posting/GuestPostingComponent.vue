@@ -647,7 +647,7 @@
                 </td>
                 <td>
                     <div class="guest__col-wrap">
-                        {{ platform.websiteUrl }}
+                        {{ deleteProtocol(platform.websiteUrl) }}
                     </div>
                 </td>
                 <td>
@@ -803,6 +803,7 @@ import * as getters from '@/store/modules/platforms/types/getters';
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
+import valueFormatMixin from '@/mixins/valueFormatMixin';
 import { countries } from "@/helpers/countries";
 import FilterChips from '@/components/guest-posting/FilterChips';
 
@@ -812,7 +813,7 @@ export default {
         SendRequestFooter,
         FilterChips
     },
-    mixins: [rolemixin, filterMixin],
+    mixins: [rolemixin, filterMixin, valueFormatMixin],
     data: () => ({
         chosen: {},
         selectedAll: false,
@@ -920,6 +921,7 @@ export default {
     },
     watch: {
         async page() {
+            this.chosen = {};
             await this.loadPlatforms();
             this.pages = [];
             for (let page = 1; page <= this.lastPage; page++) {
