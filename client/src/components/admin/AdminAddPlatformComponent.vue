@@ -273,7 +273,6 @@
                                 v-model="moz.links_in"
                                 :error-messages="mozLinksInErrors"
                             ></VTextField>
-
                         </VCol>
                         <VCol cols="12" md="2">
                             <VTooltip right>
@@ -293,6 +292,26 @@
                                 placeholder="MozRank"
                                 v-model="moz.mozrank"
                                 :error-messages="mozRankErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Equity</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Equity</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Equity"
+                                v-model="moz.equity"
+                                :error-messages="mozEquityErrors"
                             ></VTextField>
                         </VCol>
                     </VRow>
@@ -631,7 +650,6 @@ import {
 import requestExternalService from '@/services/requestExternalService';
 import { ErrorStatus } from '@/services/requestExternalService';
 
-
 export default {
     name: 'AdminAddPlatformComponent',
     mixins: [validationMixin],
@@ -660,6 +678,9 @@ export default {
             mozrank: {
                 required, minValue: minValue(1)
             },
+            equity: {
+                required, minValue: minValue(0)
+            }
         },
         alexa: {
             rank: {
@@ -731,7 +752,7 @@ export default {
         deadLine: 1,
         wherePosted: '',
         doFollow: false,
-        freeHomeFeatured: true,
+        freeHomeFeatured: false,
         nicheEditLink: false,
         articleWritingPrice: '',
         nicheEditLinkPrice: '',
@@ -744,6 +765,7 @@ export default {
             pa: '',
             links_in: '',
             mozrank: '',
+            equity: ''
         },
         alexa: {
             rank: '',
@@ -812,10 +834,12 @@ export default {
                             type: 'error'
                         });
                     }
+                    console.log(responseData);
                     this.moz.pa = responseData.pa !== 'notfound' ? responseData.pa : '';
                     this.moz.da = responseData.da !== 'notfound' ? responseData.da : '';
                     this.moz.mozrank = responseData.mozrank !== 'notfound' ? responseData.mozrank : '';
                     this.moz.links_in = responseData.links !== 'notfound' ? responseData.links : '';
+                    this.moz.equity = responseData.equity !== 'notfound' ? responseData.equity : '';
 
                     this.alexa.rank = responseData.a_rank !== 'N/A' ? responseData.a_rank : '';
                     this.alexa.country = responseData.a_cnt !== 'N/A' ? responseData.a_cnt : '';
@@ -869,18 +893,17 @@ export default {
                     });
                     this.websiteUrl = this.description = this.wherePosted = '';
                     this.topics = [];
-                    this.price = 0;
                     this.deadLine = 1;
                     this.doFollow = false;
-                    this.freeHomeFeatured = true;
+                    this.freeHomeFeatured = false;
                     this.nicheEditLink = false;
-                    this.articleWritingPrice = 0;
-                    this.nicheEditLinkPrice = 0;
+                    this.articleWritingPrice = this.price = this.nicheEditLinkPrice = '';
                     this.email = this.contacts = this.comment = '';
                     this.moz.da =
                         this.moz.pa =
                         this.moz.mozrank =
-                        this.moz.links_in = '';
+                        this.moz.links_in =
+                        this.moz.equity = '';
                     this.alexa.rank =
                         this.alexa.country =
                         this.alexa.country_rank = '';
@@ -1153,6 +1176,17 @@ export default {
                 errors.push('MozRank is required!');
             !this.$v.moz.mozrank.minValue &&
                 errors.push('Links In must be more than 1!');
+            return errors;
+        },
+        mozEquityErrors() {
+            const errors = [];
+            if (!this.$v.moz.equity.$dirty) {
+                return errors;
+            }
+            !this.$v.moz.equity.required &&
+                errors.push('Equity is required!');
+            !this.$v.moz.equity.minValue &&
+                errors.push('Equity must be more than 0!');
             return errors;
         },
 

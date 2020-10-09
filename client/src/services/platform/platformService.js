@@ -4,7 +4,7 @@ const API_PREFIX = '/platforms';
 
 const platformService = {
     async createPlatform(platformData) {
-        const response = await requestInternalService.post(API_PREFIX + '/store', platformData);
+        const response = await requestInternalService.post(API_PREFIX, platformData);
         return response?.data?.data;
     },
     async fetchPlatforms(params = {}) {
