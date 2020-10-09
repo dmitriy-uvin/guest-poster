@@ -427,26 +427,6 @@
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label>Traffic</label>
-                                    <VIcon
-                                        class="ml-1 align-center"
-                                        small
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >mdi-information</VIcon>
-                                </template>
-                                <span>Tooltip Traffic</span>
-                            </VTooltip>
-                            <VTextField
-                                outlined
-                                placeholder="Traffic"
-                                v-model="semrush.traffic"
-                                :error-messages="semrushTrafficErrors"
-                            ></VTextField>
-                        </VCol>
-                        <VCol cols="12" md="2">
-                            <VTooltip right>
-                                <template v-slot:activator="{ on, attrs }">
                                     <label>Traffic costs</label>
                                     <VIcon
                                         class="ml-1 align-center"
@@ -825,9 +805,6 @@ export default {
             keyword_num: {
                 required, minValue: minValue(0)
             },
-            traffic: {
-                required, minValue: minValue(0)
-            },
             traffic_costs: {
                 required, minValue: minValue(0)
             },
@@ -908,7 +885,6 @@ export default {
         semrush: {
             rank: '',
             keyword_num: '',
-            traffic: '',
             traffic_costs: '',
         },
         fb: {
@@ -972,7 +948,6 @@ export default {
                     this.fillMozAlexaSrFbLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
                     const responseData = response?.data;
-                    console.log(responseData);
                     if (ErrorStatus.includes(responseData)) {
                         this.setNotification({
                             message: "Status: " + responseData,
@@ -991,7 +966,8 @@ export default {
 
                     this.semrush.rank = responseData.sr_rank !== 'notfound' ? responseData.sr_rank : '';
                     this.semrush.keyword_num = responseData.sr_kwords !== 'notfound' ? responseData.sr_kwords : '';
-                    this.semrush.traffic = responseData.sr_traffic !== 'notfound' ? responseData.sr_traffic : '';
+                    this.organicTraffic =
+                        responseData.sr_traffic !== 'notfound' ? responseData.sr_traffic : '';
                     this.semrush.traffic_costs = responseData.sr_costs !== 'notfound' ? responseData.sr_costs : '';
 
                     this.fb.fb_comments = responseData.fb_comments;
@@ -1047,7 +1023,10 @@ export default {
                     this.doFollow = false;
                     this.freeHomeFeatured = false;
                     this.nicheEditLink = false;
-                    this.articleWritingPrice = this.price = this.nicheEditLinkPrice = '';
+                    this.articleWritingPrice =
+                        this.price =
+                        this.nicheEditLinkPrice =
+                        this.articleRequirements = '';
                     this.email = this.contacts = this.comment = '';
                     this.moz.da =
                         this.moz.pa =
@@ -1400,17 +1379,6 @@ export default {
                 errors.push('Rank is required!');
             !this.$v.semrush.keyword_num.minValue &&
                 errors.push('Rank must be more than 0!');
-            return errors;
-        },
-        semrushTrafficErrors() {
-            const errors = [];
-            if (!this.$v.semrush.traffic.$dirty) {
-                return errors;
-            }
-            !this.$v.semrush.traffic.required &&
-                errors.push('Traffic is required!');
-            !this.$v.semrush.traffic.minValue &&
-                errors.push('Traffic must be more than 0!');
             return errors;
         },
         semrushTrafficCostsErrors() {
