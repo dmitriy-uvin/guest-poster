@@ -520,23 +520,6 @@
                 <th class="guest__col">
                     <VCheckbox @click="selectAll"></VCheckbox>
                 </th>
-<!--                <th class="guest__col">-->
-<!--                    #-->
-<!--                    <VIcon-->
-<!--                        right-->
-<!--                        @click="changeSortingAndDirection('id')"-->
-<!--                        v-if="sorting === 'id' && direction === 'desc'"-->
-<!--                    >-->
-<!--                        mdi-chevron-down-->
-<!--                    </VIcon>-->
-<!--                    <VIcon-->
-<!--                        right-->
-<!--                        @click="changeSortingAndDirection('id')"-->
-<!--                        v-else-->
-<!--                    >-->
-<!--                        mdi-chevron-up-->
-<!--                    </VIcon>-->
-<!--                </th>-->
                 <th class="guest__col">
                     <div class="guest__col-wrap">
                         Website
