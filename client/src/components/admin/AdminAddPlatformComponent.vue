@@ -465,13 +465,78 @@
                             ></VTextField>
                         </VCol>
                     </VRow>
+
+                    <h4 class="mt-4">Facebook</h4>
+                    <VDivider />
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Comments</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>FB Comments</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="FB Comments"
+                                v-model="fb.fb_comments"
+                                :error-messages="fbCommentsErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Reactions</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>FB Reactions</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="FB Reactions"
+                                v-model="fb.fb_reac"
+                                :error-messages="fbReacErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Shares</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>FB Shares</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="FB Shares"
+                                v-model="fb.fb_shares"
+                                :error-messages="fbSharesErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
                     <VBtn
                         @click="fillMozAlexaSr"
                         color="primary"
                         :loading="fillMozAlexaSrLoading"
                         :disabled="!websiteUrl"
                     >
-                        Fill Moz, Alexa, Sr
+                        Fill Fields
                     </VBtn>
 
                     <h4 class="mt-4">Majestic</h4>
@@ -575,6 +640,66 @@
                                 placeholder="CF"
                                 v-model="majestic.cf"
                                 :error-messages="majesticCfErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>RefD</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Referring Domains (RefD)</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="RFD"
+                                v-model="majestic.refd"
+                                :error-messages="majesticRefDErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>RefD EDU</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Referring Domains EDU (RefD_EDU)</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="RefD_EDU"
+                                v-model="majestic.refd_edu"
+                                :error-messages="majesticRefDEduErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>RefD GOV</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Referring Domains GOV (RefD_GOV)</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="RefD_GOV"
+                                v-model="majestic.refd_gov"
+                                :error-messages="majesticRefDGovErrors"
                             ></VTextField>
                         </VCol>
                     </VRow>
@@ -707,6 +832,11 @@ export default {
                 required, minValue: minValue(0)
             },
         },
+        fb: {
+            fb_comments: { required, minValue: minValue(0) },
+            fb_reac: { required, minValue: minValue(0) },
+            fb_shares: { required, minValue: minValue(0) },
+        },
         majestic: {
             external_backlinks: {
                 required, minValue: minValue(0)
@@ -723,6 +853,9 @@ export default {
             cf: {
                 required, minValue: minValue(0), maxValue: maxValue(100)
             },
+            refd: { required, minValue: minValue(0) },
+            refd_edu: { required, minValue: minValue(0) },
+            refd_gov: { required, minValue: minValue(0) },
         },
         email: { required, email },
         contacts: { maxLength: maxLength(255) },
@@ -778,12 +911,20 @@ export default {
             traffic: '',
             traffic_costs: '',
         },
+        fb: {
+            fb_comments: '',
+            fb_reac: '',
+            fb_shares: ''
+        },
         majestic: {
             external_backlinks: '',
             external_gov: '',
             external_edu: '',
             tf: '',
             cf: '',
+            refd: '',
+            refd_edu: '',
+            refd_gov: '',
         },
 
     }),
@@ -807,11 +948,14 @@ export default {
                             type: 'error'
                         });
                     }
-                    this.majestic.external_backlinks = responseData.ExtBackLinks;
-                    this.majestic.external_gov = responseData.ExtBackLinksGOV;
-                    this.majestic.external_edu = responseData.ExtBackLinksEDU;
-                    this.majestic.tf = responseData.TrustFlow;
-                    this.majestic.cf = responseData.CitationFlow;
+                    this.majestic.external_backlinks = responseData.ebl;
+                    this.majestic.external_gov = responseData.ebl_gov;
+                    this.majestic.external_edu = responseData.ebl_edu;
+                    this.majestic.refd = responseData.refd;
+                    this.majestic.refd_edu = responseData.refd_edu;
+                    this.majestic.refd_gov = responseData.refd_gov;
+                    this.majestic.tf = responseData.tf;
+                    this.majestic.cf = responseData.cf;
                     this.fillMajesticLoading = false;
                 }
             } catch (error) {
@@ -828,13 +972,13 @@ export default {
                     this.fillMozAlexaSrLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
                     const responseData = response?.data;
+                    console.log(responseData);
                     if (ErrorStatus.includes(responseData)) {
                         this.setNotification({
                             message: "Status: " + responseData,
                             type: 'error'
                         });
                     }
-                    console.log(responseData);
                     this.moz.pa = responseData.pa !== 'notfound' ? responseData.pa : '';
                     this.moz.da = responseData.da !== 'notfound' ? responseData.da : '';
                     this.moz.mozrank = responseData.mozrank !== 'notfound' ? responseData.mozrank : '';
@@ -849,6 +993,10 @@ export default {
                     this.semrush.keyword_num = responseData.sr_kwords !== 'notfound' ? responseData.sr_kwords : '';
                     this.semrush.traffic = responseData.sr_traffic !== 'notfound' ? responseData.sr_traffic : '';
                     this.semrush.traffic_costs = responseData.sr_costs !== 'notfound' ? responseData.sr_costs : '';
+
+                    this.fb.fb_comments = responseData.fb_comments;
+                    this.fb.fb_reac = responseData.fb_reac;
+                    this.fb.fb_shares = responseData.fb_shares;
                     this.fillMozAlexaSrLoading = false;
                 }
             } catch (error) {
@@ -885,12 +1033,14 @@ export default {
                         moz: this.moz,
                         alexa: this.alexa,
                         semrush: this.semrush,
-                        majestic: this.majestic
+                        majestic: this.majestic,
+                        fb: this.fb
                     });
                     this.setNotification({
                         message: 'Website was added!',
                         type: 'success'
                     });
+                    this.ma = this.dr = this.organicTraffic = '';
                     this.websiteUrl = this.description = this.wherePosted = '';
                     this.topics = [];
                     this.deadLine = 1;
@@ -915,7 +1065,13 @@ export default {
                         this.majestic.tf =
                         this.majestic.external_backlinks =
                         this.majestic.external_edu =
-                        this.majestic.external_gov = '';
+                        this.majestic.external_gov =
+                        this.majestic.refd =
+                        this.majestic.refd_edu =
+                        this.majestic.refd_gov = '';
+                    this.fb.fb_comments =
+                        this.fb.fb_reac =
+                        this.fb.fb_shares = '';
                     this.$v.$reset();
                 } catch (error) {
                     this.setNotification({
@@ -1328,7 +1484,73 @@ export default {
             !this.$v.majestic.cf.maxValue &&
             errors.push('CF must be less than 100!');
             return errors;
-        }
+        },
+        majesticRefDErrors() {
+            const errors = [];
+            if (!this.$v.majestic.refd.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.refd.required &&
+                errors.push('RefD is required!');
+            !this.$v.majestic.refd.minValue &&
+                errors.push('RefD must be more than 0!');
+            return errors;
+        },
+        majesticRefDEduErrors() {
+            const errors = [];
+            if (!this.$v.majestic.refd_edu.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.refd_edu.required &&
+                errors.push('RefD_EDU is required!');
+            !this.$v.majestic.refd_edu.minValue &&
+                errors.push('RefD_EDU must be more than 0!');
+            return errors;
+        },
+        majesticRefDGovErrors() {
+            const errors = [];
+            if (!this.$v.majestic.refd_gov.$dirty) {
+                return errors;
+            }
+            !this.$v.majestic.refd_gov.required &&
+                errors.push('RefD_GOV is required!');
+            !this.$v.majestic.refd_gov.minValue &&
+                errors.push('RefD_GOV must be more than 0!');
+            return errors;
+        },
+        fbCommentsErrors() {
+            const errors = [];
+            if (!this.$v.fb.fb_comments.$dirty) {
+                return errors;
+            }
+            !this.$v.fb.fb_comments.required &&
+                errors.push('FB Comments are required!');
+            !this.$v.fb.fb_comments.minValue &&
+                errors.push('FB Comments must be more than 0!');
+            return errors;
+        },
+        fbReacErrors() {
+            const errors = [];
+            if (!this.$v.fb.fb_reac.$dirty) {
+                return errors;
+            }
+            !this.$v.fb.fb_reac.required &&
+                errors.push('FB Reac are required!');
+            !this.$v.fb.fb_reac.minValue &&
+                errors.push('FB Reac must be more than 0!');
+            return errors;
+        },
+        fbSharesErrors() {
+            const errors = [];
+            if (!this.$v.fb.fb_shares.$dirty) {
+                return errors;
+            }
+            !this.$v.fb.fb_shares.required &&
+            errors.push('FB Shares are required!');
+            !this.$v.fb.fb_shares.minValue &&
+            errors.push('FB Shares must be more than 0!');
+            return errors;
+        },
     }
 }
 </script>
