@@ -34,7 +34,6 @@ final class AddPlatformRequest
     private int $alexaCountryRank;
     private float $semrushRank;
     private float $semrushKeywordNum;
-    private int $semrushTraffic;
     private int $semrushTrafficCosts;
     private int $fbComments;
     private int $fbReac;
@@ -109,7 +108,6 @@ final class AddPlatformRequest
         $this->alexaCountryRank = (int)$alexa['country_rank'];
         $this->semrushRank = (float)$semrush['rank'];
         $this->semrushKeywordNum = (int)$semrush['keyword_num'];
-        $this->semrushTraffic = (int)$semrush['traffic'];
         $this->semrushTrafficCosts = (int)$semrush['traffic_costs'];
         $this->fbComments = (int)$fb['fb_comments'];
         $this->fbReac = (int)$fb['fb_reac'];
@@ -306,11 +304,6 @@ final class AddPlatformRequest
     public function getSemrushKeywordNum(): float
     {
         return $this->semrushKeywordNum;
-    }
-
-    public function getSemrushTraffic(): int
-    {
-        return $this->semrushTraffic;
     }
 
     public function getSemrushTrafficCosts(): int

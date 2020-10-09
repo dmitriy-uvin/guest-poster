@@ -74,7 +74,6 @@ final class AddPlatformAction
             'platform_id' => $platform->id,
             'rank' => $request->getSemrushRank(),
             'keyword_num' => $request->getSemrushKeywordNum(),
-            'traffic' => $request->getSemrushTraffic(),
             'traffic_costs' => $request->getSemrushTrafficCosts(),
         ]);
         $semrush->save();

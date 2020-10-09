@@ -178,16 +178,17 @@ final class GetPlatformCollectionAction
             });
         }
 
-        if ($request->getSemRushTrafficFrom()) {
-            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-                $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
-            });
-        }
-        if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
-            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-                $query->where('traffic', '<=', $request->getSemRushTrafficTo());
-            });
-        }
+        // TODO: Implement filter by traffic not SemRush traffic
+//        if ($request->getSemRushTrafficFrom()) {
+//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
+//                $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
+//            });
+//        }
+//        if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
+//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
+//                $query->where('traffic', '<=', $request->getSemRushTrafficTo());
+//            });
+//        }
 
         if ($request->getSemRushTrafficCostsFrom()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
