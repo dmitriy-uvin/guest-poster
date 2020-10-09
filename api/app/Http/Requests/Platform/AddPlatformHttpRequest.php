@@ -35,6 +35,7 @@ class AddPlatformHttpRequest extends ApiFormRequest
             'alexa' => 'required',
             'alexa.rank' => 'required|numeric',
             'alexa.country' => 'required|string',
+            'alexa.country_rank' => 'required|numeric',
             'semrush' => 'required',
             'semrush.keyword_num' => 'required|integer',
             'semrush.rank' => 'required|numeric',
