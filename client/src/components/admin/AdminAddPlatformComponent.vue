@@ -8,7 +8,7 @@
                 <div class="mt-6">
                     <h2>General Information</h2>
                     <VRow>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="6">
                             <VTextField
                                 outlined
                                 label="Website URL"
@@ -18,7 +18,7 @@
                                 :error-messages="websiteUrlErrors"
                             ></VTextField>
                         </VCol>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="6">
                             <VSelect
                                 id="custom-combobox"
                                 outlined
@@ -33,7 +33,7 @@
                         </VCol>
                     </VRow>
                     <VRow>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="6">
                             <VTextarea
                                 outlined
                                 no-resize
@@ -43,7 +43,7 @@
                                 :error-messages="descriptionErrors"
                             ></VTextarea>
                         </VCol>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="6">
                             <VTextarea
                                 outlined
                                 no-resize
@@ -55,7 +55,7 @@
                         </VCol>
                     </VRow>
                     <VRow>
-                        <VCol cols="12" md="5">
+                        <VCol cols="12" md="6">
                             <VTextarea
                                 outlined
                                 no-resize
@@ -67,15 +67,6 @@
                         </VCol>
                     </VRow>
                     <VRow>
-                        <VCol cols="12" md="2">
-                            <VTextField
-                                outlined
-                                label="Price"
-                                prepend-inner-icon="mdi-currency-usd"
-                                v-model="price"
-                                :error-messages="priceErrors"
-                            ></VTextField>
-                        </VCol>
                         <VCol cols="12" md="2">
                             <VTextField
                                 outlined
@@ -158,7 +149,7 @@
                                 <VSwitch inset v-model="doFollow"></VSwitch>
                             </div>
                         </VCol>
-                        <VCol cols="12" md="2">
+                        <VCol cols="12" md="3">
                             <div class="d-flex justify-space-between">
                                 <span class="d-flex align-center">Free Home Featured</span>
                                 <VSwitch inset v-model="freeHomeFeatured"></VSwitch>
@@ -177,11 +168,31 @@
                         <VCol cols="12" md="2">
                             <VTextField
                                 outlined
+                                label="Price"
+                                prepend-inner-icon="mdi-currency-usd"
+                                v-model="price"
+                                :error-messages="priceErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTextField
+                                outlined
                                 label="Article Writing Price"
                                 append-icon="mdi-currency-usd"
+                                readonly
                                 v-model="articleWritingPrice"
+                                :error-messages="articleWritingPriceErrors"
                             >
                             </VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTextField
+                                outlined
+                                label="Niche Edit Link Difference"
+                                :disabled="!nicheEditLink"
+                                v-model="nicheEditLinkDifference"
+                                :error-messages="nicheEditLinkDifferenceErrors"
+                            ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
                             <VTextField
@@ -189,7 +200,9 @@
                                 label="Niche Edit Link Price"
                                 append-icon="mdi-currency-usd"
                                 :disabled="!nicheEditLink"
+                                readonly
                                 v-model="nicheEditLinkPrice"
+                                :error-messages="nicheEditLinkPriceErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -588,7 +601,12 @@ import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
-import { required, minLength, maxLength, email, minValue, maxValue, url } from 'vuelidate/lib/validators';
+import {
+    required, minLength,
+    maxLength, email,
+    minValue, maxValue,
+    url, requiredIf
+} from 'vuelidate/lib/validators';
 import requestExternalService from '@/services/requestExternalService';
 import { ErrorStatus } from '@/services/requestExternalService';
 
@@ -607,6 +625,7 @@ export default {
         articleRequirements: { required, maxLength: maxLength(255) },
         wherePosted: { required, maxLength: maxLength(255) },
         deadLine: { required, minValue: minValue(1), maxValue: maxValue(60) },
+        articleWritingPrice: { required },
         moz: {
             da: {
                 required, minValue: minValue(0), maxValue: maxValue(100)
@@ -662,7 +681,17 @@ export default {
         },
         email: { required, email },
         contacts: { maxLength: maxLength(255) },
-        comment: { maxLength: maxLength(255) }
+        comment: { maxLength: maxLength(255) },
+        nicheEditLinkPrice: {
+            required: requiredIf(function(){
+                return this.nicheEditLink;
+            })
+        },
+        nicheEditLinkDifference: {
+            required: requiredIf(function(){
+                return this.nicheEditLink;
+            })
+        }
     },
     data: () => ({
         fillMozAlexaSrLoading: false,
@@ -680,8 +709,9 @@ export default {
         doFollow: false,
         freeHomeFeatured: true,
         nicheEditLink: false,
-        articleWritingPrice: 0,
-        nicheEditLinkPrice: 0,
+        articleWritingPrice: '',
+        nicheEditLinkPrice: '',
+        nicheEditLinkDifference: '',
         email: '',
         contacts: '',
         comment: '',
@@ -707,7 +737,8 @@ export default {
             external_edu: '',
             tf: '',
             cf: '',
-        }
+        },
+
     }),
     methods: {
         ...mapActions('platforms', {
@@ -853,6 +884,31 @@ export default {
     watch: {
         websiteUrl(newValue) {
             this.websiteUrl = newValue.replace(/[^0-9a-zA-Z:.\\/_-]/, '');
+        },
+        price(newPrice) {
+            if (Number(this.price) * 0.2 < 30) {
+                this.articleWritingPrice = Number(this.price) + 30;
+            } else {
+                this.articleWritingPrice = Number(this.price) * 1.2;
+            }
+            if (newPrice === '') this.articleWritingPrice = '';
+
+            if (this.nicheEditLink) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+                if (newPrice === '') this.nicheEditLinkPrice = '';
+            }
+        },
+        nicheEditLinkDifference() {
+            if (this.nicheEditLink && this.price) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+            }
+        },
+        nicheEditLink() {
+            if (this.nicheEditLink) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+            } else {
+                this.nicheEditLinkPrice = '';
+            }
         }
     },
     async mounted() {
@@ -993,6 +1049,33 @@ export default {
             }
             !this.$v.organicTraffic.required &&
                 errors.push('Organic Traffic is required!');
+            return errors;
+        },
+        nicheEditLinkPriceErrors() {
+            const errors = [];
+            if (!this.$v.nicheEditLinkPrice.$dirty) {
+                return errors;
+            }
+            !this.$v.nicheEditLinkPrice.required &&
+            errors.push('Niche Edit Link Price is required!');
+            return errors;
+        },
+        nicheEditLinkDifferenceErrors() {
+            const errors = [];
+            if (!this.$v.nicheEditLinkDifference.$dirty) {
+                return errors;
+            }
+            !this.$v.nicheEditLinkDifference.required &&
+                errors.push('Niche Edit Link Difference is required!');
+            return errors;
+        },
+        articleWritingPriceErrors() {
+            const errors = [];
+            if (!this.$v.articleWritingPrice.$dirty) {
+                return errors;
+            }
+            !this.$v.articleWritingPrice.required &&
+                errors.push('Article Writing Price is required!');
             return errors;
         },
 
