@@ -59,7 +59,7 @@ final class PlatformController extends ApiController
             )
         );
 
-        return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
+        return $this->emptyResponse();
     }
 
     public function getPlatformCollection(PaginatedHttpRequest $request)
