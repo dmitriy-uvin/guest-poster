@@ -100,7 +100,6 @@ final class GetPlatformCollectionAction
                 $query->where('da', '>=', $request->getMozDaFrom());
             });
         }
-
         if ($request->getMozDaFrom() < $request->getMozDaTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('da', '<=', $request->getMozDaTo());
@@ -112,7 +111,6 @@ final class GetPlatformCollectionAction
                 $query->where('pa', '>=', $request->getMozPaFrom());
             });
         }
-
         if ($request->getMozPaFrom() < $request->getMozPaTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('pa', '<=', $request->getMozPaTo());
@@ -124,7 +122,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getMozRankFrom());
             });
         }
-
         if ($request->getMozRankFrom() < $request->getMozRankTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('rank', '<=', $request->getMozRankTo());
@@ -136,7 +133,6 @@ final class GetPlatformCollectionAction
                 $query->where('links_in', '>=', $request->getMozLinksInFrom());
             });
         }
-
         if ($request->getMozLinksInFrom() < $request->getMozLinksInTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('links_in', '<=', $request->getMozLinksInTo());
@@ -148,7 +144,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getAlexaRankFrom());
             });
         }
-
         if ($request->getAlexaRankFrom() < $request->getAlexaRankTo()) {
             $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
                 $query->where('rank', '<=', $request->getAlexaRankTo());
@@ -166,7 +161,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getSemRushRankFrom());
             });
         }
-
         if ($request->getSemRushRankFrom() < $request->getSemRushRankTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('rank', '<=', $request->getSemRushRankTo());
@@ -178,7 +172,6 @@ final class GetPlatformCollectionAction
                 $query->where('keyword_num', '>=', $request->getSemRushKeywordNumFrom());
             });
         }
-
         if ($request->getSemRushKeywordNumFrom() < $request->getSemRushKeywordNumTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('keyword_num', '<=', $request->getSemRushKeywordNumTo());
@@ -190,7 +183,6 @@ final class GetPlatformCollectionAction
                 $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
             });
         }
-
         if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('traffic', '<=', $request->getSemRushTrafficTo());
@@ -202,7 +194,6 @@ final class GetPlatformCollectionAction
                 $query->where('traffic_costs', '>=', $request->getSemRushTrafficCostsFrom());
             });
         }
-
         if ($request->getSemRushTrafficCostsFrom() < $request->getSemRushTrafficCostsTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('traffic_costs', '<=', $request->getSemRushTrafficCostsTo());
@@ -214,7 +205,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_backlinks', '>=', $request->getMajesticExtBacklinksFrom());
             });
         }
-
         if ($request->getMajesticExtBacklinksFrom() < $request->getMajesticExtBacklinksTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_backlinks', '<=', $request->getMajesticExtBacklinksTo());
@@ -226,7 +216,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_gov', '>=', $request->getMajesticExtGovFrom());
             });
         }
-
         if ($request->getMajesticExtGovFrom() < $request->getMajesticExtGovTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_gov', '<=', $request->getMajesticExtGovTo());
@@ -238,7 +227,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_edu', '>=', $request->getMajesticExtEduFrom());
             });
         }
-
         if ($request->getMajesticExtEduFrom() < $request->getMajesticExtEduTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_edu', '<=', $request->getMajesticExtEduTo());
@@ -250,7 +238,6 @@ final class GetPlatformCollectionAction
                 $query->where('cf', '>=', $request->getMajesticCfFrom());
             });
         }
-
         if ($request->getMajesticCfFrom() < $request->getMajesticCfTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('cf', '<=', $request->getMajesticCfTo());
@@ -262,7 +249,6 @@ final class GetPlatformCollectionAction
                 $query->where('tf', '>=', $request->getMajesticTfFrom());
             });
         }
-
         if ($request->getMajesticTfFrom() < $request->getMajesticTfTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('tf', '<=', $request->getMajesticTfTo());
