@@ -40,7 +40,6 @@ class AddPlatformHttpRequest extends ApiFormRequest
             'semrush' => 'required',
             'semrush.keyword_num' => 'required|integer',
             'semrush.rank' => 'required|numeric',
-            'semrush.traffic' => 'required|integer',
             'semrush.traffic_costs' => 'required|integer',
             'fb.fb_comments' => 'required|integer',
             'fb.fb_reac' => 'required|integer',
