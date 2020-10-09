@@ -28,6 +28,9 @@ class MajesticFactory extends Factory
             'external_edu' => $this->faker->numberBetween(0),
             'tf' => $this->faker->numberBetween(0, 100),
             'cf' => $this->faker->numberBetween(0, 100),
+            'refd' => $this->faker->numberBetween(0),
+            'refd_edu' => $this->faker->numberBetween(0),
+            'refd_gov' => $this->faker->numberBetween(0),
         ];
     }
 }

@@ -21,6 +21,9 @@ class CreateMajesticTable extends Migration
             $table->integer('external_edu');
             $table->integer('tf');
             $table->integer('cf');
+            $table->integer('refd');
+            $table->integer('refd_edu');
+            $table->integer('refd_gov');
 
             $table
                 ->foreign('platform_id')

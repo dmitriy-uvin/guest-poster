@@ -21,7 +21,8 @@ class CreatePlatformTopicsTable extends Migration
             $table
                 ->foreign('platform_id')
                 ->references('id')
-                ->on('platforms');
+                ->on('platforms')
+                ->onDelete('cascade');
 
             $table
                 ->foreign('topic_id')
