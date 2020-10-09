@@ -20,7 +20,6 @@ class PlatformSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(TopicSeeder::class);
         Platform::factory(10)->create()->each(function ($platform) {
             $platform->topics()->attach(random_int(1, 32));
             $platform->topics()->attach(random_int(1, 32));
