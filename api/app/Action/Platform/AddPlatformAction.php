@@ -64,6 +64,7 @@ final class AddPlatformAction
             'platform_id' => $platform->id,
             'rank' => $request->getAlexaRank(),
             'country' => $request->getAlexaCountry(),
+            'country_rank' => $request->getAlexaCountryRank()
         ]);
         $alexa->save();
 

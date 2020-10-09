@@ -30,6 +30,7 @@ final class AddPlatformRequest
     private float $mozRank;
     private float $alexaRank;
     private string $alexaCountry;
+    private int $alexaCountryRank;
     private float $semrushRank;
     private float $semrushKeywordNum;
     private int $semrushTraffic;
@@ -96,6 +97,7 @@ final class AddPlatformRequest
         $this->mozLinksIn = (int)$moz['links_in'];
         $this->alexaRank = (float)$alexa['rank'];
         $this->alexaCountry = $alexa['country'];
+        $this->alexaCountryRank = (int)$alexa['country_rank'];
         $this->semrushRank = (float)$semrush['rank'];
         $this->semrushKeywordNum = (int)$semrush['keyword_num'];
         $this->semrushTraffic = (int)$semrush['traffic'];
@@ -251,67 +253,72 @@ final class AddPlatformRequest
         return $this->mozPA;
     }
 
-    public function getMozLinksIn()
+    public function getMozLinksIn(): int
     {
         return $this->mozLinksIn;
     }
 
-    public function getMozRank()
+    public function getMozRank(): float
     {
         return $this->mozRank;
     }
 
-    public function getAlexaRank()
+    public function getAlexaRank(): float
     {
         return $this->alexaRank;
     }
 
-    public function getAlexaCountry()
+    public function getAlexaCountry(): string
     {
         return $this->alexaCountry;
     }
 
-    public function getSemrushRank()
+    public function getAlexaCountryRank(): int
+    {
+        return $this->alexaCountryRank;
+    }
+
+    public function getSemrushRank(): float
     {
         return $this->semrushRank;
     }
 
-    public function getSemrushKeywordNum()
+    public function getSemrushKeywordNum(): float
     {
         return $this->semrushKeywordNum;
     }
 
-    public function getSemrushTraffic()
+    public function getSemrushTraffic(): int
     {
         return $this->semrushTraffic;
     }
 
-    public function getSemrushTrafficCosts()
+    public function getSemrushTrafficCosts(): int
     {
         return $this->semrushTrafficCosts;
     }
 
-    public function getMajesticExternalBacklinks()
+    public function getMajesticExternalBacklinks(): int
     {
         return $this->majesticExternalBacklinks;
     }
 
-    public function getMajesticExternalGov()
+    public function getMajesticExternalGov(): int
     {
         return $this->majesticExternalGov;
     }
 
-    public function getMajesticExternalEdu()
+    public function getMajesticExternalEdu(): int
     {
         return $this->majesticExternalEdu;
     }
 
-    public function getMajesticTF()
+    public function getMajesticTF(): int
     {
         return $this->majesticTF;
     }
 
-    public function getMajesticCF()
+    public function getMajesticCF(): int
     {
         return $this->majesticCF;
     }
