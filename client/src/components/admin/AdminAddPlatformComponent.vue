@@ -178,7 +178,7 @@
                             <VTextField
                                 outlined
                                 label="Article Writing Price"
-                                append-icon="mdi-currency-usd"
+                                prepend-inner-icon="mdi-currency-usd"
                                 readonly
                                 v-model="articleWritingPrice"
                                 :error-messages="articleWritingPriceErrors"
@@ -189,6 +189,7 @@
                             <VTextField
                                 outlined
                                 label="Niche Edit Link Difference"
+                                append-icon="mdi-currency-usd"
                                 :disabled="!nicheEditLink"
                                 v-model="nicheEditLinkDifference"
                                 :error-messages="nicheEditLinkDifferenceErrors"

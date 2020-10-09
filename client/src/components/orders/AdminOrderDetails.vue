@@ -154,7 +154,7 @@
                     <td class="text-center">{{ platform.id }}</td>
                     <td>
                         <div class="guest__col-wrap">
-                            {{ platform.websiteUrl }}
+                            {{ deleteProtocol(platform.websiteUrl) }}
                             <a href="#" class="guest__web">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" xmlns:v="https://vecta.io/nano"><path d="M7.333 0v1.333h2.393L3.173 7.887l.94.94 6.553-6.553v2.393H12V0H7.333zm3.333 10.667H1.333V1.333H6V0H1.333C.98 0 .64.14.39.39S0 .98 0 1.333v9.333c0 .354.14.693.39.943s.59.4.943.4h9.333c.354 0 .693-.14.943-.4s.4-.59.4-.943V6h-1.333v4.667z" fill="#bdbdbd"/></svg>
                             </a>
@@ -283,7 +283,7 @@
                         </div>
                         <div>
                             <p class="mb-0">
-                                <a :href="'https://' + removeProtocol(order.user.website)" target="_blank">{{ order.user.website }}</a>
+                                <a :href="getProtocol(order.user.website) + deleteProtocol(order.user.website)" target="_blank">{{ deleteProtocol(order.user.website) }}</a>
                             </p>
                             <span class="website">Website</span>
                         </div>
