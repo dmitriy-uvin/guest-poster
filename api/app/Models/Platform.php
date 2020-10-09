@@ -73,4 +73,9 @@ class Platform extends Model
     {
         return $this->hasOne(Ahrefs::class);
     }
+
+    public function facebook()
+    {
+        return $this->hasOne(Facebook::class);
+    }
 }

@@ -19,6 +19,9 @@ class Majestic extends Model
         'external_edu',
         'tf',
         'cf',
+        'refd',
+        'refd_edu',
+        'refd_gov',
     ];
 
     public function platform()
