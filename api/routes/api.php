@@ -37,8 +37,10 @@ Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTop
 Route::group([
     'prefix' => 'platforms',
 ], function () {
-    Route::post('/store', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform'])->middleware('admin');
-    Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])->middleware('auth:api');
+    Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform'])
+        ->middleware('admin');
+    Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])
+        ->middleware('auth:api');
 });
 
 Route::group([
