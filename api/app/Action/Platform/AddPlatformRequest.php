@@ -27,6 +27,7 @@ final class AddPlatformRequest
     private int $mozDA;
     private int $mozPA;
     private int $mozLinksIn;
+    private int $mozEquity;
     private float $mozRank;
     private float $alexaRank;
     private string $alexaCountry;
@@ -95,6 +96,7 @@ final class AddPlatformRequest
         $this->mozPA = (int)$moz['pa'];
         $this->mozRank = (float)$moz['mozrank'];
         $this->mozLinksIn = (int)$moz['links_in'];
+        $this->mozEquity = (int)$moz['equity'];
         $this->alexaRank = (float)$alexa['rank'];
         $this->alexaCountry = $alexa['country'];
         $this->alexaCountryRank = (int)$alexa['country_rank'];
@@ -261,6 +263,11 @@ final class AddPlatformRequest
     public function getMozRank(): float
     {
         return $this->mozRank;
+    }
+
+    public function getMozEquity(): int
+    {
+        return $this->mozEquity;
     }
 
     public function getAlexaRank(): float

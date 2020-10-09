@@ -57,6 +57,7 @@ final class AddPlatformAction
             'da' => $request->getMozDA(),
             'rank' => $request->getMozRank(),
             'links_in' => $request->getMozLinksIn(),
+            'equity' => $request->getMozEquity()
         ]);
         $moz->save();
 
