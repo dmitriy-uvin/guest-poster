@@ -340,6 +340,26 @@
                                 :error-messages="alexaCountryErrors"
                             ></VTextField>
                         </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Country Rank</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Country Rank</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Country Rank"
+                                v-model="alexa.country_rank"
+                                :error-messages="alexaCountryRankErrors"
+                            ></VTextField>
+                        </VCol>
                     </VRow>
 
                     <h4 class="mt-4">SemRush</h4>
@@ -647,6 +667,9 @@ export default {
             },
             country: {
                 required
+            },
+            country_rank: {
+                required, minValue: minValue(1)
             }
         },
         semrush: {
@@ -724,7 +747,8 @@ export default {
         },
         alexa: {
             rank: '',
-            country: ''
+            country: '',
+            country_rank: ''
         },
         semrush: {
             rank: '',
@@ -795,6 +819,7 @@ export default {
 
                     this.alexa.rank = responseData.a_rank !== 'N/A' ? responseData.a_rank : '';
                     this.alexa.country = responseData.a_cnt !== 'N/A' ? responseData.a_cnt : '';
+                    this.alexa.country_rank = responseData.a_cnt_r !== 'N/A' ? responseData.a_cnt_r : '';
 
                     this.semrush.rank = responseData.sr_rank !== 'notfound' ? responseData.sr_rank : '';
                     this.semrush.keyword_num = responseData.sr_kwords !== 'notfound' ? responseData.sr_kwords : '';
@@ -857,7 +882,8 @@ export default {
                         this.moz.mozrank =
                         this.moz.links_in = '';
                     this.alexa.rank =
-                        this.alexa.country = '';
+                        this.alexa.country =
+                        this.alexa.country_rank = '';
                     this.semrush.traffic =
                         this.semrush.traffic_costs =
                         this.semrush.rank =
@@ -1080,7 +1106,7 @@ export default {
             return errors;
         },
 
-        // mozErrors
+        // MOZErrors
         mozDaErrors() {
             const errors = [];
             if (!this.$v.moz.da.$dirty) {
@@ -1130,7 +1156,7 @@ export default {
             return errors;
         },
 
-        // alexaErrors
+        // AlexaErrors
         alexaRankErrors() {
             const errors = [];
             if (!this.$v.alexa.rank.$dirty) {
@@ -1151,8 +1177,19 @@ export default {
                 errors.push('Country is required!');
             return errors;
         },
+        alexaCountryRankErrors() {
+            const errors = [];
+            if (!this.$v.alexa.country_rank.$dirty) {
+                return errors;
+            }
+            !this.$v.alexa.country_rank.required &&
+                errors.push('Country Rank is required!');
+            !this.$v.alexa.country_rank.minValue &&
+                errors.push('Country Rank must be more than 1!');
+            return errors;
+        },
 
-        // semrushErrors
+        // SemRushErrors
         semrushRankErrors() {
             const errors = [];
             if (!this.$v.semrush.rank.$dirty) {
@@ -1198,7 +1235,7 @@ export default {
             return errors;
         },
 
-        // majesticErrors
+        // MajesticErrors
         majesticExternalBacklinksErrors() {
             const errors = [];
             if (!this.$v.majestic.external_backlinks.$dirty) {
