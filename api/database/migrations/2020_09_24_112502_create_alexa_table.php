@@ -18,6 +18,7 @@ class CreateAlexaTable extends Migration
             $table->unsignedBigInteger('platform_id');
             $table->float('rank');
             $table->string('country');
+            $table->integer('country_rank');
 
             $table
                 ->foreign('platform_id')
