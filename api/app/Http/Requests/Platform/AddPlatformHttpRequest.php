@@ -32,6 +32,7 @@ class AddPlatformHttpRequest extends ApiFormRequest
             'moz.pa' => 'required|integer',
             'moz.links_in' => 'required|integer',
             'moz.mozrank' => 'required|numeric',
+            'moz.equity' => 'required|numeric',
             'alexa' => 'required',
             'alexa.rank' => 'required|numeric',
             'alexa.country' => 'required|string',
