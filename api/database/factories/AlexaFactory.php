@@ -24,7 +24,8 @@ class AlexaFactory extends Factory
     {
         return [
             'rank' => $this->faker->randomFloat(1, 0, 10),
-            'country' => $this->faker->country
+            'country' => $this->faker->countryCode,
+            'country_rank' => $this->faker->numberBetween(1)
         ];
     }
 }
