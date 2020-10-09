@@ -55,7 +55,8 @@ final class PlatformController extends ApiController
                 $request->description,
                 $request->article_requirements,
                 (int)$request->deadline,
-                $request->where_posted
+                $request->where_posted,
+                $request->fb
             )
         );
 
