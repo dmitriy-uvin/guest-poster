@@ -31,7 +31,7 @@ final class PlatformController extends ApiController
 
     public function savePlatform(AddPlatformHttpRequest $request)
     {
-        $response = $this->addPlatformAction->execute(
+        $this->addPlatformAction->execute(
             new AddPlatformRequest(
                 $request->website_url,
                 (int)$request->dr,
