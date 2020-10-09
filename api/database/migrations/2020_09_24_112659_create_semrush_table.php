@@ -18,7 +18,6 @@ class CreateSemrushTable extends Migration
             $table->unsignedBigInteger('platform_id');
             $table->float('rank');
             $table->integer('keyword_num');
-            $table->integer('traffic');
             $table->integer('traffic_costs');
 
             $table
