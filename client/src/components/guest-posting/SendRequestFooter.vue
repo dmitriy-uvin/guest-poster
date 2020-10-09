@@ -169,7 +169,7 @@
                         </VBtn>
                     </VToolbarItems>
                 </VToolbar>
-                <VCardText class="mt-8 container" v-if="platforms.length">
+                <VCardText class="mt-8 mb-16 container" v-if="platforms.length">
                     <h1 class="mb-4">PLATFORMS WHICH YOU SELECTED</h1>
                     <span class="text-black">{{ platforms.length }} platforms</span>
 
@@ -449,12 +449,14 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: white;
     box-shadow:
         0px 2px 4px 4px rgba(0, 0, 0, 0.2),
         0px 4px 5px 5px rgba(0, 0, 0, 0.14),
         0px 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
+}
+.action-buttons {
+    background: #fff;
 }
 .text-black {
     color: #000;
