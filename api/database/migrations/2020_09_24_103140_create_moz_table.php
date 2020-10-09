@@ -20,6 +20,7 @@ class CreateMozTable extends Migration
             $table->integer('da');
             $table->double('rank');
             $table->integer('links_in');
+            $table->integer('equity');
 
             $table
                 ->foreign('platform_id')

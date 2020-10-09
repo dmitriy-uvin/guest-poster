@@ -26,7 +26,8 @@ class MozFactory extends Factory
             'pa' => $this->faker->numberBetween(0, 100),
             'da' => $this->faker->numberBetween(0, 100),
             'rank' => $this->faker->randomFloat(1, 0, 10),
-            'links_in' => $this->faker->numberBetween(0)
+            'links_in' => $this->faker->numberBetween(0),
+            'equity' => $this->faker->numberBetween(1)
         ];
     }
 }
