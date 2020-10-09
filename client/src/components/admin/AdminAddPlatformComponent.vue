@@ -531,9 +531,9 @@
                         </VCol>
                     </VRow>
                     <VBtn
-                        @click="fillMozAlexaSr"
+                        @click="fillMozAlexaSrFb"
                         color="primary"
-                        :loading="fillMozAlexaSrLoading"
+                        :loading="fillMozAlexaSrFbLoading"
                         :disabled="!websiteUrl"
                     >
                         Fill Fields
@@ -872,7 +872,7 @@ export default {
         }
     },
     data: () => ({
-        fillMozAlexaSrLoading: false,
+        fillMozAlexaSrFbLoading: false,
         fillMajesticLoading: false,
         websiteUrl: '',
         dr: '',
@@ -966,10 +966,10 @@ export default {
                 this.fillMajesticLoading = false;
             }
         },
-        async fillMozAlexaSr() {
+        async fillMozAlexaSrFb() {
             try {
                 if (this.websiteUrl) {
-                    this.fillMozAlexaSrLoading = true;
+                    this.fillMozAlexaSrFbLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
                     const responseData = response?.data;
                     console.log(responseData);
@@ -997,14 +997,14 @@ export default {
                     this.fb.fb_comments = responseData.fb_comments;
                     this.fb.fb_reac = responseData.fb_reac;
                     this.fb.fb_shares = responseData.fb_shares;
-                    this.fillMozAlexaSrLoading = false;
+                    this.fillMozAlexaSrFbLoading = false;
                 }
             } catch (error) {
                 this.setNotification({
                     message: error,
                     type: 'error'
                 });
-                this.fillMozAlexaSrLoading = false;
+                this.fillMozAlexaSrFbLoading = false;
             }
         },
         async onSave() {
