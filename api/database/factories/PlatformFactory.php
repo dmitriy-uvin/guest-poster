@@ -38,7 +38,10 @@ class PlatformFactory extends Factory
             'article_requirements' => $this->faker->sentence(5),
             'deadline' => $this->faker->numberBetween(1, 60),
             'where_posted' => $this->faker->sentence(5),
-            'domain_zone' => $this->faker->domainName
+            'domain_zone' => $this->faker->domainName,
+            'trust' => $this->faker->numberBetween(10, 100),
+            'spam' => $this->faker->randomFloat(2, 0, 100),
+            'lrt_power_trust' => $this->faker->numberBetween(10, 100),
         ];
     }
 }
