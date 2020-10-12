@@ -17,15 +17,18 @@ class Platform extends Model
         'niche_edit_link_active',
         'article_writing_price',
         'niche_edit_link_price',
-        'contacts',
         'price',
+        'deadline',
+        'domain_zone',
         'email',
         'comment',
+        'contacts',
         'description',
         'article_requirements',
-        'deadline',
         'where_posted',
-        'domain_zone'
+        'trust',
+        'spam',
+        'lrt_power_trust',
     ];
 
     protected $with = [
