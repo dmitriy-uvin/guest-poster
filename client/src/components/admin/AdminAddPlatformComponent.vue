@@ -16,6 +16,7 @@
                                 v-model="websiteUrl"
                                 @keydown="onWebsiteUrlKeydown"
                                 :error-messages="websiteUrlErrors"
+                                @input="onSetWebsite"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="6">
@@ -148,6 +149,78 @@
                     <VSpacer></VSpacer>
 
                     <h2>SEO characteristics</h2>
+                    <VRow>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Trust</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Trust</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Trust"
+                                v-model="trust"
+                                :error-messages="trustErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Spam</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Spam</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Spam"
+                                v-model="spam"
+                                :error-messages="spamErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>LRT PowerTrust</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip LRT PowerTrust</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="PowerTrust"
+                                v-model="lrtPowerTrust"
+                                :error-messages="lrtPowerTrustErrors"
+                            ></VTextField>
+                        </VCol>
+                    </VRow>
+                    <VBtn
+                        @click="onFillBasicData"
+                        color="primary"
+                        depressed
+                        :disabled="!websiteUrl"
+                        :loading="checkTrustLoading"
+                    >
+                        Fill data
+                    </VBtn>
+
                     <h4 class="mt-4">MOZ</h4>
                     <VDivider />
                     <VRow>
@@ -704,19 +777,29 @@ import * as getters from '@/store/modules/platforms/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 import { validationMixin } from 'vuelidate';
 import {
-    required, minLength,
+    required,
     maxLength, email,
     minValue, maxValue,
     url, requiredIf
 } from 'vuelidate/lib/validators';
 import requestExternalService from '@/services/requestExternalService';
-import { ErrorStatus } from '@/services/requestExternalService';
+import { ErrorStatus, PropertyNotFound } from '@/services/requestExternalService';
+
+const min_value = function(value) {
+    const regex = new RegExp(/[-0-9]+/);
+    if (regex.test(value) && Number(value) >= 0) {
+        return true;
+    } else if(value === 'N/A'){
+        return true
+    }
+    return false;
+};
 
 export default {
     name: 'AdminAddPlatformComponent',
     mixins: [validationMixin],
     validations: {
-        websiteUrl: { required, minLength: minLength(5), url },
+        websiteUrl: { required, url },
         organicTraffic: { required },
         topics: { required },
         price: { minValue: minValue(0), required },
@@ -727,67 +810,67 @@ export default {
         articleWritingPrice: { required },
         moz: {
             da: {
-                required, minValue: minValue(0), maxValue: maxValue(100)
+                required, minValue: min_value
             },
             pa: {
-                required, minValue: minValue(0), maxValue: maxValue(100)
+                required, minValue: min_value
             },
             links_in: {
-                required, minValue: minValue(1)
+                required, minValue: min_value
             },
             mozrank: {
-                required, minValue: minValue(1)
+                required, minValue: min_value
             },
             equity: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             }
         },
         alexa: {
             rank: {
-                required, minValue: minValue(1)
+                required, minValue: min_value
             },
             country: {
                 required
             },
             country_rank: {
-                required, minValue: minValue(1)
+                required, minValue: min_value
             }
         },
         semrush: {
             rank: {
-                required, minValue: minValue(1)
+                required, minValue: min_value
             },
             keyword_num: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             },
             traffic_costs: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             },
         },
         fb: {
-            fb_comments: { required, minValue: minValue(0) },
-            fb_reac: { required, minValue: minValue(0) },
-            fb_shares: { required, minValue: minValue(0) },
+            fb_comments: { required, minValue: min_value },
+            fb_reac: { required, minValue: min_value },
+            fb_shares: { required, minValue: min_value },
         },
         majestic: {
             external_backlinks: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             },
             external_gov: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             },
             external_edu: {
-                required, minValue: minValue(0)
+                required, minValue: min_value
             },
             tf: {
-                required, minValue: minValue(0), maxValue: maxValue(100)
+                required, maxValue: maxValue(100), minValue: min_value
             },
             cf: {
-                required, minValue: minValue(0), maxValue: maxValue(100)
+                required, maxValue: maxValue(100), minValue: min_value
             },
-            refd: { required, minValue: minValue(0) },
-            refd_edu: { required, minValue: minValue(0) },
-            refd_gov: { required, minValue: minValue(0) },
+            refd: { required, minValue: min_value },
+            refd_edu: { required, minValue: min_value },
+            refd_gov: { required, minValue: min_value },
         },
         email: { required, email },
         contacts: { maxLength: maxLength(255) },
@@ -801,9 +884,13 @@ export default {
             required: requiredIf(function(){
                 return this.nicheEditLink;
             })
-        }
+        },
+        trust: { required, minValue: min_value },
+        spam: { required, minValue: min_value },
+        lrtPowerTrust: { required, minValue: min_value }
     },
     data: () => ({
+        checkTrustLoading: false,
         fillMozAlexaSrFbLoading: false,
         fillMajesticLoading: false,
         websiteUrl: '',
@@ -855,7 +942,9 @@ export default {
             refd_edu: '',
             refd_gov: '',
         },
-
+        trust: '',
+        spam: '',
+        lrtPowerTrust: ''
     }),
     methods: {
         ...mapActions('platforms', {
@@ -865,6 +954,37 @@ export default {
         ...mapActions('notification', {
             setNotification: notifyActions.SET_NOTIFICATION
         }),
+        onSetWebsite() {
+            this.$v.websiteUrl.$touch();
+        },
+        async onFillBasicData() {
+            if (this.websiteUrl) {
+                this.checkTrustLoading = true;
+                try {
+                    let response = await requestExternalService.fetchCheckTrustData(this.websiteUrl);
+                    let responseData = response?.data;
+                    if (!responseData.success) {
+                        this.setNotification({
+                            type: 'error',
+                            message: responseData.message
+                        });
+                        this.trust = this.spam = this.lrtPowerTrust = 'N/A';
+                    } else {
+                        this.trust = responseData?.summary?.trust;
+                        this.spam = responseData?.summary?.spam;
+                        this.lrtPowerTrust = responseData?.summary?.lrtPowerTrust;
+                    }
+                    this.checkTrustLoading = false;
+                } catch (error) {
+                    this.checkTrustLoading = false;
+                    this.setNotification({
+                        type: 'error',
+                        message: error
+                    })
+                }
+            }
+
+        },
         async fillMajestic() {
             try {
                 if (this.websiteUrl) {
@@ -877,14 +997,14 @@ export default {
                             type: 'error'
                         });
                     }
-                    this.majestic.external_backlinks = responseData.ebl;
-                    this.majestic.external_gov = responseData.ebl_gov;
-                    this.majestic.external_edu = responseData.ebl_edu;
-                    this.majestic.refd = responseData.refd;
-                    this.majestic.refd_edu = responseData.refd_edu;
-                    this.majestic.refd_gov = responseData.refd_gov;
-                    this.majestic.tf = responseData.tf;
-                    this.majestic.cf = responseData.cf;
+                    this.majestic.external_backlinks = !PropertyNotFound.includes(responseData.ebl) ? responseData.ebl : 'N/A';
+                    this.majestic.external_gov = !PropertyNotFound.includes(responseData.ebl_gov) ? responseData.ebl_gov : 'N/A';
+                    this.majestic.external_edu = !PropertyNotFound.includes(responseData.ebl_edu) ? responseData.ebl_edu : 'N/A';
+                    this.majestic.refd = !PropertyNotFound.includes(responseData.refd) ? responseData.refd : 'N/A';
+                    this.majestic.refd_edu = !PropertyNotFound.includes(responseData.refd_edu) ? responseData.refd_edu : 'N/A';
+                    this.majestic.refd_gov = !PropertyNotFound.includes(responseData.refd_gov) ? responseData.refd_gov : 'N/A';
+                    this.majestic.tf = !PropertyNotFound.includes(responseData.tf) ? responseData.tf : 'N/A';
+                    this.majestic.cf = !PropertyNotFound.includes(responseData.cf) ? responseData.cf : 'N/A';
                     this.fillMajesticLoading = false;
                 }
             } catch (error) {
@@ -907,25 +1027,26 @@ export default {
                             type: 'error'
                         });
                     }
-                    this.moz.pa = responseData.pa !== 'notfound' ? responseData.pa : '';
-                    this.moz.da = responseData.da !== 'notfound' ? responseData.da : '';
-                    this.moz.mozrank = responseData.mozrank !== 'notfound' ? responseData.mozrank : '';
-                    this.moz.links_in = responseData.links !== 'notfound' ? responseData.links : '';
-                    this.moz.equity = responseData.equity !== 'notfound' ? responseData.equity : '';
+                    this.moz.pa = !PropertyNotFound.includes(responseData.pa) ? responseData.pa : 'N/A';
+                    this.moz.da = !PropertyNotFound.includes(responseData.da) ? responseData.da : 'N/A';
+                    this.moz.mozrank = !PropertyNotFound.includes(responseData.mozrank) ? responseData.mozrank : 'N/A';
+                    this.moz.links_in = !PropertyNotFound.includes(responseData.links) ? responseData.links : 'N/A';
+                    this.moz.equity = !PropertyNotFound.includes(responseData.equity) ? responseData.equity : 'N/A';
 
-                    this.alexa.rank = responseData.a_rank !== 'N/A' ? responseData.a_rank : '';
-                    this.alexa.country = responseData.a_cnt !== 'N/A' ? responseData.a_cnt : '';
-                    this.alexa.country_rank = responseData.a_cnt_r !== 'N/A' ? responseData.a_cnt_r : '';
+                    this.alexa.rank = !PropertyNotFound.includes(responseData.a_rank) ? responseData.a_rank : 'N/A';
+                    this.alexa.country = !PropertyNotFound.includes(responseData.a_cnt) ? responseData.a_cnt : 'N/A';
+                    this.alexa.country_rank = !PropertyNotFound.includes(responseData.a_cnt_r) ? responseData.a_cnt_r : 'N/A';
 
-                    this.semrush.rank = responseData.sr_rank !== 'notfound' ? responseData.sr_rank : '';
-                    this.semrush.keyword_num = responseData.sr_kwords !== 'notfound' ? responseData.sr_kwords : '';
+                    this.semrush.rank = !PropertyNotFound.includes(responseData.sr_rank) ? responseData.sr_rank : 'N/A';
+                    this.semrush.keyword_num = !PropertyNotFound.includes(responseData.sr_kwords) ? responseData.sr_kwords : 'N/A';
                     this.organicTraffic =
-                        responseData.sr_traffic !== 'notfound' ? responseData.sr_traffic : '';
-                    this.semrush.traffic_costs = responseData.sr_costs !== 'notfound' ? responseData.sr_costs : '';
+                        !PropertyNotFound.includes(responseData.sr_traffic) ? responseData.sr_traffic : 'N/A';
+                    this.semrush.traffic_costs =
+                        !PropertyNotFound.includes(responseData.sr_costs) ? responseData.sr_costs : 'N/A';
 
-                    this.fb.fb_comments = responseData.fb_comments;
-                    this.fb.fb_reac = responseData.fb_reac;
-                    this.fb.fb_shares = responseData.fb_shares;
+                    this.fb.fb_comments = !PropertyNotFound.includes(responseData.fb_comments) ? responseData.fb_comments : 'N/A';
+                    this.fb.fb_reac = !PropertyNotFound.includes(responseData.fb_reac) ? responseData.fb_reac : 'N/A';
+                    this.fb.fb_shares = !PropertyNotFound.includes(responseData.fb_shares) ? responseData.fb_shares : 'N/A';
                     this.fillMozAlexaSrFbLoading = false;
                 }
             } catch (error) {
@@ -961,7 +1082,10 @@ export default {
                         alexa: this.alexa,
                         semrush: this.semrush,
                         majestic: this.majestic,
-                        fb: this.fb
+                        fb: this.fb,
+                        trust: this.trust,
+                        spam: this.spam,
+                        lrt_power_trust: this.lrtPowerTrust
                     });
                     this.setNotification({
                         message: 'Website was added!',
@@ -1002,6 +1126,7 @@ export default {
                     this.fb.fb_comments =
                         this.fb.fb_reac =
                         this.fb.fb_shares = '';
+                    this.trust = this.spam = this.lrtPowerTrust = '';
                     this.$v.$reset();
                 } catch (error) {
                     this.setNotification({
@@ -1207,8 +1332,6 @@ export default {
                 errors.push('DA is required!');
             !this.$v.moz.da.minValue &&
                 errors.push('DA must be more than 0!');
-            !this.$v.moz.da.maxValue &&
-                errors.push('DA must be less than 100!');
             return errors;
         },
         mozPaErrors() {
@@ -1218,10 +1341,8 @@ export default {
             }
             !this.$v.moz.pa.required &&
                 errors.push('PA is required!');
-            !this.$v.moz.pa.minValue &&
+            this.$v.moz.pa.minValue &&
                 errors.push('PA must be more than 0!');
-            !this.$v.moz.pa.maxValue &&
-                errors.push('PA must be less than 100!');
             return errors;
         },
         mozLinksInErrors() {
@@ -1231,8 +1352,8 @@ export default {
             }
             !this.$v.moz.links_in.required &&
                 errors.push('Links In is required!');
-            !this.$v.moz.links_in.minValue &&
-                errors.push('Links In must be more than 1!');
+            this.$v.moz.links_in.minValue &&
+                errors.push('Links In must be more than 0!');
             return errors;
         },
         mozRankErrors() {
@@ -1242,8 +1363,8 @@ export default {
             }
             !this.$v.moz.mozrank.required &&
                 errors.push('MozRank is required!');
-            !this.$v.moz.mozrank.minValue &&
-                errors.push('Links In must be more than 1!');
+            this.$v.moz.mozrank.minValue &&
+                errors.push('Links In must be more than 0!');
             return errors;
         },
         mozEquityErrors() {
@@ -1253,7 +1374,7 @@ export default {
             }
             !this.$v.moz.equity.required &&
                 errors.push('Equity is required!');
-            !this.$v.moz.equity.minValue &&
+            this.$v.moz.equity.minValue &&
                 errors.push('Equity must be more than 0!');
             return errors;
         },
@@ -1267,7 +1388,7 @@ export default {
             !this.$v.alexa.rank.required &&
                 errors.push('Rank is required!');
             !this.$v.alexa.rank.minValue &&
-                errors.push('Rank must be more than 1!');
+                errors.push('Rank must be more than 0!');
             return errors;
         },
         alexaCountryErrors() {
@@ -1287,7 +1408,7 @@ export default {
             !this.$v.alexa.country_rank.required &&
                 errors.push('Country Rank is required!');
             !this.$v.alexa.country_rank.minValue &&
-                errors.push('Country Rank must be more than 1!');
+                errors.push('Country Rank must be more than 0!');
             return errors;
         },
 
@@ -1300,7 +1421,7 @@ export default {
             !this.$v.semrush.rank.required &&
                 errors.push('Rank is required!');
             !this.$v.semrush.rank.minValue &&
-                errors.push('Rank must be more than 1!');
+                errors.push('Rank must be more than 0!');
             return errors;
         },
         semrushKeywordNumErrors() {
@@ -1310,7 +1431,7 @@ export default {
             }
             !this.$v.semrush.keyword_num.required &&
                 errors.push('Rank is required!');
-            !this.$v.semrush.keyword_num.minValue &&
+            this.$v.semrush.keyword_num.minValue &&
                 errors.push('Rank must be more than 0!');
             return errors;
         },
@@ -1344,9 +1465,9 @@ export default {
                 return errors;
             }
             !this.$v.majestic.external_gov.required &&
-            errors.push('External Gov is required!');
+                errors.push('External Gov is required!');
             !this.$v.majestic.external_gov.minValue &&
-            errors.push('External Gov must be more than 0!');
+                errors.push('External Gov must be more than 0!');
             return errors;
         },
         majesticExternalEduErrors() {
@@ -1381,9 +1502,9 @@ export default {
             !this.$v.majestic.cf.required &&
             errors.push('CF is required!');
             !this.$v.majestic.cf.minValue &&
-            errors.push('CF must be more than 0!');
+                errors.push('CF must be more than 0!');
             !this.$v.majestic.cf.maxValue &&
-            errors.push('CF must be less than 100!');
+                errors.push('CF must be less than 100!');
             return errors;
         },
         majesticRefDErrors() {
@@ -1452,6 +1573,40 @@ export default {
             errors.push('FB Shares must be more than 0!');
             return errors;
         },
+
+        trustErrors() {
+            const errors = [];
+            if (!this.$v.trust.$dirty) {
+                return errors;
+            }
+            !this.$v.trust.required &&
+                errors.push('Trust is required!');
+            !this.$v.trust.minValue &&
+                errors.push('Trust must be more than 0!');
+            return errors;
+        },
+        spamErrors() {
+            const errors = [];
+            if (!this.$v.spam.$dirty) {
+                return errors;
+            }
+            !this.$v.spam.required &&
+            errors.push('Spam is required!');
+            !this.$v.spam.minValue &&
+            errors.push('Spam must be more than 0!');
+            return errors;
+        },
+        lrtPowerTrustErrors() {
+            const errors = [];
+            if (!this.$v.lrtPowerTrust.$dirty) {
+                return errors;
+            }
+            !this.$v.lrtPowerTrust.required &&
+                errors.push('LRT PowerTrust is required!');
+            !this.$v.lrtPowerTrust.minValue &&
+                errors.push('LRT PowerTrust must be more than 0!');
+            return errors;
+        }
     }
 }
 </script>
