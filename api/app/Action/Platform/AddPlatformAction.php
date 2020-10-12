@@ -44,6 +44,10 @@ final class AddPlatformAction
         $platform->description = $request->getDescription();
         $platform->email = $request->getEmail();
         $platform->domain_zone = $this->getDomainZone($request->getWebsiteUrl());
+        $platform->trust = $request->getTrust();
+        $platform->spam = $request->getSpam();
+        $platform->lrt_power_trust = $request->getLrtPowerTrust();
+
         $platform = $this->platformRepository->save($platform);
 
         if ($request->getTopics()) {

@@ -7,7 +7,7 @@ namespace App\Action\Platform;
 final class AddPlatformRequest
 {
     private string $website_url;
-    private int $organicTraffic;
+    private ?int $organicTraffic;
     private bool $do_follow_active;
     private bool $free_home_featured_active;
     private bool $niche_edit_link_active;
@@ -22,28 +22,37 @@ final class AddPlatformRequest
     private string $email;
     private ?string $comment;
     private ?array $topics;
-    private int $mozDA;
-    private int $mozPA;
-    private int $mozLinksIn;
-    private int $mozEquity;
-    private float $mozRank;
-    private float $alexaRank;
-    private string $alexaCountry;
-    private int $alexaCountryRank;
-    private float $semrushRank;
-    private float $semrushKeywordNum;
-    private int $semrushTrafficCosts;
-    private int $fbComments;
-    private int $fbReac;
-    private int $fbShares;
-    private int $majesticExternalBacklinks;
-    private int $majesticExternalGov;
-    private int $majesticExternalEdu;
-    private int $majesticTF;
-    private int $majesticCF;
-    private int $majesticRefD;
-    private int $majesticRefD_EDU;
-    private int $majesticRefD_GOV;
+    private ?int $trust;
+    private ?float $spam;
+    private ?int $lrtPowerTrust;
+
+    private ?int $mozDA;
+    private ?int $mozPA;
+    private ?int $mozLinksIn;
+    private ?int $mozEquity;
+    private ?float $mozRank;
+
+    private ?float $alexaRank;
+    private ?string $alexaCountry;
+    private ?int $alexaCountryRank;
+
+    private ?float $semrushRank;
+    private ?int $semrushKeywordNum;
+    private ?int $semrushTrafficCosts;
+
+    private ?int $fbComments;
+    private ?int $fbReac;
+    private ?int $fbShares;
+
+    private ?int $majesticExternalBacklinks;
+    private ?int $majesticExternalGov;
+    private ?int $majesticExternalEdu;
+    private ?int $majesticTF;
+    private ?int $majesticCF;
+    private ?int $majesticRefD;
+    private ?int $majesticRefD_EDU;
+    private ?int $majesticRefD_GOV;
+
     private ?string $ahrefsStatus;
     private ?float $ahrefsRank;
     private ?float $ahrefsDr;
@@ -52,9 +61,10 @@ final class AddPlatformRequest
     private ?int $ahrefsDofollow;
     private ?int $ahrefsIps;
 
+
     public function __construct(
         string $website_url,
-        int $organicTraffic,
+        ?string $organicTraffic,
         bool $do_follow_active,
         bool $free_home_featured_active,
         bool $niche_edit_link_active,
@@ -74,10 +84,13 @@ final class AddPlatformRequest
         string $article_requirements,
         int $deadLine,
         string $where_posted,
-        array $fb
+        array $fb,
+        ?string $trust,
+        ?string $spam,
+        ?string $lrtPowerTrust
     ) {
         $this->website_url = $website_url;
-        $this->organicTraffic = $organicTraffic;
+        $this->organicTraffic = is_null($organicTraffic) ? null : (int)$organicTraffic;
         $this->do_follow_active = $do_follow_active;
         $this->free_home_featured_active = $free_home_featured_active;
         $this->niche_edit_link_active = $niche_edit_link_active;
@@ -92,28 +105,81 @@ final class AddPlatformRequest
         $this->email = $email;
         $this->comment = $comment;
         $this->topics = $topics;
-        $this->mozDA = (int)$moz['da'];
-        $this->mozPA = (int)$moz['pa'];
-        $this->mozRank = (float)$moz['mozrank'];
-        $this->mozLinksIn = (int)$moz['links_in'];
-        $this->mozEquity = (int)$moz['equity'];
-        $this->alexaRank = (float)$alexa['rank'];
-        $this->alexaCountry = $alexa['country'];
-        $this->alexaCountryRank = (int)$alexa['country_rank'];
-        $this->semrushRank = (float)$semrush['rank'];
-        $this->semrushKeywordNum = (int)$semrush['keyword_num'];
-        $this->semrushTrafficCosts = (int)$semrush['traffic_costs'];
-        $this->fbComments = (int)$fb['fb_comments'];
-        $this->fbReac = (int)$fb['fb_reac'];
-        $this->fbShares = (int)$fb['fb_shares'];
-        $this->majesticExternalBacklinks = (int)$majestic['external_backlinks'];
-        $this->majesticExternalGov = (int)$majestic['external_gov'];
-        $this->majesticExternalEdu = (int)$majestic['external_edu'];
-        $this->majesticTF = (int)$majestic['tf'];
-        $this->majesticCF = (int)$majestic['cf'];
-        $this->majesticRefD = (int)$majestic['refd'];
-        $this->majesticRefD_EDU = (int)$majestic['refd_edu'];
-        $this->majesticRefD_GOV = (int)$majestic['refd_gov'];
+        $this->trust = is_null($trust) ? null : (int)$trust;
+        $this->spam = is_null($spam) ? null : (float)$spam;
+        $this->lrtPowerTrust = is_null($lrtPowerTrust) ? null : (int)$lrtPowerTrust;
+
+        $this->mozDA =
+            is_null($this->checkIfNotAvailable($moz['da'])) ? null
+                : (int)$moz['da'];
+        $this->mozPA =
+            is_null($this->checkIfNotAvailable($moz['pa'])) ? null
+                : (int)$moz['pa'];
+        $this->mozRank =
+            is_null($this->checkIfNotAvailable($moz['mozrank'])) ? null
+                : (float)$moz['mozrank'];
+        $this->mozLinksIn =
+            is_null($this->checkIfNotAvailable($moz['links_in'])) ? null
+                : (int)$moz['links_in'];
+        $this->mozEquity =
+            is_null($this->checkIfNotAvailable($moz['equity'])) ? null
+                : (int)$moz['equity'];
+
+        $this->alexaRank =
+            is_null($this->checkIfNotAvailable($alexa['rank'])) ? null
+                : (float)$alexa['rank'];
+        $this->alexaCountry =
+            is_null($this->checkIfNotAvailable($alexa['country'])) ? null
+                : $alexa['country'];
+        $this->alexaCountryRank =
+            is_null($this->checkIfNotAvailable($alexa['country_rank'])) ? null
+                : (int)$alexa['country_rank'];
+
+        $this->semrushRank =
+            is_null($this->checkIfNotAvailable($semrush['rank'])) ? null
+                : (float)$semrush['rank'];
+        $this->semrushKeywordNum =
+            is_null($this->checkIfNotAvailable($semrush['keyword_num'])) ? null
+                : (int)$semrush['keyword_num'];
+        $this->semrushTrafficCosts =
+            is_null($this->checkIfNotAvailable($semrush['traffic_costs'])) ? null
+                : (int)$semrush['traffic_costs'];
+
+        $this->fbComments =
+            is_null($this->checkIfNotAvailable($fb['fb_comments'])) ? null
+                : (int)$fb['fb_comments'];
+        $this->fbReac =
+            is_null($this->checkIfNotAvailable($fb['fb_reac'])) ? null
+                : (int)$fb['fb_reac'];
+        $this->fbShares =
+            is_null($this->checkIfNotAvailable($fb['fb_shares'])) ? null
+                : (int)$fb['fb_shares'];
+
+        $this->majesticExternalBacklinks =
+            is_null($this->checkIfNotAvailable($majestic['external_backlinks'])) ? null
+                : (int)$majestic['external_backlinks'];
+        $this->majesticExternalGov =
+            is_null($this->checkIfNotAvailable($majestic['external_gov'])) ? null
+                : (int)$majestic['external_gov'];
+        $this->majesticExternalEdu =
+            is_null($this->checkIfNotAvailable($majestic['external_edu'])) ? null
+                : (int)$majestic['external_edu'];
+        $this->majesticTF =
+            is_null($this->checkIfNotAvailable($majestic['tf'])) ? null
+                : (int)$majestic['tf'];
+        $this->majesticCF =
+            is_null($this->checkIfNotAvailable($majestic['cf'])) ? null
+                : (int)$majestic['cf'];
+        $this->majesticRefD =
+            is_null($this->checkIfNotAvailable($majestic['refd'])) ? null
+                : (int)$majestic['refd'];
+        $this->majesticRefD_EDU =
+            is_null($this->checkIfNotAvailable($majestic['refd_edu'])) ? null
+                : (int)$majestic['refd_edu'];
+        $this->majesticRefD_GOV =
+            is_null($this->checkIfNotAvailable($majestic['refd_gov'])) ? null
+                : (int)$majestic['refd_gov'];
+
 
         // TODO: Must be tested and fixed if needed
         $this->ahrefsStatus = $ahrefs ? $ahrefs['status'] : null;
@@ -125,39 +191,9 @@ final class AddPlatformRequest
         $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
-    public function getAhrefsStatus()
+    private function checkIfNotAvailable($value)
     {
-        return $this->ahrefsStatus;
-    }
-
-    public function getAhrefsRank(): ?float
-    {
-        return $this->ahrefsRank;
-    }
-
-    public function getAhrefsDr(): ?float
-    {
-        return $this->ahrefsDr;
-    }
-
-    public function getAhrefsEb(): ?int
-    {
-        return $this->ahrefsEb;
-    }
-
-    public function getAhrefsRd(): ?int
-    {
-        return $this->ahrefsRd;
-    }
-
-    public function getAhrefsDofollow(): ?int
-    {
-        return $this->ahrefsDofollow;
-    }
-
-    public function getAhrefsIps(): ?int
-    {
-        return $this->ahrefsIps;
+        return $value === 'N/A' ? null : $value;
     }
 
     public function getWebsiteUrl(): string
@@ -165,7 +201,7 @@ final class AddPlatformRequest
         return $this->website_url;
     }
 
-    public function getOrganicTraffic(): int
+    public function getOrganicTraffic(): ?int
     {
         return $this->organicTraffic;
     }
@@ -240,113 +276,163 @@ final class AddPlatformRequest
         return $this->topics;
     }
 
-    public function getMozDA(): int
+    public function getTrust(): int
+    {
+        return $this->trust;
+    }
+
+    public function getSpam(): float
+    {
+        return $this->spam;
+    }
+
+    public function getLrtPowerTrust(): int
+    {
+        return $this->lrtPowerTrust;
+    }
+
+    public function getMozDA(): ?int
     {
         return $this->mozDA;
     }
 
-    public function getMozPA(): int
+    public function getMozPA(): ?int
     {
         return $this->mozPA;
     }
 
-    public function getMozLinksIn(): int
+    public function getMozLinksIn(): ?int
     {
         return $this->mozLinksIn;
     }
 
-    public function getMozRank(): float
+    public function getMozRank(): ?float
     {
         return $this->mozRank;
     }
 
-    public function getMozEquity(): int
+    public function getMozEquity(): ?int
     {
         return $this->mozEquity;
     }
 
-    public function getAlexaRank(): float
+    public function getAlexaRank(): ?float
     {
         return $this->alexaRank;
     }
 
-    public function getAlexaCountry(): string
+    public function getAlexaCountry(): ?string
     {
         return $this->alexaCountry;
     }
 
-    public function getAlexaCountryRank(): int
+    public function getAlexaCountryRank(): ?int
     {
         return $this->alexaCountryRank;
     }
 
-    public function getSemrushRank(): float
+    public function getSemrushRank(): ?float
     {
         return $this->semrushRank;
     }
 
-    public function getSemrushKeywordNum(): float
+    public function getSemrushKeywordNum(): ?int
     {
         return $this->semrushKeywordNum;
     }
 
-    public function getSemrushTrafficCosts(): int
+    public function getSemrushTrafficCosts(): ?int
     {
         return $this->semrushTrafficCosts;
     }
 
-    public function getFbComments(): int
+    public function getFbComments(): ?int
     {
         return $this->fbComments;
     }
 
-    public function getFbReac(): int
+    public function getFbReac(): ?int
     {
         return $this->fbReac;
     }
 
-    public function getFbShares(): int
+    public function getFbShares(): ?int
     {
         return $this->fbShares;
     }
 
-    public function getMajesticExternalBacklinks(): int
+    public function getMajesticExternalBacklinks(): ?int
     {
         return $this->majesticExternalBacklinks;
     }
 
-    public function getMajesticExternalGov(): int
+    public function getMajesticExternalGov(): ?int
     {
         return $this->majesticExternalGov;
     }
 
-    public function getMajesticExternalEdu(): int
+    public function getMajesticExternalEdu(): ?int
     {
         return $this->majesticExternalEdu;
     }
 
-    public function getMajesticTF(): int
+    public function getMajesticTF(): ?int
     {
         return $this->majesticTF;
     }
 
-    public function getMajesticCF(): int
+    public function getMajesticCF(): ?int
     {
         return $this->majesticCF;
     }
 
-    public function getMajesticRefD(): int
+    public function getMajesticRefD(): ?int
     {
         return $this->majesticRefD;
     }
 
-    public function getMajesticRefDEDU(): int
+    public function getMajesticRefDEDU(): ?int
     {
         return $this->majesticRefD_EDU;
     }
 
-    public function getMajesticRefDGOV(): int
+    public function getMajesticRefDGOV(): ?int
     {
         return $this->majesticRefD_GOV;
+    }
+
+    public function getAhrefsStatus()
+    {
+        return $this->ahrefsStatus;
+    }
+
+    public function getAhrefsRank(): ?float
+    {
+        return $this->ahrefsRank;
+    }
+
+    public function getAhrefsDr(): ?float
+    {
+        return $this->ahrefsDr;
+    }
+
+    public function getAhrefsEb(): ?int
+    {
+        return $this->ahrefsEb;
+    }
+
+    public function getAhrefsRd(): ?int
+    {
+        return $this->ahrefsRd;
+    }
+
+    public function getAhrefsDofollow(): ?int
+    {
+        return $this->ahrefsDofollow;
+    }
+
+    public function getAhrefsIps(): ?int
+    {
+        return $this->ahrefsIps;
     }
 }
