@@ -27,26 +27,6 @@ final class GetPlatformCollectionAction
 
         $filterQuery = Platform::query();
 
-        if ($request->getDrFrom()) {
-            $filterQuery = $filterQuery
-                ->where('dr', '>=', $request->getDrFrom());
-        }
-
-        if ($request->getDrTo() > $request->getDrFrom()) {
-            $filterQuery = $filterQuery
-                ->where('dr', '<=', $request->getDrTo());
-        }
-
-        if ($request->getMaFrom()) {
-            $filterQuery = $filterQuery
-                ->where('ma', '>=', $request->getMaFrom());
-        }
-
-        if ($request->getMaFrom() < $request->getMaTo()) {
-            $filterQuery = $filterQuery
-                ->where('ma', '<=', $request->getMaTo());
-        }
-
         if ($request->getOrganicTrafficFrom()) {
             $filterQuery = $filterQuery
                 ->where('organic_traffic', '>=', $request->getOrganicTrafficFrom());

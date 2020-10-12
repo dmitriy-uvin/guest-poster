@@ -11,8 +11,6 @@ class Platform extends Model
 
     protected $fillable = [
         'website_url',
-        'dr',
-        'ma',
         'organic_traffic',
         'dofollow_active',
         'free_home_featured_active',

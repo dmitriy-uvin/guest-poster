@@ -34,8 +34,6 @@ final class PlatformController extends ApiController
         $this->addPlatformAction->execute(
             new AddPlatformRequest(
                 $request->website_url,
-                (int)$request->dr,
-                (int)$request->ma,
                 (int)$request->organic_traffic,
                 $request->dofollow_active,
                 $request->free_home_featured_active,
