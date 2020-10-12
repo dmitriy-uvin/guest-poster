@@ -52,6 +52,13 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'check-trust',
+    'middleware' => 'admin'
+], function () {
+    Route::get('/', [\App\Http\Controllers\Api\CheckTrustApiController::class, 'getCheckTrustData']);
+});
+
+Route::group([
     'prefix' => 'orders'
 ], function () {
     Route::group([
