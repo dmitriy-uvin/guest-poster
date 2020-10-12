@@ -649,7 +649,7 @@
                     {{ platform.ma }}
                 </td>
                 <td>
-                    {{ platform.organicTraffic }}
+                    {{ platform.organicTraffic | notAvailableFilter }}
                 </td>
                 <td>
                     <ul style="list-style: none" class="pl-0">
