@@ -544,7 +544,7 @@
                 </th>
                 <th class="guest__col">
                     <div class="guest__col-wrap">
-                        DR
+                        DA
                         <VIcon
                             right
                             @click="changeSortingAndDirection('dr')"
@@ -643,7 +643,7 @@
                     </VChip>
                 </td>
                 <td>
-                    {{ platform.dr }}
+                    {{ platform.moz.da }}
                 </td>
                 <td>
                     {{ platform.ma }}

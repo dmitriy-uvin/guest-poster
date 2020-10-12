@@ -77,69 +77,6 @@
                             ></VTextField>
                         </VCol>
                     </VRow>
-                    <h2>Tech characteristics</h2>
-                    <VRow>
-                        <VCol cols="12" md="2">
-                            <VTooltip right>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <label>MA</label>
-                                    <VIcon
-                                        class="ml-1 align-center"
-                                        small
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >mdi-information</VIcon>
-                                </template>
-                                <span>Tooltip MA</span>
-                            </VTooltip>
-                            <VTextField
-                                outlined
-                                placeholder="MA"
-                                v-model="ma"
-                                :error-messages="maErrors"
-                            ></VTextField>
-                        </VCol>
-                        <VCol cols="12" md="2">
-                            <VTooltip right>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <label>DR</label>
-                                    <VIcon
-                                        class="ml-1 align-center"
-                                        small
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >mdi-information</VIcon>
-                                </template>
-                                <span>Tooltip DR</span>
-                            </VTooltip>
-                            <VTextField
-                                outlined
-                                placeholder="DR"
-                                v-model="dr"
-                                :error-messages="drErrors"
-                            ></VTextField>
-                        </VCol>
-                        <VCol cols="12" md="2">
-                            <VTooltip right>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <label>Organic Traffic</label>
-                                    <VIcon
-                                        class="ml-1 align-center"
-                                        small
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >mdi-information</VIcon>
-                                </template>
-                                <span>Tooltip Organic Traffic</span>
-                            </VTooltip>
-                            <VTextField
-                                outlined
-                                placeholder="Organic Traffic"
-                                v-model="organicTraffic"
-                                :error-messages="organicTrafficErrors"
-                            ></VTextField>
-                        </VCol>
-                    </VRow>
 
                     <h2>Features</h2>
                     <VRow>
@@ -422,6 +359,26 @@
                                 placeholder="Keyword Number"
                                 v-model="semrush.keyword_num"
                                 :error-messages="semrushKeywordNumErrors"
+                            ></VTextField>
+                        </VCol>
+                        <VCol cols="12" md="2">
+                            <VTooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <label>Organic Traffic</label>
+                                    <VIcon
+                                        class="ml-1 align-center"
+                                        small
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >mdi-information</VIcon>
+                                </template>
+                                <span>Tooltip Organic Traffic</span>
+                            </VTooltip>
+                            <VTextField
+                                outlined
+                                placeholder="Organic Traffic"
+                                v-model="organicTraffic"
+                                :error-messages="organicTrafficErrors"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -760,8 +717,6 @@ export default {
     mixins: [validationMixin],
     validations: {
         websiteUrl: { required, minLength: minLength(5), url },
-        dr: { required },
-        ma: { required },
         organicTraffic: { required },
         topics: { required },
         price: { minValue: minValue(0), required },
@@ -852,8 +807,6 @@ export default {
         fillMozAlexaSrFbLoading: false,
         fillMajesticLoading: false,
         websiteUrl: '',
-        dr: '',
-        ma: '',
         organicTraffic: '',
         topics: [],
         price: '',
@@ -989,8 +942,6 @@ export default {
                 try {
                     await this.createPlatform({
                         website_url: this.websiteUrl,
-                        dr: this.dr,
-                        ma: this.ma,
                         organic_traffic: this.organicTraffic,
                         dofollow_active: this.doFollow,
                         free_home_featured_active: this.freeHomeFeatured,
@@ -1016,7 +967,7 @@ export default {
                         message: 'Website was added!',
                         type: 'success'
                     });
-                    this.ma = this.dr = this.organicTraffic = '';
+                    this.organicTraffic = '';
                     this.websiteUrl = this.description = this.wherePosted = '';
                     this.topics = [];
                     this.deadLine = 1;
@@ -1207,24 +1158,6 @@ export default {
                 errors.push('DeadLine must be minimum 1 day!');
             !this.$v.deadLine.maxValue &&
                 errors.push('DeadLine can be maximum 60 days!');
-            return errors;
-        },
-        maErrors() {
-            const errors = [];
-            if (!this.$v.ma.$dirty) {
-                return errors;
-            }
-            !this.$v.ma.required &&
-                errors.push('MA is required!');
-            return errors;
-        },
-        drErrors() {
-            const errors = [];
-            if (!this.$v.dr.$dirty) {
-                return errors;
-            }
-            !this.$v.dr.required &&
-                errors.push('DR is required!');
             return errors;
         },
         organicTrafficErrors() {
