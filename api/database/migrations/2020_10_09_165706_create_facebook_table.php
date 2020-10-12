@@ -16,9 +16,9 @@ class CreateFacebookTable extends Migration
         Schema::create('facebook', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->integer('fb_comments');
-            $table->integer('fb_reac');
-            $table->integer('fb_shares');
+            $table->integer('fb_comments')->nullable();
+            $table->integer('fb_reac')->nullable();
+            $table->integer('fb_shares')->nullable();
 
             $table
                 ->foreign('platform_id')

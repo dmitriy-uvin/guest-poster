@@ -17,8 +17,8 @@ class CreateAhrefsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('platform_id');
             $table->string('status');
-            $table->float('rank')->nullable();
-            $table->float('dr')->nullable();
+            $table->double('rank')->nullable();
+            $table->double('dr')->nullable();
             $table->integer('eb')->nullable();
             $table->integer('rd')->nullable();
             $table->integer('dofollow')->nullable();
