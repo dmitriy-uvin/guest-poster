@@ -34,10 +34,10 @@ final class PlatformController extends ApiController
         $this->addPlatformAction->execute(
             new AddPlatformRequest(
                 $request->website_url,
-                (int)$request->organic_traffic,
-                $request->dofollow_active,
-                $request->free_home_featured_active,
-                $request->niche_edit_link_active,
+                $this->checkIfValueIsKnown($request->organic_traffic),
+                (bool)$request->dofollow_active,
+                (bool)$request->free_home_featured_active,
+                (bool)$request->niche_edit_link_active,
                 (float)$request->article_writing_price,
                 (float)$request->niche_edit_link_price,
                 $request->contacts,
@@ -54,11 +54,19 @@ final class PlatformController extends ApiController
                 $request->article_requirements,
                 (int)$request->deadline,
                 $request->where_posted,
-                $request->fb
+                $request->fb,
+                $this->checkIfValueIsKnown($request->trust),
+                $this->checkIfValueIsKnown($request->spam),
+                $this->checkIfValueIsKnown($request->lrt_power_trust),
             )
         );
 
         return $this->emptyResponse();
+    }
+
+    private function checkIfValueIsKnown(string $value): ?string
+    {
+        return $value === 'N/A' ? null : $value;
     }
 
     public function getPlatformCollection(PaginatedHttpRequest $request)
