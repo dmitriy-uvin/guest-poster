@@ -22,12 +22,10 @@ export default {
         await platformService.deletePlatformById(id);
         commit(mutations.DELETE_PLATFORM, id);
     },
-    [actions.MOVE_IN_BUCKET_BY_ID]: async ({ commit }, id) => {
-        await platformService.moveInBucketById(id);
-        commit(mutations.MOVE_IN_BUCKET_BY_ID, id);
+    [actions.MOVE_IN_TRASH_BY_IDS]: async (context, ids) => {
+        await platformService.moveInTrashByIds(ids);
     },
-    [actions.MOVE_FROM_BUCKET_BY_ID]: async ({ commit }, id) => {
-        await platformService.moveFromBucketById(id);
-        commit(mutations.MOVE_FROM_BUCKET_BY_ID, id);
-    },
+    [actions.MOVE_FROM_TRASH_BY_IDS]: async (context, ids) => {
+        await platformService.moveFromTrashByIds(ids);
+    }
 }
