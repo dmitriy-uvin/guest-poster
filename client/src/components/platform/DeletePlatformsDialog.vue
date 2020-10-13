@@ -1,35 +1,36 @@
 <template>
     <VDialog
-        v-model="dialogShow"
+        v-model="show"
         persistent
         max-width="600px"
     >
         <VCard>
             <VCardTitle>
-                <span class="headline">Delete platform?</span>
+                <span class="headline">Delete platforms?</span>
             </VCardTitle>
             <VCardText>
-                <p class="red--text">Are you sure you want to delete that platform?
-                    <span class="black--text">(Platform will be moved to trash!)</span>
+                <p class="red--text">
+                    Are you sure you want to delete followings platforms? (Platforms will be moved in trash!)
                 </p>
-                <ul>
-                    <li><b>{{ deleteProtocol(platform.websiteUrl) }}</b></li>
+                <ul v-if="Object.values(platforms).length">
+                    <li v-for="platform in platforms" :key="platform.id">
+                        <b>{{ deleteProtocol(platform.websiteUrl) }}</b>
+                    </li>
                 </ul>
-
             </VCardText>
             <VCardActions>
                 <VSpacer></VSpacer>
                 <VBtn
                     color="blue darken-1"
                     text
-                    @click="dialogShow = false"
+                    @click="show = false"
                 >
                     Close
                 </VBtn>
                 <VBtn
                     color="red"
                     text
-                    @click="onDeletePlatform"
+                    @click="onDeleteRequest"
                 >
                     Delete
                 </VBtn>
@@ -39,18 +40,17 @@
 </template>
 
 <script>
-import valueFormatMixin from '@/mixins/valueFormatMixin';
 import { mapActions } from 'vuex';
-import * as actions from '@/store/modules/platforms/types/actions';
-
+import * as actions from "@/store/modules/platforms/types/actions";
+import valueFormatMixin from '@/mixins/valueFormatMixin';
 export default {
-    name: 'DeleteOnePlatformDialog',
+    name: 'DeletePlatformsDialog',
     mixins: [valueFormatMixin],
     props: {
-        visible: {
+        visibility: {
             required: true
         },
-        platform: {
+        platforms: {
             required: true
         }
     },
@@ -58,18 +58,19 @@ export default {
         ...mapActions('platforms', {
             moveInTrashByIds: actions.MOVE_IN_TRASH_BY_IDS
         }),
-        async onDeletePlatform() {
+        async onDeleteRequest() {
+            const ids = this.platforms.map(platform => platform.id);
             await this.moveInTrashByIds({
-                ids: [this.platform.id]
+                ids
             });
+            this.show = false;
             this.$emit('on-delete');
-            this.dialogShow = false;
         }
     },
     computed: {
-        dialogShow: {
+        show: {
             get() {
-                return this.visible;
+                return this.visibility;
             },
             set(value) {
                 if (!value) {
