@@ -18,12 +18,12 @@ const platformService = {
     async deletePlatformById(id) {
         return await requestInternalService.delete(API_PREFIX + '/' + id);
     },
-    async moveInBucketById(id) {
-        return await requestInternalService.put(API_PREFIX + '/' + id + '/bucket-in');
+    async moveInTrashByIds(ids) {
+        return await requestInternalService.put(API_PREFIX + '/trash-in', ids);
     },
-    async moveFromBucketById(id) {
-        return await requestInternalService.put(API_PREFIX + '/' + id + '/bucket-from');
-    }
+    async moveFromTrashByIds(ids) {
+        return await requestInternalService.put(API_PREFIX + '/trash-from', ids);
+    },
 };
 
 export default platformService;
