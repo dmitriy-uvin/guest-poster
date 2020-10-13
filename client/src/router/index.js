@@ -70,7 +70,25 @@ const routes = [
                 name: 'Profile',
                 component: () => import('../views/Profile'),
                 meta: { AuthorizedUser: true }
-            }
+            },
+            {
+                path: 'export',
+                name: 'ExportPlatforms',
+                component: () => import('../views/ExportPlatforms'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'import',
+                name: 'ImportPlatforms',
+                component: () => import('../views/ImportPlatforms'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'trash',
+                name: 'Trash',
+                component: () => import('../views/Trash'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
         ]
     }
 ];
