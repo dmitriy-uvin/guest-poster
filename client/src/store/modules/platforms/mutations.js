@@ -16,5 +16,26 @@ export default {
                 {}
             )
         }
+    },
+    [mutations.DELETE_PLATFORM]: (state, id) => {
+        const index = state.platforms.findIndex(platform => platform.id === id);
+        state.platforms = [
+            ...state.platforms.slice(0, index),
+            ...state.platforms.slice(index + 1),
+        ];
+    },
+    [mutations.MOVE_IN_BUCKET_BY_ID]: (state, id) => {
+        const index = state.platforms.findIndex(platform => platform.id === id);
+        state.platforms[index].inBucket = true;
+        state.platforms = [
+            ...state.platforms
+        ];
+    },
+    [mutations.MOVE_FROM_BUCKET_BY_ID]: (state, id) => {
+        const index = state.platforms.findIndex(platform => platform.id === id);
+        state.platforms[index].inBucket = false;
+        state.platforms = [
+            ...state.platforms
+        ];
     }
 }

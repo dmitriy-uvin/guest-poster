@@ -17,6 +17,7 @@ export const platformMapper = Platform => ({
     wherePosted: Platform.where_posted,
     domainZone: Platform.domain_zone,
     createdAt: Platform.created_at,
+    updatedAt: Platform.updated_at,
     trust: Platform.trust,
     spam: Platform.spam,
     lrtPowerTrust: Platform.lrt_power_trust,

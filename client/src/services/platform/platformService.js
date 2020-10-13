@@ -14,6 +14,15 @@ const platformService = {
     async fetchTopics() {
         const response = await requestInternalService.get('/topics');
         return response?.data?.data;
+    },
+    async deletePlatformById(id) {
+        return await requestInternalService.delete(API_PREFIX + '/' + id);
+    },
+    async moveInBucketById(id) {
+        return await requestInternalService.put(API_PREFIX + '/' + id + '/bucket-in');
+    },
+    async moveFromBucketById(id) {
+        return await requestInternalService.put(API_PREFIX + '/' + id + '/bucket-from');
     }
 };
 
