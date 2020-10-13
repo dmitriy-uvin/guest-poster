@@ -2,8 +2,7 @@
     <div class="container">
         <div class="row justify-space-between align-center">
             <div class="left">
-                <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
-                <h1 v-else>Guest Posting</h1>
+                <h1>Guest Posting</h1>
                 <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
             <div class="right">
@@ -505,212 +504,13 @@
 
         <div class="filter-chips mb-4">
             <h5 class="mb-4">{{ total }} platforms found</h5>
-            <FilterChips
-                :filter-chips="filterChips"
-                @delete-filter="onDeleteFilter"
-                :filters-applied="filtersApplied"
-            />
+<!--            <FilterChips-->
+<!--                :filter-chips="filterChips"-->
+<!--                @delete-filter="onDeleteFilter"-->
+<!--                :filters-applied="filtersApplied"-->
+<!--            />-->
         </div>
-<!--        <VDivider></VDivider>-->
-
-<!--        <table class="guest__table" v-if="Object.keys(platforms).length">-->
-<!--            <thead class="guest__head">-->
-<!--            <tr>-->
-<!--                <th class="guest__col">-->
-<!--                    <VCheckbox @click="selectAll"></VCheckbox>-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        Website-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('website_url')"-->
-<!--                            v-if="sorting === 'website_url' && direction === 'desc'"-->
-<!--                        >-->
-<!--                            mdi-chevron-down-->
-<!--                        </VIcon>-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('website_url')"-->
-<!--                            v-else-->
-<!--                        >-->
-<!--                            mdi-chevron-up-->
-<!--                        </VIcon>-->
-<!--                    </div>-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    Topic-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        DA-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('moz.da')"-->
-<!--                            v-if="sorting === 'moz.da' && direction === 'desc'"-->
-<!--                        >-->
-<!--                            mdi-chevron-down-->
-<!--                        </VIcon>-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('moz.da')"-->
-<!--                            v-else-->
-<!--                        >-->
-<!--                            mdi-chevron-up-->
-<!--                        </VIcon>-->
-<!--                    </div>-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        MA-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('ma')"-->
-<!--                            v-if="sorting === 'ma' && direction === 'desc'"-->
-<!--                        >-->
-<!--                            mdi-chevron-down-->
-<!--                        </VIcon>-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('ma')"-->
-<!--                            v-else-->
-<!--                        >-->
-<!--                            mdi-chevron-up-->
-<!--                        </VIcon>-->
-<!--                    </div>-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        Organic traffic-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('organic_traffic')"-->
-<!--                            v-if="sorting === 'organic_traffic' && direction === 'desc'"-->
-<!--                        >-->
-<!--                            mdi-chevron-down-->
-<!--                        </VIcon>-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('organic_traffic')"-->
-<!--                            v-else-->
-<!--                        >-->
-<!--                            mdi-chevron-up-->
-<!--                        </VIcon>-->
-<!--                    </div>-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    Features-->
-<!--                </th>-->
-<!--                <th class="guest__col">-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        Editorial fee-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('price')"-->
-<!--                            v-if="sorting === 'price' && direction === 'desc'"-->
-<!--                        >-->
-<!--                            mdi-chevron-down-->
-<!--                        </VIcon>-->
-<!--                        <VIcon-->
-<!--                            right-->
-<!--                            @click="changeSortingAndDirection('price')"-->
-<!--                            v-else-->
-<!--                        >-->
-<!--                            mdi-chevron-up-->
-<!--                        </VIcon>-->
-<!--                    </div>-->
-<!--                </th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr v-for="platform in platforms" :key="platform.id">-->
-<!--                <td>-->
-<!--                    <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <div class="guest__col-wrap">-->
-<!--                        {{ deleteProtocol(platform.websiteUrl) }}-->
-<!--                    </div>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <VChip v-for="(topic, id) in platform.topics"-->
-<!--                           :key="id"-->
-<!--                           x-small-->
-<!--                           class="pa-0 px-2 mr-1 mb-1"-->
-<!--                    >-->
-<!--                        {{ topic.name }}-->
-<!--                    </VChip>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    {{ platform.moz.da }}-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    {{ platform.ma }}-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    {{ platform.organicTraffic | notAvailableFilter }}-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <ul style="list-style: none" class="pl-0">-->
-<!--                        <li-->
-<!--                            :class="{-->
-<!--                            'available' : platform.doFollowActive,-->
-<!--                            'not-available': !platform.doFollowActive}-->
-<!--                            "-->
-<!--                        >-->
-<!--                            Do Follow-->
-<!--                        </li>-->
-<!--                        <li-->
-<!--                            :class="{-->
-<!--                            'available' : platform.freeHomeFeaturedActive,-->
-<!--                            'not-available': !platform.freeHomeFeaturedActive}-->
-<!--                            "-->
-<!--                        >-->
-<!--                            Free Home Featured-->
-<!--                        </li>-->
-<!--                        <li-->
-<!--                            :class="{-->
-<!--                            'available' : platform.nicheEditLinkActive,-->
-<!--                            'not-available': !platform.nicheEditLinkActive}-->
-<!--                            "-->
-<!--                        >-->
-<!--                            Niche Edit Link-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <span class="guest__price">-->
-<!--                        {{ platform.price }} $-->
-<!--                    </span>-->
-<!--                    <span class="guest__wrap mb-1 d-block">-->
-<!--                        <span>-->
-<!--                            Article writing:-->
-<!--                        </span>-->
-<!--                        <span v-if="platform.articleWritingPrice > 0" class="text-orange">-->
-<!--                            + {{ platform.articleWritingPrice.toFixed(2) }} $-->
-<!--                        </span>-->
-<!--                        <span v-else class="text-green">-->
-<!--                            - {{ Math.abs(platform.articleWritingPrice).toFixed(2) }} $-->
-<!--                        </span>-->
-<!--                    </span>-->
-<!--                    <span class="guest__wrap" v-if="platform.nicheEditLinkActive">-->
-<!--                        <span>-->
-<!--                            Existing article:-->
-<!--                        </span>-->
-<!--                        <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">-->
-<!--                            + {{ platform.nicheEditLinkPrice.toFixed(2) }} $-->
-<!--                        </span>-->
-<!--                        <span v-else class="text-green  ">-->
-<!--                            - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $-->
-<!--                        </span>-->
-<!--                    </span>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--        <h1 v-else class="text-center">Platforms weren't found:( ...</h1>-->
-<!---->
-        <table class="guest-poster-table">
+        <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
                 <tr>
                     <td>
@@ -880,6 +680,7 @@
                 </tr>
             </tbody>
         </table>
+        <h1 v-else class="text-center">Platforms weren't found:( ...</h1>
 
         <VRow class="justify-space-between mt-4" v-if="Object.keys(platforms).length">
             <ul class="pagination">
@@ -934,10 +735,6 @@
                 </VSelect>
             </VCol>
         </VRow>
-
-        <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform" v-if="isAdmin">
-            <VIcon color="white">mdi-plus</VIcon>
-        </VBtn>
 
         <SendRequestFooter
             :chosen-platforms-ids="chosenPlatformsIds"
@@ -1009,11 +806,6 @@ export default {
         },
         onSelectPerPage(value) {
             this.perPage = value;
-        },
-        onAddPlatform() {
-            if (this.isAdmin) {
-                this.$router.push({ name: 'AddPlatform' })
-            }
         },
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS
