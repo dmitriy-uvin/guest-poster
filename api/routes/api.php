@@ -37,8 +37,13 @@ Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTop
 Route::group([
     'prefix' => 'platforms',
 ], function () {
-    Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform'])
-        ->middleware('admin');
+    Route::group(['middleware' => 'admin'], function() {
+        Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformById']);
+        Route::put('/{id}/bucket-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInBucketById']);
+        Route::put('/{id}/bucket-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromBucketById']);
+    });
+
     Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])
         ->middleware('auth:api');
 });
