@@ -10,6 +10,8 @@ use App\Action\Platform\AddPlatformRequest;
 use App\Action\Platform\DeletePlatformsByIdsAction;
 use App\Action\Platform\GetPlatformCollectionAction;
 use App\Action\Platform\GetPlatformCollectionRequest;
+use App\Action\Platform\GetPlatformsInTrashCollectionAction;
+use App\Action\Platform\GetPlatformsInTrashCollectionRequest;
 use App\Action\Platform\MoveFromTrashByIdsAction;
 use App\Action\Platform\MoveInTrashByIdsAction;
 use App\Http\Presenters\Platform\PlatformPresenter;
@@ -27,6 +29,7 @@ final class PlatformController extends ApiController
     private MoveInTrashByIdsAction $moveInTrashByIdsAction;
     private MoveFromTrashByIdsAction $moveFromTrashByIdsAction;
     private DeletePlatformsByIdsAction $deletePlatformsByIdsAction;
+    private GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
@@ -34,7 +37,8 @@ final class PlatformController extends ApiController
         GetPlatformCollectionAction $getPlatformCollectionAction,
         MoveInTrashByIdsAction $moveInTrashByIdsAction,
         MoveFromTrashByIdsAction $moveFromTrashByIdsAction,
-        DeletePlatformsByIdsAction $deletePlatformsByIdsAction
+        DeletePlatformsByIdsAction $deletePlatformsByIdsAction,
+        GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
@@ -42,6 +46,7 @@ final class PlatformController extends ApiController
         $this->moveInTrashByIdsAction = $moveInTrashByIdsAction;
         $this->moveFromTrashByIdsAction = $moveFromTrashByIdsAction;
         $this->deletePlatformsByIdsAction = $deletePlatformsByIdsAction;
+        $this->getPlatformsInTrashAction = $getPlatformsInTrashAction;
     }
 
     public function savePlatform(AddPlatformHttpRequest $request)
@@ -118,6 +123,20 @@ final class PlatformController extends ApiController
             new ByIdsRequest($request->ids)
         );
         return $this->emptyResponse();
+    }
+
+    public function getPlatformsInTrashCollection(PaginatedHttpRequest $request): JsonResponse
+    {
+        $response = $this->getPlatformsInTrashAction->execute(
+            new GetPlatformsInTrashCollectionRequest(
+                (int)$request->page,
+                (int)$request->perPage,
+                $request->sorting,
+                $request->direction
+            )
+        );
+
+        return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
     }
 
     private function checkIfValueIsKnown(string $value): ?string
