@@ -501,7 +501,6 @@
                 </VCol>
             </VRow>
         </VCol>
-
         <div class="filter-chips mb-4">
             <h5 class="mb-4">{{ total }} platforms found</h5>
             <!--            <FilterChips-->
@@ -510,6 +509,7 @@
             <!--                :filters-applied="filtersApplied"-->
             <!--            />-->
         </div>
+
         <table class="admin-table" v-if="Object.keys(platforms).length">
             <thead>
             <tr>
@@ -660,12 +660,11 @@
         </VRow>
 
         <ActionButtons />
-
         <DeletePlatformDialog
             :visible="deletePlatformDialog"
             :platform="deletePlatformObj"
             @close="deletePlatformDialog = false"
-            @on-delete="deletePlatformByIdRequest"
+            @on-delete="updatePlatformsOnPage"
         />
     </div>
 </template>
@@ -707,21 +706,49 @@ export default {
         lastPages: [],
     }),
     methods: {
+        onRequestCreated() {
+            this.unSelectAll();
+        },
+        onChangePage(page) {
+            this.page = page;
+        },
+        onSelectPerPage(value) {
+            this.perPage = value;
+        },
+        pageBack() {
+            if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
+        },
+        ...mapActions('platforms', {
+            fetchPlatforms: actions.FETCH_PLATFORMS,
+        }),
         onDeletePlatformDialog(platform) {
             this.deletePlatformObj = platform;
             this.deletePlatformDialog = true;
-        },
-        async deletePlatformByIdRequest() {
-            const response = await this.loadPlatforms();
-            this.currentPage = response.current_page;
-            this.lastPage = response.last_page;
-            this.total = response.total;
-            this.reCalculatePages();
         },
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
             this.direction = this.direction === 'desc' ? 'asc' : 'desc';
             await this.loadPlatforms();
+        },
+        async updatePlatformsOnPage() {
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+            this.pageBack();
+        },
+        unSelectAll() {
+            this.initializeChosenPlatformsState();
+        },
+        selectPlatform(platformId) {
+            this.chosen = {
+                ...this.chosen,
+                [platformId]: !this.chosen[platformId]
+            }
+        },
+        onPlatformRemoved(platformId) {
+            this.chosen[platformId] = false;
         },
         async loadPlatforms() {
             return await this.fetchPlatforms({
@@ -739,47 +766,17 @@ export default {
                 }
             });
         },
-        onSelectPerPage(value) {
-            this.perPage = value;
-        },
-        ...mapActions('platforms', {
-            fetchPlatforms: actions.FETCH_PLATFORMS,
-        }),
         selectAll() {
             this.selectedAll = !this.selectedAll;
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
+            this.initializeChosenPlatformsState();
             const newChosen = {};
             this.platforms.map(platform => {
                 newChosen[platform.id] = !this.chosen[platform.id];
             });
             this.chosen = newChosen;
             if (!this.selectedAll) {
-                this.platforms.map(platform => {
-                    this.chosen[platform.id] = null;
-                });
+                this.initializeChosenPlatformsState();
             }
-        },
-        unSelectAll() {
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-        onChangePage(page) {
-            this.page = page;
-        },
-        selectPlatform(platformId) {
-            this.chosen = {
-                ...this.chosen,
-                [platformId]: !this.chosen[platformId]
-            }
-        },
-        onRequestCreated() {
-            this.unSelectAll();
-        },
-        onPlatformRemoved(platformId) {
-            this.chosen[platformId] = false;
         },
         reCalculatePages() {
             this.pages = [];
@@ -798,7 +795,11 @@ export default {
                 this.firstPages = this.pages;
                 this.lastPages = [];
             }
-            if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
+        },
+        initializeChosenPlatformsState() {
+            this.platforms.map(platform => {
+                this.chosen[platform.id] = null;
+            });
         }
     },
     async mounted() {
@@ -806,45 +807,15 @@ export default {
         this.currentPage = response.current_page;
         this.lastPage = response.last_page;
         this.total = response.total;
-        for (let page = 1; page <= this.lastPage; page++) {
-            this.pages.push(page);
-        }
-        if (this.pages.length > 4) {
-            this.lastPages = this.pages.slice(-2);
-            if (!this.lastPages.includes(this.page)) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-            }
-        } else {
-            this.firstPages = this.pages;
-            this.lastPages = [];
-        }
-        this.platforms.map(platform => {
-            this.chosen[platform.id] = null;
-        });
+        this.reCalculatePages();
+        this.initializeChosenPlatformsState();
     },
     watch: {
         async page() {
             this.chosen = {};
             await this.loadPlatforms();
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
         },
         async perPage() {
             this.page = 1;
@@ -852,25 +823,8 @@ export default {
             this.currentPage = response.current_page;
             this.lastPage = response.last_page;
             this.total = response.total;
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
         },
     },
     computed: {

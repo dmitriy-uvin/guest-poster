@@ -772,7 +772,7 @@ export default {
         chosen: {},
         selectedAll: false,
         page: 1,
-        perPage: 5,
+        perPage: 15,
         sorting: null,
         direction: null,
         currentPage: 1,
