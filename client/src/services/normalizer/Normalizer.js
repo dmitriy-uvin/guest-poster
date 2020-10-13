@@ -18,6 +18,7 @@ export const platformMapper = Platform => ({
     domainZone: Platform.domain_zone,
     createdAt: Platform.created_at,
     updatedAt: Platform.updated_at,
+    inTrash: Platform.in_trash,
     trust: Platform.trust,
     spam: Platform.spam,
     lrtPowerTrust: Platform.lrt_power_trust,

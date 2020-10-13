@@ -62,7 +62,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
             'comment' => $platform->comment,
             'trust' => $platform->trust,
             'spam' => $platform->spam,
-            'in_bucket' => $platform->in_bucket,
+            'in_trash' => $platform->in_bucket,
             'lrt_power_trust' => $platform->lrt_power_trust,
             'topics' => $this->topicPresenter->presentCollection($platform->topics),
             'moz' => $this->mozPresenter->present($platform->moz),

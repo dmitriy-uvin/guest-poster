@@ -29,7 +29,7 @@ class Platform extends Model
         'trust',
         'spam',
         'lrt_power_trust',
-        'in_bucket'
+        'in_trash'
     ];
 
     protected $with = [
@@ -40,7 +40,7 @@ class Platform extends Model
     protected $attributes = [
         'comment' => null,
         'contacts' => null,
-        'in_bucket' => false
+        'in_trash' => false
     ];
 
     protected $casts = [
@@ -80,10 +80,5 @@ class Platform extends Model
     public function facebook()
     {
         return $this->hasOne(Facebook::class);
-    }
-
-    public function order()
-    {
-        return $this->belongsTo(OrderItem::class);
     }
 }

@@ -34,7 +34,7 @@ class CreatePlatformsTable extends Migration
             $table->integer('trust')->nullable();
             $table->double('spam')->nullable();
             $table->integer('lrt_power_trust')->nullable();
-            $table->boolean('in_bucket')->default(false);
+            $table->boolean('in_trash')->default(false);
             $table->timestamps();
         });
     }
