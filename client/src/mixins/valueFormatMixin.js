@@ -9,7 +9,9 @@ export default {
             return price.toFixed(2).toString().replace('.', ',');
         },
         deleteProtocol(websiteUrl) {
-            websiteUrl = websiteUrl.replace(/http[s]?:\/\/(www.)?/, '');
+            if (websiteUrl) {
+                websiteUrl = websiteUrl.replace(/http[s]?:\/\/(www.)?/, '');
+            }
             return websiteUrl;
         },
         getProtocol(websiteUrl) {
