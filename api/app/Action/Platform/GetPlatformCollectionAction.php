@@ -27,7 +27,7 @@ final class GetPlatformCollectionAction
 
         $filterQuery = Platform::query();
 
-        $filterQuery = $filterQuery->where('in_bucket', '=', false);
+        $filterQuery = $filterQuery->where('in_trash', '=', false);
 
         if ($request->getOrganicTrafficFrom()) {
             $filterQuery = $filterQuery
