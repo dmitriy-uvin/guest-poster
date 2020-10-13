@@ -33,6 +33,7 @@ export default {
             await this.loadPlatforms();
         },
         unSelectAll() {
+            this.selectedAll = false;
             this.initializeChosenPlatformsState();
         },
         selectPlatform(platformId) {

@@ -10,7 +10,8 @@
             </VCardTitle>
             <VCardText>
                 <p class="red--text">
-                    Are you sure you want to delete followings platforms? (Platforms will be moved in trash!)
+                    Are you sure you want to delete followings platforms?
+                    <span class="black--text">(Platforms will be moved in trash!)</span>
                 </p>
                 <ul v-if="Object.values(platforms).length">
                     <li v-for="platform in platforms" :key="platform.id">
