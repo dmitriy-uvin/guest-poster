@@ -24,6 +24,10 @@ const platformService = {
     async moveFromTrashByIds(ids) {
         return await requestInternalService.put(API_PREFIX + '/trash-from', ids);
     },
+    async fetchPlatformsInTrash(params = {}) {
+        const response = await requestInternalService.get(API_PREFIX + '/trash', params);
+        return response?.data;
+    }
 };
 
 export default platformService;

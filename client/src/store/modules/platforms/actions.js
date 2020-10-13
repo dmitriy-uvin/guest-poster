@@ -27,5 +27,13 @@ export default {
     },
     [actions.MOVE_FROM_TRASH_BY_IDS]: async (context, ids) => {
         await platformService.moveFromTrashByIds(ids);
+    },
+    [actions.FETCH_PLATFORMS_IN_TRASH]: async({ commit, dispatch }, params = {}) => {
+        const response = await platformService.fetchPlatformsInTrash(params);
+        const platforms = response?.data;
+        const metaData = response?.meta;
+        await dispatch(actions.FETCH_TOPICS);
+        commit(mutations.SET_PLATFORMS, platforms);
+        return Promise.resolve(metaData);
     }
 }
