@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.admin-table {
+    font-family: "Roboto", sans-serif;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    font-size: 12px;
+    color: #828282;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-table td {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #333333;
+    vertical-align: top;
+    padding: 15px 4px;
+}
+
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1)
+{
+    width: 5%;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2)
+{
+    width: 5%;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3)
+{
+    width: 45%;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4),
+.admin-table th:nth-child(5),
+.admin-table td:nth-child(5)
+{
+    width: 15%;
+}

@@ -510,72 +510,38 @@
             <!--                :filters-applied="filtersApplied"-->
             <!--            />-->
         </div>
-        <table class="guest-poster-table" v-if="Object.keys(platforms).length">
+        <table class="admin-table" v-if="Object.keys(platforms).length">
             <thead>
             <tr>
                 <td>
                     <VCheckbox @click="selectAll" hide-details></VCheckbox>
                 </td>
+                <th @click="changeSortingAndDirection('id')">
+                    <span :class="{ 'underline' : sorting === 'id' }">
+                        ID
+                    </span>
+                </th>
                 <th @click="changeSortingAndDirection('website')">
-                        <span :class="{ 'underline' : sorting === 'website' }">
-                            Website
-                        </span>
+                    <span :class="{ 'underline' : sorting === 'website' }">
+                        Website
+                    </span>
                 </th>
-                <th @click="changeSortingAndDirection('trust')">
-                        <span :class="{ 'underline' : sorting === 'trust' }">
-                            Trust
-                        </span>
+                <th
+                    @click="changeSortingAndDirection('created_at')"
+                    class="text-center">
+                    <span :class="{ 'underline' : sorting === 'created_at' }">
+                        Created At
+                    </span>
                 </th>
-                <th @click="changeSortingAndDirection('semrush.traffic')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic' }">
-                            SR.Trf
-                        </span>
+                <th
+                    @click="changeSortingAndDirection('updated_at')"
+                    class="text-center">
+                    <span :class="{ 'underline' : sorting === 'updated_at' }">
+                        Updated At
+                    </span>
                 </th>
-                <th @click="changeSortingAndDirection('ahrefs.dr')">
-                        <span :class="{ 'underline' : sorting === 'ahrefs.dr' }">
-                            DR
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('semrush.traffic_costs')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic_costs' }">
-                            SR.Cost
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('majestic.tf')">
-                        <span :class="{ 'underline' : sorting === 'majestic.tf' }">
-                            TF
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('majestic.cf')">
-                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">
-                            CF
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('alexa.rank')">
-                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">
-                            Alx.Rank
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('majestic.ebl')">
-                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">
-                            EBL
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('semrush.rank')">
-                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">
-                            SR.Rank
-                        </span>
-                </th>
-                <th @click="changeSortingAndDirection('ahrefs.rd')">
-                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">
-                            RD
-                        </span>
-                </th>
-                <th>Features</th>
-                <th @click="changeSortingAndDirection('price')">
-                        <span :class="{ 'underline' : sorting === 'price' }">
-                            Editorial Fee
-                        </span>
+                <th class="text-right">
+                    Actions
                 </th>
             </tr>
             </thead>
@@ -589,10 +555,13 @@
                     ></VCheckbox>
                 </td>
                 <td>
+                    {{ platform.id }}
+                </td>
+                <td>
                     <div class="link">
-                            <span class="website-link">
-                                {{ deleteProtocol(platform.websiteUrl) }}
-                            </span>
+                        <span class="website-link">
+                            {{ deleteProtocol(platform.websiteUrl) }}
+                        </span>
                     </div>
                     <div class="topics">
                         <VChip x-small
@@ -604,78 +573,32 @@
                         </VChip>
                     </div>
                 </td>
-                <td>
-                    <PlatformTrust
-                        :check-trust="platform.trust"
-                        :check-trust-spam="platform.spam"
-                        :power-trust="platform.lrtPowerTrust"
-                    />
+                <td class="text-center">
+                    {{ platform.createdAt | formatDataFilter }}
                 </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.organicTraffic | notAvailableFilter | formatNumberFilter }}
-                        </span>
+                <td class="text-center">
+                    <span v-if="platform.updatedAt === platform.createdAt">
+                        N/A
+                    </span>
+                    <span v-else>
+                        {{ platform.updatedAt | formatDataFilter }}
+                    </span>
                 </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.ahrefs.dr }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.semrush.trafficCosts | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.majestic.tf | notAvailableFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.majestic.cf | notAvailableFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.alexa.rank | notAvailableFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.semrush.rank | notAvailableFilter }}
-                        </span>
-                </td>
-                <td>
-                        <span class="table-value">
-                            {{ platform.ahrefs.rd | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                </td>
-                <td>
-                    <PlatformFeatures :platform="platform" />
-                </td>
-                <td>
-                        <span class="fee fee-active">
-                            <span class="left">{{ totalPrice(platform.price) }} $</span>
-                            <span class="right">Guest Post</span>
-                        </span>
-                    <span class="fee" v-if="platform.freeHomeFeaturedActive">
-                            <span class="left">
-                                {{ totalPrice(platform.price + platform.articleWritingPrice) }} $
-                            </span>
-                            <span class="right">GP + Article</span>
-                        </span>
-                    <span class="fee" v-if="platform.nicheEditLinkActive">
-                            <span class="left">
-                                {{ totalPrice(platform.price + platform.nicheEditLinkPrice) }} $
-                            </span>
-                            <span class="right">Niche Edit</span>
-                        </span>
+                <td class="text-right">
+                    <VBtn fab x-small color="purple" dark class="mr-3">
+                        <VIcon>mdi-eye</VIcon>
+                    </VBtn>
+                    <VBtn fab x-small color="green" dark class="mr-3">
+                        <VIcon>mdi-pencil</VIcon>
+                    </VBtn>
+                    <VBtn fab
+                          x-small
+                          color="red"
+                          dark
+                          @click="onDeletePlatformDialog(platform)"
+                    >
+                        <VIcon>mdi-delete</VIcon>
+                    </VBtn>
                 </td>
             </tr>
             </tbody>
@@ -736,9 +659,14 @@
             </VCol>
         </VRow>
 
-        <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform" v-if="isAdmin">
-            <VIcon color="white">mdi-plus</VIcon>
-        </VBtn>
+        <ActionButtons />
+
+        <DeletePlatformDialog
+            :visible="deletePlatformDialog"
+            :platform="deletePlatformObj"
+            @close="deletePlatformDialog = false"
+            @on-delete="deletePlatformByIdRequest"
+        />
     </div>
 </template>
 
@@ -750,19 +678,21 @@ import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
 import { countries } from '@/helpers/countries';
-import PlatformTrust from '@/components/platform/PlatformTrust';
-import PlatformFeatures from '@/components/platform/PlatformFeatures';
+import DeletePlatformDialog from '@/components/platform/DeletePlatformDialog';
+import ActionButtons from '@/components/platform/ActionButtons';
 // import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
     name: 'AdminPostingComponent',
     components: {
-        PlatformTrust,
-        PlatformFeatures
+        DeletePlatformDialog,
+        ActionButtons
         // FilterChips
     },
     mixins: [rolemixin, filterMixin, valueFormatMixin],
     data: () => ({
+        deletePlatformDialog: false,
+        deletePlatformObj: {},
         chosen: {},
         selectedAll: false,
         page: 1,
@@ -777,6 +707,17 @@ export default {
         lastPages: [],
     }),
     methods: {
+        onDeletePlatformDialog(platform) {
+            this.deletePlatformObj = platform;
+            this.deletePlatformDialog = true;
+        },
+        async deletePlatformByIdRequest() {
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+        },
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
             this.direction = this.direction === 'desc' ? 'asc' : 'desc';
@@ -801,13 +742,8 @@ export default {
         onSelectPerPage(value) {
             this.perPage = value;
         },
-        onAddPlatform() {
-            if (this.isAdmin) {
-                this.$router.push({ name: 'AddPlatform' })
-            }
-        },
         ...mapActions('platforms', {
-            fetchPlatforms: actions.FETCH_PLATFORMS
+            fetchPlatforms: actions.FETCH_PLATFORMS,
         }),
         selectAll() {
             this.selectedAll = !this.selectedAll;
@@ -845,6 +781,25 @@ export default {
         onPlatformRemoved(platformId) {
             this.chosen[platformId] = false;
         },
+        reCalculatePages() {
+            this.pages = [];
+            for (let page = 1; page <= this.lastPage; page++) {
+                this.pages.push(page);
+            }
+            if (this.pages.length > 4) {
+                this.lastPages = this.pages.slice(-2);
+                if (!this.lastPages.includes(this.page)) {
+                    this.firstPages = this.pages.slice(this.page - 2, this.page);
+                    if (!this.lastPages.includes(this.page + 1)) {
+                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
+                    }
+                }
+            } else {
+                this.firstPages = this.pages;
+                this.lastPages = [];
+            }
+            if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
+        }
     },
     async mounted() {
         const response = await this.loadPlatforms();
@@ -931,7 +886,7 @@ export default {
 
 <style scoped>
 /*@import "../../assets/styles/main.css";*/
-@import "../../assets/styles/table.css";
+@import "../../assets/styles/admin-table.css";
 .float-btn-action {
     position: fixed;
     bottom: 25px;
