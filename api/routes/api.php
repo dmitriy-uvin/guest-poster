@@ -39,9 +39,9 @@ Route::group([
 ], function () {
     Route::group(['middleware' => 'admin'], function() {
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
-        Route::delete('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformById']);
-        Route::put('/{id}/bucket-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInBucketById']);
-        Route::put('/{id}/bucket-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromBucketById']);
+        Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
+        Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
+        Route::delete('/', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformsByIds']);
     });
 
     Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])

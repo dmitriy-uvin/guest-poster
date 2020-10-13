@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Action\ByIdRequest;
+use App\Action\ByIdsRequest;
 use App\Action\Platform\AddPlatformAction;
 use App\Action\Platform\AddPlatformRequest;
-use App\Action\Platform\DeletePlatformByIdAction;
+use App\Action\Platform\DeletePlatformsByIdsAction;
 use App\Action\Platform\GetPlatformCollectionAction;
 use App\Action\Platform\GetPlatformCollectionRequest;
-use App\Action\Platform\MoveFromBucketByIdAction;
-use App\Action\Platform\MoveInBucketByIdAction;
+use App\Action\Platform\MoveFromTrashByIdsAction;
+use App\Action\Platform\MoveInTrashByIdsAction;
 use App\Http\Presenters\Platform\PlatformPresenter;
 use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
+use App\Http\Requests\Platform\IdsHttpRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,24 +24,24 @@ final class PlatformController extends ApiController
     private PlatformPresenter $platformPresenter;
     private AddPlatformAction $addPlatformAction;
     private GetPlatformCollectionAction $getPlatformCollectionAction;
-    private DeletePlatformByIdAction $deletePlatformByIdAction;
-    private MoveInBucketByIdAction $moveInBucketByIdAction;
-    private MoveFromBucketByIdAction $moveFromBucketByIdAction;
+    private MoveInTrashByIdsAction $moveInTrashByIdsAction;
+    private MoveFromTrashByIdsAction $moveFromTrashByIdsAction;
+    private DeletePlatformsByIdsAction $deletePlatformsByIdsAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
         PlatformPresenter $platformPresenter,
         GetPlatformCollectionAction $getPlatformCollectionAction,
-        DeletePlatformByIdAction $deletePlatformByIdAction,
-        MoveInBucketByIdAction $moveInBucketByIdAction,
-        MoveFromBucketByIdAction $moveFromBucketByIdAction
+        MoveInTrashByIdsAction $moveInTrashByIdsAction,
+        MoveFromTrashByIdsAction $moveFromTrashByIdsAction,
+        DeletePlatformsByIdsAction $deletePlatformsByIdsAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
         $this->getPlatformCollectionAction = $getPlatformCollectionAction;
-        $this->deletePlatformByIdAction = $deletePlatformByIdAction;
-        $this->moveInBucketByIdAction = $moveInBucketByIdAction;
-        $this->moveFromBucketByIdAction = $moveFromBucketByIdAction;
+        $this->moveInTrashByIdsAction = $moveInTrashByIdsAction;
+        $this->moveFromTrashByIdsAction = $moveFromTrashByIdsAction;
+        $this->deletePlatformsByIdsAction = $deletePlatformsByIdsAction;
     }
 
     public function savePlatform(AddPlatformHttpRequest $request)
@@ -93,30 +94,29 @@ final class PlatformController extends ApiController
         return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
     }
 
-    public function deletePlatformById(string $id): JsonResponse
+    public function moveInTrashByIds(IdsHttpRequest $request): JsonResponse
     {
-        $this->deletePlatformByIdAction->execute(
-            new ByIdRequest((int)$id)
+        $this->moveInTrashByIdsAction->execute(
+            new ByIdsRequest($request->ids)
         );
 
         return $this->emptyResponse();
     }
 
-    public function moveInBucketById(string $id)
+    public function moveFromTrashByIds(IdsHttpRequest $request): JsonResponse
     {
-        $this->moveInBucketByIdAction->execute(
-            new ByIdRequest((int)$id)
+        $this->moveFromTrashByIdsAction->execute(
+            new ByIdsRequest($request->ids)
         );
 
         return $this->emptyResponse();
     }
 
-    public function moveFromBucketById(string $id)
+    public function deletePlatformsByIds(IdsHttpRequest $request): JsonResponse
     {
-        $this->moveFromBucketByIdAction->execute(
-            new ByIdRequest((int)$id)
+        $this->deletePlatformsByIdsAction->execute(
+            new ByIdsRequest($request->ids)
         );
-
         return $this->emptyResponse();
     }
 
