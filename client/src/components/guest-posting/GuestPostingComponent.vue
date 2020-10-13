@@ -501,7 +501,6 @@
                 </VCol>
             </VRow>
         </VCol>
-
         <div class="filter-chips mb-4">
             <h5 class="mb-4">{{ total }} platforms found</h5>
 <!--            <FilterChips-->
@@ -514,7 +513,12 @@
             <thead>
                 <tr>
                     <td>
-                        <VCheckbox @click="selectAll" hide-details></VCheckbox>
+                        <VCheckbox
+                            @click="selectAll"
+                            hide-details
+                            :value="selectedAll"
+                        >
+                        </VCheckbox>
                     </td>
                     <th @click="changeSortingAndDirection('website')">
                         <span :class="{ 'underline' : sorting === 'website' }">
@@ -747,16 +751,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import * as actions from '@/store/modules/platforms/types/actions';
-import * as getters from '@/store/modules/platforms/types/getters';
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
-import { countries } from '@/helpers/countries';
 import PlatformTrust from '@/components/platform/PlatformTrust';
 import PlatformFeatures from '@/components/platform/PlatformFeatures';
+import guestPostingMixin from '@/mixins/guestPostingMixin';
 // import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
@@ -767,165 +768,14 @@ export default {
         PlatformFeatures
         // FilterChips
     },
-    mixins: [rolemixin, filterMixin, valueFormatMixin],
+    mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
     data: () => ({
-        chosen: {},
-        selectedAll: false,
-        page: 1,
         perPage: 15,
-        sorting: null,
-        direction: null,
-        currentPage: 1,
-        lastPage: 1,
-        total: 1,
-        pages: [],
-        firstPages: [],
-        lastPages: [],
     }),
     methods: {
-        async changeSortingAndDirection(sorting) {
-            this.sorting = sorting;
-            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
-            await this.loadPlatforms();
-        },
-        async loadPlatforms() {
-            return await this.fetchPlatforms({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-                filter: {
-                    ...this.filter,
-                    alexa: {
-                        ...this.filter.alexa,
-                        country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
-                    },
-                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
-                }
-            });
-        },
-        onSelectPerPage(value) {
-            this.perPage = value;
-        },
-        ...mapActions('platforms', {
-            fetchPlatforms: actions.FETCH_PLATFORMS
-        }),
-        selectAll() {
-            this.selectedAll = !this.selectedAll;
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-            const newChosen = {};
-            this.platforms.map(platform => {
-                newChosen[platform.id] = !this.chosen[platform.id];
-            });
-            this.chosen = newChosen;
-            if (!this.selectedAll) {
-                this.platforms.map(platform => {
-                    this.chosen[platform.id] = null;
-                });
-            }
-        },
-        unSelectAll() {
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-        onChangePage(page) {
-            this.page = page;
-        },
-        selectPlatform(platformId) {
-            this.chosen = {
-                ...this.chosen,
-                [platformId]: !this.chosen[platformId]
-            }
-        },
         onRequestCreated() {
             this.unSelectAll();
         },
-        onPlatformRemoved(platformId) {
-            this.chosen[platformId] = false;
-        },
-    },
-    async mounted() {
-        const response = await this.loadPlatforms();
-        this.currentPage = response.current_page;
-        this.lastPage = response.last_page;
-        this.total = response.total;
-        for (let page = 1; page <= this.lastPage; page++) {
-            this.pages.push(page);
-        }
-        if (this.pages.length > 4) {
-            this.lastPages = this.pages.slice(-2);
-            if (!this.lastPages.includes(this.page)) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-            }
-        } else {
-            this.firstPages = this.pages;
-            this.lastPages = [];
-        }
-        this.platforms.map(platform => {
-            this.chosen[platform.id] = null;
-        });
-    },
-    watch: {
-        async page() {
-            this.chosen = {};
-            await this.loadPlatforms();
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-        async perPage() {
-            this.page = 1;
-            const response = await this.loadPlatforms();
-            this.currentPage = response.current_page;
-            this.lastPage = response.last_page;
-            this.total = response.total;
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-    },
-    computed: {
-        ...mapGetters('platforms', {
-            platforms: getters.GET_PLATFORMS
-        }),
-        chosenPlatformsIds() {
-            return Object.keys(this.chosen).filter(id => this.chosen[id]);
-        }
     }
 }
 </script>

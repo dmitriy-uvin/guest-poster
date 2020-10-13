@@ -514,7 +514,12 @@
             <thead>
             <tr>
                 <td>
-                    <VCheckbox @click="selectAll" hide-details></VCheckbox>
+                    <VCheckbox
+                        @click="selectAll"
+                        hide-details
+                        :value="selectedAll"
+                    >
+                    </VCheckbox>
                 </td>
                 <th @click="changeSortingAndDirection('id')">
                     <span :class="{ 'underline' : sorting === 'id' }">
@@ -660,75 +665,71 @@
         </VRow>
 
         <ActionButtons />
-        <DeletePlatformDialog
-            :visible="deletePlatformDialog"
+
+        <DeleteOnePlatformDialog
+            :visible="deleteOnePlatformDialog"
             :platform="deletePlatformObj"
-            @close="deletePlatformDialog = false"
-            @on-delete="updatePlatformsOnPage"
+            @close="deleteOnePlatformDialog = false"
+            @on-delete="onPlatformDeleted"
+        />
+
+        <DeletePlatformsFooter
+            :chosen-platforms-ids="chosenPlatformsIds"
+            @unselect-all="unSelectAll"
+            @platforms-delete="onPlatformsDelete"
+        />
+
+        <DeletePlatformsDialog
+            :platforms="platformsByIds"
+            :visibility="deletePlatformsDialog"
+            @close="deletePlatformsDialog = false"
+            @on-delete="onPlatformsDeleted"
         />
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import * as actions from '@/store/modules/platforms/types/actions';
-import * as getters from '@/store/modules/platforms/types/getters';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
-import { countries } from '@/helpers/countries';
-import DeletePlatformDialog from '@/components/platform/DeletePlatformDialog';
+import DeleteOnePlatformDialog from '@/components/platform/DeleteOnePlatformDialog';
 import ActionButtons from '@/components/platform/ActionButtons';
+import guestPostingMixin from '@/mixins/guestPostingMixin';
+import DeletePlatformsFooter from '@/components/platform/DeletePlatformsFooter';
+import DeletePlatformsDialog from '@/components/platform/DeletePlatformsDialog';
 // import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
     name: 'AdminPostingComponent',
     components: {
-        DeletePlatformDialog,
-        ActionButtons
+        DeletePlatformsDialog,
+        DeleteOnePlatformDialog,
+        ActionButtons,
+        DeletePlatformsFooter
         // FilterChips
     },
-    mixins: [rolemixin, filterMixin, valueFormatMixin],
+    mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
     data: () => ({
-        deletePlatformDialog: false,
+        deleteOnePlatformDialog: false,
+        deletePlatformsDialog: false,
         deletePlatformObj: {},
-        chosen: {},
-        selectedAll: false,
-        page: 1,
         perPage: 5,
-        sorting: null,
-        direction: null,
-        currentPage: 1,
-        lastPage: 1,
-        total: 1,
-        pages: [],
-        firstPages: [],
-        lastPages: [],
     }),
     methods: {
-        onRequestCreated() {
+        onPlatformsDeleted() {
             this.unSelectAll();
+            this.updatePlatformsOnPage();
         },
-        onChangePage(page) {
-            this.page = page;
+        onPlatformDeleted() {
+            this.unSelectAll();
+            this.updatePlatformsOnPage();
         },
-        onSelectPerPage(value) {
-            this.perPage = value;
-        },
-        pageBack() {
-            if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
-        },
-        ...mapActions('platforms', {
-            fetchPlatforms: actions.FETCH_PLATFORMS,
-        }),
         onDeletePlatformDialog(platform) {
             this.deletePlatformObj = platform;
-            this.deletePlatformDialog = true;
+            this.deleteOnePlatformDialog = true;
         },
-        async changeSortingAndDirection(sorting) {
-            this.sorting = sorting;
-            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
-            await this.loadPlatforms();
+        onPlatformsDelete() {
+            this.deletePlatformsDialog = true;
         },
         async updatePlatformsOnPage() {
             const response = await this.loadPlatforms();
@@ -738,101 +739,18 @@ export default {
             this.reCalculatePages();
             this.pageBack();
         },
-        unSelectAll() {
-            this.initializeChosenPlatformsState();
-        },
-        selectPlatform(platformId) {
-            this.chosen = {
-                ...this.chosen,
-                [platformId]: !this.chosen[platformId]
-            }
-        },
-        onPlatformRemoved(platformId) {
-            this.chosen[platformId] = false;
-        },
-        async loadPlatforms() {
-            return await this.fetchPlatforms({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-                filter: {
-                    ...this.filter,
-                    alexa: {
-                        ...this.filter.alexa,
-                        country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
-                    },
-                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
-                }
-            });
-        },
-        selectAll() {
-            this.selectedAll = !this.selectedAll;
-            this.initializeChosenPlatformsState();
-            const newChosen = {};
-            this.platforms.map(platform => {
-                newChosen[platform.id] = !this.chosen[platform.id];
-            });
-            this.chosen = newChosen;
-            if (!this.selectedAll) {
-                this.initializeChosenPlatformsState();
-            }
-        },
-        reCalculatePages() {
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-        },
-        initializeChosenPlatformsState() {
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        }
-    },
-    async mounted() {
-        const response = await this.loadPlatforms();
-        this.currentPage = response.current_page;
-        this.lastPage = response.last_page;
-        this.total = response.total;
-        this.reCalculatePages();
-        this.initializeChosenPlatformsState();
-    },
-    watch: {
-        async page() {
-            this.chosen = {};
-            await this.loadPlatforms();
-            this.reCalculatePages();
-            this.initializeChosenPlatformsState();
-        },
-        async perPage() {
-            this.page = 1;
-            const response = await this.loadPlatforms();
-            this.currentPage = response.current_page;
-            this.lastPage = response.last_page;
-            this.total = response.total;
-            this.reCalculatePages();
-            this.initializeChosenPlatformsState();
+        pageBack() {
+            if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
         },
     },
     computed: {
-        ...mapGetters('platforms', {
-            platforms: getters.GET_PLATFORMS
-        }),
-        chosenPlatformsIds() {
-            return Object.keys(this.chosen).filter(id => this.chosen[id]);
+        platformsByIds() {
+            return this.platforms
+                .filter(
+                    platform => this.chosenPlatformsIds.includes(
+                        platform.id.toString()
+                    )
+                );
         }
     }
 }
