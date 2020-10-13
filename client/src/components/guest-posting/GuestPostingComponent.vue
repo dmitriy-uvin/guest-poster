@@ -511,205 +511,317 @@
                 :filters-applied="filtersApplied"
             />
         </div>
+<!--        <VDivider></VDivider>-->
 
-        <VDivider></VDivider>
-
-        <table class="guest__table" v-if="Object.keys(platforms).length">
-            <thead class="guest__head">
-            <tr>
-                <th class="guest__col">
-                    <VCheckbox @click="selectAll"></VCheckbox>
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Website
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('website_url')"
-                            v-if="sorting === 'website_url' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('website_url')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    Topic
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        DA
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('dr')"
-                            v-if="sorting === 'dr' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('dr')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        MA
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('ma')"
-                            v-if="sorting === 'ma' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('ma')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Organic traffic
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('organic_traffic')"
-                            v-if="sorting === 'organic_traffic' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('organic_traffic')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    Features
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Editorial fee
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('price')"
-                            v-if="sorting === 'price' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('price')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-            </tr>
+<!--        <table class="guest__table" v-if="Object.keys(platforms).length">-->
+<!--            <thead class="guest__head">-->
+<!--            <tr>-->
+<!--                <th class="guest__col">-->
+<!--                    <VCheckbox @click="selectAll"></VCheckbox>-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        Website-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('website_url')"-->
+<!--                            v-if="sorting === 'website_url' && direction === 'desc'"-->
+<!--                        >-->
+<!--                            mdi-chevron-down-->
+<!--                        </VIcon>-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('website_url')"-->
+<!--                            v-else-->
+<!--                        >-->
+<!--                            mdi-chevron-up-->
+<!--                        </VIcon>-->
+<!--                    </div>-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    Topic-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        DA-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('moz.da')"-->
+<!--                            v-if="sorting === 'moz.da' && direction === 'desc'"-->
+<!--                        >-->
+<!--                            mdi-chevron-down-->
+<!--                        </VIcon>-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('moz.da')"-->
+<!--                            v-else-->
+<!--                        >-->
+<!--                            mdi-chevron-up-->
+<!--                        </VIcon>-->
+<!--                    </div>-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        MA-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('ma')"-->
+<!--                            v-if="sorting === 'ma' && direction === 'desc'"-->
+<!--                        >-->
+<!--                            mdi-chevron-down-->
+<!--                        </VIcon>-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('ma')"-->
+<!--                            v-else-->
+<!--                        >-->
+<!--                            mdi-chevron-up-->
+<!--                        </VIcon>-->
+<!--                    </div>-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        Organic traffic-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('organic_traffic')"-->
+<!--                            v-if="sorting === 'organic_traffic' && direction === 'desc'"-->
+<!--                        >-->
+<!--                            mdi-chevron-down-->
+<!--                        </VIcon>-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('organic_traffic')"-->
+<!--                            v-else-->
+<!--                        >-->
+<!--                            mdi-chevron-up-->
+<!--                        </VIcon>-->
+<!--                    </div>-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    Features-->
+<!--                </th>-->
+<!--                <th class="guest__col">-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        Editorial fee-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('price')"-->
+<!--                            v-if="sorting === 'price' && direction === 'desc'"-->
+<!--                        >-->
+<!--                            mdi-chevron-down-->
+<!--                        </VIcon>-->
+<!--                        <VIcon-->
+<!--                            right-->
+<!--                            @click="changeSortingAndDirection('price')"-->
+<!--                            v-else-->
+<!--                        >-->
+<!--                            mdi-chevron-up-->
+<!--                        </VIcon>-->
+<!--                    </div>-->
+<!--                </th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr v-for="platform in platforms" :key="platform.id">-->
+<!--                <td>-->
+<!--                    <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <div class="guest__col-wrap">-->
+<!--                        {{ deleteProtocol(platform.websiteUrl) }}-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <VChip v-for="(topic, id) in platform.topics"-->
+<!--                           :key="id"-->
+<!--                           x-small-->
+<!--                           class="pa-0 px-2 mr-1 mb-1"-->
+<!--                    >-->
+<!--                        {{ topic.name }}-->
+<!--                    </VChip>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{ platform.moz.da }}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{ platform.ma }}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{ platform.organicTraffic | notAvailableFilter }}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <ul style="list-style: none" class="pl-0">-->
+<!--                        <li-->
+<!--                            :class="{-->
+<!--                            'available' : platform.doFollowActive,-->
+<!--                            'not-available': !platform.doFollowActive}-->
+<!--                            "-->
+<!--                        >-->
+<!--                            Do Follow-->
+<!--                        </li>-->
+<!--                        <li-->
+<!--                            :class="{-->
+<!--                            'available' : platform.freeHomeFeaturedActive,-->
+<!--                            'not-available': !platform.freeHomeFeaturedActive}-->
+<!--                            "-->
+<!--                        >-->
+<!--                            Free Home Featured-->
+<!--                        </li>-->
+<!--                        <li-->
+<!--                            :class="{-->
+<!--                            'available' : platform.nicheEditLinkActive,-->
+<!--                            'not-available': !platform.nicheEditLinkActive}-->
+<!--                            "-->
+<!--                        >-->
+<!--                            Niche Edit Link-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <span class="guest__price">-->
+<!--                        {{ platform.price }} $-->
+<!--                    </span>-->
+<!--                    <span class="guest__wrap mb-1 d-block">-->
+<!--                        <span>-->
+<!--                            Article writing:-->
+<!--                        </span>-->
+<!--                        <span v-if="platform.articleWritingPrice > 0" class="text-orange">-->
+<!--                            + {{ platform.articleWritingPrice.toFixed(2) }} $-->
+<!--                        </span>-->
+<!--                        <span v-else class="text-green">-->
+<!--                            - {{ Math.abs(platform.articleWritingPrice).toFixed(2) }} $-->
+<!--                        </span>-->
+<!--                    </span>-->
+<!--                    <span class="guest__wrap" v-if="platform.nicheEditLinkActive">-->
+<!--                        <span>-->
+<!--                            Existing article:-->
+<!--                        </span>-->
+<!--                        <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">-->
+<!--                            + {{ platform.nicheEditLinkPrice.toFixed(2) }} $-->
+<!--                        </span>-->
+<!--                        <span v-else class="text-green  ">-->
+<!--                            - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $-->
+<!--                        </span>-->
+<!--                    </span>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--        <h1 v-else class="text-center">Platforms weren't found:( ...</h1>-->
+<!---->
+        <table class="guest-poster-table">
+            <thead>
+                <tr>
+                    <td>
+                        <VCheckbox @click="selectAll" hide-details></VCheckbox>
+                    </td>
+                    <th>Website</th>
+                    <th>Trust</th>
+                    <th>SR.Trf</th>
+                    <th>DR</th>
+                    <th>SR.Cost</th>
+                    <th>TF</th>
+                    <th>CF</th>
+                    <th>Alx.Rank</th>
+                    <th>EBL</th>
+                    <th>SR.Rank</th>
+                    <th>RD</th>
+                    <th>Features</th>
+                    <th>Editorial Fee</th>
+                </tr>
             </thead>
             <tbody>
-            <tr v-for="platform in platforms" :key="platform.id">
-                <td>
-                    <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>
-                </td>
-                <td>
-                    <div class="guest__col-wrap">
-                        {{ deleteProtocol(platform.websiteUrl) }}
-                    </div>
-                </td>
-                <td>
-                    <VChip v-for="(topic, id) in platform.topics"
-                           :key="id"
-                           x-small
-                           class="pa-0 px-2 mr-1 mb-1"
-                    >
-                        {{ topic.name }}
-                    </VChip>
-                </td>
-                <td>
-                    {{ platform.moz.da }}
-                </td>
-                <td>
-                    {{ platform.ma }}
-                </td>
-                <td>
-                    {{ platform.organicTraffic | notAvailableFilter }}
-                </td>
-                <td>
-                    <ul style="list-style: none" class="pl-0">
-                        <li
-                            :class="{
-                            'available' : platform.doFollowActive,
-                            'not-available': !platform.doFollowActive}
-                            "
-                        >
-                            Do Follow
-                        </li>
-                        <li
-                            :class="{
-                            'available' : platform.freeHomeFeaturedActive,
-                            'not-available': !platform.freeHomeFeaturedActive}
-                            "
-                        >
-                            Free Home Featured
-                        </li>
-                        <li
-                            :class="{
-                            'available' : platform.nicheEditLinkActive,
-                            'not-available': !platform.nicheEditLinkActive}
-                            "
-                        >
-                            Niche Edit Link
-                        </li>
-                    </ul>
-                </td>
-                <td>
-                    <span class="guest__price">
-                        {{ platform.price }} $
-                    </span>
-                    <span class="guest__wrap mb-1 d-block">
-                        <span>
-                            Article writing:
+                <tr v-for="platform in platforms" :key="platform.id">
+                    <td>
+                        <VCheckbox
+                            :value="!!chosen[platform.id]"
+                            @click="selectPlatform(platform.id)"
+                            hide-details
+                        ></VCheckbox>
+                    </td>
+                    <td>
+                        <div class="link">
+                            <span class="website-link">{{ deleteProtocol(platform.websiteUrl) }}</span>
+                        </div>
+                        <div class="topics">
+                            <VChip x-small
+                                   class="pa-0 px-1 mr-1 mb-1 chip"
+                                   v-for="(topic, id) in platform.topics"
+                                   :key="id"
+                            >
+                                {{ topic.name }}
+                            </VChip>
+                        </div>
+                    </td>
+                    <td>
+                        <PlatformTrust
+                            :check-trust="platform.trust"
+                            :check-trust-spam="platform.spam"
+                            :power-trust="platform.lrtPowerTrust"
+                        />
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.organicTraffic | notAvailableFilter | formatNumberFilter }}
                         </span>
-                        <span v-if="platform.articleWritingPrice > 0" class="text-orange">
-                            + {{ platform.articleWritingPrice.toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.ahrefs.dr }}
                         </span>
-                        <span v-else class="text-green">
-                            - {{ Math.abs(platform.articleWritingPrice).toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.semrush.trafficCosts | notAvailableFilter | formatNumberFilter }}
                         </span>
-                    </span>
-                    <span class="guest__wrap" v-if="platform.nicheEditLinkActive">
-                        <span>
-                            Existing article:
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
-                        <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">
-                            + {{ platform.nicheEditLinkPrice.toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.cf | notAvailableFilter }}
                         </span>
-                        <span v-else class="text-green  ">
-                            - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.alexa.rank | notAvailableFilter }}
                         </span>
-                    </span>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.semrush.rank | notAvailableFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.ahrefs.rd | notAvailableFilter | formatNumberFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <PlatformFeatures :platform="platform" />
+                    </td>
+                    <td>
+                        <span class="fee fee-active">
+                            <span class="left">150,00 $</span>
+                            <span class="right">Guest Post</span>
+                        </span>
+                        <span class="fee">
+                            <span class="left">150,00 $</span>
+                            <span class="right">Guest Post</span>
+                        </span>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <h1 v-else class="text-center">Platforms weren't found:( ...</h1>
 
         <VRow class="justify-space-between mt-4" v-if="Object.keys(platforms).length">
             <ul class="pagination">
@@ -787,14 +899,18 @@ import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
-import { countries } from "@/helpers/countries";
-import FilterChips from '@/components/guest-posting/FilterChips';
+import { countries } from '@/helpers/countries';
+import PlatformTrust from '@/components/platform/PlatformTrust';
+import PlatformFeatures from '@/components/platform/PlatformFeatures';
+// import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
         SendRequestFooter,
-        FilterChips
+        PlatformTrust,
+        PlatformFeatures
+        // FilterChips
     },
     mixins: [rolemixin, filterMixin, valueFormatMixin],
     data: () => ({
@@ -965,33 +1081,39 @@ export default {
 </script>
 
 <style scoped>
-@import "../../assets/styles/main.css";
-/*@import "../../assets/styles/mobile.css";*/
+/*@import "../../assets/styles/main.css";*/
+@import "../../assets/styles/table.css";
 .float-btn-action {
     position: fixed;
     bottom: 25px;
     right: 25px;
 }
-.v-chip {
-    height: 24px;
+
+.chip {
+    font-size: 10px;
+    font-weight: 400 !important;
 }
 
 .v-application--is-ltr .v-input--selection-controls__input {
     margin-right: 0;
 }
+
 .v-input--selection-controls {
     margin-top: 0;
     padding-top: 0;
 }
+
 .pagination {
     list-style: none;
 }
+
 .pagination li {
     cursor: pointer;
     display: inline-block;
     margin-right: 15px;
     transition: 0.5s;
 }
+
 .order-footer {
     position: fixed;
     bottom: 0;
@@ -1004,11 +1126,13 @@ export default {
         0px 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
 }
+
 .filters {
     border-radius: 10px;
     border: 2px solid #2f80ed;
     padding-left: 30px;
 }
+
 .not-uppercase {
     text-transform: none;
 }
