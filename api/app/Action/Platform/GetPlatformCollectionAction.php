@@ -247,6 +247,52 @@ final class GetPlatformCollectionAction
                 ->join('moz', 'moz.platform_id', '=', 'platforms.id')
                 ->orderBy('moz.da', $direction)
                 ->select('platforms.*');
+        } else if ($sorting === 'website') {
+            $filterQuery = $filterQuery->orderBy('website_url', $direction);
+        } else if ($sorting === 'trust') {
+            $filterQuery = $filterQuery->orderBy('trust', $direction);
+        } else if ($sorting === 'semrush.traffic') {
+            $filterQuery = $filterQuery->orderBy('organic_traffic', $direction);
+        } else if ($sorting === 'ahrefs.dr') {
+            $filterQuery = $filterQuery
+                ->join('ahrefs', 'ahrefs.platform_id', '=', 'platforms.id')
+                ->orderBy('ahrefs.dr', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'semrush.traffic_costs') {
+            $filterQuery = $filterQuery
+                ->join('semrush', 'semrush.platform_id', '=', 'platforms.id')
+                ->orderBy('semrush.traffic_costs', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.tf') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.tf', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.cf') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.cf', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'alexa.rank') {
+            $filterQuery = $filterQuery
+                ->join('alexa', 'alexa.platform_id', '=', 'platforms.id')
+                ->orderBy('alexa.rank', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.ebl') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.external_backlinks', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'semrush.rank') {
+            $filterQuery = $filterQuery
+                ->join('semrush', 'semrush.platform_id', '=', 'platforms.id')
+                ->orderBy('semrush.rank', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'ahrefs.rd') {
+            $filterQuery = $filterQuery
+                ->join('ahrefs', 'ahrefs.platform_id', '=', 'platforms.id')
+                ->orderBy('ahrefs.rd', $direction)
+                ->select('platforms.*');
         } else {
             $filterQuery = $filterQuery
                 ->orderBy($sorting, $direction);

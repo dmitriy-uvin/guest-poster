@@ -716,19 +716,67 @@
                     <td>
                         <VCheckbox @click="selectAll" hide-details></VCheckbox>
                     </td>
-                    <th>Website</th>
-                    <th>Trust</th>
-                    <th>SR.Trf</th>
-                    <th>DR</th>
-                    <th>SR.Cost</th>
-                    <th>TF</th>
-                    <th>CF</th>
-                    <th>Alx.Rank</th>
-                    <th>EBL</th>
-                    <th>SR.Rank</th>
-                    <th>RD</th>
+                    <th @click="changeSortingAndDirection('website')">
+                        <span :class="{ 'underline' : sorting === 'website' }">
+                            Website
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('trust')">
+                        <span :class="{ 'underline' : sorting === 'trust' }">
+                            Trust
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.traffic')">
+                        <span :class="{ 'underline' : sorting === 'semrush.traffic' }">
+                            SR.Trf
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('ahrefs.dr')">
+                        <span :class="{ 'underline' : sorting === 'ahrefs.dr' }">
+                            DR
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.traffic_costs')">
+                        <span :class="{ 'underline' : sorting === 'semrush.traffic_costs' }">
+                            SR.Cost
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.tf')">
+                        <span :class="{ 'underline' : sorting === 'majestic.tf' }">
+                            TF
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.cf')">
+                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">
+                            CF
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('alexa.rank')">
+                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">
+                            Alx.Rank
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.ebl')">
+                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">
+                            EBL
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.rank')">
+                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">
+                            SR.Rank
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('ahrefs.rd')">
+                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">
+                            RD
+                        </span>
+                    </th>
                     <th>Features</th>
-                    <th>Editorial Fee</th>
+                    <th @click="changeSortingAndDirection('price')">
+                        <span :class="{ 'underline' : sorting === 'price' }">
+                            Editorial Fee
+                        </span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -742,7 +790,9 @@
                     </td>
                     <td>
                         <div class="link">
-                            <span class="website-link">{{ deleteProtocol(platform.websiteUrl) }}</span>
+                            <span class="website-link">
+                                {{ deleteProtocol(platform.websiteUrl) }}
+                            </span>
                         </div>
                         <div class="topics">
                             <VChip x-small
@@ -811,12 +861,20 @@
                     </td>
                     <td>
                         <span class="fee fee-active">
-                            <span class="left">150,00 $</span>
+                            <span class="left">{{ totalPrice(platform.price) }} $</span>
                             <span class="right">Guest Post</span>
                         </span>
-                        <span class="fee">
-                            <span class="left">150,00 $</span>
-                            <span class="right">Guest Post</span>
+                        <span class="fee" v-if="platform.freeHomeFeaturedActive">
+                            <span class="left">
+                                {{ totalPrice(platform.price + platform.articleWritingPrice) }} $
+                            </span>
+                            <span class="right">GP + Article</span>
+                        </span>
+                        <span class="fee" v-if="platform.nicheEditLinkActive">
+                            <span class="left">
+                                {{ totalPrice(platform.price + platform.nicheEditLinkPrice) }} $
+                            </span>
+                            <span class="right">Niche Edit</span>
                         </span>
                     </td>
                 </tr>
