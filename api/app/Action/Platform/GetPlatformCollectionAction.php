@@ -242,8 +242,17 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if ($sorting === 'moz.da') {
+            $filterQuery = $filterQuery
+                ->join('moz', 'moz.platform_id', '=', 'platforms.id')
+                ->orderBy('moz.da', $direction)
+                ->select('platforms.*');
+        } else {
+            $filterQuery = $filterQuery
+                ->orderBy($sorting, $direction);
+        }
+
         $filterQuery = $filterQuery
-            ->orderBy($sorting, $direction)
             ->paginate(
                 $perPage, ['*'], null, $page
             );
