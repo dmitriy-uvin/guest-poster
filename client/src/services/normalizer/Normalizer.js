@@ -23,10 +23,11 @@ export const platformMapper = Platform => ({
     spam: Platform.spam,
     lrtPowerTrust: Platform.lrt_power_trust,
     topics: Platform.topics.map(topicMapper),
-    moz: Platform.moz,
+    moz: MozMapper(Platform.moz),
     alexa: AlexaMapper(Platform.alexa),
     semrush: SemRushMapper(Platform.semrush),
     majestic: MajesticMapper(Platform.majestic),
+    fb: Platform.fb,
     ahrefs: Platform.ahrefs
 });
 

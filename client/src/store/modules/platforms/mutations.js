@@ -24,4 +24,7 @@ export default {
             ...state.platforms.slice(index + 1),
         ];
     },
+    [mutations.SET_PLATFORM_BY_ID]: (state, platform) => {
+        state.platformById = platformMapper(platform)
+    }
 }

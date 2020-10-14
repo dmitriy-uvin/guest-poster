@@ -33,10 +33,17 @@ const platformService = {
         });
     },
     async importPlatforms(data) {
-        console.log(data);
         const response = await requestInternalService.post(API_PREFIX + '/import', data);
         return response;
     },
+    async updatePlatformById(data) {
+        const response = await requestInternalService.put(API_PREFIX + '/' + data.id, data.data);
+        return response?.data?.data;
+    },
+    async fetchPlatformById(id) {
+        const response = await requestInternalService.get(API_PREFIX + '/' + id);
+        return response?.data?.data;
+    }
 };
 
 export default platformService;
