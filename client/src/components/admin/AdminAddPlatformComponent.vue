@@ -997,14 +997,22 @@ export default {
                             type: 'error'
                         });
                     }
-                    this.majestic.external_backlinks = !PropertyNotFound.includes(responseData.ebl) ? responseData.ebl : 'N/A';
-                    this.majestic.external_gov = !PropertyNotFound.includes(responseData.ebl_gov) ? responseData.ebl_gov : 'N/A';
-                    this.majestic.external_edu = !PropertyNotFound.includes(responseData.ebl_edu) ? responseData.ebl_edu : 'N/A';
-                    this.majestic.refd = !PropertyNotFound.includes(responseData.refd) ? responseData.refd : 'N/A';
-                    this.majestic.refd_edu = !PropertyNotFound.includes(responseData.refd_edu) ? responseData.refd_edu : 'N/A';
-                    this.majestic.refd_gov = !PropertyNotFound.includes(responseData.refd_gov) ? responseData.refd_gov : 'N/A';
-                    this.majestic.tf = !PropertyNotFound.includes(responseData.tf) ? responseData.tf : 'N/A';
-                    this.majestic.cf = !PropertyNotFound.includes(responseData.cf) ? responseData.cf : 'N/A';
+                    this.majestic.external_backlinks =
+                        !PropertyNotFound.includes(responseData.ExtBackLinks) ? responseData.ExtBackLinks : 'N/A';
+                    this.majestic.external_gov =
+                        !PropertyNotFound.includes(responseData.ExtBackLinksGOV) ? responseData.ExtBackLinksGOV : 'N/A';
+                    this.majestic.external_edu =
+                        !PropertyNotFound.includes(responseData.ExtBackLinksEDU) ? responseData.ExtBackLinksEDU : 'N/A';
+                    this.majestic.refd =
+                        !PropertyNotFound.includes(responseData.RefDomains) ? responseData.RefDomains : 'N/A';
+                    this.majestic.refd_edu =
+                        !PropertyNotFound.includes(responseData.RefDomainsEDU) ? responseData.RefDomainsEDU : 'N/A';
+                    this.majestic.refd_gov =
+                        !PropertyNotFound.includes(responseData.RefDomainsGOV) ? responseData.RefDomainsGOV : 'N/A';
+                    this.majestic.tf =
+                        !PropertyNotFound.includes(responseData.TrustFlow) ? responseData.TrustFlow : 'N/A';
+                    this.majestic.cf =
+                        !PropertyNotFound.includes(responseData.CitationFlow) ? responseData.CitationFlow : 'N/A';
                     this.fillMajesticLoading = false;
                 }
             } catch (error) {
