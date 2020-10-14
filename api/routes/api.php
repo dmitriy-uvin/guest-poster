@@ -42,6 +42,7 @@ Route::group([
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
         Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
         Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'updatePlatformById']);
         Route::get('/trash', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsInTrashCollection']);
         Route::delete('/', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformsByIds']);
     });

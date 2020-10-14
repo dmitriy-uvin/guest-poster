@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Action\Platform;
 
-use App\Models\Ahrefs;
+use App\Exceptions\Platform\PlatformNotFoundException;
 use App\Models\Alexa;
 use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
-use App\Models\Platform;
 use App\Models\SemRush;
-use App\Models\Topic;
 use App\Repositories\Platform\PlatformRepositoryInterface;
 
-final class AddPlatformAction
+final class UpdatePlatformByIdAction
 {
     private PlatformRepositoryInterface $platformRepository;
 
@@ -23,9 +21,14 @@ final class AddPlatformAction
         $this->platformRepository = $platformRepository;
     }
 
-    public function execute(AddPlatformRequest $request)
+    public function execute(UpdatePlatformByIdRequest $request)
     {
-        $platform = new Platform();
+        $platform = $this->platformRepository->getById($request->getPlatformId());
+
+        if (is_null($platform)) {
+            throw new PlatformNotFoundException();
+        }
+
         $platform->website_url = $request->getWebsiteUrl();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
@@ -47,15 +50,9 @@ final class AddPlatformAction
         $platform->trust = $request->getTrust();
         $platform->spam = $request->getSpam();
         $platform->lrt_power_trust = $request->getLrtPowerTrust();
-
         $platform = $this->platformRepository->save($platform);
 
-        if ($request->getTopics()) {
-            $this->platformRepository->saveTopics($platform, $request->getTopics());
-        }
-
-        $moz = new Moz([
-            'platform_id' => $platform->id,
+        $moz = Moz::where('platform_id', '=', $platform->id)->update([
             'pa' => $request->getMozPA(),
             'da' => $request->getMozDA(),
             'rank' => $request->getMozRank(),
@@ -64,32 +61,28 @@ final class AddPlatformAction
         ]);
         $moz->save();
 
-        $alexa = new Alexa([
-            'platform_id' => $platform->id,
+        $alexa = Alexa::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getAlexaRank(),
             'country' => $request->getAlexaCountry(),
             'country_rank' => $request->getAlexaCountryRank()
         ]);
         $alexa->save();
 
-        $semrush = new SemRush([
-            'platform_id' => $platform->id,
+        $semrush = SemRush::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getSemrushRank(),
             'keyword_num' => $request->getSemrushKeywordNum(),
             'traffic_costs' => $request->getSemrushTrafficCosts(),
         ]);
         $semrush->save();
 
-        $facebook = new Facebook([
-            'platform_id' => $platform->id,
+        $facebook = Facebook::where('platform_id', '=', $platform->id)->update([
             'fb_comments' => $request->getFbComments(),
             'fb_reac' => $request->getFbReac(),
             'fb_shares' => $request->getFbShares()
         ]);
         $facebook->save();
 
-        $majestic = new Majestic([
-            'platform_id' => $platform->id,
+        $majestic = Majestic::where('platform_id', '=', $platform->id)->update([
             'external_backlinks' => $request->getMajesticExternalBacklinks(),
             'external_gov' => $request->getMajesticExternalGov(),
             'external_edu' => $request->getMajesticExternalEdu(),
@@ -101,20 +94,7 @@ final class AddPlatformAction
         ]);
         $majestic->save();
 
-        if ($request->getAhrefsStatus()) {
-            $ahrefs = new Ahrefs([
-                'platform_id' => $platform->id,
-                'rank' => $request->getAhrefsRank(),
-                'dr' => $request->getAhrefsDr(),
-                'eb' => $request->getAhrefsEb(),
-                'rd' => $request->getAhrefsRd(),
-                'dofollow' => $request->getAhrefsDofollow(),
-                'ips' => $request->getAhrefsIps(),
-            ]);
-            $ahrefs->save();
-        }
-
-        return new AddPlatformResponse($platform);
+        return new UpdatePlatformByIdResponse($platform);
     }
 
     private function getDomainZone(string $websiteUrl): string
