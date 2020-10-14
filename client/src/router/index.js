@@ -120,7 +120,7 @@ router.beforeEach(
         }
 
         if (isAdminRoute && store.state.user.user?.role !== 'admin') {
-            next(false);
+            next('/');
             return;
         }
 
