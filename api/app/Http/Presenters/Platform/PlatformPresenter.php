@@ -5,6 +5,7 @@ namespace App\Http\Presenters\Platform;
 use App\Http\Presenters\Ahrefs\AhrefsPresenter;
 use App\Http\Presenters\Alexa\AlexaPresenter;
 use App\Http\Presenters\Contracts\PresenterCollectionInterface;
+use App\Http\Presenters\Fb\FbPresenter;
 use App\Http\Presenters\Majestic\MajesticPresenter;
 use App\Http\Presenters\Moz\MozPresenter;
 use App\Http\Presenters\SemRush\SemRushPresenter;
@@ -21,6 +22,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
     private SemRushPresenter $semRushPresenter;
     private MajesticPresenter $majesticPresenter;
     private AhrefsPresenter $ahrefsPresenter;
+    private FbPresenter $fbPresenter;
 
     public function __construct(
         TopicPresenter $topicPresenter,
@@ -28,7 +30,8 @@ final class PlatformPresenter implements PresenterCollectionInterface
         AlexaPresenter $alexaPresenter,
         SemRushPresenter $semRushPresenter,
         MajesticPresenter $majesticPresenter,
-        AhrefsPresenter $ahrefsPresenter
+        AhrefsPresenter $ahrefsPresenter,
+        FbPresenter $fbPresenter
     ) {
         $this->topicPresenter = $topicPresenter;
         $this->mozPresenter = $mozPresenter;
@@ -36,6 +39,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
         $this->semRushPresenter = $semRushPresenter;
         $this->majesticPresenter = $majesticPresenter;
         $this->ahrefsPresenter = $ahrefsPresenter;
+        $this->fbPresenter = $fbPresenter;
     }
 
     public function present(Platform $platform)
@@ -69,7 +73,8 @@ final class PlatformPresenter implements PresenterCollectionInterface
             'alexa' => $this->alexaPresenter->present($platform->alexa),
             'semrush' => $this->semRushPresenter->present($platform->semrush),
             'majestic' => $this->majesticPresenter->present($platform->majestic),
-            'ahrefs' => $platform->ahrefs ? $this->ahrefsPresenter->present($platform->ahrefs) : null
+            'ahrefs' => $platform->ahrefs ? $this->ahrefsPresenter->present($platform->ahrefs) : null,
+            'fb' => $this->fbPresenter->present($platform->facebook)
         ];
     }
 

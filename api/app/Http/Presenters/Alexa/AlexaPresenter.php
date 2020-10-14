@@ -12,7 +12,8 @@ final class AlexaPresenter
     {
         return [
             'rank' => $alexa->rank,
-            'country' => $alexa->country
+            'country' => $alexa->country,
+            'country_rank' => $alexa->country_rank,
         ];
     }
 }
