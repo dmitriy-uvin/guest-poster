@@ -13,9 +13,11 @@ final class DeletePlatformsByIdsAction
 {
     public function execute(ByIdsRequest $request)
     {
-        OrderItem::whereIn('platform_id', $request->getIds())
-            ->delete();
-        Order::doesntHave('orderItems')->delete();
-        Platform::whereIn('id', $request->getIds());
+        foreach ($request->getIds() as $id) {
+            OrderItem::where('platform_id', '=', (int)$id)
+                ->delete();
+            Order::doesntHave('orderItems')->delete();
+            Platform::find($id)->delete();
+        }
     }
 }

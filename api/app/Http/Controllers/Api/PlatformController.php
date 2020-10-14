@@ -18,6 +18,7 @@ use App\Http\Presenters\Platform\PlatformPresenter;
 use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
 use App\Http\Requests\Platform\IdsHttpRequest;
+use App\Models\Platform;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -117,7 +118,7 @@ final class PlatformController extends ApiController
         return $this->emptyResponse();
     }
 
-    public function deletePlatformsByIds(IdsHttpRequest $request): JsonResponse
+    public function deletePlatformsByIds(Request $request)
     {
         $this->deletePlatformsByIdsAction->execute(
             new ByIdsRequest($request->ids)
