@@ -593,7 +593,14 @@
                     <VBtn fab x-small color="purple" dark class="mr-3">
                         <VIcon>mdi-eye</VIcon>
                     </VBtn>
-                    <VBtn fab x-small color="green" dark class="mr-3">
+                    <VBtn
+                        fab
+                        x-small
+                        color="green"
+                        dark
+                        class="mr-3"
+                        @click="onEditPlatform(platform.id)"
+                    >
                         <VIcon>mdi-pencil</VIcon>
                     </VBtn>
                     <VBtn fab
@@ -716,6 +723,9 @@ export default {
         perPage: 5,
     }),
     methods: {
+        onEditPlatform(id) {
+            this.$router.push({ path: '/platforms/' + id });
+        },
         onPlatformsDeleted() {
             this.unSelectAll();
             this.updatePlatformsOnPage();

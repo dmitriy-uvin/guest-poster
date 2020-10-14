@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Action\ByIdRequest;
 use App\Action\ByIdsRequest;
 use App\Action\Platform\AddPlatformAction;
 use App\Action\Platform\AddPlatformRequest;
 use App\Action\Platform\DeletePlatformsByIdsAction;
+use App\Action\Platform\GetPlatformByIdAction;
 use App\Action\Platform\GetPlatformCollectionAction;
 use App\Action\Platform\GetPlatformCollectionRequest;
 use App\Action\Platform\GetPlatformsInTrashCollectionAction;
@@ -21,7 +23,6 @@ use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
 use App\Http\Requests\Platform\IdsHttpRequest;
 use App\Http\Requests\Platform\UpdatePlatformHttpRequest;
-use App\Models\Platform;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,7 @@ final class PlatformController extends ApiController
     private DeletePlatformsByIdsAction $deletePlatformsByIdsAction;
     private GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction;
     private UpdatePlatformByIdAction $updatePlatformByIdAction;
+    private GetPlatformByIdAction $getPlatformByIdAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
@@ -44,7 +46,8 @@ final class PlatformController extends ApiController
         MoveFromTrashByIdsAction $moveFromTrashByIdsAction,
         DeletePlatformsByIdsAction $deletePlatformsByIdsAction,
         GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction,
-        UpdatePlatformByIdAction $updatePlatformByIdAction
+        UpdatePlatformByIdAction $updatePlatformByIdAction,
+        GetPlatformByIdAction $getPlatformByIdAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
@@ -54,6 +57,7 @@ final class PlatformController extends ApiController
         $this->deletePlatformsByIdsAction = $deletePlatformsByIdsAction;
         $this->getPlatformsInTrashAction = $getPlatformsInTrashAction;
         $this->updatePlatformByIdAction = $updatePlatformByIdAction;
+        $this->getPlatformByIdAction = $getPlatformByIdAction;
     }
 
     public function savePlatform(AddPlatformHttpRequest $request): JsonResponse
@@ -122,6 +126,15 @@ final class PlatformController extends ApiController
                 $this->checkIfValueIsKnown($request->spam),
                 $this->checkIfValueIsKnown($request->lrt_power_trust),
             )
+        );
+
+        return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
+    }
+
+    public function getPlatformById(string $id): JsonResponse
+    {
+        $response = $this->getPlatformByIdAction->execute(
+            new ByIdRequest((int)$id)
         );
 
         return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
