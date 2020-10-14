@@ -84,19 +84,53 @@
                     </span>
                 </td>
                 <td class="text-right">
-                    <VBtn fab x-small color="purple" dark class="mr-3">
-                        <VIcon>mdi-eye</VIcon>
-                    </VBtn>
-                    <VBtn fab x-small color="green" dark class="mr-3">
-                        <VIcon>mdi-restore</VIcon>
-                    </VBtn>
-                    <VBtn fab
-                          x-small
-                          color="red"
-                          dark
-                    >
-                        <VIcon>mdi-delete</VIcon>
-                    </VBtn>
+                    <VTooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <VBtn
+                                fab
+                                x-small
+                                color="purple"
+                                dark class="mr-3"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <VIcon>mdi-eye</VIcon>
+                            </VBtn>
+                        </template>
+                        <span>Preview</span>
+                    </VTooltip>
+                    <VTooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <VBtn
+                                fab
+                                x-small
+                                color="green"
+                                dark
+                                class="mr-3"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="onRestorePlatformFromTrash(platform.id)"
+                            >
+                                <VIcon>mdi-restore</VIcon>
+                            </VBtn>
+                        </template>
+                        <span>Restore</span>
+                    </VTooltip>
+                    <VTooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <VBtn fab
+                                  x-small
+                                  color="red"
+                                  dark
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  @click="onDeletePlatformFromTrash(platform.id)"
+                            >
+                                <VIcon>mdi-delete</VIcon>
+                            </VBtn>
+                        </template>
+                        <span>Delete from trash</span>
+                    </VTooltip>
                 </td>
             </tr>
             </tbody>
@@ -156,7 +190,41 @@
                 </VSelect>
             </VCol>
         </VRow>
-        {{ chosenPlatformsIds }}
+
+        <TrashFooter
+            :chosen-platforms-ids="chosenPlatformsIds"
+            @unselect-all="unSelectAll"
+            @delete="onDeletePlatforms"
+            @restore="restorePlatformsDialog = true"
+        />
+
+        <DeleteFromTrashDialog
+            :visibility="deleteFromTrashDialog"
+            :platforms="platformsByIds"
+            @close="deleteFromTrashDialog = false"
+            @delete-request="onDeletePlatformsRequest"
+        />
+
+        <DeleteOnePlatformFromTrashDialog
+            :visibility="deleteOnePlatformFromTrashDialog"
+            :platform="platformById"
+            @close="deleteOnePlatformFromTrashDialog = false"
+            @platform-deleted="platformDeleted"
+        />
+
+        <RestoreOneFromTrashDialog
+            :visibility="restoreOnePlatformDialog"
+            :platform="platformById"
+            @close="restoreOnePlatformDialog = false"
+            @restore="onRestoreOnePlatformRequest"
+        />
+
+        <RestoreFromTrashDialog
+            :visibility="restorePlatformsDialog"
+            :platforms="platformsByIds"
+            @close="restorePlatformsDialog = false"
+            @restore="onRestorePlatformsRequest"
+        />
     </div>
 </template>
 
@@ -167,16 +235,93 @@ import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import guestPostingMixin from '@/mixins/guestPostingMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
+import TrashFooter from '@/components/trash/TrashFooter';
+import DeleteFromTrashDialog from '@/components/trash/DeleteFromTrashDialog';
+import DeleteOnePlatformFromTrashDialog from '@/components/trash/DeleteOnePlatformFromTrashDialog';
+import notificationMixin from '@/mixins/notificationMixin';
+import RestoreOneFromTrashDialog from '@/components/trash/RestoreOneFromTrashDialog';
+import RestoreFromTrashDialog from '@/components/trash/RestoreFromTrashDialog';
 export default {
     name: 'TrashComponent',
-    mixins: [valueFormatMixin, guestPostingMixin, rolemixin, filterMixin],
+    mixins: [valueFormatMixin, guestPostingMixin, rolemixin, filterMixin, notificationMixin],
+    components: {
+        TrashFooter,
+        DeleteFromTrashDialog,
+        DeleteOnePlatformFromTrashDialog,
+        RestoreOneFromTrashDialog,
+        RestoreFromTrashDialog
+    },
     data: () => ({
-        perPage: 5
+        perPage: 5,
+        deleteFromTrashDialog: false,
+        deleteOnePlatformFromTrashDialog: false,
+        restoreOnePlatformDialog: false,
+        restorePlatformsDialog: false,
+        chosenPlatforms: [],
+        platformById: {}
     }),
     methods: {
         ...mapActions('platforms', {
-            fetchTrashPlatforms: actions.FETCH_PLATFORMS_IN_TRASH
+            fetchTrashPlatforms: actions.FETCH_PLATFORMS_IN_TRASH,
+            restoreFromTrash: actions.MOVE_FROM_TRASH_BY_IDS
         }),
+        async onRestoreOnePlatformRequest(platform) {
+              try {
+                  await this.restoreFromTrash({
+                      ids: [platform.id]
+                  });
+                  this.unSelectAll();
+                  await this.updatePlatformsOnPage();
+                  this.restoreOnePlatformDialog = false;
+                  this.setNotification({
+                      type: 'success',
+                      message: 'Platform ' +
+                          this.deleteProtocol(platform.websiteUrl)
+                          + ' was restored!'
+                  });
+              } catch (error) {
+                  this.setNotification({
+                      type: 'error',
+                      message: error
+                  });
+              }
+        },
+        async onRestorePlatformsRequest(ids) {
+            try {
+                await this.restoreFromTrash({
+                    ids: ids
+                });
+                this.restorePlatformsDialog = false;
+                this.unSelectAll();
+                await this.updatePlatformsOnPage();
+                this.setNotification({
+                    type: 'success',
+                    message: 'Platforms were restored!'
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        },
+        async platformDeleted(websiteUrl) {
+            const url = this.deleteProtocol(websiteUrl);
+            this.setNotification({
+                type: 'success',
+                message: 'Platform ' + url + ' was deleted!'
+            })
+            await this.updatePlatformsOnPage();
+            this.deleteOnePlatformFromTrashDialog = false;
+        },
+        onDeletePlatformFromTrash(id) {
+            this.platformById = this.platforms.filter(platform => platform.id === id)[0];
+            this.deleteOnePlatformFromTrashDialog = true;
+        },
+        onRestorePlatformFromTrash(id) {
+            this.platformById = this.platforms.filter(platform => platform.id === id)[0];
+            this.restoreOnePlatformDialog = true;
+        },
         async loadPlatforms() {
             return await this.fetchTrashPlatforms({
                 page: this.page,
@@ -196,6 +341,14 @@ export default {
         pageBack() {
             if (!Object.keys(this.platforms).length && this.page > 1) this.page -= 1;
         },
+        onDeletePlatforms() {
+            this.deleteFromTrashDialog = true;
+        },
+        async onDeletePlatformsRequest() {
+            this.unSelectAll();
+            await this.updatePlatformsOnPage();
+            this.deleteFromTrashDialog = false;
+        }
     },
     async mounted() {
         const response = await this.loadPlatforms();
@@ -205,6 +358,16 @@ export default {
         this.total = response.total;
         this.reCalculatePages();
         this.initializeChosenPlatformsState();
+    },
+    computed: {
+        platformsByIds() {
+            return this.platforms
+                .filter(
+                    platform => this.chosenPlatformsIds.includes(
+                        platform.id.toString()
+                    )
+                );
+        }
     }
 }
 </script>
