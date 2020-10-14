@@ -23,7 +23,6 @@
 <script>
 export default {
     name: 'DeletePlatformsFooter',
-
     props: {
         chosenPlatformsIds: {
             required: true

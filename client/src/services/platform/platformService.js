@@ -15,9 +15,6 @@ const platformService = {
         const response = await requestInternalService.get('/topics');
         return response?.data?.data;
     },
-    async deletePlatformById(id) {
-        return await requestInternalService.delete(API_PREFIX + '/' + id);
-    },
     async moveInTrashByIds(ids) {
         return await requestInternalService.put(API_PREFIX + '/trash-in', ids);
     },
@@ -27,6 +24,13 @@ const platformService = {
     async fetchPlatformsInTrash(params = {}) {
         const response = await requestInternalService.get(API_PREFIX + '/trash', params);
         return response?.data;
+    },
+    async deletePlatformsByIds(ids) {
+        return await requestInternalService.delete(API_PREFIX, {
+            params: {
+                ids
+            }
+        });
     }
 };
 

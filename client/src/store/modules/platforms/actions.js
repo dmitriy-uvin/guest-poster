@@ -18,10 +18,6 @@ export default {
         const response = await platformService.fetchTopics();
         commit(mutations.SET_TOPICS, response);
     },
-    [actions.DELETE_PLATFORM_BY_ID]: async ({ commit }, id) => {
-        await platformService.deletePlatformById(id);
-        commit(mutations.DELETE_PLATFORM, id);
-    },
     [actions.MOVE_IN_TRASH_BY_IDS]: async (context, ids) => {
         await platformService.moveInTrashByIds(ids);
     },
@@ -35,5 +31,8 @@ export default {
         await dispatch(actions.FETCH_TOPICS);
         commit(mutations.SET_PLATFORMS, platforms);
         return Promise.resolve(metaData);
+    },
+    [actions.DELETE_PLATFORMS_BY_IDS]: async (context, ids) => {
+        await platformService.deletePlatformsByIds(ids);
     }
 }
