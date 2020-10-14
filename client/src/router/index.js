@@ -89,6 +89,12 @@ const routes = [
                 component: () => import('../views/Trash'),
                 meta: { AuthorizedUser: true, adminRoute: true }
             },
+            {
+                path: 'platforms/:id',
+                name: 'EditPlatform',
+                component: () => import('../views/EditPlatform'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            },
         ]
     }
 ];
