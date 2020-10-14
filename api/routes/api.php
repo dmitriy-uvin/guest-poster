@@ -38,6 +38,7 @@ Route::group([
     'prefix' => 'platforms',
 ], function () {
     Route::group(['middleware' => 'admin'], function() {
+        Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
         Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
         Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
