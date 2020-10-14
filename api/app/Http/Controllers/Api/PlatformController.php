@@ -14,10 +14,13 @@ use App\Action\Platform\GetPlatformsInTrashCollectionAction;
 use App\Action\Platform\GetPlatformsInTrashCollectionRequest;
 use App\Action\Platform\MoveFromTrashByIdsAction;
 use App\Action\Platform\MoveInTrashByIdsAction;
+use App\Action\Platform\UpdatePlatformByIdAction;
+use App\Action\Platform\UpdatePlatformByIdRequest;
 use App\Http\Presenters\Platform\PlatformPresenter;
 use App\Http\Requests\PaginatedHttpRequest;
 use App\Http\Requests\Platform\AddPlatformHttpRequest;
 use App\Http\Requests\Platform\IdsHttpRequest;
+use App\Http\Requests\Platform\UpdatePlatformHttpRequest;
 use App\Models\Platform;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +34,7 @@ final class PlatformController extends ApiController
     private MoveFromTrashByIdsAction $moveFromTrashByIdsAction;
     private DeletePlatformsByIdsAction $deletePlatformsByIdsAction;
     private GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction;
+    private UpdatePlatformByIdAction $updatePlatformByIdAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
@@ -39,7 +43,8 @@ final class PlatformController extends ApiController
         MoveInTrashByIdsAction $moveInTrashByIdsAction,
         MoveFromTrashByIdsAction $moveFromTrashByIdsAction,
         DeletePlatformsByIdsAction $deletePlatformsByIdsAction,
-        GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction
+        GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction,
+        UpdatePlatformByIdAction $updatePlatformByIdAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
@@ -48,11 +53,12 @@ final class PlatformController extends ApiController
         $this->moveFromTrashByIdsAction = $moveFromTrashByIdsAction;
         $this->deletePlatformsByIdsAction = $deletePlatformsByIdsAction;
         $this->getPlatformsInTrashAction = $getPlatformsInTrashAction;
+        $this->updatePlatformByIdAction = $updatePlatformByIdAction;
     }
 
-    public function savePlatform(AddPlatformHttpRequest $request)
+    public function savePlatform(AddPlatformHttpRequest $request): JsonResponse
     {
-        $this->addPlatformAction->execute(
+        $response = $this->addPlatformAction->execute(
             new AddPlatformRequest(
                 $request->website_url,
                 $this->checkIfValueIsKnown($request->organic_traffic),
@@ -82,7 +88,43 @@ final class PlatformController extends ApiController
             )
         );
 
-        return $this->emptyResponse();
+        return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
+    }
+
+    public function updatePlatformById(UpdatePlatformHttpRequest $request, string $id)
+    {
+        $response = $this->updatePlatformByIdAction->execute(
+            new UpdatePlatformByIdRequest(
+                (int)$id,
+                $request->website_url,
+                $this->checkIfValueIsKnown($request->organic_traffic),
+                (bool)$request->dofollow_active,
+                (bool)$request->free_home_featured_active,
+                (bool)$request->niche_edit_link_active,
+                (float)$request->article_writing_price,
+                (float)$request->niche_edit_link_price,
+                $request->contacts,
+                (float)$request->price,
+                $request->email,
+                $request->comment,
+                $request->topics,
+                $request->moz,
+                $request->alexa,
+                $request->semrush,
+                $request->majestic,
+                $request->ahrefs,
+                $request->description,
+                $request->article_requirements,
+                (int)$request->deadline,
+                $request->where_posted,
+                $request->fb,
+                $this->checkIfValueIsKnown($request->trust),
+                $this->checkIfValueIsKnown($request->spam),
+                $this->checkIfValueIsKnown($request->lrt_power_trust),
+            )
+        );
+
+        return $this->successResponse($this->platformPresenter->present($response->getPlatform()));
     }
 
     public function getPlatformCollection(PaginatedHttpRequest $request)

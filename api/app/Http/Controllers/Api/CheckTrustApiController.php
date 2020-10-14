@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class CheckTrustApiController extends ApiController
+final class CheckTrustApiController extends ApiController
 {
     private string $checkTrustApiKey;
 
