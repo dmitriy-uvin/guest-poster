@@ -34,5 +34,8 @@ export default {
     },
     [actions.DELETE_PLATFORMS_BY_IDS]: async (context, ids) => {
         await platformService.deletePlatformsByIds(ids);
+    },
+    [actions.IMPORT_PLATFORMS]: async (context, data) => {
+        await platformService.importPlatforms(data);
     }
 }

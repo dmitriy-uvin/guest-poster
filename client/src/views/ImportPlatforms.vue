@@ -1,12 +1,14 @@
 <template>
-    <div>
-        <h1>ImportPlatforms</h1>
-    </div>
+    <ImportComponent />
 </template>
 
 <script>
+import ImportComponent from '@/components/import/ImportComponent';
 export default {
-    name: 'ImportPlatforms'
+    name: 'ImportPlatforms',
+    components: {
+        ImportComponent
+    }
 }
 </script>
 

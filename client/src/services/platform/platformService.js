@@ -31,7 +31,12 @@ const platformService = {
                 ids
             }
         });
-    }
+    },
+    async importPlatforms(data) {
+        console.log(data);
+        const response = await requestInternalService.post(API_PREFIX + '/import', data);
+        return response;
+    },
 };
 
 export default platformService;
