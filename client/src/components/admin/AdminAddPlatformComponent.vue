@@ -1349,7 +1349,7 @@ export default {
             }
             !this.$v.moz.pa.required &&
                 errors.push('PA is required!');
-            this.$v.moz.pa.minValue &&
+            !this.$v.moz.pa.minValue &&
                 errors.push('PA must be more than 0!');
             return errors;
         },
@@ -1360,7 +1360,7 @@ export default {
             }
             !this.$v.moz.links_in.required &&
                 errors.push('Links In is required!');
-            this.$v.moz.links_in.minValue &&
+            !this.$v.moz.links_in.minValue &&
                 errors.push('Links In must be more than 0!');
             return errors;
         },
@@ -1371,7 +1371,7 @@ export default {
             }
             !this.$v.moz.mozrank.required &&
                 errors.push('MozRank is required!');
-            this.$v.moz.mozrank.minValue &&
+            !this.$v.moz.mozrank.minValue &&
                 errors.push('Links In must be more than 0!');
             return errors;
         },
@@ -1382,7 +1382,7 @@ export default {
             }
             !this.$v.moz.equity.required &&
                 errors.push('Equity is required!');
-            this.$v.moz.equity.minValue &&
+            !this.$v.moz.equity.minValue &&
                 errors.push('Equity must be more than 0!');
             return errors;
         },
@@ -1438,9 +1438,9 @@ export default {
                 return errors;
             }
             !this.$v.semrush.keyword_num.required &&
-                errors.push('Rank is required!');
-            this.$v.semrush.keyword_num.minValue &&
-                errors.push('Rank must be more than 0!');
+                errors.push('Keyword Num is required!');
+            !this.$v.semrush.keyword_num.minValue &&
+                errors.push('Keyword Num must be more than 0!');
             return errors;
         },
         semrushTrafficCostsErrors() {

@@ -16,7 +16,7 @@ export default {
         pages: [],
         firstPages: [],
         lastPages: [],
-
+        perPage: 10
     }),
     methods: {
         onChangePage(page) {

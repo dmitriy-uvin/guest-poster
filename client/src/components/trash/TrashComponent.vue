@@ -4,6 +4,7 @@
             <h1>Trash</h1>
             <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         </div>
+        <h5 class="mb-4">{{ total }} platforms found</h5>
         <table class="admin-table" v-if="Object.keys(platforms).length">
             <thead>
             <tr>

@@ -769,9 +769,6 @@ export default {
         // FilterChips
     },
     mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
-    data: () => ({
-        perPage: 15,
-    }),
     methods: {
         onRequestCreated() {
             this.unSelectAll();

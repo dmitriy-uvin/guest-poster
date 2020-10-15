@@ -720,7 +720,6 @@ export default {
         deleteOnePlatformDialog: false,
         deletePlatformsDialog: false,
         deletePlatformObj: {},
-        perPage: 5,
     }),
     methods: {
         onEditPlatform(id) {

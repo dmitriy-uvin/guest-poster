@@ -114,6 +114,7 @@
                                 prepend-inner-icon="mdi-currency-usd"
                                 v-model="price"
                                 :error-messages="priceErrors"
+                                @keydown="onSetPriceKeydown"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -134,6 +135,7 @@
                                 append-icon="mdi-currency-usd"
                                 :disabled="!nicheEditLink"
                                 v-model="nicheEditLinkDifference"
+                                @keydown="onSetPriceKeydown"
                                 :error-messages="nicheEditLinkDifferenceErrors"
                             ></VTextField>
                         </VCol>
@@ -764,7 +766,7 @@
                     </VRow>
                 </div>
                 <VCol cols="12" class="text-center">
-                    <VBtn color="green"  dark>
+                    <VBtn color="green" dark @click="onUpdate">
                         <VIcon left>mdi-plus</VIcon>
                         Update Platform
                     </VBtn>
@@ -958,7 +960,8 @@ export default {
     methods: {
         ...mapActions('platforms', {
             fetchPlatformById: actions.FETCH_PLATFORM_BY_ID,
-            fetchTopics: actions.FETCH_TOPICS
+            fetchTopics: actions.FETCH_TOPICS,
+            updatePlatformById: actions.UPDATE_PLATFORM_BY_ID
         }),
         backToPlatforms() {
             this.$router.push({ path: '/' });
@@ -983,6 +986,35 @@ export default {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 try {
+                    await this.updatePlatformById({
+                        id: this.platformId,
+                        data: {
+                            website_url: this.websiteUrl,
+                            organic_traffic: this.organicTraffic,
+                            dofollow_active: this.doFollow,
+                            free_home_featured_active: this.freeHomeFeatured,
+                            niche_edit_link_active: this.nicheEditLink,
+                            article_writing_price: this.articleWritingPrice,
+                            niche_edit_link_price: this.nicheEditLinkPrice,
+                            contacts: this.contacts,
+                            price: this.price,
+                            description: this.description,
+                            article_requirements: this.articleRequirements,
+                            deadline: this.deadLine,
+                            where_posted: this.wherePosted,
+                            email: this.email,
+                            comment: this.comment,
+                            topics: this.topics.map(topic => this.allTopics[topic]),
+                            moz: this.moz,
+                            alexa: this.alexa,
+                            semrush: this.semrush,
+                            majestic: this.majestic,
+                            fb: this.fb,
+                            trust: this.trust,
+                            spam: this.spam,
+                            lrt_power_trust: this.lrtPowerTrust
+                        }
+                    });
                     this.setNotification({
                         type: 'success',
                         message: 'Platform was updated!'
@@ -1034,6 +1066,11 @@ export default {
             if (/[^0-9a-zA-Z:.\\/_-]/.test(e.key)) {
                 e.preventDefault();
             }
+        },
+        onSetPriceKeydown(e) {
+            if (/[^0-9.]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+                e.preventDefault();
+            }
         }
     },
     async mounted() {
@@ -1051,6 +1088,7 @@ export default {
         this.price = this.platform.price;
         this.articleWritingPrice = this.platform.articleWritingPrice;
         this.nicheEditLinkPrice = this.platform.nicheEditLinkPrice;
+        this.nicheEditLinkDifference = (this.platform.nicheEditLinkPrice - this.platform.price).toFixed(2);
         this.topics = this.platform.topics.map(topic => topic.name);
 
         this.trust = this.platform.trust;
@@ -1255,7 +1293,7 @@ export default {
             }
             !this.$v.moz.pa.required &&
             errors.push('PA is required!');
-            this.$v.moz.pa.minValue &&
+            !this.$v.moz.pa.minValue &&
             errors.push('PA must be more than 0!');
             return errors;
         },
@@ -1266,7 +1304,7 @@ export default {
             }
             !this.$v.moz.links_in.required &&
             errors.push('Links In is required!');
-            this.$v.moz.links_in.minValue &&
+            !this.$v.moz.links_in.minValue &&
             errors.push('Links In must be more than 0!');
             return errors;
         },
@@ -1277,7 +1315,7 @@ export default {
             }
             !this.$v.moz.mozrank.required &&
             errors.push('MozRank is required!');
-            this.$v.moz.mozrank.minValue &&
+            !this.$v.moz.mozrank.minValue &&
             errors.push('Links In must be more than 0!');
             return errors;
         },
@@ -1288,7 +1326,7 @@ export default {
             }
             !this.$v.moz.equity.required &&
             errors.push('Equity is required!');
-            this.$v.moz.equity.minValue &&
+            !this.$v.moz.equity.minValue &&
             errors.push('Equity must be more than 0!');
             return errors;
         },
@@ -1344,9 +1382,9 @@ export default {
                 return errors;
             }
             !this.$v.semrush.keyword_num.required &&
-            errors.push('Rank is required!');
-            this.$v.semrush.keyword_num.minValue &&
-            errors.push('Rank must be more than 0!');
+            errors.push('Keyword Num is required!');
+            !this.$v.semrush.keyword_num.minValue &&
+            errors.push('Keyword Num must be more than 0!');
             return errors;
         },
         semrushTrafficCostsErrors() {
@@ -1505,9 +1543,9 @@ export default {
                 return errors;
             }
             !this.$v.spam.required &&
-            errors.push('Spam is required!');
+                errors.push('Spam is required!');
             !this.$v.spam.minValue &&
-            errors.push('Spam must be more than 0!');
+                errors.push('Spam must be more than 0!');
             return errors;
         },
         lrtPowerTrustErrors() {
@@ -1516,9 +1554,9 @@ export default {
                 return errors;
             }
             !this.$v.lrtPowerTrust.required &&
-            errors.push('LRT PowerTrust is required!');
+                errors.push('LRT PowerTrust is required!');
             !this.$v.lrtPowerTrust.minValue &&
-            errors.push('LRT PowerTrust must be more than 0!');
+                errors.push('LRT PowerTrust must be more than 0!');
             return errors;
         },
         ...mapGetters('platforms', {
