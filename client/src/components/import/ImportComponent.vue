@@ -27,6 +27,7 @@
                     color="blue-grey"
                     class="ma-2 white--text"
                     @click="onUpload"
+                    :loading="uploadLoading"
                 >
                     Upload
                     <v-icon
@@ -38,19 +39,43 @@
                 </VBtn>
             </VCol>
         </div>
+        <VBtn
+            depressed
+            color="primary"
+            @click="errors = []" v-if="errors.length"
+            class="mb-4"
+        >
+            Clear Errors
+        </VBtn>
+        <VAlert
+            transition="scroll-y-transition"
+            border="right"
+            colored-border
+            type="error"
+            elevation="2"
+            v-for="(error, index) in reverseErrors"
+            :key="index"
+        >
+            {{ error }}
+        </VAlert>
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
+import notificationMixin from '@/mixins/notificationMixin';
+
 export default {
     name: 'ImportComponent',
+    mixins: [notificationMixin],
     data: () => ({
         importRules: [
             v => (v && v.type === 'text/csv') || 'File CSV is required'
         ],
-        fileTable: []
+        fileTable: [],
+        errors: [],
+        uploadLoading: false
     }),
     methods: {
         ...mapActions('platforms', {
@@ -58,12 +83,30 @@ export default {
         }),
         async onUpload() {
             if (this.$refs.file_input.validate()) {
-                const formData = new FormData();
-                formData.append('platforms_table', this.fileTable);
-                const response = await this.importPlatforms(formData);
-                console.log(response);
-                // console.log(this.fileTable);
+                try {
+                    this.uploadLoading = true;
+                    const formData = new FormData();
+                    formData.append('platforms_table', this.fileTable);
+                    const response = await this.importPlatforms(formData);
+                    console.log(response);
+                    this.setNotification({
+                        type: 'success',
+                        message: 'Platforms was imported!'
+                    });
+                    this.uploadLoading = false;
+                } catch (error) {
+                    this.errors = [
+                        ...this.errors,
+                        error
+                    ];
+                    this.uploadLoading = false;
+                }
             }
+        }
+    },
+    computed: {
+        reverseErrors() {
+            return this.errors.slice().reverse();
         }
     }
 }
