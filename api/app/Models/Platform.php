@@ -40,11 +40,15 @@ class Platform extends Model
     protected $attributes = [
         'comment' => null,
         'contacts' => null,
-        'in_trash' => false
+        'in_trash' => false,
+        'niche_edit_link_price' => null
     ];
 
     protected $casts = [
-        'deadline' => 'integer',
+        'in_trash' => 'boolean',
+        'dofollow_active' => 'boolean',
+        'free_home_featured_active' => 'boolean',
+        'niche_edit_link_active' => 'boolean',
     ];
 
     public function topics()
