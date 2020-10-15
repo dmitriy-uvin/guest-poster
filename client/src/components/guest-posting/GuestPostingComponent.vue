@@ -622,7 +622,7 @@
                     </td>
                     <td>
                         <span class="table-value">
-                            {{ platform.ahrefs.dr }}
+                            {{ (platform.ahrefs ? platform.ahrefs.dr : null) | notAvailableFilter }}
                         </span>
                     </td>
                     <td>
@@ -657,7 +657,7 @@
                     </td>
                     <td>
                         <span class="table-value">
-                            {{ platform.ahrefs.rd | notAvailableFilter | formatNumberFilter }}
+                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}
                         </span>
                     </td>
                     <td>

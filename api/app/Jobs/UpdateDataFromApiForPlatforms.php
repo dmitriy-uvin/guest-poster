@@ -33,58 +33,55 @@ class UpdateDataFromApiForPlatforms implements ShouldQueue
 
     public function handle()
     {
-        $user = User::find(1);
-        $user->name = 'UPDATE Data From API';
-        $user->save();
-//        foreach ($this->platformsCollection as $platform) {
-//            $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
-//                $platform->website_url
-//            );
-//            if (!in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
-//                $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
-//                $platform->save();
-//
-//                Moz::where(['platform_id' => $platform->id])->update([
-//                    'pa' =>
-//                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
-//                    'da' =>
-//                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->mozrank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->mozrank,
-//                    'links_in' =>
-//                        in_array($mozSrAlexaFbData->links, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->links,
-//                    'equity' =>
-//                        in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
-//                ]);
-//
-//                SemRush::where(['platform_id' => $platform->id])->update([
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->sr_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_rank,
-//                    'keyword_num' =>
-//                        in_array($mozSrAlexaFbData->sr_kwords, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_kwords,
-//                    'traffic_costs' =>
-//                        in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
-//                ]);
-//
-//                Alexa::where(['platform_id' => $platform->id])->update([
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->a_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_rank,
-//                    'country' =>
-//                        in_array($mozSrAlexaFbData->a_cnt, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt,
-//                    'country_rank' =>
-//                        in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
-//                ]);
-//
-//                Facebook::where(['platform_id' => $platform->id])->update([
-//                    'fb_comments' =>
-//                        in_array($mozSrAlexaFbData->fb_comments, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_comments,
-//                    'fb_reac' =>
-//                        in_array($mozSrAlexaFbData->fb_reac, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_reac,
-//                    'fb_shares' =>
-//                        in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
-//                ]);
-//            }
-//
+        foreach ($this->platformsCollection as $platform) {
+            $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
+                $platform->website_url
+            );
+            if (!in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
+                $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
+                $platform->save();
+
+                Moz::where(['platform_id' => $platform->id])->update([
+                    'pa' =>
+                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
+                    'da' =>
+                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->mozrank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->mozrank,
+                    'links_in' =>
+                        in_array($mozSrAlexaFbData->links, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->links,
+                    'equity' =>
+                        in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
+                ]);
+
+                SemRush::where(['platform_id' => $platform->id])->update([
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->sr_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_rank,
+                    'keyword_num' =>
+                        in_array($mozSrAlexaFbData->sr_kwords, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_kwords,
+                    'traffic_costs' =>
+                        in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
+                ]);
+
+                Alexa::where(['platform_id' => $platform->id])->update([
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->a_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_rank,
+                    'country' =>
+                        in_array($mozSrAlexaFbData->a_cnt, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt,
+                    'country_rank' =>
+                        in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
+                ]);
+
+                Facebook::where(['platform_id' => $platform->id])->update([
+                    'fb_comments' =>
+                        in_array($mozSrAlexaFbData->fb_comments, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_comments,
+                    'fb_reac' =>
+                        in_array($mozSrAlexaFbData->fb_reac, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_reac,
+                    'fb_shares' =>
+                        in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
+                ]);
+            }
+
 ////            $majesticData = $this->seoRankService->getDataForMajestic(
 ////                $platform->website_url
 ////            );
@@ -109,6 +106,6 @@ class UpdateDataFromApiForPlatforms implements ShouldQueue
 ////                ]);
 ////                $majestic->save();
 ////            }
-//        }
+        }
     }
 }

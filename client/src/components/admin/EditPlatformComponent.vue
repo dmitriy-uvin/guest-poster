@@ -1166,40 +1166,41 @@ export default {
         this.price = this.platform.price;
         this.articleWritingPrice = this.platform.articleWritingPrice;
         this.nicheEditLinkPrice = this.platform.nicheEditLinkPrice;
-        this.nicheEditLinkDifference = (this.platform.nicheEditLinkPrice - this.platform.price).toFixed(2);
+        this.nicheEditLinkDifference =
+            this.nicheEditLinkPrice !== null ? (this.platform.nicheEditLinkPrice - this.platform.price).toFixed(2) : null;
         this.topics = this.platform.topics.map(topic => topic.name);
 
-        this.trust = this.platform.trust;
-        this.spam = this.platform.spam;
-        this.lrtPowerTrust = this.platform.lrtPowerTrust;
+        this.trust = this.platform.trust === null ? 'N/A' : this.platform.trust;
+        this.spam = this.platform.spam === null ? 'N/A' : this.platform.spam;
+        this.lrtPowerTrust = this.platform.lrtPowerTrust === null ? 'N/A' : this.platform.lrtPowerTrust;
 
-        this.moz.da = this.platform.moz.da;
-        this.moz.pa = this.platform.moz.pa;
-        this.moz.links_in = this.platform.moz.linksIn;
-        this.moz.mozrank = this.platform.moz.rank;
-        this.moz.equity = this.platform.moz.equity;
+        this.moz.da = this.platform.moz.da === null ? 'N/A' : this.platform.moz.da;
+        this.moz.pa = this.platform.moz.pa === null ? 'N/A' : this.platform.moz.pa;
+        this.moz.links_in = this.platform.moz.linksIn === null ? 'N/A' : this.platform.moz.linksIn;
+        this.moz.mozrank = this.platform.moz.rank === null ? 'N/A' : this.platform.moz.rank;
+        this.moz.equity = this.platform.moz.equity === null ? 'N/A' : this.platform.moz.equity;
 
-        this.alexa.rank = this.platform.alexa.rank;
-        this.alexa.country = this.platform.alexa.country;
-        this.alexa.country_rank = this.platform.alexa.countryRank;
+        this.alexa.rank = this.platform.alexa.rank === null ? 'N/A' : this.platform.alexa.rank;
+        this.alexa.country = this.platform.alexa.country === null ? 'N/A' : this.platform.alexa.country;
+        this.alexa.country_rank = this.platform.alexa.countryRank === null ? 'N/A' : this.platform.alexa.countryRank;
 
-        this.semrush.rank = this.platform.semrush.rank;
-        this.semrush.keyword_num = this.platform.semrush.keywordNum;
-        this.organicTraffic = this.platform.organicTraffic;
-        this.semrush.traffic_costs = this.platform.semrush.trafficCosts;
+        this.semrush.rank = this.platform.semrush.rank === null ? 'N/A' : this.platform.semrush.rank;
+        this.semrush.keyword_num = this.platform.semrush.keywordNum === null ? 'N/A' : this.platform.semrush.keywordNum;
+        this.organicTraffic = this.platform.organicTraffic === null ? 'N/A' : this.platform.organicTraffic;
+        this.semrush.traffic_costs = this.platform.semrush.trafficCosts === null ? 'N/A' : this.platform.semrush.trafficCosts;
 
-        this.fb.fb_comments = this.platform.fb.fb_comments;
-        this.fb.fb_reac = this.platform.fb.fb_reac;
-        this.fb.fb_shares = this.platform.fb.fb_shares;
+        this.fb.fb_comments = this.platform.fb.fb_comments === null ? 'N/A' : this.platform.fb.fb_comments;
+        this.fb.fb_reac = this.platform.fb.fb_reac === null ? 'N/A' : this.platform.fb.fb_reac;
+        this.fb.fb_shares = this.platform.fb.fb_shares === null ? 'N/A' : this.platform.fb.fb_shares;
 
-        this.majestic.external_backlinks = this.platform.majestic.externalBacklinks;
-        this.majestic.external_edu = this.platform.majestic.externalEdu;
-        this.majestic.external_gov = this.platform.majestic.externalGov;
-        this.majestic.refd = this.platform.majestic.refd;
-        this.majestic.refd_edu = this.platform.majestic.refdEdu;
-        this.majestic.refd_gov = this.platform.majestic.refdGov;
-        this.majestic.tf = this.platform.majestic.tf;
-        this.majestic.cf = this.platform.majestic.cf;
+        this.majestic.external_backlinks = this.platform.majestic.externalBacklinks === null ? 'N/A' : this.platform.majestic.externalBacklinks;
+        this.majestic.external_edu = this.platform.majestic.externalEdu === null ? 'N/A' : this.platform.majestic.externalEdu;
+        this.majestic.external_gov = this.platform.majestic.externalGov === null ? 'N/A' : this.platform.majestic.externalGov;
+        this.majestic.refd = this.platform.majestic.refd === null ? 'N/A' : this.platform.majestic.refd;
+        this.majestic.refd_edu = this.platform.majestic.refdEdu === null ? 'N/A' : this.platform.majestic.refdEdu;
+        this.majestic.refd_gov = this.platform.majestic.refdGov === null ? 'N/A' : this.platform.majestic.refdGov;
+        this.majestic.tf = this.platform.majestic.tf === null ? 'N/A' : this.platform.majestic.tf;
+        this.majestic.cf = this.platform.majestic.cf === null ? 'N/A' : this.platform.majestic.cf;
 
         this.email = this.platform.email;
         this.comment = this.platform.comment;
@@ -1640,7 +1641,39 @@ export default {
         ...mapGetters('platforms', {
             allTopics: getters.GET_TOPICS
         }),
-    }
+    },
+    watch: {
+        websiteUrl(newValue) {
+            this.websiteUrl = newValue.replace(/[^0-9a-zA-Z:.\\/_-]/, '');
+        },
+        price(newPrice) {
+            if (this.platform.articleWritingPrice === null) {
+                if (Number(this.price) * 0.2 < 30) {
+                    this.articleWritingPrice = Number(this.price) + 30;
+                } else {
+                    this.articleWritingPrice = Number(this.price) * 1.2;
+                }
+                if (newPrice === '') this.articleWritingPrice = '';
+            }
+
+            if (this.nicheEditLink) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+                if (newPrice === '') this.nicheEditLinkPrice = '';
+            }
+        },
+        nicheEditLinkDifference() {
+            if (this.nicheEditLink && this.price) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+            }
+        },
+        nicheEditLink() {
+            if (this.nicheEditLink) {
+                this.nicheEditLinkPrice = Number(this.price) + Number(this.nicheEditLinkDifference);
+            } else {
+                this.nicheEditLinkPrice = '';
+            }
+        }
+    },
 }
 </script>
 

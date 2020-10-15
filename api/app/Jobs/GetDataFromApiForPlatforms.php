@@ -33,81 +33,78 @@ class GetDataFromApiForPlatforms implements ShouldQueue
 
     public function handle()
     {
-        $user = User::find(1);
-        $user->name = 'Get Data From API 123';
-        $user->save();
-//        foreach ($this->platformsCollection as $platform) {
-//            $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
-//                $platform->website_url
-//            );
-//            if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
-//                $moz = new Moz(['platform_id' => $platform->id]);
-//                $moz->save();
-//
-//                $alexa = new Alexa(['platform_id' => $platform->id]);
-//                $alexa->save();
-//
-//                $semrush = new SemRush(['platform_id' => $platform->id]);
-//                $semrush->save();
-//
-//                $fb = new Facebook(['platform_id' => $platform->id]);
-//                $fb->save();
-//            } else {
-//                $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
-//                $platform->save();
-//
-//                $moz = new Moz([
-//                    'platform_id' => $platform->id,
-//                    'pa' =>
-//                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
-//                    'da' =>
-//                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->mozrank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->mozrank,
-//                    'links_in' =>
-//                        in_array($mozSrAlexaFbData->links, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->links,
-//                    'equity' =>
-//                        in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
-//                ]);
-//                $moz->save();
-//
-//                $semrush = new SemRush([
-//                    'platform_id' =>
-//                        $platform->id,
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->sr_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_rank,
-//                    'keyword_num' =>
-//                        in_array($mozSrAlexaFbData->sr_kwords, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_kwords,
-//                    'traffic_costs' =>
-//                        in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
-//                ]);
-//                $semrush->save();
-//
-//                $alexa = new Alexa([
-//                    'platform_id' => $platform->id,
-//                    'rank' =>
-//                        in_array($mozSrAlexaFbData->a_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_rank,
-//                    'country' =>
-//                        in_array($mozSrAlexaFbData->a_cnt, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt,
-//                    'country_rank' =>
-//                        in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
-//                ]);
-//                $alexa->save();
-//
-//                $fb = new Facebook([
-//                    'platform_id' => $platform->id,
-//                    'fb_comments' =>
-//                        in_array($mozSrAlexaFbData->fb_comments, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_comments,
-//                    'fb_reac' =>
-//                        in_array($mozSrAlexaFbData->fb_reac, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_reac,
-//                    'fb_shares' =>
-//                        in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
-//                ]);
-//                $fb->save();
-//            }
-//
-//            $majestic = new Majestic(['platform_id' => $platform->id]);
-//            $majestic->save();
+        foreach ($this->platformsCollection as $platform) {
+            $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
+                $platform->website_url
+            );
+            if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
+                $moz = new Moz(['platform_id' => $platform->id]);
+                $moz->save();
+
+                $alexa = new Alexa(['platform_id' => $platform->id]);
+                $alexa->save();
+
+                $semrush = new SemRush(['platform_id' => $platform->id]);
+                $semrush->save();
+
+                $fb = new Facebook(['platform_id' => $platform->id]);
+                $fb->save();
+            } else {
+                $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
+                $platform->save();
+
+                $moz = new Moz([
+                    'platform_id' => $platform->id,
+                    'pa' =>
+                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
+                    'da' =>
+                        in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->mozrank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->mozrank,
+                    'links_in' =>
+                        in_array($mozSrAlexaFbData->links, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->links,
+                    'equity' =>
+                        in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
+                ]);
+                $moz->save();
+
+                $semrush = new SemRush([
+                    'platform_id' =>
+                        $platform->id,
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->sr_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_rank,
+                    'keyword_num' =>
+                        in_array($mozSrAlexaFbData->sr_kwords, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_kwords,
+                    'traffic_costs' =>
+                        in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
+                ]);
+                $semrush->save();
+
+                $alexa = new Alexa([
+                    'platform_id' => $platform->id,
+                    'rank' =>
+                        in_array($mozSrAlexaFbData->a_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_rank,
+                    'country' =>
+                        in_array($mozSrAlexaFbData->a_cnt, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt,
+                    'country_rank' =>
+                        in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
+                ]);
+                $alexa->save();
+
+                $fb = new Facebook([
+                    'platform_id' => $platform->id,
+                    'fb_comments' =>
+                        in_array($mozSrAlexaFbData->fb_comments, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_comments,
+                    'fb_reac' =>
+                        in_array($mozSrAlexaFbData->fb_reac, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_reac,
+                    'fb_shares' =>
+                        in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
+                ]);
+                $fb->save();
+            }
+
+            $majestic = new Majestic(['platform_id' => $platform->id]);
+            $majestic->save();
 ////            $majesticData = $this->seoRankService->getDataForMajestic(
 ////                $platform->website_url
 ////            );
@@ -136,6 +133,6 @@ class GetDataFromApiForPlatforms implements ShouldQueue
 ////                ]);
 ////                $majestic->save();
 ////            }
-//        }
+        }
     }
 }

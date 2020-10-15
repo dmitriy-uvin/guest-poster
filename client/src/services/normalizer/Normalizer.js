@@ -32,34 +32,34 @@ export const platformMapper = Platform => ({
 });
 
 export const MozMapper = Moz => ({
-    pa: Moz.pa,
-    da: Moz.da,
-    rank: Moz.rank,
-    linksIn: Moz.links_in,
-    equity: Moz.equity
+    pa: Moz?.pa,
+    da: Moz?.da,
+    rank: Moz?.rank,
+    linksIn: Moz?.links_in,
+    equity: Moz?.equity
 });
 
 export const AlexaMapper = Alexa => ({
-    rank: Alexa.rank,
-    country: Alexa.country,
-    countryRank: Alexa.country_rank
+    rank: Alexa?.rank,
+    country: Alexa?.country,
+    countryRank: Alexa?.country_rank
 });
 
 export const SemRushMapper = SemRush => ({
-    rank: SemRush.rank,
-    keywordNum: SemRush.keyword_num,
-    trafficCosts: SemRush.traffic_costs
+    rank: SemRush?.rank,
+    keywordNum: SemRush?.keyword_num,
+    trafficCosts: SemRush?.traffic_costs
 });
 
 export const MajesticMapper = Majestic => ({
-    externalBacklinks: Majestic.external_backlinks,
-    externalGov: Majestic.external_gov,
-    externalEdu: Majestic.external_edu,
-    tf: Majestic.tf,
-    cf: Majestic.cf,
-    refd: Majestic.refd,
-    refdEdu: Majestic.refd_edu,
-    refdGov: Majestic.refd_gov,
+    externalBacklinks: Majestic?.external_backlinks,
+    externalGov: Majestic?.external_gov,
+    externalEdu: Majestic?.external_edu,
+    tf: Majestic?.tf,
+    cf: Majestic?.cf,
+    refd: Majestic?.refd,
+    refdEdu: Majestic?.refd_edu,
+    refdGov: Majestic?.refd_gov,
 });
 
 export const topicMapper = Topic => ({
