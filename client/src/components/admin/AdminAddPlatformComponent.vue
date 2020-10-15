@@ -958,7 +958,7 @@ export default {
             this.$v.websiteUrl.$touch();
         },
         async onFillBasicData() {
-            if (this.websiteUrl) {
+            if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
                 this.checkTrustLoading = true;
                 try {
                     let response = await requestExternalService.fetchCheckTrustData(this.websiteUrl);
@@ -975,19 +975,22 @@ export default {
                         this.lrtPowerTrust = responseData?.summary?.lrtPowerTrust;
                     }
                     this.checkTrustLoading = false;
+                    this.setNotification({
+                        type: 'success',
+                        message: 'CheckTrust data was set!'
+                    });
                 } catch (error) {
                     this.checkTrustLoading = false;
                     this.setNotification({
                         type: 'error',
                         message: error
-                    })
+                    });
                 }
             }
-
         },
         async fillMajestic() {
-            try {
-                if (this.websiteUrl) {
+            if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
+                try {
                     this.fillMajesticLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
                     const responseData = response?.data;
@@ -1014,18 +1017,22 @@ export default {
                     this.majestic.cf =
                         !PropertyNotFound.includes(responseData.CitationFlow) ? responseData.CitationFlow : 'N/A';
                     this.fillMajesticLoading = false;
+                    this.setNotification({
+                        type: 'success',
+                        message: 'Majestic data was set!'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        message: error,
+                        type: 'error'
+                    });
+                    this.fillMajesticLoading = false;
                 }
-            } catch (error) {
-                this.setNotification({
-                    message: error,
-                    type: 'error'
-                });
-                this.fillMajesticLoading = false;
             }
         },
         async fillMozAlexaSrFb() {
-            try {
-                if (this.websiteUrl) {
+            if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
+                try {
                     this.fillMozAlexaSrFbLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
                     const responseData = response?.data;
@@ -1056,13 +1063,17 @@ export default {
                     this.fb.fb_reac = !PropertyNotFound.includes(responseData.fb_reac) ? responseData.fb_reac : 'N/A';
                     this.fb.fb_shares = !PropertyNotFound.includes(responseData.fb_shares) ? responseData.fb_shares : 'N/A';
                     this.fillMozAlexaSrFbLoading = false;
+                    this.setNotification({
+                        type: 'success',
+                        message: 'SeoRank data was set!'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        message: error,
+                        type: 'error'
+                    });
+                    this.fillMozAlexaSrFbLoading = false;
                 }
-            } catch (error) {
-                this.setNotification({
-                    message: error,
-                    type: 'error'
-                });
-                this.fillMozAlexaSrFbLoading = false;
             }
         },
         async onSave() {

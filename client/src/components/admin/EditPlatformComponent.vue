@@ -794,6 +794,7 @@ import {
     required, requiredIf,
     url
 } from "vuelidate/lib/validators";
+import requestExternalService, {ErrorStatus, PropertyNotFound} from "@/services/requestExternalService";
 
 const min_value = function(value) {
     const regex = new RegExp(/[-0-9]+/);
@@ -970,15 +971,42 @@ export default {
             this.$v.websiteUrl.$touch();
             if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
                 try {
+                    this.fillMajesticLoading = true;
+                    const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
+                    const responseData = response?.data;
+                    if (ErrorStatus.includes(responseData)) {
+                        this.setNotification({
+                            message: "Status: " + responseData,
+                            type: 'error'
+                        });
+                    }
+                    this.majestic.external_backlinks =
+                        !PropertyNotFound.includes(responseData.ExtBackLinks) ? responseData.ExtBackLinks : 'N/A';
+                    this.majestic.external_gov =
+                        !PropertyNotFound.includes(responseData.ExtBackLinksGOV) ? responseData.ExtBackLinksGOV : 'N/A';
+                    this.majestic.external_edu =
+                        !PropertyNotFound.includes(responseData.ExtBackLinksEDU) ? responseData.ExtBackLinksEDU : 'N/A';
+                    this.majestic.refd =
+                        !PropertyNotFound.includes(responseData.RefDomains) ? responseData.RefDomains : 'N/A';
+                    this.majestic.refd_edu =
+                        !PropertyNotFound.includes(responseData.RefDomainsEDU) ? responseData.RefDomainsEDU : 'N/A';
+                    this.majestic.refd_gov =
+                        !PropertyNotFound.includes(responseData.RefDomainsGOV) ? responseData.RefDomainsGOV : 'N/A';
+                    this.majestic.tf =
+                        !PropertyNotFound.includes(responseData.TrustFlow) ? responseData.TrustFlow : 'N/A';
+                    this.majestic.cf =
+                        !PropertyNotFound.includes(responseData.CitationFlow) ? responseData.CitationFlow : 'N/A';
+                    this.fillMajesticLoading = false;
                     this.setNotification({
                         type: 'success',
                         message: 'Majestic data was set!'
                     });
                 } catch (error) {
+                    this.fillMajesticLoading = false;
                     this.setNotification({
                         type: 'error',
                         message: error
-                    })
+                    });
                 }
             }
         },
@@ -1031,15 +1059,46 @@ export default {
             this.$v.websiteUrl.$touch();
             if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
                 try {
+                    this.fillMozAlexaSrFbLoading = true;
+                    const response = await requestExternalService.fetchSeoRankInfoForDomainMozAlexaSr(this.websiteUrl);
+                    const responseData = response?.data;
+                    if (ErrorStatus.includes(responseData)) {
+                        this.setNotification({
+                            message: "Status: " + responseData,
+                            type: 'error'
+                        });
+                    }
+                    this.moz.pa = !PropertyNotFound.includes(responseData.pa) ? responseData.pa : 'N/A';
+                    this.moz.da = !PropertyNotFound.includes(responseData.da) ? responseData.da : 'N/A';
+                    this.moz.mozrank = !PropertyNotFound.includes(responseData.mozrank) ? responseData.mozrank : 'N/A';
+                    this.moz.links_in = !PropertyNotFound.includes(responseData.links) ? responseData.links : 'N/A';
+                    this.moz.equity = !PropertyNotFound.includes(responseData.equity) ? responseData.equity : 'N/A';
+
+                    this.alexa.rank = !PropertyNotFound.includes(responseData.a_rank) ? responseData.a_rank : 'N/A';
+                    this.alexa.country = !PropertyNotFound.includes(responseData.a_cnt) ? responseData.a_cnt : 'N/A';
+                    this.alexa.country_rank = !PropertyNotFound.includes(responseData.a_cnt_r) ? responseData.a_cnt_r : 'N/A';
+
+                    this.semrush.rank = !PropertyNotFound.includes(responseData.sr_rank) ? responseData.sr_rank : 'N/A';
+                    this.semrush.keyword_num = !PropertyNotFound.includes(responseData.sr_kwords) ? responseData.sr_kwords : 'N/A';
+                    this.organicTraffic =
+                        !PropertyNotFound.includes(responseData.sr_traffic) ? responseData.sr_traffic : 'N/A';
+                    this.semrush.traffic_costs =
+                        !PropertyNotFound.includes(responseData.sr_costs) ? responseData.sr_costs : 'N/A';
+
+                    this.fb.fb_comments = !PropertyNotFound.includes(responseData.fb_comments) ? responseData.fb_comments : 'N/A';
+                    this.fb.fb_reac = !PropertyNotFound.includes(responseData.fb_reac) ? responseData.fb_reac : 'N/A';
+                    this.fb.fb_shares = !PropertyNotFound.includes(responseData.fb_shares) ? responseData.fb_shares : 'N/A';
+                    this.fillMozAlexaSrFbLoading = false;
                     this.setNotification({
                         type: 'success',
-                        message: 'Data was set!'
+                        message: 'SeoRank data was set!'
                     });
                 } catch (error) {
+                    this.fillMozAlexaSrFbLoading = false;
                     this.setNotification({
                         type: 'error',
                         message: error
-                    })
+                    });
                 }
             }
         },
@@ -1047,11 +1106,30 @@ export default {
             this.$v.websiteUrl.$touch();
             if (this.websiteUrl && !this.$v.websiteUrl.$invalid) {
                 try {
+                    this.checkTrustLoading = true;
+                    let response = await requestExternalService.fetchCheckTrustData(this.websiteUrl);
+                    console.log(response);
+                    let responseData = response?.data;
+                    if (!responseData.success) {
+                        this.setNotification({
+                            type: 'error',
+                            message: responseData.message + ' Try a little bit later!'
+                        });
+                        this.trust = this.spam = this.lrtPowerTrust = 'N/A';
+                        this.checkTrustLoading = false;
+                        return;
+                    } else {
+                        this.trust = responseData?.summary?.trust;
+                        this.spam = responseData?.summary?.spam;
+                        this.lrtPowerTrust = responseData?.summary?.lrtPowerTrust;
+                    }
+                    this.checkTrustLoading = false;
                     this.setNotification({
                         type: 'success',
-                        message: 'Basic data was set!'
+                        message: 'CheckTrust data was set!'
                     });
                 } catch (error) {
+                    this.checkTrustLoading = false;
                     this.setNotification({
                         type: 'error',
                         message: error
