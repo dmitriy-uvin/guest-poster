@@ -195,8 +195,8 @@ final class PlatformController extends ApiController
         return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
     }
 
-    private function checkIfValueIsKnown(string $value): ?string
+    private function checkIfValueIsKnown($value)
     {
-        return $value === 'N/A' ? null : $value;
+        return $value === 'N/A' ? null : (string)$value;
     }
 }

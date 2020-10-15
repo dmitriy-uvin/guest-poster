@@ -11,7 +11,7 @@ class UpdatePlatformHttpRequest extends ApiFormRequest
     {
         return [
             'website_url' => 'required|string',
-            'organic_traffic' => 'required|string',
+            'organic_traffic' => 'required',
             'dofollow_active' => 'required|boolean',
             'free_home_featured_active' => 'required|boolean',
             'niche_edit_link_active' => 'required|boolean',
@@ -26,9 +26,9 @@ class UpdatePlatformHttpRequest extends ApiFormRequest
             'where_posted' => 'required|string|max:255',
             'email' => 'required|string',
             'comment' => 'string|max:255|nullable',
-            'trust' => 'string',
-            'spam' => 'string',
-            'lrt_power_trust' => 'string',
+            'trust' => 'required',
+            'spam' => 'required',
+            'lrt_power_trust' => 'required',
             'moz' => 'required',
             'moz.da' => 'required',
             'moz.pa' => 'required',

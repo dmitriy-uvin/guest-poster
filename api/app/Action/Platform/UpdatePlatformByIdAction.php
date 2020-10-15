@@ -52,35 +52,32 @@ final class UpdatePlatformByIdAction
         $platform->lrt_power_trust = $request->getLrtPowerTrust();
         $platform = $this->platformRepository->save($platform);
 
-        $moz = Moz::where('platform_id', '=', $platform->id)->update([
+        $moz = Moz::where('platform_id', '=', $platform->id)
+            ->update([
             'pa' => $request->getMozPA(),
             'da' => $request->getMozDA(),
             'rank' => $request->getMozRank(),
             'links_in' => $request->getMozLinksIn(),
             'equity' => $request->getMozEquity()
         ]);
-        $moz->save();
 
         $alexa = Alexa::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getAlexaRank(),
             'country' => $request->getAlexaCountry(),
             'country_rank' => $request->getAlexaCountryRank()
         ]);
-        $alexa->save();
 
         $semrush = SemRush::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getSemrushRank(),
             'keyword_num' => $request->getSemrushKeywordNum(),
             'traffic_costs' => $request->getSemrushTrafficCosts(),
         ]);
-        $semrush->save();
 
         $facebook = Facebook::where('platform_id', '=', $platform->id)->update([
             'fb_comments' => $request->getFbComments(),
             'fb_reac' => $request->getFbReac(),
             'fb_shares' => $request->getFbShares()
         ]);
-        $facebook->save();
 
         $majestic = Majestic::where('platform_id', '=', $platform->id)->update([
             'external_backlinks' => $request->getMajesticExternalBacklinks(),
@@ -92,7 +89,6 @@ final class UpdatePlatformByIdAction
             'refd_edu' => $request->getMajesticRefDEDU(),
             'refd_gov' => $request->getMajesticRefDGOV(),
         ]);
-        $majestic->save();
 
         return new UpdatePlatformByIdResponse($platform);
     }
