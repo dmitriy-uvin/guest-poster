@@ -11,7 +11,7 @@ final class CheckTrustApiController extends ApiController
 
     public function __construct()
     {
-        $this->checkTrustApiKey = env('CHECK_TRUST_API_KEY');
+        $this->checkTrustApiKey = 'a0aece19412bc5f00b4e595fbd158fb4';
     }
 
     public function getCheckTrustData(Request $request)

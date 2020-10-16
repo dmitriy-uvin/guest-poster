@@ -15,7 +15,7 @@ final class SeoRankApiController extends ApiController
 
     public function __construct()
     {
-        $this->SEORANK_API_KEY = env("SEO_RANK_API_KEY");
+        $this->SEORANK_API_KEY = '98DBBAF083E292FD329F2DB78A60C3F5';
     }
 
     public function fetchInformationByDomainMozAlexaSr(Request $request)
