@@ -42,22 +42,28 @@
         <VBtn
             depressed
             color="primary"
-            @click="errors = []" v-if="errors.length"
+            @click="history = []" v-if="history.length"
             class="mb-4"
         >
-            Clear Errors
+            Clear History
         </VBtn>
-        <VAlert
-            transition="scroll-y-transition"
-            border="right"
-            colored-border
-            type="error"
-            elevation="2"
-            v-for="(error, index) in reverseErrors"
-            :key="index"
-        >
-            {{ error }}
-        </VAlert>
+        <h3 v-if="history.length">History</h3>
+        <VRow>
+            <VCol cols="12">
+                <VAlert
+                    transition="scroll-y-transition"
+                    border="right"
+                    colored-border
+                    :type="item.type"
+                    elevation="2"
+                    v-for="(item, index) in reverseHistory"
+                    :key="index"
+                >
+                    <span v-html="item.msg"></span>
+                </VAlert>
+            </VCol>
+        </VRow>
+
     </div>
 </template>
 
@@ -65,6 +71,7 @@
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
+import { pusher } from '@/services/pusher/pusherService';
 
 export default {
     name: 'ImportComponent',
@@ -74,8 +81,8 @@ export default {
             v => (v && v.type === 'text/csv') || 'File CSV is required'
         ],
         fileTable: [],
-        errors: [],
-        uploadLoading: false
+        uploadLoading: false,
+        history: [],
     }),
     methods: {
         ...mapActions('platforms', {
@@ -87,26 +94,37 @@ export default {
                     this.uploadLoading = true;
                     const formData = new FormData();
                     formData.append('platforms_table', this.fileTable);
-                    const response = await this.importPlatforms(formData);
-                    console.log(response);
-                    this.setNotification({
-                        type: 'success',
-                        message: 'Platforms was imported!'
+                    await this.importPlatforms(formData);
+                    this.history.push({
+                        msg: "Import platforms process started! Don't leave the page!",
+                        type: 'success'
                     });
                     this.uploadLoading = false;
                 } catch (error) {
-                    this.errors = [
-                        ...this.errors,
-                        error
-                    ];
+                    this.history.push({
+                        msg: error,
+                        type: 'error'
+                    });
                     this.uploadLoading = false;
                 }
             }
         }
     },
+    async created() {
+        const channel = pusher.subscribe('platform-import');
+        channel.bind('platform-import-created', (data) => {
+            this.history.push({
+                msg: data.message,
+                type: data.type
+            });
+        });
+    },
+    beforeDestroy() {
+        pusher.unsubscribe('platform-import');
+    },
     computed: {
-        reverseErrors() {
-            return this.errors.slice().reverse();
+        reverseHistory() {
+            return this.history.slice().reverse();
         }
     }
 }
