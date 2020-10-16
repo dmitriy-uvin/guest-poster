@@ -1108,7 +1108,6 @@ export default {
                 try {
                     this.checkTrustLoading = true;
                     let response = await requestExternalService.fetchCheckTrustData(this.websiteUrl);
-                    console.log(response);
                     let responseData = response?.data;
                     if (!responseData.success) {
                         this.setNotification({
@@ -1155,7 +1154,7 @@ export default {
         this.platformId = this.$route.params.id;
         await this.fetchPlatformById(this.platformId);
         await this.fetchTopics();
-        this.websiteUrl = this.platform.websiteUrl;
+        this.websiteUrl = this.platform.protocol + this.platform.websiteUrl;
         this.description = this.platform.description;
         this.articleRequirements = this.platform.articleRequirements;
         this.wherePosted = this.platform.wherePosted;
