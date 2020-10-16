@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Action\Platform;
 
+use App\Exceptions\Platform\PlatformAlreadyExistsException;
 use App\Exceptions\Platform\PlatformNotFoundException;
 use App\Models\Alexa;
 use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
+use App\Models\Platform;
 use App\Models\SemRush;
 use App\Repositories\Platform\PlatformRepositoryInterface;
 
@@ -29,6 +31,13 @@ final class UpdatePlatformByIdAction
             throw new PlatformNotFoundException();
         }
 
+        if ($platform->website_url !== $request->getWebsiteUrl()) {
+            if (Platform::where('website_url', '=', $request->getWebsiteUrl())) {
+                throw new PlatformAlreadyExistsException();
+            }
+        }
+
+        $platform->protocol = $request->getProtocol();
         $platform->website_url = $request->getWebsiteUrl();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
@@ -52,7 +61,7 @@ final class UpdatePlatformByIdAction
         $platform->lrt_power_trust = $request->getLrtPowerTrust();
         $platform = $this->platformRepository->save($platform);
 
-        $moz = Moz::where('platform_id', '=', $platform->id)
+        Moz::where('platform_id', '=', $platform->id)
             ->update([
             'pa' => $request->getMozPA(),
             'da' => $request->getMozDA(),
@@ -61,25 +70,25 @@ final class UpdatePlatformByIdAction
             'equity' => $request->getMozEquity()
         ]);
 
-        $alexa = Alexa::where('platform_id', '=', $platform->id)->update([
+        Alexa::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getAlexaRank(),
             'country' => $request->getAlexaCountry(),
             'country_rank' => $request->getAlexaCountryRank()
         ]);
 
-        $semrush = SemRush::where('platform_id', '=', $platform->id)->update([
+        SemRush::where('platform_id', '=', $platform->id)->update([
             'rank' => $request->getSemrushRank(),
             'keyword_num' => $request->getSemrushKeywordNum(),
             'traffic_costs' => $request->getSemrushTrafficCosts(),
         ]);
 
-        $facebook = Facebook::where('platform_id', '=', $platform->id)->update([
+        Facebook::where('platform_id', '=', $platform->id)->update([
             'fb_comments' => $request->getFbComments(),
             'fb_reac' => $request->getFbReac(),
             'fb_shares' => $request->getFbShares()
         ]);
 
-        $majestic = Majestic::where('platform_id', '=', $platform->id)->update([
+        Majestic::where('platform_id', '=', $platform->id)->update([
             'external_backlinks' => $request->getMajesticExternalBacklinks(),
             'external_gov' => $request->getMajesticExternalGov(),
             'external_edu' => $request->getMajesticExternalEdu(),
@@ -96,7 +105,6 @@ final class UpdatePlatformByIdAction
     private function getDomainZone(string $websiteUrl): string
     {
         $string = trim($websiteUrl, '/');
-        $string = mb_ereg_replace("http[s]?:[\/]{2}", '', $string);
         $domain = explode('/', $string)[0];
         $domainParts = explode('.', $domain);
 

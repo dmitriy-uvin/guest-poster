@@ -8,6 +8,7 @@ class UpdatePlatformByIdRequest
 {
     private int $platformId;
 
+    private string $protocol;
     private string $website_url;
     private ?int $organicTraffic;
     private bool $do_follow_active;
@@ -93,7 +94,8 @@ class UpdatePlatformByIdRequest
     ) {
         $this->platformId = $id;
 
-        $this->website_url = $website_url;
+        $this->protocol = $this->explodeWebsiteUrl($website_url)['protocol'];
+        $this->website_url = $this->explodeWebsiteUrl($website_url)['website_url'];
         $this->organicTraffic = is_null($organicTraffic) ? null : (int)$organicTraffic;
         $this->do_follow_active = $do_follow_active;
         $this->free_home_featured_active = $free_home_featured_active;
@@ -194,6 +196,18 @@ class UpdatePlatformByIdRequest
         $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
+    private function explodeWebsiteUrl(string $websiteUrl): array
+    {
+        $domain = mb_split('^http[s]?://(www.)?', $websiteUrl);
+        $match = [];
+        preg_match('#^http[s]?://(www.)?#', $websiteUrl, $match);
+        $protocol = $match[0];
+        return [
+            'website_url' => trim($domain[1], '/'),
+            'protocol' => $protocol
+        ];
+    }
+
     public function getPlatformId(): int
     {
         return $this->platformId;
@@ -202,6 +216,11 @@ class UpdatePlatformByIdRequest
     private function checkIfNotAvailable($value)
     {
         return $value === 'N/A' ? null : $value;
+    }
+
+    public function getProtocol()
+    {
+        return $this->protocol;
     }
 
     public function getWebsiteUrl(): string
@@ -408,7 +427,7 @@ class UpdatePlatformByIdRequest
     {
         return $this->majesticRefD_GOV;
     }
-    
+
     public function getAhrefsStatus()
     {
         return $this->ahrefsStatus;

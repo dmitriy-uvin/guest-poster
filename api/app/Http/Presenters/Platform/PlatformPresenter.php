@@ -46,6 +46,7 @@ final class PlatformPresenter implements PresenterCollectionInterface
     {
         return [
             'id' => $platform->id,
+            'protocol' => $platform->protocol,
             'website_url' => $platform->website_url,
             'organic_traffic' => $platform->organic_traffic,
             'dofollow_active' => $platform->dofollow_active,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Platform;
 
+use App\Exceptions\Platform\PlatformAlreadyExistsException;
 use App\Models\Ahrefs;
 use App\Models\Alexa;
 use App\Models\Facebook;
@@ -25,7 +26,12 @@ final class AddPlatformAction
 
     public function execute(AddPlatformRequest $request)
     {
+        if (!is_null(Platform::where('website_url', '=', $request->getWebsiteUrl()))) {
+            throw new PlatformAlreadyExistsException();
+        }
         $platform = new Platform();
+        $platform->protocol = $request->getProtocol();
+
         $platform->website_url = $request->getWebsiteUrl();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
@@ -120,7 +126,6 @@ final class AddPlatformAction
     private function getDomainZone(string $websiteUrl): string
     {
         $string = trim($websiteUrl, '/');
-        $string = mb_ereg_replace("http[s]?:[\/]{2}", '', $string);
         $domain = explode('/', $string)[0];
         $domainParts = explode('.', $domain);
 

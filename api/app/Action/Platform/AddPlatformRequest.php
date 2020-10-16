@@ -7,6 +7,7 @@ namespace App\Action\Platform;
 final class AddPlatformRequest
 {
     private string $website_url;
+    private string $protocol;
     private ?int $organicTraffic;
     private bool $do_follow_active;
     private bool $free_home_featured_active;
@@ -89,7 +90,8 @@ final class AddPlatformRequest
         ?string $spam,
         ?string $lrtPowerTrust
     ) {
-        $this->website_url = $website_url;
+        $this->website_url = $this->explodeWebsiteUrl($website_url)['website_url'];
+        $this->protocol = $this->explodeWebsiteUrl($website_url)['protocol'];
         $this->organicTraffic = is_null($organicTraffic) ? null : (int)$organicTraffic;
         $this->do_follow_active = $do_follow_active;
         $this->free_home_featured_active = $free_home_featured_active;
@@ -191,9 +193,26 @@ final class AddPlatformRequest
         $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
+    private function explodeWebsiteUrl(string $websiteUrl): array
+    {
+        $domain = mb_split('^http[s]?://(www.)?', $websiteUrl);
+        $match = [];
+        preg_match('#^http[s]?://(www.)?#', $websiteUrl, $match);
+        $protocol = $match[0];
+        return [
+            'website_url' => trim($domain[1], '/'),
+            'protocol' => $protocol
+        ];
+    }
+
     private function checkIfNotAvailable($value)
     {
         return $value === 'N/A' ? null : $value;
+    }
+
+    public function getProtocol(): string
+    {
+        return $this->protocol;
     }
 
     public function getWebsiteUrl(): string
