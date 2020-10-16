@@ -15,7 +15,8 @@ class CreatePlatformsTable extends Migration
     {
         Schema::create('platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('website_url');
+            $table->string('protocol');
+            $table->string('website_url')->unique();
             $table->integer('organic_traffic')->nullable();
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');

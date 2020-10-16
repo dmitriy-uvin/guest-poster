@@ -23,7 +23,8 @@ class PlatformFactory extends Factory
     public function definition()
     {
         return [
-            'website_url' => $this->faker->url,
+            'protocol' => 'https://',
+            'website_url' => mb_ereg_replace('^http[s]?://(www.)?', '', $this->faker->url),
             'organic_traffic' => $this->faker->numberBetween(10, 10000),
             'dofollow_active' => true,
             'free_home_featured_active' => false,
