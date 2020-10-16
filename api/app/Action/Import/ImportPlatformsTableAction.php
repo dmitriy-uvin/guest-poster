@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Import;
 
+use App\Exceptions\Import\AnyPlatformsInFileException;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
 use App\Exceptions\Import\WrongImportValueException;
@@ -34,26 +35,30 @@ final class ImportPlatformsTableAction
         $filePath = $this->storeFile($request->getFile());
         $platformsData = $this->parseCSVFile($filePath);
 
+        if (!count($platformsData)) {
+            throw new AnyPlatformsInFileException();
+        }
+
         $this->validatePlatformsFromCSV($platformsData);
 
         $platformsData = $this->convertEmptyFieldsToNull($platformsData);
 
-        $platformsObjects = $this->createPlatforms($platformsData);
+//        $platformsObjects = $this->createPlatforms($platformsData);
 
-        $this->getDataFromApi($platformsObjects);
+        $this->getDataFromApi($platformsData);
 
         return new ImportPlatformsTableResponse([
             'data' => 1
         ]);
     }
 
-    private function getDataFromApi(Collection $platforms)
+    private function getDataFromApi(array $platforms)
     {
         GetDataFromApiForPlatforms::dispatch($platforms);
 
-        UpdateDataFromApiForPlatforms::dispatch($platforms)->delay(
-            now()->addMinutes(5)
-        );
+//        UpdateDataFromApiForPlatforms::dispatch($platforms)->delay(
+//            now()->addMinutes(5)
+//        );
     }
 
     private function storeFile($file): string
@@ -91,10 +96,10 @@ final class ImportPlatformsTableAction
     private function validatePlatformsFromCSV($platformsData)
     {
         $row = 1;
-
         foreach ($platformsData as $index => $platformData) {
             foreach ($platformData as $columnName => $value) {
                 switch ($columnName) {
+                    case 'protocol':
                     case 'website_url':
                     case 'topics':
                     case 'description':
@@ -102,7 +107,7 @@ final class ImportPlatformsTableAction
                     case 'where_posted':
                     case 'domain_zone':
                         if (!$value) {
-                            throw new WrongImportValueException($row, $columnName);
+                            throw new WrongImportValueException($row, $columnName, 'Empty field');
                         }
                         break;
                     case 'deadline':
@@ -148,23 +153,6 @@ final class ImportPlatformsTableAction
         }
 
         return true;
-    }
-
-    private function createPlatforms($platformsData)
-    {
-        $platformCollection = collect();
-
-        foreach ($platformsData as $platform) {
-            $platformTopics = explode(',', $platform['topics']);
-
-            $topics = Topic::whereIn('name', $platformTopics)->get('id');
-            $platform = new Platform($platform);
-            $platform->save();
-            $platform->topics()->attach($topics);
-            $platformCollection->add($platform);
-        }
-
-        return $platformCollection;
     }
 
     private function convertEmptyFieldsToNull(array $platformsData)
