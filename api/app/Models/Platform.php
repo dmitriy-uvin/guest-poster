@@ -10,6 +10,7 @@ class Platform extends Model
     use HasFactory;
 
     protected $fillable = [
+        'protocol',
         'website_url',
         'organic_traffic',
         'dofollow_active',
