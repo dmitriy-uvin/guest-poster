@@ -1,6 +1,6 @@
 import * as actions from './types/actions';
 import * as mutations from './types/mutations';
-import authService from "@/services/auth/authService";
+import authService from '@/services/auth/authService';
 
 export default {
     [actions.SIGN_IN]: async (context, userData) => {

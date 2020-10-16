@@ -1,4 +1,8 @@
 import requestInternalService from '@/services/requestInternalService';
+import {
+    updateSocketAuthToken,
+    removeSocketAuthToken
+} from '@/services/pusher/pusherService';
 
 const API_PREFIX = '/auth';
 
@@ -18,6 +22,7 @@ const authService = {
     async signIn(userLoginData) {
         const response = await requestInternalService.post(API_PREFIX + '/login', userLoginData);
         this.setToken(response?.data?.data?.access_token);
+        updateSocketAuthToken(response?.data?.data?.access_token);
         return response?.data?.data;
     },
     async signUp(userRegData) {
@@ -31,6 +36,7 @@ const authService = {
     async signOut() {
         const response = await requestInternalService.post(API_PREFIX + '/logout');
         this.removeToken();
+        removeSocketAuthToken();
         return response?.data?.data;
     },
     async verifyEmail(verifyData) {
