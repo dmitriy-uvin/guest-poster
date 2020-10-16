@@ -9,7 +9,6 @@ use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
 use App\Models\SemRush;
-use App\Models\User;
 use App\Services\SeoRankService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
