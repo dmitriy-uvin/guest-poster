@@ -8,10 +8,14 @@ export default {
         totalPrice(price) {
             return price.toFixed(2).toString().replace('.', ',');
         },
-        removeProtocol(url) {
-            url = url.replace('https://', '');
-            url = url.replace('http://', '');
-            return url;
+        deleteProtocol(websiteUrl) {
+            if (websiteUrl) {
+                websiteUrl = websiteUrl.replace(/http[s]?:\/\/(www.)?/, '');
+            }
+            return websiteUrl;
+        },
+        getProtocol(websiteUrl) {
+            return websiteUrl.match(/http[s]?:\/\/(www.)?/)[0];
         }
     }
 }

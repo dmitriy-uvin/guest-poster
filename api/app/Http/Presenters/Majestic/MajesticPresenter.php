@@ -16,6 +16,9 @@ final class MajesticPresenter
             'external_edu' => $majestic->external_edu,
             'tf' => $majestic->tf,
             'cf' => $majestic->cf,
+            'refd' => $majestic->refd,
+            'refd_edu' => $majestic->refd_edu,
+            'refd_gov' => $majestic->refd_gov,
         ];
     }
 }

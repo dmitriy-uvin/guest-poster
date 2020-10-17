@@ -16,7 +16,6 @@ class SemRush extends Model
         'platform_id',
         'rank',
         'keyword_num',
-        'traffic',
         'traffic_costs',
     ];
 

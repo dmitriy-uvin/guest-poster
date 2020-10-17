@@ -18,6 +18,7 @@ class Moz extends Model
         'da',
         'rank',
         'links_in',
+        'equity'
     ];
 
     public function platform()

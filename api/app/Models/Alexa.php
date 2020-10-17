@@ -15,7 +15,8 @@ class Alexa extends Model
     protected $fillable = [
         'platform_id',
         'rank',
-        'country'
+        'country',
+        'country_rank'
     ];
 
     public function platform()

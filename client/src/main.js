@@ -3,8 +3,15 @@ import vuetify from './plugins/vuetify';
 import App from './App.vue'
 import router from './router';
 import store from './store';
+import notAvailableFilter from '@/filters/notAvailableFilter';
+import formatNumberFilter from '@/filters/formatNumberFilter';
+import formatDataFilter from '@/filters/formatDataFilter';
 
 Vue.config.productionTip = false
+
+Vue.filter('notAvailableFilter', notAvailableFilter);
+Vue.filter('formatNumberFilter', formatNumberFilter);
+Vue.filter('formatDataFilter', formatDataFilter);
 
 new Vue({
     router,

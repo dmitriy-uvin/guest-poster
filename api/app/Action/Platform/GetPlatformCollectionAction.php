@@ -27,25 +27,7 @@ final class GetPlatformCollectionAction
 
         $filterQuery = Platform::query();
 
-        if ($request->getDrFrom()) {
-            $filterQuery = $filterQuery
-                ->where('dr', '>=', $request->getDrFrom());
-        }
-
-        if ($request->getDrTo() > $request->getDrFrom()) {
-            $filterQuery = $filterQuery
-                ->where('dr', '<=', $request->getDrTo());
-        }
-
-        if ($request->getMaFrom()) {
-            $filterQuery = $filterQuery
-                ->where('ma', '>=', $request->getMaFrom());
-        }
-
-        if ($request->getMaFrom() < $request->getMaTo()) {
-            $filterQuery = $filterQuery
-                ->where('ma', '<=', $request->getMaTo());
-        }
+        $filterQuery = $filterQuery->where('in_trash', '=', false);
 
         if ($request->getOrganicTrafficFrom()) {
             $filterQuery = $filterQuery
@@ -100,7 +82,6 @@ final class GetPlatformCollectionAction
                 $query->where('da', '>=', $request->getMozDaFrom());
             });
         }
-
         if ($request->getMozDaFrom() < $request->getMozDaTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('da', '<=', $request->getMozDaTo());
@@ -112,7 +93,6 @@ final class GetPlatformCollectionAction
                 $query->where('pa', '>=', $request->getMozPaFrom());
             });
         }
-
         if ($request->getMozPaFrom() < $request->getMozPaTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('pa', '<=', $request->getMozPaTo());
@@ -124,7 +104,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getMozRankFrom());
             });
         }
-
         if ($request->getMozRankFrom() < $request->getMozRankTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('rank', '<=', $request->getMozRankTo());
@@ -136,7 +115,6 @@ final class GetPlatformCollectionAction
                 $query->where('links_in', '>=', $request->getMozLinksInFrom());
             });
         }
-
         if ($request->getMozLinksInFrom() < $request->getMozLinksInTo()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('links_in', '<=', $request->getMozLinksInTo());
@@ -148,7 +126,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getAlexaRankFrom());
             });
         }
-
         if ($request->getAlexaRankFrom() < $request->getAlexaRankTo()) {
             $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
                 $query->where('rank', '<=', $request->getAlexaRankTo());
@@ -166,7 +143,6 @@ final class GetPlatformCollectionAction
                 $query->where('rank', '>=', $request->getSemRushRankFrom());
             });
         }
-
         if ($request->getSemRushRankFrom() < $request->getSemRushRankTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('rank', '<=', $request->getSemRushRankTo());
@@ -178,31 +154,29 @@ final class GetPlatformCollectionAction
                 $query->where('keyword_num', '>=', $request->getSemRushKeywordNumFrom());
             });
         }
-
         if ($request->getSemRushKeywordNumFrom() < $request->getSemRushKeywordNumTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('keyword_num', '<=', $request->getSemRushKeywordNumTo());
             });
         }
 
-        if ($request->getSemRushTrafficFrom()) {
-            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-                $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
-            });
-        }
-
-        if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
-            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-                $query->where('traffic', '<=', $request->getSemRushTrafficTo());
-            });
-        }
+        // TODO: Implement filter by traffic not SemRush traffic
+//        if ($request->getSemRushTrafficFrom()) {
+//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
+//                $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
+//            });
+//        }
+//        if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
+//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
+//                $query->where('traffic', '<=', $request->getSemRushTrafficTo());
+//            });
+//        }
 
         if ($request->getSemRushTrafficCostsFrom()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('traffic_costs', '>=', $request->getSemRushTrafficCostsFrom());
             });
         }
-
         if ($request->getSemRushTrafficCostsFrom() < $request->getSemRushTrafficCostsTo()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
                 $query->where('traffic_costs', '<=', $request->getSemRushTrafficCostsTo());
@@ -214,7 +188,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_backlinks', '>=', $request->getMajesticExtBacklinksFrom());
             });
         }
-
         if ($request->getMajesticExtBacklinksFrom() < $request->getMajesticExtBacklinksTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_backlinks', '<=', $request->getMajesticExtBacklinksTo());
@@ -226,7 +199,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_gov', '>=', $request->getMajesticExtGovFrom());
             });
         }
-
         if ($request->getMajesticExtGovFrom() < $request->getMajesticExtGovTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_gov', '<=', $request->getMajesticExtGovTo());
@@ -238,7 +210,6 @@ final class GetPlatformCollectionAction
                 $query->where('external_edu', '>=', $request->getMajesticExtEduFrom());
             });
         }
-
         if ($request->getMajesticExtEduFrom() < $request->getMajesticExtEduTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('external_edu', '<=', $request->getMajesticExtEduTo());
@@ -250,7 +221,6 @@ final class GetPlatformCollectionAction
                 $query->where('cf', '>=', $request->getMajesticCfFrom());
             });
         }
-
         if ($request->getMajesticCfFrom() < $request->getMajesticCfTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('cf', '<=', $request->getMajesticCfTo());
@@ -262,7 +232,6 @@ final class GetPlatformCollectionAction
                 $query->where('tf', '>=', $request->getMajesticTfFrom());
             });
         }
-
         if ($request->getMajesticTfFrom() < $request->getMajesticTfTo()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('tf', '<=', $request->getMajesticTfTo());
@@ -275,8 +244,63 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if ($sorting === 'moz.da') {
+            $filterQuery = $filterQuery
+                ->join('moz', 'moz.platform_id', '=', 'platforms.id')
+                ->orderBy('moz.da', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'website') {
+            $filterQuery = $filterQuery->orderBy('website_url', $direction);
+        } else if ($sorting === 'trust') {
+            $filterQuery = $filterQuery->orderBy('trust', $direction);
+        } else if ($sorting === 'semrush.traffic') {
+            $filterQuery = $filterQuery->orderBy('organic_traffic', $direction);
+        } else if ($sorting === 'ahrefs.dr') {
+            $filterQuery = $filterQuery
+                ->join('ahrefs', 'ahrefs.platform_id', '=', 'platforms.id')
+                ->orderBy('ahrefs.dr', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'semrush.traffic_costs') {
+            $filterQuery = $filterQuery
+                ->join('semrush', 'semrush.platform_id', '=', 'platforms.id')
+                ->orderBy('semrush.traffic_costs', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.tf') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.tf', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.cf') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.cf', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'alexa.rank') {
+            $filterQuery = $filterQuery
+                ->join('alexa', 'alexa.platform_id', '=', 'platforms.id')
+                ->orderBy('alexa.rank', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'majestic.ebl') {
+            $filterQuery = $filterQuery
+                ->join('majestic', 'majestic.platform_id', '=', 'platforms.id')
+                ->orderBy('majestic.external_backlinks', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'semrush.rank') {
+            $filterQuery = $filterQuery
+                ->join('semrush', 'semrush.platform_id', '=', 'platforms.id')
+                ->orderBy('semrush.rank', $direction)
+                ->select('platforms.*');
+        } else if ($sorting === 'ahrefs.rd') {
+            $filterQuery = $filterQuery
+                ->join('ahrefs', 'ahrefs.platform_id', '=', 'platforms.id')
+                ->orderBy('ahrefs.rd', $direction)
+                ->select('platforms.*');
+        } else {
+            $filterQuery = $filterQuery
+                ->orderBy($sorting, $direction);
+        }
+
         $filterQuery = $filterQuery
-            ->orderBy($sorting, $direction)
             ->paginate(
                 $perPage, ['*'], null, $page
             );

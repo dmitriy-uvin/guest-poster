@@ -10,7 +10,6 @@ final class GetPlatformCollectionRequest
     private ?int $perPage;
     private ?string $sorting;
     private ?string $direction;
-    private array $filter;
 
     //Platform
     private ?int $drFrom;
@@ -144,11 +143,6 @@ final class GetPlatformCollectionRequest
     public function getDirection(): ?string
     {
         return $this->direction;
-    }
-
-    public function getFilter(): array
-    {
-        return $this->filter;
     }
 
     public function getDrFrom(): ?int

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exceptions\Order;
 
-use App\Exceptions\BaseException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class OrderNotFoundException extends BaseException
+class OrderNotFoundException extends ModelNotFoundException
 {
-    protected $message = "Order nout found!";
+    protected $message = "Order not found!";
 }

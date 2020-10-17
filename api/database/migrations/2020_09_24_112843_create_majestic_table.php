@@ -16,11 +16,14 @@ class CreateMajesticTable extends Migration
         Schema::create('majestic', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->integer('external_backlinks');
-            $table->integer('external_gov');
-            $table->integer('external_edu');
-            $table->integer('tf');
-            $table->integer('cf');
+            $table->integer('external_backlinks')->nullable();
+            $table->integer('external_gov')->nullable();
+            $table->integer('external_edu')->nullable();
+            $table->integer('tf')->nullable();
+            $table->integer('cf')->nullable();
+            $table->integer('refd')->nullable();
+            $table->integer('refd_edu')->nullable();
+            $table->integer('refd_gov')->nullable();
 
             $table
                 ->foreign('platform_id')

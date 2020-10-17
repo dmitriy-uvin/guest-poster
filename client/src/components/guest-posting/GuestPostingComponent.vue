@@ -2,8 +2,7 @@
     <div class="container">
         <div class="row justify-space-between align-center">
             <div class="left">
-                <h1 v-if="isAdmin">Guest Posting and Niche edits list</h1>
-                <h1 v-else>Guest Posting</h1>
+                <h1>Guest Posting</h1>
                 <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
             <div class="right">
@@ -502,228 +501,187 @@
                 </VCol>
             </VRow>
         </VCol>
-
         <div class="filter-chips mb-4">
             <h5 class="mb-4">{{ total }} platforms found</h5>
-            <FilterChips
-                :filter-chips="filterChips"
-                @delete-filter="onDeleteFilter"
-                :filters-applied="filtersApplied"
-            />
+<!--            <FilterChips-->
+<!--                :filter-chips="filterChips"-->
+<!--                @delete-filter="onDeleteFilter"-->
+<!--                :filters-applied="filtersApplied"-->
+<!--            />-->
         </div>
-
-        <VDivider></VDivider>
-
-        <table class="guest__table" v-if="Object.keys(platforms).length">
-            <thead class="guest__head">
-            <tr>
-                <th class="guest__col">
-                    <VCheckbox @click="selectAll"></VCheckbox>
-                </th>
-<!--                <th class="guest__col">-->
-<!--                    #-->
-<!--                    <VIcon-->
-<!--                        right-->
-<!--                        @click="changeSortingAndDirection('id')"-->
-<!--                        v-if="sorting === 'id' && direction === 'desc'"-->
-<!--                    >-->
-<!--                        mdi-chevron-down-->
-<!--                    </VIcon>-->
-<!--                    <VIcon-->
-<!--                        right-->
-<!--                        @click="changeSortingAndDirection('id')"-->
-<!--                        v-else-->
-<!--                    >-->
-<!--                        mdi-chevron-up-->
-<!--                    </VIcon>-->
-<!--                </th>-->
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Website
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('website_url')"
-                            v-if="sorting === 'website_url' && direction === 'desc'"
+        <table class="guest-poster-table" v-if="Object.keys(platforms).length">
+            <thead>
+                <tr>
+                    <td>
+                        <VCheckbox
+                            @click="selectAll"
+                            hide-details
+                            :value="selectedAll"
                         >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('website_url')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    Topic
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        DR
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('dr')"
-                            v-if="sorting === 'dr' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('dr')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        MA
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('ma')"
-                            v-if="sorting === 'ma' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('ma')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Organic traffic
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('organic_traffic')"
-                            v-if="sorting === 'organic_traffic' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('organic_traffic')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-                <th class="guest__col">
-                    Features
-                </th>
-                <th class="guest__col">
-                    <div class="guest__col-wrap">
-                        Editorial fee
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('price')"
-                            v-if="sorting === 'price' && direction === 'desc'"
-                        >
-                            mdi-chevron-down
-                        </VIcon>
-                        <VIcon
-                            right
-                            @click="changeSortingAndDirection('price')"
-                            v-else
-                        >
-                            mdi-chevron-up
-                        </VIcon>
-                    </div>
-                </th>
-            </tr>
+                        </VCheckbox>
+                    </td>
+                    <th @click="changeSortingAndDirection('website')">
+                        <span :class="{ 'underline' : sorting === 'website' }">
+                            Website
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('trust')">
+                        <span :class="{ 'underline' : sorting === 'trust' }">
+                            Trust
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.traffic')">
+                        <span :class="{ 'underline' : sorting === 'semrush.traffic' }">
+                            SR.Trf
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('ahrefs.dr')">
+                        <span :class="{ 'underline' : sorting === 'ahrefs.dr' }">
+                            DR
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.traffic_costs')">
+                        <span :class="{ 'underline' : sorting === 'semrush.traffic_costs' }">
+                            SR.Cost
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.tf')">
+                        <span :class="{ 'underline' : sorting === 'majestic.tf' }">
+                            TF
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.cf')">
+                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">
+                            CF
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('alexa.rank')">
+                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">
+                            Alx.Rank
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('majestic.ebl')">
+                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">
+                            EBL
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('semrush.rank')">
+                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">
+                            SR.Rank
+                        </span>
+                    </th>
+                    <th @click="changeSortingAndDirection('ahrefs.rd')">
+                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">
+                            RD
+                        </span>
+                    </th>
+                    <th>Features</th>
+                    <th @click="changeSortingAndDirection('price')">
+                        <span :class="{ 'underline' : sorting === 'price' }">
+                            Editorial Fee
+                        </span>
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            <tr v-for="platform in platforms" :key="platform.id">
-                <td>
-                    <VCheckbox :value="!!chosen[platform.id]" @click="selectPlatform(platform.id)"></VCheckbox>
-                </td>
-                <td>
-                    <div class="guest__col-wrap">
-                        {{ platform.websiteUrl }}
-                    </div>
-                </td>
-                <td>
-                    <VChip v-for="(topic, id) in platform.topics"
-                           :key="id"
-                           x-small
-                           class="pa-0 px-2 mr-1 mb-1"
-                    >
-                        {{ topic.name }}
-                    </VChip>
-                </td>
-                <td>
-                    {{ platform.dr }}
-                </td>
-                <td>
-                    {{ platform.ma }}
-                </td>
-                <td>
-                    {{ platform.organicTraffic }}
-                </td>
-                <td>
-                    <ul style="list-style: none" class="pl-0">
-                        <li
-                            :class="{
-                            'available' : platform.doFollowActive,
-                            'not-available': !platform.doFollowActive}
-                            "
-                        >
-                            Do Follow
-                        </li>
-                        <li
-                            :class="{
-                            'available' : platform.freeHomeFeaturedActive,
-                            'not-available': !platform.freeHomeFeaturedActive}
-                            "
-                        >
-                            Free Home Featured
-                        </li>
-                        <li
-                            :class="{
-                            'available' : platform.nicheEditLinkActive,
-                            'not-available': !platform.nicheEditLinkActive}
-                            "
-                        >
-                            Niche Edit Link
-                        </li>
-                    </ul>
-                </td>
-                <td>
-                    <span class="guest__price">
-                        {{ platform.price }} $
-                    </span>
-                    <span class="guest__wrap mb-1 d-block">
-                        <span>
-                            Article writing:
+                <tr v-for="platform in platforms" :key="platform.id">
+                    <td>
+                        <VCheckbox
+                            :value="!!chosen[platform.id]"
+                            @click="selectPlatform(platform.id)"
+                            hide-details
+                        ></VCheckbox>
+                    </td>
+                    <td>
+                        <div class="link">
+                            <span class="website-link">
+                                {{ deleteProtocol(platform.websiteUrl) }}
+                            </span>
+                        </div>
+                        <div class="topics">
+                            <VChip x-small
+                                   class="pa-0 px-1 mr-1 mb-1 chip"
+                                   v-for="(topic, id) in platform.topics"
+                                   :key="id"
+                            >
+                                {{ topic.name }}
+                            </VChip>
+                        </div>
+                    </td>
+                    <td>
+                        <PlatformTrust
+                            :check-trust="platform.trust"
+                            :check-trust-spam="platform.spam"
+                            :power-trust="platform.lrtPowerTrust"
+                        />
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.organicTraffic | notAvailableFilter | formatNumberFilter }}
                         </span>
-                        <span v-if="platform.articleWritingPrice > 0" class="text-orange">
-                            + {{ platform.articleWritingPrice.toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ (platform.ahrefs ? platform.ahrefs.dr : null) | notAvailableFilter }}
                         </span>
-                        <span v-else class="text-green">
-                            - {{ Math.abs(platform.articleWritingPrice).toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.semrush.trafficCosts | notAvailableFilter | formatNumberFilter }}
                         </span>
-                    </span>
-                    <span class="guest__wrap" v-if="platform.nicheEditLinkActive">
-                        <span>
-                            Existing article:
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
-                        <span v-if="platform.nicheEditLinkPrice > 0" class="text-orange">
-                            + {{ platform.nicheEditLinkPrice.toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.cf | notAvailableFilter }}
                         </span>
-                        <span v-else class="text-green  ">
-                            - {{ Math.abs(platform.nicheEditLinkPrice).toFixed(2) }} $
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.alexa.rank | notAvailableFilter }}
                         </span>
-                    </span>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ platform.semrush.rank | notAvailableFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="table-value">
+                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}
+                        </span>
+                    </td>
+                    <td>
+                        <PlatformFeatures :platform="platform" />
+                    </td>
+                    <td>
+                        <span class="fee fee-active">
+                            <span class="left">{{ totalPrice(platform.price) }} $</span>
+                            <span class="right">Guest Post</span>
+                        </span>
+                        <span class="fee" v-if="platform.freeHomeFeaturedActive">
+                            <span class="left">
+                                {{ totalPrice(platform.price + platform.articleWritingPrice) }} $
+                            </span>
+                            <span class="right">GP + Article</span>
+                        </span>
+                        <span class="fee" v-if="platform.nicheEditLinkActive">
+                            <span class="left">
+                                {{ totalPrice(platform.price + platform.nicheEditLinkPrice) }} $
+                            </span>
+                            <span class="right">Niche Edit</span>
+                        </span>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <h1 v-else class="text-center">Platforms weren't found:( ...</h1>
@@ -782,10 +740,6 @@
             </VCol>
         </VRow>
 
-        <VBtn color="red" fab class="float-btn-action" @click="onAddPlatform" v-if="isAdmin">
-            <VIcon color="white">mdi-plus</VIcon>
-        </VBtn>
-
         <SendRequestFooter
             :chosen-platforms-ids="chosenPlatformsIds"
             @unselected="unSelectAll"
@@ -797,216 +751,66 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import * as actions from '@/store/modules/platforms/types/actions';
-import * as getters from '@/store/modules/platforms/types/getters';
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
-import { countries } from "@/helpers/countries";
-import FilterChips from '@/components/guest-posting/FilterChips';
+import valueFormatMixin from '@/mixins/valueFormatMixin';
+import PlatformTrust from '@/components/platform/PlatformTrust';
+import PlatformFeatures from '@/components/platform/PlatformFeatures';
+import guestPostingMixin from '@/mixins/guestPostingMixin';
+// import FilterChips from '@/components/guest-posting/FilterChips';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
         SendRequestFooter,
-        FilterChips
+        PlatformTrust,
+        PlatformFeatures
+        // FilterChips
     },
-    mixins: [rolemixin, filterMixin],
-    data: () => ({
-        chosen: {},
-        selectedAll: false,
-        page: 1,
-        perPage: 5,
-        sorting: null,
-        direction: null,
-        currentPage: 1,
-        lastPage: 1,
-        total: 1,
-        pages: [],
-        firstPages: [],
-        lastPages: [],
-    }),
+    mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
     methods: {
-        async changeSortingAndDirection(sorting) {
-            this.sorting = sorting;
-            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
-            await this.loadPlatforms();
-        },
-        async loadPlatforms() {
-            return await this.fetchPlatforms({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-                filter: {
-                    ...this.filter,
-                    alexa: {
-                        ...this.filter.alexa,
-                        country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
-                    },
-                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
-                }
-            });
-        },
-        onSelectPerPage(value) {
-            this.perPage = value;
-        },
-        onAddPlatform() {
-            if (this.isAdmin) {
-                this.$router.push({ name: 'AddPlatform' })
-            }
-        },
-        ...mapActions('platforms', {
-            fetchPlatforms: actions.FETCH_PLATFORMS
-        }),
-        selectAll() {
-            this.selectedAll = !this.selectedAll;
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-            const newChosen = {};
-            this.platforms.map(platform => {
-                newChosen[platform.id] = !this.chosen[platform.id];
-            });
-            this.chosen = newChosen;
-            if (!this.selectedAll) {
-                this.platforms.map(platform => {
-                    this.chosen[platform.id] = null;
-                });
-            }
-        },
-        unSelectAll() {
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-        onChangePage(page) {
-            this.page = page;
-        },
-        selectPlatform(platformId) {
-            this.chosen = {
-                ...this.chosen,
-                [platformId]: !this.chosen[platformId]
-            }
-        },
         onRequestCreated() {
             this.unSelectAll();
         },
-        onPlatformRemoved(platformId) {
-            this.chosen[platformId] = false;
-        },
-    },
-    async mounted() {
-        const response = await this.loadPlatforms();
-        this.currentPage = response.current_page;
-        this.lastPage = response.last_page;
-        this.total = response.total;
-        for (let page = 1; page <= this.lastPage; page++) {
-            this.pages.push(page);
-        }
-        if (this.pages.length > 4) {
-            this.lastPages = this.pages.slice(-2);
-            if (!this.lastPages.includes(this.page)) {
-                this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-            }
-        } else {
-            this.firstPages = this.pages;
-            this.lastPages = [];
-        }
-        this.platforms.map(platform => {
-            this.chosen[platform.id] = null;
-        });
-    },
-    watch: {
-        async page() {
-            await this.loadPlatforms();
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-        async perPage() {
-            this.page = 1;
-            const response = await this.loadPlatforms();
-            this.currentPage = response.current_page;
-            this.lastPage = response.last_page;
-            this.total = response.total;
-            this.pages = [];
-            for (let page = 1; page <= this.lastPage; page++) {
-                this.pages.push(page);
-            }
-            if (this.pages.length > 4) {
-                this.lastPages = this.pages.slice(-2);
-                if (!this.lastPages.includes(this.page)) {
-                    this.firstPages = this.pages.slice(this.page - 2, this.page);
-                    if (!this.lastPages.includes(this.page + 1)) {
-                        this.firstPages = this.pages.slice(this.page - 1, this.page + 1);
-                    }
-                }
-            } else {
-                this.firstPages = this.pages;
-                this.lastPages = [];
-            }
-            this.platforms.map(platform => {
-                this.chosen[platform.id] = null;
-            });
-        },
-    },
-    computed: {
-        ...mapGetters('platforms', {
-            platforms: getters.GET_PLATFORMS
-        }),
-        chosenPlatformsIds() {
-            return Object.keys(this.chosen).filter(id => this.chosen[id]);
-        }
     }
 }
 </script>
 
 <style scoped>
-@import "../../assets/styles/main.css";
-/*@import "../../assets/styles/mobile.css";*/
+/*@import "../../assets/styles/main.css";*/
+@import "../../assets/styles/table.css";
 .float-btn-action {
     position: fixed;
     bottom: 25px;
     right: 25px;
 }
-.v-chip {
-    height: 24px;
+
+.chip {
+    font-size: 10px;
+    font-weight: 400 !important;
 }
 
 .v-application--is-ltr .v-input--selection-controls__input {
     margin-right: 0;
 }
+
 .v-input--selection-controls {
     margin-top: 0;
     padding-top: 0;
 }
+
 .pagination {
     list-style: none;
 }
+
 .pagination li {
     cursor: pointer;
     display: inline-block;
     margin-right: 15px;
     transition: 0.5s;
 }
+
 .order-footer {
     position: fixed;
     bottom: 0;
@@ -1019,11 +823,13 @@ export default {
         0px 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
 }
+
 .filters {
     border-radius: 10px;
     border: 2px solid #2f80ed;
     padding-left: 30px;
 }
+
 .not-uppercase {
     text-transform: none;
 }

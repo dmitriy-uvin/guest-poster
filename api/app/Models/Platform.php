@@ -10,24 +10,46 @@ class Platform extends Model
     use HasFactory;
 
     protected $fillable = [
+        'protocol',
         'website_url',
-        'dr',
-        'ma',
         'organic_traffic',
         'dofollow_active',
         'free_home_featured_active',
         'niche_edit_link_active',
         'article_writing_price',
         'niche_edit_link_price',
-        'contacts',
         'price',
+        'deadline',
+        'domain_zone',
         'email',
         'comment',
+        'contacts',
+        'description',
+        'article_requirements',
+        'where_posted',
+        'trust',
+        'spam',
+        'lrt_power_trust',
+        'in_trash'
     ];
 
     protected $with = [
         'topics',
         'moz'
+    ];
+
+    protected $attributes = [
+        'comment' => null,
+        'contacts' => null,
+        'in_trash' => false,
+        'niche_edit_link_price' => null
+    ];
+
+    protected $casts = [
+        'in_trash' => 'boolean',
+        'dofollow_active' => 'boolean',
+        'free_home_featured_active' => 'boolean',
+        'niche_edit_link_active' => 'boolean',
     ];
 
     public function topics()
@@ -58,5 +80,10 @@ class Platform extends Model
     public function ahrefs()
     {
         return $this->hasOne(Ahrefs::class);
+    }
+
+    public function facebook()
+    {
+        return $this->hasOne(Facebook::class);
     }
 }

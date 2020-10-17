@@ -37,8 +37,19 @@ Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTop
 Route::group([
     'prefix' => 'platforms',
 ], function () {
-    Route::post('/store', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform'])->middleware('admin');
-    Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])->middleware('auth:api');
+    Route::group(['middleware' => 'admin'], function() {
+        Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
+        Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
+        Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
+        Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'updatePlatformById']);
+        Route::get('/trash', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsInTrashCollection']);
+        Route::get('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformById']);
+        Route::delete('/', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformsByIds']);
+    });
+
+    Route::get('/', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformCollection'])
+        ->middleware('auth:api');
 });
 
 Route::group([
@@ -47,6 +58,13 @@ Route::group([
 ], function () {
     Route::get('/moz-alexa-sr', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMozAlexaSr']);
     Route::get('/majestic', [\App\Http\Controllers\Api\SeoRankApiController::class, 'fetchInformationByDomainMajestic']);
+});
+
+Route::group([
+    'prefix' => 'check-trust',
+    'middleware' => 'admin'
+], function () {
+    Route::get('/', [\App\Http\Controllers\Api\CheckTrustApiController::class, 'getCheckTrustData']);
 });
 
 Route::group([

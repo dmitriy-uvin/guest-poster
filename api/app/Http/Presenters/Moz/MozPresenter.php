@@ -15,6 +15,7 @@ final class MozPresenter
             'da' => $moz->da,
             'rank' => $moz->rank,
             'links_in' => $moz->links_in,
+            'equity' => $moz->equity
         ];
     }
 }

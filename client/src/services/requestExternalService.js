@@ -17,6 +17,12 @@ const requestExternalService = {
             '/seo-rank/majestic?domain=' + domainData.domain
             + "&protocol=" + domainData.protocol);
     },
+    async fetchCheckTrustData(domainUrl) {
+        return await axios.get(
+            API_URL_ENDPOINT +
+            '/check-trust?host=' + domainUrl
+        );
+    },
     getProtocolDomain(domainUrl) {
         const domainData = {
             protocol: 'http',
@@ -31,5 +37,11 @@ const requestExternalService = {
 };
 
 export const ErrorStatus = ['bad_url', 'not_found', 'empty', 'no_data', 'error_internal'];
+export const PropertyNotFound = [
+    'notfound',
+    'N/A',
+    'unknown',
+    ''
+];
 
 export default requestExternalService;

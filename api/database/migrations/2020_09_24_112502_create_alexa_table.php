@@ -16,8 +16,9 @@ class CreateAlexaTable extends Migration
         Schema::create('alexa', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->float('rank');
-            $table->string('country');
+            $table->double('rank')->nullable();
+            $table->string('country')->nullable();
+            $table->integer('country_rank')->nullable();
 
             $table
                 ->foreign('platform_id')

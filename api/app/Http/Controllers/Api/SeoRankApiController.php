@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Http;
 final class SeoRankApiController extends ApiController
 {
     private string $SEORANK_API_KEY;
-    private const SEORANK_API_MOZ_ALEXA_SEMRUSH = 'https://seo-rank.my-addr.com/api2/moz+alexa+sr/';
+    private const SEORANK_API_MOZ_ALEXA_SEMRUSH = 'https://seo-rank.my-addr.com/api2/moz+alexa+sr+fb/';
     private const SEORANK_API_MAJESTIC = 'https://seo-rank.my-addr.com/api4/';
 
     public function __construct()
     {
-        $this->SEORANK_API_KEY = env("SEO_RANK_API_KEY");
+        $this->SEORANK_API_KEY = '98DBBAF083E292FD329F2DB78A60C3F5';
     }
 
     public function fetchInformationByDomainMozAlexaSr(Request $request)

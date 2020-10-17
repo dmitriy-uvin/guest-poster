@@ -23,9 +23,8 @@ class PlatformFactory extends Factory
     public function definition()
     {
         return [
-            'website_url' => $this->faker->url,
-            'dr' => $this->faker->numberBetween(10, 100),
-            'ma' => $this->faker->numberBetween(10, 100),
+            'protocol' => 'https://',
+            'website_url' => mb_ereg_replace('^http[s]?://(www.)?', '', $this->faker->url),
             'organic_traffic' => $this->faker->numberBetween(10, 10000),
             'dofollow_active' => true,
             'free_home_featured_active' => false,
@@ -36,6 +35,14 @@ class PlatformFactory extends Factory
             'price' => $this->faker->numberBetween(10, 100),
             'email' => $this->faker->email,
             'comment' => $this->faker->sentence(5),
+            'description' => $this->faker->sentence(5),
+            'article_requirements' => $this->faker->sentence(5),
+            'deadline' => $this->faker->numberBetween(1, 60),
+            'where_posted' => $this->faker->sentence(5),
+            'domain_zone' => $this->faker->domainName,
+            'trust' => $this->faker->numberBetween(10, 100),
+            'spam' => $this->faker->randomFloat(2, 0, 100),
+            'lrt_power_trust' => $this->faker->numberBetween(10, 100),
         ];
     }
 }

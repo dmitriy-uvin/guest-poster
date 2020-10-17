@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.guest-poster-table {
+    font-family: "Roboto", sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.guest-poster-table th:nth-child(1),
+.guest-poster-table td:nth-child(1) {
+    width: 4%;
+    text-align: center;
+}
+
+
+.guest-poster-table td:nth-child(1) {
+    padding: 12px 8px;
+}
+
+.guest-poster-table th:nth-child(2),
+.guest-poster-table td:nth-child(2) {
+    width: 16%;
+}
+
+.guest-poster-table th:nth-child(3),
+.guest-poster-table td:nth-child(3) {
+    padding: 15px 8px;
+    width: 7%;
+}
+
+.guest-poster-table th:nth-child(4),
+.guest-poster-table td:nth-child(4),
+.guest-poster-table th:nth-child(5),
+.guest-poster-table td:nth-child(5),
+.guest-poster-table th:nth-child(6),
+.guest-poster-table td:nth-child(6),
+.guest-poster-table th:nth-child(7),
+.guest-poster-table td:nth-child(7),
+.guest-poster-table th:nth-child(8),
+.guest-poster-table td:nth-child(8),
+.guest-poster-table th:nth-child(9),
+.guest-poster-table td:nth-child(9),
+.guest-poster-table th:nth-child(10),
+.guest-poster-table td:nth-child(10),
+.guest-poster-table tr th:nth-child(11),
+.guest-poster-table tr td:nth-child(11),
+.guest-poster-table tr th:nth-child(12),
+.guest-poster-table tr td:nth-child(12)
+{
+    width: 6%;
+}
+
+.guest-poster-table tr th:nth-child(13),
+.guest-poster-table tr td:nth-child(13) {
+    width: 10%;
+}
+
+.guest-poster-table tr th:nth-child(14),
+.guest-poster-table tr td:nth-child(14)
+{
+    width: 15%;
+}
+
+.guest-poster-table th,
+.guest-poster-table td {
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.guest-poster-table th {
+    text-align: left;
+    font-size: 12px;
+    color: #828282;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.guest-poster-table td {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #333333;
+    vertical-align: top;
+    padding: 15px 4px;
+}
+
+td div.link .website-link{
+    display: inline-block;
+    max-width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+td .trust-head {
+    font-weight: bold;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.purple-text {
+    color: #9B51E0;
+}
+
+.gray-text {
+    color: #BDBDBD;
+}
+
+td .trust-item {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+td .feature {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+td .feature img {
+    margin-right: 4px;
+}
+
+td .fee {
+    display: block;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+
+td .fee:hover .left {
+    border: 2px solid #2F80ED;
+    color: #333333;
+}
+
+td .fee:hover .right {
+    color: #333333;
+}
+
+td .fee .left {
+    padding: 6px;
+    font-size: 14px;
+    color: #BDBDBD;
+    border: 2px solid #BDBDBD;
+    border-radius: 4px;
+    margin-right: 3px;
+    transition: 0.5s;
+}
+
+td .fee .right {
+    color: #BDBDBD;
+    transition: 0.5s;
+    font-size: 12px;
+}
+
+td .fee-active .left{
+    border: 2px solid #2F80ED;
+    color: #333333;
+}
+
+td .fee-active .right{
+    color: #333333;
+}
+
+tbody tr {
+    border-bottom: 1px solid #eeedee;
+}
+
+.underline {
+    text-decoration: underline;
+}
+

@@ -70,7 +70,31 @@ const routes = [
                 name: 'Profile',
                 component: () => import('../views/Profile'),
                 meta: { AuthorizedUser: true }
-            }
+            },
+            {
+                path: 'export',
+                name: 'ExportPlatforms',
+                component: () => import('../views/ExportPlatforms'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'import',
+                name: 'ImportPlatforms',
+                component: () => import('../views/ImportPlatforms'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'trash',
+                name: 'Trash',
+                component: () => import('../views/Trash'),
+                meta: { AuthorizedUser: true, adminRoute: true }
+            },
+            {
+                path: 'platforms/:id',
+                name: 'EditPlatform',
+                component: () => import('../views/EditPlatform'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            },
         ]
     }
 ];
@@ -102,7 +126,7 @@ router.beforeEach(
         }
 
         if (isAdminRoute && store.state.user.user?.role !== 'admin') {
-            next(false);
+            next('/');
             return;
         }
 

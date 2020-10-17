@@ -25,7 +25,6 @@ class SemRushFactory extends Factory
         return [
             'rank' => $this->faker->randomFloat(1, 0, 10),
             'keyword_num' => $this->faker->numberBetween(0),
-            'traffic' => $this->faker->numberBetween(0),
             'traffic_costs' => $this->faker->numberBetween(0),
         ];
     }

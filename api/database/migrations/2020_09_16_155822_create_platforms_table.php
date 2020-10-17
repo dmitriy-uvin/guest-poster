@@ -15,19 +15,27 @@ class CreatePlatformsTable extends Migration
     {
         Schema::create('platforms', function (Blueprint $table) {
             $table->id();
-            $table->string('website_url');
-            $table->integer('dr');
-            $table->integer('ma');
-            $table->integer('organic_traffic');
+            $table->string('protocol');
+            $table->string('website_url')->unique();
+            $table->integer('organic_traffic')->nullable();
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');
             $table->boolean('niche_edit_link_active');
-            $table->double('article_writing_price');
             $table->double('niche_edit_link_price')->nullable();
-            $table->string('contacts');
+            $table->double('article_writing_price');
+            $table->string('article_requirements');
+            $table->integer('deadline');
+            $table->string('domain_zone');
             $table->double('price');
             $table->string('email');
-            $table->string('comment');
+            $table->string('description');
+            $table->string('where_posted');
+            $table->string('contacts')->nullable();
+            $table->string('comment')->nullable();
+            $table->integer('trust')->nullable();
+            $table->double('spam')->nullable();
+            $table->integer('lrt_power_trust')->nullable();
+            $table->boolean('in_trash')->default(false);
             $table->timestamps();
         });
     }

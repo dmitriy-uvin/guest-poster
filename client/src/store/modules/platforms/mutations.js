@@ -16,5 +16,15 @@ export default {
                 {}
             )
         }
+    },
+    [mutations.DELETE_PLATFORM]: (state, id) => {
+        const index = state.platforms.findIndex(platform => platform.id === id);
+        state.platforms = [
+            ...state.platforms.slice(0, index),
+            ...state.platforms.slice(index + 1),
+        ];
+    },
+    [mutations.SET_PLATFORM_BY_ID]: (state, platform) => {
+        state.platformById = platformMapper(platform)
     }
 }

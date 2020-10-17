@@ -16,10 +16,9 @@ class CreateSemrushTable extends Migration
         Schema::create('semrush', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->float('rank');
-            $table->integer('keyword_num');
-            $table->integer('traffic');
-            $table->integer('traffic_costs');
+            $table->double('rank')->nullable();
+            $table->integer('keyword_num')->nullable();
+            $table->integer('traffic_costs')->nullable();
 
             $table
                 ->foreign('platform_id')
