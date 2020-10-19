@@ -23,7 +23,7 @@ final class CheckTrustService
         $url = $this->checkTrustApiEndpoint .
             $this->checkTrustApiKey . '&host=' .
             $platform . '&parameterList=' . $paramsString;
-
-        return Http::get($url)->object();
+        $response = Http::get($url);
+        return $response->object();
     }
 }
