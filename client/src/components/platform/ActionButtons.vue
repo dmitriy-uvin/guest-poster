@@ -42,22 +42,6 @@
                     small
                     v-bind="attrs"
                     v-on="on"
-                    color="green"
-                    @click="onExport"
-                >
-                    <VIcon>mdi-export</VIcon>
-                </VBtn>
-            </template>
-            <span>Export</span>
-        </VTooltip>
-        <VTooltip left>
-            <template v-slot:activator="{ on, attrs }">
-                <VBtn
-                    fab
-                    dark
-                    small
-                    v-bind="attrs"
-                    v-on="on"
                     color="primary"
                     @click="onImport"
                 >
@@ -107,11 +91,6 @@ export default {
         onImport() {
             if (this.isAdmin) {
                 this.$router.push({ name: 'ImportPlatforms' });
-            }
-        },
-        onExport() {
-            if (this.isAdmin) {
-                this.$router.push({ name: 'ExportPlatforms' });
             }
         }
     }

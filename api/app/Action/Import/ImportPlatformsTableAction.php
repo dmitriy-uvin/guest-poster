@@ -5,20 +5,10 @@ declare(strict_types=1);
 namespace App\Action\Import;
 
 use App\Exceptions\Import\AnyPlatformsInFileException;
-use App\Exceptions\Import\ImportAPIErrorStatuses;
-use App\Exceptions\Import\ImportErrorPropertyStatuses;
 use App\Exceptions\Import\WrongImportValueException;
-use App\Jobs\GetDataFromApiForPlatforms;
-use App\Jobs\UpdateDataFromApiForPlatforms;
-use App\Models\Alexa;
-use App\Models\Facebook;
-use App\Models\Majestic;
-use App\Models\Moz;
-use App\Models\Platform;
-use App\Models\SemRush;
-use App\Models\Topic;
+use App\Jobs\GetDataFromApiForPlatformsImport;
+use App\Jobs\UpdateDataFromApiForPlatformsImport;
 use App\Services\SeoRankService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 final class ImportPlatformsTableAction
@@ -43,9 +33,9 @@ final class ImportPlatformsTableAction
 
         $platformsData = $this->convertEmptyFieldsToNull($platformsData);
 
-//        $platformsObjects = $this->createPlatforms($platformsData);
-
         $this->getDataFromApi($platformsData);
+
+        $this->deleteFile($request->getFile());
 
         return new ImportPlatformsTableResponse([
             'data' => 1
@@ -54,11 +44,11 @@ final class ImportPlatformsTableAction
 
     private function getDataFromApi(array $platforms)
     {
-        GetDataFromApiForPlatforms::dispatch($platforms);
+        GetDataFromApiForPlatformsImport::dispatch($platforms);
 
-//        UpdateDataFromApiForPlatforms::dispatch($platforms)->delay(
-//            now()->addMinutes(5)
-//        );
+        UpdateDataFromApiForPlatformsImport::dispatch($platforms)->delay(
+            now()->addMinutes(15)
+        );
     }
 
     private function storeFile($file): string
@@ -165,5 +155,14 @@ final class ImportPlatformsTableAction
             }
         }
         return $platformsData;
+    }
+
+    private function deleteFile($file)
+    {
+        $extension = $file->getClientOriginalExtension();
+        $originalTmpName = $file->getFilename();
+        $originalName = $file->getClientOriginalName();
+        $fileName = $originalName . '-' . $originalTmpName . '.' . $extension;
+        Storage::delete(['public/import/' . $fileName]);
     }
 }

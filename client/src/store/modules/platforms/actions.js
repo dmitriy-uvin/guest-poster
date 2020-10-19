@@ -44,5 +44,14 @@ export default {
     [actions.FETCH_PLATFORM_BY_ID]: async ({ commit }, id) => {
         const platform = await platformService.fetchPlatformById(id);
         commit(mutations.SET_PLATFORM_BY_ID, platform);
+    },
+    [actions.DOWNLOAD_IMPORT_FILE_TEMPLATE]: async () => {
+        await platformService.downloadImportFileTemplate();
+    },
+    [actions.EXPORT_PLATFORMS_BY_IDS]: async (context, { ids }) => {
+        await platformService.exportPlatformsByIds(ids);
+    },
+    [actions.EXPORT_PLATFORMS_ALL]: async () => {
+        await platformService.exportPlatformsAll();
     }
 }

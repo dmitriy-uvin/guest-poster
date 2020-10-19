@@ -39,6 +39,9 @@ Route::group([
 ], function () {
     Route::group(['middleware' => 'admin'], function() {
         Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
+        Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
+        Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);
+        Route::get('/export-all', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsAll']);
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
         Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
         Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);

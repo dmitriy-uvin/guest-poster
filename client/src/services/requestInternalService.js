@@ -44,6 +44,22 @@ const requestInternalService = {
     },
     delete(url, config = {}) {
         return axios.delete(API_URL + url, config);
+    },
+    async downloadFile(url, fileName, params = {}) {
+        const response = await axios.get(
+            API_URL + url,
+            {
+                params,
+                responseType: 'blob'
+            }
+        );
+        const blob = new Blob([response.data], { type: 'text/csv'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        return response;
     }
 };
 

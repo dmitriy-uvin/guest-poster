@@ -680,10 +680,11 @@
             @on-delete="onPlatformDeleted"
         />
 
-        <DeletePlatformsFooter
+        <AdminPlatformsFooter
             :chosen-platforms-ids="chosenPlatformsIds"
             @unselect-all="unSelectAll"
             @platforms-delete="onPlatformsDelete"
+            @export="onExport"
         />
 
         <DeletePlatformsDialog
@@ -702,7 +703,7 @@ import valueFormatMixin from '@/mixins/valueFormatMixin';
 import DeleteOnePlatformDialog from '@/components/platform/DeleteOnePlatformDialog';
 import ActionButtons from '@/components/platform/ActionButtons';
 import guestPostingMixin from '@/mixins/guestPostingMixin';
-import DeletePlatformsFooter from '@/components/platform/DeletePlatformsFooter';
+import AdminPlatformsFooter from '@/components/platform/AdminPlatformsFooter';
 import DeletePlatformsDialog from '@/components/platform/DeletePlatformsDialog';
 // import FilterChips from '@/components/guest-posting/FilterChips';
 
@@ -712,7 +713,7 @@ export default {
         DeletePlatformsDialog,
         DeleteOnePlatformDialog,
         ActionButtons,
-        DeletePlatformsFooter
+        AdminPlatformsFooter
         // FilterChips
     },
     mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
@@ -728,6 +729,9 @@ export default {
         onPlatformsDeleted() {
             this.unSelectAll();
             this.updatePlatformsOnPage();
+        },
+        onExport() {
+            this.unSelectAll();
         },
         onPlatformDeleted() {
             this.unSelectAll();
