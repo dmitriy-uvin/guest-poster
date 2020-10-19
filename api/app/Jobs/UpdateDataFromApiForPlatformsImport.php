@@ -123,9 +123,9 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
 
             if (is_object($checkTrustData)) {
                 if ($checkTrustData->success) {
-                    $platform->spam = $checkTrustData->spam;
-                    $platform->trust = $checkTrustData->trust;
-                    $platform->lrt_power_trust = $checkTrustData->lrtPowerTrust;
+                    $platform->spam = $checkTrustData->summary->spam;
+                    $platform->trust = $checkTrustData->summary->trust;
+                    $platform->lrt_power_trust = $checkTrustData->summary->lrtPowerTrust;
                     $platform->save();
                 } else {
                     broadcast(new PlatformImportCreatedEvent(
