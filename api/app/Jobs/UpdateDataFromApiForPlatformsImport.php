@@ -8,6 +8,7 @@ use App\Models\Alexa;
 use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
+use App\Models\Platform;
 use App\Models\SemRush;
 use App\Services\SeoRankService;
 use Illuminate\Bus\Queueable;
@@ -32,9 +33,14 @@ class UpdateDataFromApiForPlatforms implements ShouldQueue
 
     public function handle()
     {
-        foreach ($this->platformsCollection as $platform) {
+        foreach ($this->platformsCollection as $platformData) {
+            $url = $platformData['protocol'] . $platformData['website_url'];
+            $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
+            if (is_null($platform)) {
+                continue;
+            }
             $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
-                $platform->website_url
+                $url
             );
             if (!in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
                 $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
