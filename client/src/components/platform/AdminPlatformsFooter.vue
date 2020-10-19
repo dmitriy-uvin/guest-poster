@@ -7,6 +7,24 @@
                 </div>
                 <div class="">
                     <VBtn
+                        color="purple"
+                        @click="onPlatformsExportAll"
+                        dark
+                        class="mr-3"
+                    >
+                        Export All
+                        <VIcon right>mdi-export</VIcon>
+                    </VBtn>
+                    <VBtn
+                        color="green"
+                        @click="onPlatformsExport"
+                        dark
+                        class="mr-3"
+                    >
+                        Export Selected
+                        <VIcon right>mdi-export</VIcon>
+                    </VBtn>
+                    <VBtn
                         color="red"
                         @click="onPlatformsDelete"
                         dark
@@ -21,19 +39,51 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import * as actions from '@/store/modules/platforms/types/actions';
+import notificationMixin from '@/mixins/notificationMixin';
 export default {
-    name: 'DeletePlatformsFooter',
+    name: 'AdminPlatformsFooter',
     props: {
         chosenPlatformsIds: {
             required: true
         }
     },
+    mixins: [notificationMixin],
     methods: {
+        ...mapActions('platforms', {
+            exportByIds: actions.EXPORT_PLATFORMS_BY_IDS,
+            exportAll: actions.EXPORT_PLATFORMS_ALL
+        }),
         onUnselectAll() {
             this.$emit('unselect-all');
         },
         onPlatformsDelete() {
             this.$emit('platforms-delete', this.chosenPlatformsIds);
+        },
+        async onPlatformsExportAll() {
+            try {
+                await this.exportAll();
+                this.$emit('export');
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        },
+        async onPlatformsExport() {
+            try {
+                await this.exportByIds({
+                    ids: this.chosenPlatformsIds
+                });
+                this.$emit('export');
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
         }
     },
     computed: {

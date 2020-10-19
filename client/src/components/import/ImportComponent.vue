@@ -5,7 +5,7 @@
 
         <div class="row align-center">
             <VCol
-                cols="4"
+                cols="12"
                 md="4"
             >
                 <VFileInput
@@ -22,7 +22,7 @@
                 >
                 </VFileInput>
             </VCol>
-            <VCol cols="5" class="">
+            <VCol cols="12" md="8" class="">
                 <VBtn
                     color="blue-grey"
                     class="ma-2 white--text"
@@ -36,6 +36,9 @@
                     >
                         mdi-cloud-upload
                     </v-icon>
+                </VBtn>
+                <VBtn depressed @click="downloadFile" outlined>
+                    Download Template
                 </VBtn>
             </VCol>
         </div>
@@ -72,7 +75,6 @@ import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
 import { pusher } from '@/services/pusher/pusherService';
-
 export default {
     name: 'ImportComponent',
     mixins: [notificationMixin],
@@ -87,6 +89,7 @@ export default {
     methods: {
         ...mapActions('platforms', {
             importPlatforms: actions.IMPORT_PLATFORMS,
+            downloadImportFile: actions.DOWNLOAD_IMPORT_FILE_TEMPLATE
         }),
         async onUpload() {
             if (this.$refs.file_input.validate()) {
@@ -108,6 +111,9 @@ export default {
                     this.uploadLoading = false;
                 }
             }
+        },
+        async downloadFile() {
+            await this.downloadImportFile();
         }
     },
     async created() {
