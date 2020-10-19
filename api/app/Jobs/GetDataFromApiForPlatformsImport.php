@@ -12,6 +12,7 @@ use App\Models\Moz;
 use App\Models\Platform;
 use App\Models\SemRush;
 use App\Models\Topic;
+use App\Services\CheckTrustService;
 use App\Services\SeoRankService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,11 +26,13 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
 
     private array $platformsCollection;
     private SeoRankService $seoRankService;
+    private CheckTrustService $checkTrustService;
 
     public function __construct(array $platformsCollection)
     {
         $this->platformsCollection = $platformsCollection;
         $this->seoRankService = new SeoRankService();
+        $this->checkTrustService = new CheckTrustService();
     }
 
     public function handle()
@@ -59,7 +62,8 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                     'error',
                     $message
                 ));
-            } else {
+            }
+            else {
                 $platformTopics = explode(',', $platformData['topics']);
                 $topicsIds = Topic::whereIn('name', $platformTopics)
                     ->get('id')
@@ -116,14 +120,15 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                 $platform->facebook()->save($fb);
             }
 
+
             $majesticData = $this->seoRankService->getDataForMajestic(
                 $url
             );
-
             if (in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) || !is_object($majesticData)) {
                 $majestic = new Majestic();
                 $platform->majestic()->save($majestic);
-            } else {
+            }
+            else {
                 $majestic = new Majestic([
                     'external_backlinks' =>
                         in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
@@ -144,6 +149,30 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                 ]);
                 $platform->majestic()->save($majestic);
             }
+
+            $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
+                $url
+            );
+
+            if (is_object($checkTrustData)) {
+                if ($checkTrustData->success) {
+                    $platform->spam = $checkTrustData->spam;
+                    $platform->trust = $checkTrustData->trust;
+                    $platform->lrt_power_trust = $checkTrustData->lrtPowerTrust;
+                    $platform->save();
+                } else {
+                    broadcast(new PlatformImportCreatedEvent(
+                        'error',
+                        "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'. Line {$row}"
+                    ));
+                }
+            } else {
+                broadcast(new PlatformImportCreatedEvent(
+                    'error',
+                    "CheckTrust Data not set! Something went wrong! Line {$row}"
+                ));
+            }
+
             broadcast(new PlatformImportCreatedEvent(
                 'success',
                 "Platform <b>{$platform->protocol}{$platform->website_url}</b> was added!"

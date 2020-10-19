@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\PlatformImportCreatedEvent;
 use App\Events\PlatformImportUpdatedEvent;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
@@ -11,6 +12,7 @@ use App\Models\Majestic;
 use App\Models\Moz;
 use App\Models\Platform;
 use App\Models\SemRush;
+use App\Services\CheckTrustService;
 use App\Services\SeoRankService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,11 +27,13 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
 
     private array $platformsCollection;
     private SeoRankService $seoRankService;
+    private CheckTrustService $checkTrustService;
 
     public function __construct(array $platformsCollection)
     {
         $this->platformsCollection = $platformsCollection;
         $this->seoRankService = new SeoRankService();
+        $this->checkTrustService = new CheckTrustService();
     }
 
     public function handle()
@@ -111,6 +115,29 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
                         in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
                 ]);
                 $majestic->save();
+            }
+
+            $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
+                $url
+            );
+
+            if (is_object($checkTrustData)) {
+                if ($checkTrustData->success) {
+                    $platform->spam = $checkTrustData->spam;
+                    $platform->trust = $checkTrustData->trust;
+                    $platform->lrt_power_trust = $checkTrustData->lrtPowerTrust;
+                    $platform->save();
+                } else {
+                    broadcast(new PlatformImportCreatedEvent(
+                        'error',
+                        "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'"
+                    ));
+                }
+            } else {
+                broadcast(new PlatformImportCreatedEvent(
+                    'error',
+                    "CheckTrust Data not set! Something went wrong!"
+                ));
             }
         }
 
