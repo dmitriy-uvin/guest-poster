@@ -72,12 +72,6 @@ const routes = [
                 meta: { AuthorizedUser: true }
             },
             {
-                path: 'export',
-                name: 'ExportPlatforms',
-                component: () => import('../views/ExportPlatforms'),
-                meta: { AuthorizedUser: true, adminRoute: true }
-            },
-            {
                 path: 'import',
                 name: 'ImportPlatforms',
                 component: () => import('../views/ImportPlatforms'),
