@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\PlatformImportUpdatedEvent;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
 use App\Models\Alexa;
@@ -18,14 +19,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class UpdateDataFromApiForPlatforms implements ShouldQueue
+class UpdateDataFromApiForPlatformsImport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private Collection $platformsCollection;
+    private array $platformsCollection;
     private SeoRankService $seoRankService;
 
-    public function __construct(Collection $platformsCollection)
+    public function __construct(array $platformsCollection)
     {
         $this->platformsCollection = $platformsCollection;
         $this->seoRankService = new SeoRankService();
@@ -87,30 +88,35 @@ class UpdateDataFromApiForPlatforms implements ShouldQueue
                 ]);
             }
 
-////            $majesticData = $this->seoRankService->getDataForMajestic(
-////                $platform->website_url
-////            );
-////            if (!in_array($majesticData, ImportAPIErrorStatuses::getStatuses()))  {
-////                $majestic = Majestic::where(['platform_id' => $platform->id])->update([
-////                    'external_backlinks' =>
-////                        in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
-////                    'external_gov' =>
-////                        in_array($majesticData->ExtBackLinksGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksGOV,
-////                    'external_edu' =>
-////                        in_array($majesticData->ExtBackLinksEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksEDU,
-////                    'tf' =>
-////                        in_array($majesticData->TrustFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->TrustFlow,
-////                    'cf' =>
-////                        in_array($majesticData->CitationFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->CitationFlow,
-////                    'refd' =>
-////                        in_array($majesticData->RefDomains, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomains,
-////                    'refd_edu' =>
-////                        in_array($majesticData->RefDomainsEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsEDU,
-////                    'refd_gov' =>
-////                        in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
-////                ]);
-////                $majestic->save();
-////            }
+            $majesticData = $this->seoRankService->getDataForMajestic(
+                $platform->website_url
+            );
+            if (!in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) && is_object($majesticData))  {
+                $majestic = Majestic::where(['platform_id' => $platform->id])->update([
+                    'external_backlinks' =>
+                        in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
+                    'external_gov' =>
+                        in_array($majesticData->ExtBackLinksGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksGOV,
+                    'external_edu' =>
+                        in_array($majesticData->ExtBackLinksEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksEDU,
+                    'tf' =>
+                        in_array($majesticData->TrustFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->TrustFlow,
+                    'cf' =>
+                        in_array($majesticData->CitationFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->CitationFlow,
+                    'refd' =>
+                        in_array($majesticData->RefDomains, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomains,
+                    'refd_edu' =>
+                        in_array($majesticData->RefDomainsEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsEDU,
+                    'refd_gov' =>
+                        in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
+                ]);
+                $majestic->save();
+            }
         }
+
+        broadcast(new PlatformImportUpdatedEvent(
+            'success',
+            "Updating platforms from import finished!"
+        ));
     }
 }
