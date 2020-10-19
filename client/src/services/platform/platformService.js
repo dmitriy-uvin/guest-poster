@@ -1,5 +1,5 @@
 import requestInternalService from '@/services/requestInternalService';
-
+import moment from 'moment';
 const API_PREFIX = '/platforms';
 
 const platformService = {
@@ -43,6 +43,24 @@ const platformService = {
     async fetchPlatformById(id) {
         const response = await requestInternalService.get(API_PREFIX + '/' + id);
         return response?.data?.data;
+    },
+    async downloadImportFileTemplate() {
+        await requestInternalService.downloadFile(
+            API_PREFIX + '/import-file',
+            'import-template.csv'
+        );
+    },
+    async exportPlatformsAll() {
+        await requestInternalService.downloadFile(
+            API_PREFIX + '/export-all',
+            'export-all-' + moment(moment.now()).format('DD-M-Y_' + moment.now()) + '.csv'
+        );
+    },
+    async exportPlatformsByIds(ids) {
+        await requestInternalService.downloadFile(
+            API_PREFIX + '/export-by-ids?ids=' + ids,
+            'export-' + moment(moment.now()).format('DD-M-Y_' + moment.now()) + '.csv'
+        );
     }
 };
 
