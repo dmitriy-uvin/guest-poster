@@ -5,20 +5,10 @@ declare(strict_types=1);
 namespace App\Action\Import;
 
 use App\Exceptions\Import\AnyPlatformsInFileException;
-use App\Exceptions\Import\ImportAPIErrorStatuses;
-use App\Exceptions\Import\ImportErrorPropertyStatuses;
 use App\Exceptions\Import\WrongImportValueException;
 use App\Jobs\GetDataFromApiForPlatformsImport;
 use App\Jobs\UpdateDataFromApiForPlatformsImport;
-use App\Models\Alexa;
-use App\Models\Facebook;
-use App\Models\Majestic;
-use App\Models\Moz;
-use App\Models\Platform;
-use App\Models\SemRush;
-use App\Models\Topic;
 use App\Services\SeoRankService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 final class ImportPlatformsTableAction
