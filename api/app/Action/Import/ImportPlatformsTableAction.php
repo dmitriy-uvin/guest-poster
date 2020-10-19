@@ -8,8 +8,8 @@ use App\Exceptions\Import\AnyPlatformsInFileException;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
 use App\Exceptions\Import\WrongImportValueException;
-use App\Jobs\GetDataFromApiForPlatforms;
-use App\Jobs\UpdateDataFromApiForPlatforms;
+use App\Jobs\GetDataFromApiForPlatformsImport;
+use App\Jobs\UpdateDataFromApiForPlatformsImport;
 use App\Models\Alexa;
 use App\Models\Facebook;
 use App\Models\Majestic;
@@ -43,8 +43,6 @@ final class ImportPlatformsTableAction
 
         $platformsData = $this->convertEmptyFieldsToNull($platformsData);
 
-//        $platformsObjects = $this->createPlatforms($platformsData);
-
         $this->getDataFromApi($platformsData);
 
         return new ImportPlatformsTableResponse([
@@ -54,11 +52,11 @@ final class ImportPlatformsTableAction
 
     private function getDataFromApi(array $platforms)
     {
-        GetDataFromApiForPlatforms::dispatch($platforms);
+        GetDataFromApiForPlatformsImport::dispatch($platforms);
 
-//        UpdateDataFromApiForPlatforms::dispatch($platforms)->delay(
-//            now()->addMinutes(5)
-//        );
+        UpdateDataFromApiForPlatformsImport::dispatch($platforms)->delay(
+            now()->addMinutes(15)
+        );
     }
 
     private function storeFile($file): string
