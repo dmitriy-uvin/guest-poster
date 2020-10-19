@@ -35,6 +35,8 @@ final class ImportPlatformsTableAction
 
         $this->getDataFromApi($platformsData);
 
+        $this->deleteFile($request->getFile());
+
         return new ImportPlatformsTableResponse([
             'data' => 1
         ]);
@@ -153,5 +155,14 @@ final class ImportPlatformsTableAction
             }
         }
         return $platformsData;
+    }
+
+    private function deleteFile($file)
+    {
+        $extension = $file->getClientOriginalExtension();
+        $originalTmpName = $file->getFilename();
+        $originalName = $file->getClientOriginalName();
+        $fileName = $originalName . '-' . $originalTmpName . '.' . $extension;
+        Storage::delete(['public/import/' . $fileName]);
     }
 }
