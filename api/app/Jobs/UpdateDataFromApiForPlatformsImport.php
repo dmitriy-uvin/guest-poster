@@ -48,7 +48,9 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
                 $url
             );
             if (!in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
-                $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
+                $platform->organic_traffic =
+                    in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
+                        null : $mozSrAlexaFbData->sr_traffic;
                 $platform->save();
 
                 Moz::where(['platform_id' => $platform->id])->update([
