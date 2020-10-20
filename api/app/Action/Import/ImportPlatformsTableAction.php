@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Action\Import;
 
+use App\Constants\ImportFields;
+use App\Events\PlatformImportCreatedEvent;
 use App\Exceptions\Import\AnyPlatformsInFileException;
+use App\Exceptions\Import\ImportFieldsRequiredException;
 use App\Exceptions\Import\WrongImportValueException;
 use App\Jobs\GetDataFromApiForPlatformsImport;
 use App\Jobs\UpdateDataFromApiForPlatformsImport;
@@ -44,11 +47,12 @@ final class ImportPlatformsTableAction
 
     private function getDataFromApi(array $platforms)
     {
-        GetDataFromApiForPlatformsImport::dispatch($platforms);
-
-        UpdateDataFromApiForPlatformsImport::dispatch($platforms)->delay(
-            now()->addMinutes(15)
-        );
+        $chunkSize = 20;
+        $chunkedPlatforms = collect($platforms)->chunk($chunkSize);
+        foreach ($chunkedPlatforms as $index => $platformsDataSet) {
+            $row = 1 + $index * $chunkSize;
+            GetDataFromApiForPlatformsImport::dispatch($platformsDataSet->toArray(), $row);
+        }
     }
 
     private function storeFile($file): string
@@ -77,6 +81,12 @@ final class ImportPlatformsTableAction
                 $platformsData[] = array_combine($fieldKeys, str_getcsv($line));
             }
             $row += 1;
+        }
+
+        foreach (ImportFields::getFields() as $field) {
+            if (!in_array($field, $fieldKeys)) {
+                throw new ImportFieldsRequiredException($field);
+            }
         }
         fclose($fHandle);
 
@@ -116,7 +126,6 @@ final class ImportPlatformsTableAction
                         }
                         break;
                     case 'price':
-                    case 'article_writing_price':
                         if (is_numeric($value)) {
                             if ((int)$value < 0) {
                                 throw new WrongImportValueException($row, $columnName, "Price can't be less than 0");
@@ -125,6 +134,7 @@ final class ImportPlatformsTableAction
                             throw new WrongImportValueException($row, $columnName, "Price must be numeric");
                         }
                         break;
+                    case 'article_writing_price':
                     case 'niche_edit_link_price':
                         if ($value) {
                             if (!is_numeric($value)) {
