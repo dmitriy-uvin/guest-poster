@@ -38,6 +38,8 @@ Route::group([
     'prefix' => 'platforms',
 ], function () {
     Route::group(['middleware' => 'admin'], function() {
+        Route::post('/update-all', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataAll']);
+        Route::post('/update-by-ids', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataByIds']);
         Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
         Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
         Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);

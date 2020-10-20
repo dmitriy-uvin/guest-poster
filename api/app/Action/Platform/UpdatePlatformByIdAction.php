@@ -32,7 +32,7 @@ final class UpdatePlatformByIdAction
         }
 
         if ($platform->website_url !== $request->getWebsiteUrl()) {
-            if (Platform::where('website_url', '=', $request->getWebsiteUrl())) {
+            if (Platform::where('website_url', '=', $request->getWebsiteUrl())->get()->first()) {
                 throw new PlatformAlreadyExistsException();
             }
         }

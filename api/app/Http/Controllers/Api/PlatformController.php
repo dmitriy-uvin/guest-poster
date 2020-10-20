@@ -16,6 +16,8 @@ use App\Action\Platform\GetPlatformsInTrashCollectionAction;
 use App\Action\Platform\GetPlatformsInTrashCollectionRequest;
 use App\Action\Platform\MoveFromTrashByIdsAction;
 use App\Action\Platform\MoveInTrashByIdsAction;
+use App\Action\Platform\UpdateApiDataAllAction;
+use App\Action\Platform\UpdateApiDataByIdsAction;
 use App\Action\Platform\UpdatePlatformByIdAction;
 use App\Action\Platform\UpdatePlatformByIdRequest;
 use App\Http\Presenters\Platform\PlatformPresenter;
@@ -37,6 +39,8 @@ final class PlatformController extends ApiController
     private GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction;
     private UpdatePlatformByIdAction $updatePlatformByIdAction;
     private GetPlatformByIdAction $getPlatformByIdAction;
+    private UpdateApiDataByIdsAction $updateApiDataByIdsAction;
+    private UpdateApiDataAllAction $updateApiDataAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
@@ -47,7 +51,9 @@ final class PlatformController extends ApiController
         DeletePlatformsByIdsAction $deletePlatformsByIdsAction,
         GetPlatformsInTrashCollectionAction $getPlatformsInTrashAction,
         UpdatePlatformByIdAction $updatePlatformByIdAction,
-        GetPlatformByIdAction $getPlatformByIdAction
+        GetPlatformByIdAction $getPlatformByIdAction,
+        UpdateApiDataByIdsAction $updateApiDataByIdsAction,
+        UpdateApiDataAllAction $updateApiDataAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
@@ -58,6 +64,8 @@ final class PlatformController extends ApiController
         $this->getPlatformsInTrashAction = $getPlatformsInTrashAction;
         $this->updatePlatformByIdAction = $updatePlatformByIdAction;
         $this->getPlatformByIdAction = $getPlatformByIdAction;
+        $this->updateApiDataByIdsAction = $updateApiDataByIdsAction;
+        $this->updateApiDataAction = $updateApiDataAction;
     }
 
     public function savePlatform(AddPlatformHttpRequest $request): JsonResponse
@@ -193,6 +201,22 @@ final class PlatformController extends ApiController
         );
 
         return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
+    }
+
+    public function updateApiDataByIds(IdsHttpRequest $request)
+    {
+        $this->updateApiDataByIdsAction->execute(
+            new ByIdsRequest($request->ids)
+        );
+
+        return $this->emptyResponse();
+    }
+
+    public function updateApiDataAll()
+    {
+        $this->updateApiDataAction->execute();
+
+        return $this->emptyResponse();
     }
 
     private function checkIfValueIsKnown($value)
