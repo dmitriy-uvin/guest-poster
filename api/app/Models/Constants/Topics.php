@@ -25,7 +25,6 @@ final class Topics
             "Finance",
             "Gambling/Casino",
             "Games",
-            "General",
             "Health",
             "Home",
             "Internet",
