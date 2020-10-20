@@ -53,5 +53,11 @@ export default {
     },
     [actions.EXPORT_PLATFORMS_ALL]: async () => {
         await platformService.exportPlatformsAll();
+    },
+    [actions.UPDATE_PLATFORMS_API_BY_IDS]: async (context, data) => {
+        await platformService.updatePlatformsApiByIds(data);
+    },
+    [actions.UPDATE_PLATFORMS_API_ALL]: async () => {
+        await platformService.updatePlatformsApiAll();
     }
 }

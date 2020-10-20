@@ -688,6 +688,7 @@
             @unselect-all="unSelectAll"
             @platforms-delete="onPlatformsDelete"
             @export="onExport"
+            @updateByApi="unSelectAll"
         />
 
         <DeletePlatformsDialog

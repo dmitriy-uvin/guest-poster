@@ -12,3 +12,5 @@ export const UPDATE_PLATFORM_BY_ID = 'updatePlatformById';
 export const DOWNLOAD_IMPORT_FILE_TEMPLATE = 'downloadImportFileTemplate';
 export const EXPORT_PLATFORMS_BY_IDS = 'exportPlatformsByIds';
 export const EXPORT_PLATFORMS_ALL = 'exportPlatformsAll';
+export const UPDATE_PLATFORMS_API_BY_IDS = 'updatePlatformsApiByIds';
+export const UPDATE_PLATFORMS_API_ALL = 'updatePlatformsApiAll';
