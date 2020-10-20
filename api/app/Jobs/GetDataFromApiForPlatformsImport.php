@@ -43,13 +43,7 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
         foreach ($this->platformsCollection as $platformData) {
             $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
 
-            if ($platform) {
-                broadcast(new PlatformImportCreatedEvent(
-                    'error',
-                    "Platform <b>{$platform->website_url}</b> already exists! Line: {$this->row}."
-                ));
-            }
-            else {
+            if (!$platform) {
                 $url = $platformData['protocol'] . $platformData['website_url'];
                 $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                     $url

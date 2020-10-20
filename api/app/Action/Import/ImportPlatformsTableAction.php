@@ -50,7 +50,7 @@ final class ImportPlatformsTableAction
         $chunkSize = 20;
         $chunkedPlatforms = collect($platforms)->chunk($chunkSize);
         foreach ($chunkedPlatforms as $index => $platformsDataSet) {
-            $row = 1 + $index * $chunkSize;
+            $row = 1 + $index * ($chunkSize + 1);
             GetDataFromApiForPlatformsImport::dispatch($platformsDataSet->toArray(), $row);
         }
     }
