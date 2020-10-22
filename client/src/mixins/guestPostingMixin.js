@@ -1,7 +1,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as actions from '@/store/modules/platforms/types/actions';
-import { countries } from '@/helpers/countries';
+// import { countries } from '@/helpers/countries';
 
 export default {
     data: () => ({
@@ -52,14 +52,7 @@ export default {
                 perPage: this.perPage,
                 sorting: this.sorting,
                 direction: this.direction,
-                filter: {
-                    ...this.filter,
-                    alexa: {
-                        ...this.filter.alexa,
-                        country: this.filter.alexa.country ? countries[this.filter.alexa.country] : ''
-                    },
-                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
-                }
+                filter: this.filter
             });
         },
         selectAll() {
