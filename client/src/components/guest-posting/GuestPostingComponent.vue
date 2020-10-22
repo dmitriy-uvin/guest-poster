@@ -35,6 +35,7 @@
                                 :items="Object.keys(topics)"
                                 clearable
                                 v-model="filter.topics"
+                                @change="selectFilterArrayItems('topics', $event)"
                             >
                             </VSelect>
                         </VCol>
@@ -50,11 +51,17 @@
                                 small-chips
                                 hide-details
                                 :items="Object.keys(deadlineList)"
-                                v-model="filter.deadline"
+                                v-model="filter.platform.deadline"
                                 outlined
                                 dense
                                 clearable
                                 placeholder="Any deadline"
+                                @change="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Deadline',
+                                        'platform.deadline'
+                                        )"
                             >
                             </VSelect>
                         </VCol>
@@ -2090,6 +2097,11 @@ export default {
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
             clearFilterItems: filterActions.CLEAR_FILTER_ITEMS
         }),
+        selectFilterArrayItems(name, value) {
+            console.log(name);
+            console.log(value);
+            console.log(value.map(topic => this.topics[topic]));
+        },
         async filterItemDeleted(name) {
             const subFilterName = name.split('.')[0];
             const filterPropertyName = name.split('.')[1];
@@ -2138,8 +2150,10 @@ export default {
                 property,
                 limit
             };
+            console.log(value);
             if (limit === 'from') filterItem.from = value;
             if (limit === 'to') filterItem.to = value;
+            if (name === 'Deadline') filterItem.value = value;
             this.setFilterItem(filterItem);
         },
         onRequestCreated() {

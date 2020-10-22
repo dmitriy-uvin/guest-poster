@@ -34,7 +34,6 @@ final class GetPlatformCollectionAction
             $filterQuery = $filterQuery
                 ->where('organic_traffic', '>=', $request->getOrganicTrafficFrom());
         }
-
         if ($request->getOrganicTrafficFrom() < $request->getOrganicTrafficTo()) {
             $filterQuery = $filterQuery
                 ->where('organic_traffic', '<=', $request->getOrganicTrafficTo());
@@ -43,9 +42,12 @@ final class GetPlatformCollectionAction
         if ($request->getPriceFrom()) {
             $filterQuery = $filterQuery->where('price', '>=', $request->getPriceFrom());
         }
-
         if ($request->getPriceFrom() < $request->getPriceTo()) {
             $filterQuery = $filterQuery->where('price', '<=', $request->getPriceTo());
+        }
+
+        if ($request->getDeadline()) {
+            $filterQuery = $filterQuery->where('deadline', '<=', $request->getDeadline());
         }
 
         if ($request->getDofollow() === 'no') {
