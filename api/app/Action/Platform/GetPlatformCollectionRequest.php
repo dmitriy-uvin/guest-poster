@@ -117,14 +117,14 @@ final class GetPlatformCollectionRequest
         $this->organicTrafficTo = (int)$filter['platform']['organic_traffic_to'];
         $this->priceFrom = (float)$filter['platform']['price_from'];
         $this->priceTo = (float)$filter['platform']['price_to'];
-        $this->deadline = (int)$filter['deadline'];
-        $this->domainZones = $filter['domainZones'];
-        $this->topics = $filter['topics'];
+        $this->deadline = (int)$filter['platform']['deadline'];
+        $this->domainZones = $filter['platform']['domainZones'];
+        $this->topics = $filter['platform']['topics'];
 
-        $this->dofollow = $filter['dofollow'];
-        $this->nicheEditLink = $filter['niche_edit_link'];
-        $this->homeFeatured = $filter['home_featured'];
-        $this->moneyAnchor = $filter['money_anchor'];
+        $this->dofollow = $filter['platform']['dofollow'];
+        $this->nicheEditLink = $filter['platform']['niche_edit_link'];
+        $this->homeFeatured = $filter['platform']['home_featured'];
+        $this->moneyAnchor = $filter['platform']['money_anchor'];
 
         $this->mozDaFrom = (int)$filter['moz']['da_from'];
         $this->mozDaTo = (int)$filter['moz']['da_to'];
@@ -185,12 +185,12 @@ final class GetPlatformCollectionRequest
         $this->ahrefsDofollowFrom = (int)$filter['ahrefs']['dofollow_from'];
         $this->ahrefsDofollowTo = (int)$filter['ahrefs']['dofollow_to'];
 
-        $this->checkTrustFrom = (int)$filter['trust']['checkTrust_from'];
-        $this->checkTrustTo = (int)$filter['trust']['checkTrust_to'];
+        $this->checkTrustFrom = (int)$filter['trust']['checktrust_from'];
+        $this->checkTrustTo = (int)$filter['trust']['checktrust_to'];
         $this->spamFrom = (int)$filter['trust']['spam_from'];
         $this->spamTo = (int)$filter['trust']['spam_to'];
-        $this->powerTrustFrom = (int)$filter['trust']['powerTrust_from'];
-        $this->powerTrustTo = (int)$filter['trust']['powerTrust_to'];
+        $this->powerTrustFrom = (int)$filter['trust']['powertrust_from'];
+        $this->powerTrustTo = (int)$filter['trust']['powertrust_to'];
         $this->summary = $filter['trust']['summary'];
     }
 
