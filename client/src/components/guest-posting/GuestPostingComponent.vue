@@ -109,6 +109,7 @@
                                         dense
                                         v-model="filter.platform.price_from"
                                         :error-messages="priceFromErrors"
+                                        @input="onInputFilter($event,'main', 'Price', 'from')"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -118,6 +119,7 @@
                                         outlined
                                         dense
                                         v-model="filter.platform.price_to"
+                                        @input="onInputFilter($event,'main', 'Price', 'to')"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -178,6 +180,14 @@
                         <VCol cols="12" md="4">
                             <label>Home Featured</label>
                             <VRadioGroup row class="mt-3" v-model="filter.home_featured">
+                                <VRadio label="Any" value="any"></VRadio>
+                                <VRadio label="Yes" color="green" value="yes"></VRadio>
+                                <VRadio label="No" color="red" value="no"></VRadio>
+                            </VRadioGroup>
+                        </VCol>
+                        <VCol cols="12" md="4">
+                            <label>Money Anchor</label>
+                            <VRadioGroup row class="mt-3" v-model="filter.money_anchor">
                                 <VRadio label="Any" value="any"></VRadio>
                                 <VRadio label="Yes" color="green" value="yes"></VRadio>
                                 <VRadio label="No" color="red" value="no"></VRadio>
@@ -1160,7 +1170,7 @@
                     <div style="position: sticky; top: 0">
                         <VRow>
                             <VCol cols="12" md="6">
-                                <h4 class="text-uppercase">10.000 Sites</h4>
+                                <h4 class="text-uppercase">{{ total }} Sites</h4>
                                 <span class="gray-text">Founded</span>
                             </VCol>
                             <VCol cols="12" md="6" class="text-right">
@@ -1447,13 +1457,13 @@
 <script>
 import SendRequestFooter from '@/components/guest-posting/SendRequestFooter';
 import rolemixin from '@/mixins/rolemixin';
-import filterMixin from '@/mixins/filterMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
 import PlatformTrust from '@/components/platform/PlatformTrust';
 import PlatformFeatures from '@/components/platform/PlatformFeatures';
 import guestPostingMixin from '@/mixins/guestPostingMixin';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
+import * as filterActions from '@/store/modules/filter/types/actions';
 import { countries } from '@/helpers/countries';
 import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
@@ -1523,7 +1533,7 @@ export default {
     },
     data: () => ({
         tab: 'Ahrefs',
-        filtersOpened: true,
+        filtersOpened: false,
         filtersApplied: false,
         filterChips: {},
         countries: countries,
@@ -1542,16 +1552,13 @@ export default {
             dofollow: 'any',
             niche_edit_link: 'any',
             home_featured: 'any',
+            money_anchor: 'any',
             deadline: '',
             topics: [],
             domainZones: [],
             platform: {
                 price_from: '',
                 price_to: '',
-                dr_from: '',
-                dr_to: '',
-                ma_from: '',
-                ma_to: '',
                 organic_traffic_from: '',
                 organic_traffic_to: '',
             },
@@ -1629,16 +1636,35 @@ export default {
                 dofollow_from: '',
                 dofollow_to: '',
             }
-        }
+        },
+        filterQuery: {}
     }),
     mixins: [
         rolemixin,
-        filterMixin,
         valueFormatMixin,
         guestPostingMixin,
         validationMixin
     ],
     methods: {
+        ...mapActions('filter', {
+            setFilterItem: filterActions.SET_FILTER_ITEM,
+            showFilterItems: filterActions.SHOW_FILTER_ITEMS
+        }),
+        openFilters() {
+            this.filtersOpened = !this.filtersOpened;
+        },
+        onInputFilter(value, type, name, limit = '') {
+            const filterItem = {
+                id: name.toLowerCase(),
+                name,
+                type,
+                visible: false,
+                from: limit === 'from' ? value : '',
+                to: limit === 'to' ? value : '',
+            };
+            this.setFilterItem(filterItem);
+            this.showFilterItems();
+        },
         onRequestCreated() {
             this.unSelectAll();
         },
@@ -1652,14 +1678,27 @@ export default {
             Object.keys(this.filter.facebook).forEach(key => this.filter.platform[key] = '');
             Object.keys(this.filter.ahrefs).forEach(key => this.filter.platform[key] = '');
             Object.keys(this.filter.trust).forEach(key => this.filter.platform[key] = '');
-            this.filter.topics = [];
-            this.filter.dofollow = this.filter.niche_edit_link = this.filter.home_featured = 'any';
+            this.filter.topics =
+                this.filter.domainZones =
+                this.filter.alexa.country =
+                this.filter.trust.summary = [];
+            this.filter.dofollow =
+                this.filter.niche_edit_link =
+                this.filter.home_featured =
+                this.filter.money_anchor = 'any';
+            this.filterQuery = this.filter;
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
         },
         async onShowResults() {
-            // this.filtersOpened = false;
+            this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                this.filter = {
+                this.filterQuery = {
                     ...this.filter,
                     deadline: this.filter.deadline ?
                         this.deadlineList[this.filter.deadline] : '',
@@ -1676,7 +1715,12 @@ export default {
                     },
                     topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
                 };
-                console.log(this.filter);
+                const response = await this.loadPlatforms();
+                this.currentPage = response.current_page;
+                this.lastPage = response.last_page;
+                this.total = response.total;
+                this.reCalculatePages();
+                this.initializeChosenPlatformsState();
             }
         }
     },

@@ -1,6 +1,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as actions from '@/store/modules/platforms/types/actions';
+// import {countries} from "@/helpers/countries";
 // import { countries } from '@/helpers/countries';
 
 export default {
@@ -16,7 +17,7 @@ export default {
         pages: [],
         firstPages: [],
         lastPages: [],
-        perPage: 10
+        perPage: 10,
     }),
     methods: {
         onChangePage(page) {
@@ -52,7 +53,7 @@ export default {
                 perPage: this.perPage,
                 sorting: this.sorting,
                 direction: this.direction,
-                filter: this.filter
+                filter: this.filterQuery
             });
         },
         selectAll() {
@@ -92,6 +93,7 @@ export default {
         }
     },
     async mounted() {
+        this.filterQuery = this.filter;
         const response = await this.loadPlatforms();
         this.currentPage = response.current_page;
         this.lastPage = response.last_page;

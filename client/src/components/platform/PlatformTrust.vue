@@ -5,7 +5,7 @@
         </span>
         <span>{{ CheckTrust === null ? 'N/A' : CheckTrust + ' CT' }}</span>
         <span>{{ CheckTrustSpam === null ? 'N/A' : CheckTrustSpam + ' CS' }}</span>
-        <span>{{ PowerTrust === null ? 'N/A' : CheckTrust + ' PT' }}</span>
+        <span>{{ PowerTrust === null ? 'N/A' : PowerTrust + ' PT' }}</span>
     </div>
 </template>
 
@@ -17,14 +17,14 @@ export default {
         threeCharacteristics: {
             'PPP': 'P',
             'GGG': 'G',
-            'BBB': 'B',
             'GPP': 'P',
             'BPP': 'G',
             'GGP': 'G',
             'BBP': 'G',
             'BGP': 'G',
             'BGG': 'G',
-            'BBG': 'B'
+            'BBG': 'B',
+            'BBB': 'B',
         },
         twoCharacteristics: {
             'PP': 'P',

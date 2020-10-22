@@ -6,6 +6,7 @@ export const platformMapper = Platform => ({
     doFollowActive: Platform.dofollow_active,
     freeHomeFeaturedActive: Platform.free_home_featured_active,
     nicheEditLinkActive: Platform.niche_edit_link_active,
+    moneyAnchor: Platform.money_anchor,
     articleWritingPrice: Platform.article_writing_price,
     nicheEditLinkPrice: Platform.niche_edit_link_price,
     contacts: Platform.contacts,
