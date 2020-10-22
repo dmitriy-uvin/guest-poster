@@ -67,6 +67,10 @@ const platformService = {
     },
     async updatePlatformsApiAll() {
         await requestInternalService.post(API_PREFIX + '/update-all');
+    },
+    async fetchDomainZones() {
+        const response = await requestInternalService.get('/domain-zones');
+        return response?.data?.data;
     }
 };
 

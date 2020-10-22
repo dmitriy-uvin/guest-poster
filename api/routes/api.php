@@ -31,8 +31,13 @@ Route::group([
     Route::post('/reset-password', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'resetPassword']);
 });
 
-Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTopicCollection'])
-    ->middleware('auth');
+Route::group([
+    'middleware' => 'auth'
+], function () {
+    Route::get('/topics', [\App\Http\Controllers\Api\TopicController::class, 'getTopicCollection']);
+    Route::get('/domain-zones', [\App\Http\Controllers\Api\DomainZoneController::class, 'getCollection']);
+});
+
 
 Route::group([
     'prefix' => 'platforms',

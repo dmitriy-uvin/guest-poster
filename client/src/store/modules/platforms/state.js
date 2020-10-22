@@ -1,5 +1,6 @@
 export default {
     platforms: [],
     platformById: {},
-    topics: {}
+    topics: {},
+    domainZones: []
 }

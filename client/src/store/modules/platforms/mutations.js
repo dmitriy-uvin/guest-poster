@@ -26,5 +26,8 @@ export default {
     },
     [mutations.SET_PLATFORM_BY_ID]: (state, platform) => {
         state.platformById = platformMapper(platform)
+    },
+    [mutations.SET_DOMAIN_ZONES]: (state, domainZones) => {
+        state.domainZones = domainZones;
     }
 }
