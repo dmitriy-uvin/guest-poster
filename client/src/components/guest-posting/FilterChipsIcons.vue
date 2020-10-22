@@ -1,6 +1,12 @@
 <template>
-    <div>
-        <VChip v-for="(item, key) in visibleFilterItems" :key="key" class="mr-1 mb-1">
+    <div class="d-inline-block">
+        <VChip
+            label
+            v-for="(item, key) in visibleFilterItems"
+            :key="key"
+            class="mr-1 mb-1"
+            small
+        >
             <span v-if="key !== 'deadline'">{{ item.name }}:</span>
             <span v-if="item.value && key === 'deadline'">{{ item.value }}</span>
             <span v-if="item.from" class="ml-1">from {{ item.from }}</span>

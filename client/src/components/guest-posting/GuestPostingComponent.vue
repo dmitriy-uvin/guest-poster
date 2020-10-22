@@ -1650,8 +1650,11 @@
             </VRow>
         </VCol>
 
-        <div class="filter-chips mb-4">
-            <h5 class="mb-4">{{ total }} platforms found</h5>
+        <div class="elevation-2 pa-2 rounded-lg mb-4">
+            <p class="d-inline-block ma-0 pa-0 mr-6"
+               style="font-size: 14px">
+                Founded: <b>{{ total }}</b> sites
+            </p>
             <FilterChipsIcons
                 @filter-item-deleted="filterItemDeleted"
             />
