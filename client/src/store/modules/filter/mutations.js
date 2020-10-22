@@ -5,18 +5,28 @@ export default {
         state.filterItems = {
             ...state.filterItems,
             [filterItem.id]: {
+                ...state.filterItems[filterItem.id],
                 name: filterItem.name,
-                from: filterItem.from ? filterItem.from : state.filterItems[filterItem.id]?.from,
-                to: filterItem.to ? filterItem.to : state.filterItems[filterItem.id]?.to,
                 visible: filterItem.visible,
-                type: filterItem.type
+                type: filterItem.type,
+                property: filterItem.property,
             }
+        };
+        if (filterItem.limit === 'from') {
+            state.filterItems[filterItem.id].from = filterItem.from;
+        }
+        if (filterItem.limit === 'to') {
+            state.filterItems[filterItem.id].to = filterItem.to;
         }
     },
     [mutations.DELETE_FILTER_ITEM]: (state, id) => {
-        const filterItems = state.filterItems;
-        delete filterItems[id];
-        state.filterItems = filterItems;
+        const result = {};
+        Object.keys(state.filterItems).map(key => {
+            if (key !== id) {
+                result[key] = state.filterItems[key];
+            }
+        });
+        state.filterItems = result;
     },
     [mutations.SHOW_FILTER_ITEMS]: state => {
         const res = {};
