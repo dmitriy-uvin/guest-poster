@@ -150,7 +150,6 @@ final class PlatformController extends ApiController
 
     public function getPlatformCollection(PaginatedHttpRequest $request)
     {
-//        return json_decode($request->query('filter'), true);
         $response = $this->getPlatformCollectionAction->execute(
             new GetPlatformCollectionRequest(
                 (int)$request->query('page'),
