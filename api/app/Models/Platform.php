@@ -16,6 +16,7 @@ class Platform extends Model
         'dofollow_active',
         'free_home_featured_active',
         'niche_edit_link_active',
+        'money_anchor',
         'article_writing_price',
         'niche_edit_link_price',
         'price',
@@ -50,6 +51,7 @@ class Platform extends Model
         'dofollow_active' => 'boolean',
         'free_home_featured_active' => 'boolean',
         'niche_edit_link_active' => 'boolean',
+        'money_anchor' => 'boolean',
     ];
 
     public function topics()
