@@ -109,7 +109,13 @@
                                         dense
                                         v-model="filter.platform.price_from"
                                         :error-messages="priceFromErrors"
-                                        @input="onInputFilter($event,'main', 'Price', 'from')"
+                                        @input="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Price',
+                                        'platform.price',
+                                        'from'
+                                        )"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -119,7 +125,13 @@
                                         outlined
                                         dense
                                         v-model="filter.platform.price_to"
-                                        @input="onInputFilter($event,'main', 'Price', 'to')"
+                                        @input="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Price',
+                                        'platform.price',
+                                        'to'
+                                        )"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -142,6 +154,13 @@
                                         :hide-details="!organicTrafficFromErrors.length"
                                         v-model="filter.platform.organic_traffic_from"
                                         :error-messages="organicTrafficFromErrors"
+                                        @input="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Organic Traffic',
+                                        'platform.organic_traffic',
+                                        'from'
+                                        )"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -152,6 +171,13 @@
                                         dense
                                         hide-details
                                         v-model="filter.platform.organic_traffic_to"
+                                        @input="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Organic Traffic',
+                                        'platform.organic_traffic',
+                                        'to'
+                                        )"
                                     >
                                     </VTextField>
                                 </VCol>
@@ -159,7 +185,7 @@
                         </VCol>
                     </VRow>
 
-                    <h4 class="text-uppercase mb-6">Options</h4>
+                    <h3 class="text-uppercase mb-6">Options</h3>
                     <VRow>
                         <VCol cols="12" md="4">
                             <label>Do Follow</label>
@@ -195,7 +221,7 @@
                         </VCol>
                     </VRow>
 
-                    <h4 class="text-uppercase mt-6 mb-3">Additional Filters</h4>
+                    <h3 class="text-uppercase mt-6 mb-3">Additional Filters</h3>
                     <VRow>
                         <VTabs fixed-tabs v-model="tab">
                             <VTab key="Trust">Trust</VTab>
@@ -246,8 +272,15 @@
                                                         outlined
                                                         dense
                                                         :hide-details="!trustCheckTrustFromErrors.length"
-                                                        v-model="filter.trust.checkTrust_from"
+                                                        v-model="filter.trust.checktrust_from"
                                                         :error-messages="trustCheckTrustFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'CheckTrust',
+                                                        'trust.checktrust',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -257,8 +290,15 @@
                                                         outlined
                                                         dense
                                                         :hide-details="!trustCheckTrustToErrors.length"
-                                                        v-model="filter.trust.checkTrust_to"
+                                                        v-model="filter.trust.checktrust_to"
                                                         :error-messages="trustCheckTrustToErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'CheckTrust',
+                                                        'trust.checktrust',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -280,6 +320,13 @@
                                                         :hide-details="!trustSpamFromErrors.length"
                                                         v-model="filter.trust.spam_from"
                                                         :error-messages="trustSpamFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Spam',
+                                                        'trust.spam',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -291,6 +338,13 @@
                                                         :hide-details="!trustSpamToErrors.length"
                                                         v-model="filter.trust.spam_to"
                                                         :error-messages="trustSpamToErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Spam',
+                                                        'trust.spam',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -310,8 +364,15 @@
                                                         outlined
                                                         dense
                                                         :hide-details="!trustPowerTrustFromErrors.length"
-                                                        v-model="filter.trust.powerTrust_from"
+                                                        v-model="filter.trust.powertrust_from"
                                                         :error-messages="trustPowerTrustFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'PowerTrust',
+                                                        'trust.powertrust',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -321,8 +382,15 @@
                                                         outlined
                                                         dense
                                                         :hide-details="!trustPowerTrustToErrors.length"
-                                                        v-model="filter.trust.powerTrust_to"
+                                                        v-model="filter.trust.powertrust_to"
                                                         :error-messages="trustPowerTrustToErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'PowerTrust',
+                                                        'trust.powertrust',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -348,6 +416,13 @@
                                                         :hide-details="!mozDaFromErrors.length"
                                                         v-model="filter.moz.da_from"
                                                         :error-messages="mozDaFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz DA',
+                                                        'moz.da',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -358,6 +433,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.moz.da_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz DA',
+                                                        'moz.da',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -379,6 +461,13 @@
                                                         v-model="filter.moz.pa_from"
                                                         :error-messages="mozPaFromErrors"
                                                         :hide-details="!mozPaFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz PA',
+                                                        'moz.pa',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -389,6 +478,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.moz.pa_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz PA',
+                                                        'moz.pa',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -410,6 +506,13 @@
                                                         v-model="filter.moz.rank_from"
                                                         :error-messages="mozRankFromErrors"
                                                         :hide-details="!mozRankFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Rank',
+                                                        'moz.rank',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -420,6 +523,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.moz.rank_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Rank',
+                                                        'moz.rank',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -441,6 +551,13 @@
                                                         v-model="filter.moz.links_in_from"
                                                         :error-messages="mozLinksInFromErrors"
                                                         :hide-details="!mozLinksInFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Links In',
+                                                        'moz.links_in',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -451,6 +568,13 @@
                                                         dense
                                                         v-model="filter.moz.links_in_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Links In',
+                                                        'moz.links_in',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -472,6 +596,13 @@
                                                         v-model="filter.moz.equity_from"
                                                         :error-messages="mozEquityFromErrors"
                                                         :hide-details="!mozEquityFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Equity',
+                                                        'moz.equity',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -482,6 +613,13 @@
                                                         dense
                                                         v-model="filter.moz.equity_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Moz Equity',
+                                                        'moz.equity',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -507,6 +645,13 @@
                                                         v-model="filter.alexa.rank_from"
                                                         :error-messages="alexaRankFromErrors"
                                                         :hide-details="!alexaRankFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Alexa Rank',
+                                                        'alexa.rank',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -517,6 +662,13 @@
                                                         dense
                                                         v-model="filter.alexa.rank_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Alexa Rank',
+                                                        'alexa.rank',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -538,6 +690,13 @@
                                                         v-model="filter.alexa.country_rank_from"
                                                         :error-messages="alexaCountryRankFromErrors"
                                                         :hide-details="!alexaCountryRankFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Alexa CountryRank',
+                                                        'alexa.country_rank',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -548,6 +707,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.alexa.country_rank_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Alexa CountryRank',
+                                                        'alexa.country_rank',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -573,6 +739,13 @@
                                                         :hide-details="!ahrefsRankFromErrors.length"
                                                         v-model="filter.ahrefs.rank_from"
                                                         :error-messages="ahrefsRankFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Rank',
+                                                        'ahrefs.rank',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -583,6 +756,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.ahrefs.rank_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Rank',
+                                                        'ahrefs.rank',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -604,6 +784,13 @@
                                                         :hide-details="!ahrefsDomainRatingFromErrors.length"
                                                         v-model="filter.ahrefs.dr_from"
                                                         :error-messages="ahrefsDomainRatingFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs DR',
+                                                        'ahrefs.dr',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -614,6 +801,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.ahrefs.dr_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs DR',
+                                                        'ahrefs.dr',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -635,6 +829,13 @@
                                                         v-model="filter.ahrefs.ext_backlinks_from"
                                                         :error-messages="ahrefsExtBacklinksFromErrors"
                                                         :hide-details="!ahrefsExtBacklinksFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Ext. Backlinks',
+                                                        'ahrefs.ext_backlinks',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -645,6 +846,13 @@
                                                         dense
                                                         v-model="filter.ahrefs.ext_backlinks_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Ext. Backlinks',
+                                                        'ahrefs.ext_backlinks',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -666,6 +874,13 @@
                                                         :hide-details="!ahrefsRefDFromErrors.length"
                                                         v-model="filter.ahrefs.refd_from"
                                                         :error-messages="ahrefsRefDFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Ref. Domains',
+                                                        'ahrefs.refd',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -676,6 +891,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.ahrefs.refd_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Ref. Domains',
+                                                        'ahrefs.refd',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -697,6 +919,13 @@
                                                         v-model="filter.ahrefs.dofollow_from"
                                                         :error-messages="ahrefsDofollowFromErrors"
                                                         :hide-details="!ahrefsDofollowFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Dofollow',
+                                                        'ahrefs.dofollow',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -707,6 +936,13 @@
                                                         dense
                                                         v-model="filter.ahrefs.dofollow_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Ahrefs Dofollow',
+                                                        'ahrefs.dofollow',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -732,6 +968,13 @@
                                                         :hide-details="!majesticExtBacklinksFromErrors.length"
                                                         v-model="filter.majestic.external_backlinks_from"
                                                         :error-messages="majesticExtBacklinksFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Edu',
+                                                        'majestic.external_backlinks',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -742,6 +985,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.majestic.external_backlinks_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Edu',
+                                                        'majestic.external_backlinks',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -763,6 +1013,13 @@
                                                         :hide-details="!majesticExtEduFromErrors.length"
                                                         v-model="filter.majestic.external_edu_from"
                                                         :error-messages="majesticExtEduFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Edu',
+                                                        'majestic.external_edu',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -773,6 +1030,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.majestic.external_edu_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Edu',
+                                                        'majestic.external_edu',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -794,6 +1058,13 @@
                                                         :hide-details="!majesticExtGovFromErrors.length"
                                                         v-model="filter.majestic.external_gov_from"
                                                         :error-messages="majesticExtGovFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Gov',
+                                                        'majestic.external_gov',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -804,6 +1075,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.majestic.external_gov_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ext. Gov',
+                                                        'majestic.external_gov',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -825,6 +1103,13 @@
                                                         :hide-details="!majesticRefDFromErrors.length"
                                                         v-model="filter.majestic.refd_from"
                                                         :error-messages="majesticRefDFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. EDU',
+                                                        'majestic.refd',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -835,6 +1120,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.majestic.refd_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. EDU',
+                                                        'majestic.refd',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -856,6 +1148,13 @@
                                                         :hide-details="!majesticRefDEduFromErrors.length"
                                                         v-model="filter.majestic.refd_edu_from"
                                                         :error-messages="majesticRefDEduFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. EDU',
+                                                        'majestic.refd_edu',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -866,6 +1165,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.majestic.refd_edu_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. EDU',
+                                                        'majestic.refd_edu',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -887,6 +1193,13 @@
                                                         v-model="filter.majestic.refd_gov_from"
                                                         :error-messages="majesticRefDGovFromErrors"
                                                         :hide-details="!majesticRefDGovFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. GOV',
+                                                        'majestic.refd_gov',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -897,6 +1210,13 @@
                                                         dense
                                                         v-model="filter.majestic.refd_gov_to"
                                                         hide-details
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic Ref. D. GOV',
+                                                        'majestic.refd_gov',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -918,6 +1238,13 @@
                                                         :hide-details="!majesticTfFromErrors.length"
                                                         v-model="filter.majestic.tf_from"
                                                         :error-messages="majesticTfFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic TF',
+                                                        'majestic.tf',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -929,6 +1256,13 @@
                                                         :hide-details="!majesticTfToErrors.length"
                                                         v-model="filter.majestic.tf_to"
                                                         :error-messages="majesticTfToErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic TF',
+                                                        'majestic.tf',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -950,6 +1284,13 @@
                                                         v-model="filter.majestic.cf_from"
                                                         :error-messages="majesticCfFromErrors"
                                                         :hide-details="!majesticCfFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic CF',
+                                                        'majestic.cf',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -961,6 +1302,13 @@
                                                         v-model="filter.majestic.cf_to"
                                                         :error-messages="majesticCfToErrors"
                                                         :hide-details="!majesticCfToErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Majestic CF',
+                                                        'majestic.cf',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -986,6 +1334,13 @@
                                                         :hide-details="!semRushRankFromErrors.length"
                                                         v-model="filter.semRush.rank_from"
                                                         :error-messages="semRushRankFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Rank',
+                                                        'semRush.rank',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -996,6 +1351,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.semRush.rank_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Rank',
+                                                        'semRush.rank',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1017,6 +1379,13 @@
                                                         v-model="filter.semRush.keyword_num_from"
                                                         :error-messages="semRushKeywordNumFromErrors"
                                                         :hide-details="!semRushKeywordNumFromErrors.length"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Keywords Num.',
+                                                        'semRush.keyword_num',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1027,6 +1396,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.semRush.keyword_num_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Keywords Num.',
+                                                        'semRush.keyword_num',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1048,6 +1424,13 @@
                                                         :hide-details="!semRushTrafficCostsFromErrors.length"
                                                         v-model="filter.semRush.traffic_costs_from"
                                                         :error-messages="semRushTrafficCostsFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Costs',
+                                                        'semRush.traffic_costs',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1058,6 +1441,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.semRush.traffic_costs_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'SemRush Costs',
+                                                        'semRush.traffic_costs',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1083,6 +1473,13 @@
                                                         :hide-details="!facebookCommentsFromErrors.length"
                                                         v-model="filter.facebook.comments_from"
                                                         :error-messages="facebookCommentsFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Comments',
+                                                        'facebook.comments',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1093,6 +1490,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.facebook.comments_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Comments',
+                                                        'facebook.comments',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1114,6 +1518,13 @@
                                                         :hide-details="!facebookSharesFromErrors.length"
                                                         v-model="filter.facebook.shares_from"
                                                         :error-messages="facebookSharesFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Shares',
+                                                        'facebook.shares',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1124,6 +1535,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.facebook.shares_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Shares',
+                                                        'facebook.shares',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1145,6 +1563,13 @@
                                                         :hide-details="!facebookReactionsFromErrors.length"
                                                         v-model="filter.facebook.reactions_from"
                                                         :error-messages="facebookReactionsFromErrors"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Reactions',
+                                                        'facebook.reactions',
+                                                        'from'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1155,6 +1580,13 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.facebook.reactions_to"
+                                                        @input="onInputFilter(
+                                                        $event,
+                                                        'additional',
+                                                        'Facebook Reactions',
+                                                        'facebook.reactions',
+                                                        'to'
+                                                        )"
                                                     >
                                                     </VTextField>
                                                 </VCol>
@@ -1210,9 +1642,14 @@
                 </VCol>
             </VRow>
         </VCol>
+
         <div class="filter-chips mb-4">
             <h5 class="mb-4">{{ total }} platforms found</h5>
+            <FilterChipsIcons
+                @filter-item-deleted="filterItemDeleted"
+            />
         </div>
+
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
                 <tr>
@@ -1467,13 +1904,15 @@ import * as filterActions from '@/store/modules/filter/types/actions';
 import { countries } from '@/helpers/countries';
 import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
+import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
         SendRequestFooter,
         PlatformTrust,
-        PlatformFeatures
+        PlatformFeatures,
+        FilterChipsIcons
     },
     validations: {
         filter: {
@@ -1482,12 +1921,12 @@ export default {
                 organic_traffic_from: { minValue: minValue(0) }
             },
             trust: {
-                checkTrust_from: { minValue: minValue(0) },
-                checkTrust_to: { maxValue: maxValue(100) },
+                checktrust_from: { minValue: minValue(0) },
+                checktrust_to: { maxValue: maxValue(100) },
                 spam_from: { minValue: minValue(0) },
                 spam_to: { maxValue: maxValue(100) },
-                powerTrust_from: { minValue: minValue(0) },
-                powerTrust_to: { maxValue: maxValue(100) },
+                powertrust_from: { minValue: minValue(0) },
+                powertrust_to: { maxValue: maxValue(100) },
             },
             moz: {
                 da_from: { minValue: minValue(0) },
@@ -1549,14 +1988,14 @@ export default {
             'Perfect': 'perfect',
         },
         filter: {
-            dofollow: 'any',
-            niche_edit_link: 'any',
-            home_featured: 'any',
-            money_anchor: 'any',
-            deadline: '',
-            topics: [],
-            domainZones: [],
             platform: {
+                dofollow: 'any',
+                niche_edit_link: 'any',
+                home_featured: 'any',
+                money_anchor: 'any',
+                deadline: '',
+                topics: [],
+                domainZones: [],
                 price_from: '',
                 price_to: '',
                 organic_traffic_from: '',
@@ -1564,12 +2003,12 @@ export default {
             },
             trust: {
                 summary: [],
-                checkTrust_from: '',
-                checkTrust_to: '',
+                checktrust_from: '',
+                checktrust_to: '',
                 spam_from: '',
                 spam_to: '',
-                powerTrust_from: '',
-                powerTrust_to: '',
+                powertrust_from: '',
+                powertrust_to: '',
             },
             moz: {
                 da_from: '',
@@ -1648,28 +2087,67 @@ export default {
     methods: {
         ...mapActions('filter', {
             setFilterItem: filterActions.SET_FILTER_ITEM,
-            showFilterItems: filterActions.SHOW_FILTER_ITEMS
+            showFilterItems: filterActions.SHOW_FILTER_ITEMS,
+            clearFilterItems: filterActions.CLEAR_FILTER_ITEMS
         }),
+        async filterItemDeleted(name) {
+            const subFilterName = name.split('.')[0];
+            const filterPropertyName = name.split('.')[1];
+            const filterItemNameFrom = filterPropertyName + '_from';
+            const filterItemNameTo = filterPropertyName + '_to';
+            const flagFilterItems = [
+                'dofollow',
+                'niche_edit_link',
+                'home_featured',
+                'money_anchor'
+            ];
+            const arrayFilterItems = [
+                'topics',
+                'domainZones',
+                'summary',
+                'country',
+            ];
+            if (subFilterName === 'platform' && flagFilterItems.includes(filterPropertyName)) {
+                this.filter[subFilterName][filterPropertyName] = 'any';
+            } else if (arrayFilterItems.includes(filterPropertyName)) {
+                this.filter[subFilterName][filterPropertyName] = [];
+            } else {
+                if (
+                    this.filter[subFilterName][filterItemNameFrom]
+                    ||
+                    this.filter[subFilterName][filterItemNameTo]
+                ) {
+                    this.filter[subFilterName][filterItemNameFrom] =
+                    this.filter[subFilterName][filterItemNameTo] = '';
+                } else {
+                    this.filter[subFilterName][filterPropertyName] = '';
+                }
+            }
+
+            await this.onShowResults();
+        },
         openFilters() {
             this.filtersOpened = !this.filtersOpened;
         },
-        onInputFilter(value, type, name, limit = '') {
+        onInputFilter(value, type, name, property, limit = '') {
             const filterItem = {
-                id: name.toLowerCase(),
+                id: name.toLowerCase().replace(' ', '_'),
                 name,
                 type,
                 visible: false,
-                from: limit === 'from' ? value : '',
-                to: limit === 'to' ? value : '',
+                property,
+                limit
             };
+            if (limit === 'from') filterItem.from = value;
+            if (limit === 'to') filterItem.to = value;
             this.setFilterItem(filterItem);
-            this.showFilterItems();
         },
         onRequestCreated() {
             this.unSelectAll();
         },
         async clearAllFilters() {
             this.$v.$reset();
+            this.clearFilterItems();
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
             Object.keys(this.filter.moz).forEach(key => this.filter.moz[key] = '');
             Object.keys(this.filter.alexa).forEach(key => this.filter.alexa[key] = '');
@@ -1678,14 +2156,14 @@ export default {
             Object.keys(this.filter.facebook).forEach(key => this.filter.platform[key] = '');
             Object.keys(this.filter.ahrefs).forEach(key => this.filter.platform[key] = '');
             Object.keys(this.filter.trust).forEach(key => this.filter.platform[key] = '');
-            this.filter.topics =
-                this.filter.domainZones =
+            this.filter.platform.topics =
+                this.filter.platform.domainZones =
                 this.filter.alexa.country =
                 this.filter.trust.summary = [];
-            this.filter.dofollow =
-                this.filter.niche_edit_link =
-                this.filter.home_featured =
-                this.filter.money_anchor = 'any';
+            this.filter.platform.dofollow =
+                this.filter.platform.niche_edit_link =
+                this.filter.platform.home_featured =
+                this.filter.platform.money_anchor = 'any';
             this.filterQuery = this.filter;
             const response = await this.loadPlatforms();
             this.currentPage = response.current_page;
@@ -1695,13 +2173,20 @@ export default {
             this.initializeChosenPlatformsState();
         },
         async onShowResults() {
+            this.showFilterItems();
             this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 this.filterQuery = {
                     ...this.filter,
-                    deadline: this.filter.deadline ?
-                        this.deadlineList[this.filter.deadline] : '',
+                    platform: {
+                        ...this.filter.platform,
+                        topics: this.filter.platform.topics.length ?
+                            this.filter.platform.topics.map(topic => this.topics[topic]) : [],
+                        deadline: this.filter.platform.deadline ?
+                            this.deadlineList[this.filter.platform.deadline] : '',
+                    },
+
                     trust: {
                         ...this.filter.trust,
                         summary: this.filter.trust.summary.length ?
@@ -1713,7 +2198,6 @@ export default {
                             this.filter.alexa.country.map(country => countries[country])
                             : []
                     },
-                    topics: this.filter.topics.length ? this.filter.topics.map(topic => this.topics[topic]) : []
                 };
                 const response = await this.loadPlatforms();
                 this.currentPage = response.current_page;
@@ -2011,19 +2495,19 @@ export default {
         // Trust
         trustCheckTrustFromErrors() {
             const errors = [];
-            if (!this.$v.filter.trust.checkTrust_from.$dirty) {
+            if (!this.$v.filter.trust.checktrust_from.$dirty) {
                 return errors;
             }
-            !this.$v.filter.trust.checkTrust_from.minValue &&
+            !this.$v.filter.trust.checktrust_from.minValue &&
             errors.push('CheckTrust from must be more than 0!');
             return errors;
         },
         trustCheckTrustToErrors() {
             const errors = [];
-            if (!this.$v.filter.trust.checkTrust_to.$dirty) {
+            if (!this.$v.filter.trust.checktrust_to.$dirty) {
                 return errors;
             }
-            !this.$v.filter.trust.checkTrust_to.maxValue &&
+            !this.$v.filter.trust.checktrust_to.maxValue &&
             errors.push('CheckTrust to must be less than 100!');
             return errors;
         },
@@ -2047,19 +2531,19 @@ export default {
         },
         trustPowerTrustFromErrors() {
             const errors = [];
-            if (!this.$v.filter.trust.powerTrust_from.$dirty) {
+            if (!this.$v.filter.trust.powertrust_from.$dirty) {
                 return errors;
             }
-            !this.$v.filter.trust.powerTrust_from.minValue &&
+            !this.$v.filter.trust.powertrust_from.minValue &&
             errors.push('PowerTrust from must be more than 0!');
             return errors;
         },
         trustPowerTrustToErrors() {
             const errors = [];
-            if (!this.$v.filter.trust.powerTrust_to.$dirty) {
+            if (!this.$v.filter.trust.powertrust_to.$dirty) {
                 return errors;
             }
-            !this.$v.filter.trust.powerTrust_to.maxValue &&
+            !this.$v.filter.trust.powertrust_to.maxValue &&
             errors.push('PowerTrust to must be less than 100!');
             return errors;
         }
