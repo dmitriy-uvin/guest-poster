@@ -13,6 +13,9 @@ export default {
             ) {
                 result[key] = state.filterItems[key];
             }
+            if (key === 'deadline') {
+                result[key] = state.filterItems[key];
+            }
         });
         return result;
     }

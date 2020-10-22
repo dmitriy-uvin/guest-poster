@@ -10,6 +10,7 @@ export default {
                 visible: filterItem.visible,
                 type: filterItem.type,
                 property: filterItem.property,
+                value: filterItem?.value
             }
         };
         if (filterItem.limit === 'from') {
@@ -40,5 +41,16 @@ export default {
     },
     [mutations.CLEAR_FILTER_ITEMS]: state => {
         state.filterItems = {};
+    },
+    [mutations.SET_FILTER_ITEM_ARRAY]: (state, arrayItems) => {
+        state.filterItems = {
+            ...state.filterItems,
+            [arrayItems.id]: {
+                name: arrayItems.name,
+                id: arrayItems.id,
+                items: arrayItems.items,
+                visible: arrayItems.visible
+            }
+        }
     }
 }
