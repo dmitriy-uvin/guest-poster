@@ -4,6 +4,7 @@ import user from './modules/user';
 import platforms from './modules/platforms';
 import notification from './modules/notification';
 import order from './modules/order';
+import filter from './modules/filter';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         user,
         platforms,
         notification,
-        order
+        order,
+        filter
     }
 });
