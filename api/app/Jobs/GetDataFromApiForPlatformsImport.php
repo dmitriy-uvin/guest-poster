@@ -10,6 +10,7 @@ use App\Models\Facebook;
 use App\Models\Majestic;
 use App\Models\Moz;
 use App\Models\Platform;
+
 use App\Models\SemRush;
 use App\Models\Topic;
 use App\Services\CheckTrustService;
@@ -27,35 +28,29 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
     private array $platformsCollection;
     private SeoRankService $seoRankService;
     private CheckTrustService $checkTrustService;
+    private int $row;
 
-    public function __construct(array $platformsCollection)
+    public function __construct(array $platformsCollection, int $row = 1)
     {
         $this->platformsCollection = $platformsCollection;
         $this->seoRankService = new SeoRankService();
         $this->checkTrustService = new CheckTrustService();
+        $this->row = $row;
     }
 
     public function handle()
     {
-        $row = 1;
         foreach ($this->platformsCollection as $platformData) {
             $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
 
-            if ($platform) {
-                broadcast(new PlatformImportCreatedEvent(
-                    'error',
-                    "Platform <b>{$platformData['website_url']}</b> not added! Already exists! Line {$row}"
-                ));
-                $row += 1;
-                continue;
-            } else {
+            if (!$platform) {
                 $url = $platformData['protocol'] . $platformData['website_url'];
                 $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                     $url
                 );
                 if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
                     $message = "Failed to add platform " . $platformData['website_url'] .
-                        " at line: " . $row . " ($mozSrAlexaFbData)";
+                        " at line: " . $this->row . " ($mozSrAlexaFbData)";
 
                     broadcast(new PlatformImportCreatedEvent(
                         'error',
@@ -72,7 +67,9 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                     $platform->save();
 
                     $platform->topics()->attach($topicsIds);
-                    $platform->organic_traffic = $mozSrAlexaFbData->sr_traffic;
+                    $platform->organic_traffic =
+                        in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
+                            null : $mozSrAlexaFbData->sr_traffic;
                     $platform->save();
                     $moz = new Moz([
                         'pa' =>
@@ -126,6 +123,12 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                 if (in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) || !is_object($majesticData)) {
                     $majestic = new Majestic();
                     $platform->majestic()->save($majestic);
+                    $message = "Failed to fetch Majestic Data! {$majesticData} Line: {$this->row}.";
+
+                    broadcast(new PlatformImportCreatedEvent(
+                        'error',
+                        $message
+                    ));
                 }
                 else {
                     $majestic = new Majestic([
@@ -155,20 +158,21 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
 
                 if (is_object($checkTrustData)) {
                     if ($checkTrustData->success) {
-                        $platform->spam = $checkTrustData->summary->spam;
-                        $platform->trust = $checkTrustData->summary->trust;
-                        $platform->lrt_power_trust = $checkTrustData->summary->lrtPowerTrust;
+                        $platform->spam ??= $checkTrustData->summary->spam;
+                        $platform->trust ??= $checkTrustData->summary->trust;
+                        $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
                         $platform->save();
                     } else {
                         broadcast(new PlatformImportCreatedEvent(
                             'error',
-                            "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'. Line {$row}"
+                            "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'.
+                        Line {$this->row}. Platform: <b>{$platform->website_url}</b>"
                         ));
                     }
                 } else {
                     broadcast(new PlatformImportCreatedEvent(
                         'error',
-                        "CheckTrust Data not set! Something went wrong! Line {$row}"
+                        "CheckTrust Data not set! Something went wrong! Line {$this->row}"
                     ));
                 }
 
@@ -177,19 +181,7 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                     "Platform <b>{$platform->protocol}{$platform->website_url}</b> was added!"
                 ));
             }
-            $row +=1 ;
+            $this->row += 1 ;
         }
-        broadcast(new PlatformImportCreatedEvent(
-            'success',
-            "Adding platforms completed!"
-        ));
-    }
-
-    public function failed()
-    {
-        broadcast(new PlatformImportCreatedEvent(
-            "error",
-            "Something went wrong while importing platforms! Try later!"
-        ));
     }
 }

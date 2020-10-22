@@ -7,6 +7,24 @@
                 </div>
                 <div class="">
                     <VBtn
+                        color="blue"
+                        @click="onUpdateByApiAll"
+                        dark
+                        class="mr-3"
+                    >
+                        Update All
+                        <VIcon right>mdi-export</VIcon>
+                    </VBtn>
+                    <VBtn
+                        color="orange"
+                        @click="onUpdateByApiByIds"
+                        dark
+                        class="mr-3"
+                    >
+                        Update
+                        <VIcon right>mdi-export</VIcon>
+                    </VBtn>
+                    <VBtn
                         color="purple"
                         @click="onPlatformsExportAll"
                         dark
@@ -21,7 +39,7 @@
                         dark
                         class="mr-3"
                     >
-                        Export Selected
+                        Export
                         <VIcon right>mdi-export</VIcon>
                     </VBtn>
                     <VBtn
@@ -53,8 +71,42 @@ export default {
     methods: {
         ...mapActions('platforms', {
             exportByIds: actions.EXPORT_PLATFORMS_BY_IDS,
-            exportAll: actions.EXPORT_PLATFORMS_ALL
+            exportAll: actions.EXPORT_PLATFORMS_ALL,
+            updateDataByApi: actions.UPDATE_PLATFORMS_API_BY_IDS,
+            updateDataByApiAll: actions.UPDATE_PLATFORMS_API_ALL,
         }),
+        async onUpdateByApiAll() {
+            try {
+                await this.updateDataByApiAll();
+                this.$emit('updateByApi');
+                this.setNotification({
+                    type: 'success',
+                    message: 'Updating platforms started!'
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        },
+        async onUpdateByApiByIds() {
+            try {
+                await this.updateDataByApi({
+                    ids: this.chosenPlatformsIds
+                });
+                this.$emit('updateByApi');
+                this.setNotification({
+                    type: 'success',
+                    message: 'Updating platforms started!'
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        },
         onUnselectAll() {
             this.$emit('unselect-all');
         },

@@ -509,6 +509,9 @@
 <!--            &lt;!&ndash;                :filters-applied="filtersApplied"&ndash;&gt;-->
 <!--            &lt;!&ndash;            />&ndash;&gt;-->
 <!--        </div>-->
+        <div class="mb-4">
+            <h5 class="mb-4">{{ total }} platforms found</h5>
+        </div>
 
         <table class="admin-table" v-if="Object.keys(platforms).length">
             <thead>
@@ -685,6 +688,7 @@
             @unselect-all="unSelectAll"
             @platforms-delete="onPlatformsDelete"
             @export="onExport"
+            @updateByApi="unSelectAll"
         />
 
         <DeletePlatformsDialog

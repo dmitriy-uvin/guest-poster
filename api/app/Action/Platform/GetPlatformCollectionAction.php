@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Action\Platform;
 
 use App\Action\PaginatedResponse;
+use App\Constants\PlatformTrustSummary;
 use App\Models\Platform;
 use App\Repositories\Platform\PlatformRepository;
 use App\Repositories\Platform\PlatformRepositoryInterface;
@@ -50,9 +51,7 @@ final class GetPlatformCollectionAction
         if ($request->getDofollow() === 'no') {
             $filterQuery = $filterQuery
                 ->where('dofollow_active', '=', false);
-        }
-
-        if ($request->getDofollow() === 'yes') {
+        } else if ($request->getDofollow() === 'yes') {
             $filterQuery = $filterQuery
                 ->where('dofollow_active', '=', true);
         }
@@ -60,9 +59,7 @@ final class GetPlatformCollectionAction
         if ($request->getNicheEditLink() === 'no') {
             $filterQuery = $filterQuery
                 ->where('niche_edit_link_active', '=', false);
-        }
-
-        if ($request->getNicheEditLink() === 'yes') {
+        } else if ($request->getNicheEditLink() === 'yes') {
             $filterQuery = $filterQuery
                 ->where('niche_edit_link_active', '=', true);
         }
@@ -70,11 +67,17 @@ final class GetPlatformCollectionAction
         if ($request->getHomeFeatured() === 'no') {
             $filterQuery = $filterQuery
                 ->where('free_home_featured_active', '=', false);
-        }
-
-        if ($request->getHomeFeatured() === 'yes') {
+        } else if ($request->getHomeFeatured() === 'yes') {
             $filterQuery = $filterQuery
                 ->where('free_home_featured_active', '=', true);
+        }
+
+        if ($request->getMoneyAnchor() === 'no') {
+            $filterQuery = $filterQuery
+                ->where('money_anchor', '=', false);
+        } else if ($request->getMoneyAnchor() === 'yes') {
+            $filterQuery = $filterQuery
+                ->where('money_anchor', '=', true);
         }
 
         if ($request->getMozDaFrom()) {
@@ -121,6 +124,18 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if ($request->getMozEquityFrom()) {
+            $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
+                $query->where('equity', '>=', $request->getMozEquityFrom());
+            });
+        }
+        if ($request->getMozEquityFrom() < $request->getMozEquityTo()) {
+            $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
+                $query->where('equity', '<=', $request->getMozEquityTo());
+            });
+        }
+
+
         if ($request->getAlexaRankFrom()) {
             $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
                 $query->where('rank', '>=', $request->getAlexaRankFrom());
@@ -132,9 +147,20 @@ final class GetPlatformCollectionAction
             });
         }
 
-        if ($request->getAlexaCountry()) {
+        if (count($request->getAlexaCountries())) {
             $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
-                $query->where('country', '=', $request->getAlexaCountry());
+                $query->whereIn('country', $request->getAlexaCountries());
+            });
+        }
+
+        if ($request->getAlexaCountryRankFrom()) {
+            $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
+                $query->where('country_rank', '>=', $request->getAlexaCountryRankFrom());
+            });
+        }
+        if ($request->getAlexaCountryRankFrom() < $request->getAlexaCountryRankTo()) {
+            $filterQuery = $filterQuery->whereHas('alexa', function($query) use ($request){
+                $query->where('country_rank', '<=', $request->getAlexaCountryRankTo());
             });
         }
 
@@ -159,18 +185,6 @@ final class GetPlatformCollectionAction
                 $query->where('keyword_num', '<=', $request->getSemRushKeywordNumTo());
             });
         }
-
-        // TODO: Implement filter by traffic not SemRush traffic
-//        if ($request->getSemRushTrafficFrom()) {
-//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-//                $query->where('traffic', '>=', $request->getSemRushTrafficFrom());
-//            });
-//        }
-//        if ($request->getSemRushTrafficFrom() < $request->getSemRushTrafficTo()) {
-//            $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
-//                $query->where('traffic', '<=', $request->getSemRushTrafficTo());
-//            });
-//        }
 
         if ($request->getSemRushTrafficCostsFrom()) {
             $filterQuery = $filterQuery->whereHas('semrush', function($query) use ($request){
@@ -216,6 +230,39 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if ($request->getMajesticRefDFrom()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd', '<=', $request->getMajesticRefDFrom());
+            });
+        }
+        if ($request->getMajesticRefDFrom() < $request->getMajesticRefDTo()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd', '<=', $request->getMajesticRefDTo());
+            });
+        }
+
+        if ($request->getMajesticRefDEduFrom()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd_edu', '<=', $request->getMajesticRefDEduFrom());
+            });
+        }
+        if ($request->getMajesticRefDEduFrom() < $request->getMajesticRefDEduTo()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd_edu', '<=', $request->getMajesticRefDEduTo());
+            });
+        }
+
+        if ($request->getMajesticRefDGovFrom()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd_gov', '<=', $request->getMajesticRefDGovFrom());
+            });
+        }
+        if ($request->getMajesticRefDGovFrom() < $request->getMajesticRefDGovTo()) {
+            $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
+                $query->where('refd_gov', '<=', $request->getMajesticRefDGovTo());
+            });
+        }
+
         if ($request->getMajesticCfFrom()) {
             $filterQuery = $filterQuery->whereHas('majestic', function($query) use ($request){
                 $query->where('cf', '>=', $request->getMajesticCfFrom());
@@ -242,6 +289,121 @@ final class GetPlatformCollectionAction
             $filterQuery = $filterQuery->whereHas('topics', function ($query) use ($request) {
                 $query->whereIn('topic_id', $request->getTopics());
             });
+        }
+
+        if ($request->getFacebookCommentsFrom()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_comments', '>=', $request->getFacebookCommentsFrom());
+            });
+        }
+        if ($request->getFacebookCommentsFrom() < $request->getFacebookCommentsTo()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_comments', '<=', $request->getFacebookCommentsTo());
+            });
+        }
+
+        if ($request->getFacebookReactionsFrom()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_reac', '>=', $request->getFacebookReactionsFrom());
+            });
+        }
+        if ($request->getFacebookReactionsFrom() < $request->getFacebookReactionsTo()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_reac', '<=', $request->getFacebookReactionsTo());
+            });
+        }
+
+        if ($request->getFacebookSharesFrom()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_shares', '>=', $request->getFacebookSharesFrom());
+            });
+        }
+        if ($request->getFacebookSharesFrom() < $request->getFacebookSharesTo()) {
+            $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
+                $query->where('fb_shares', '<=', $request->getFacebookSharesTo());
+            });
+        }
+
+        if ($request->getAhrefsRankFrom()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('rank', '>=', $request->getAhrefsRankFrom());
+            });
+        }
+        if ($request->getAhrefsRankFrom() < $request->getAhrefsRankTo()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('rank', '<=', $request->getAhrefsRankTo());
+            });
+        }
+
+        if ($request->getAhrefsDrFrom()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('dr', '>=', $request->getAhrefsDrFrom());
+            });
+        }
+        if ($request->getAhrefsDrFrom() < $request->getAhrefsDrTo()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('dr', '<=', $request->getAhrefsDrTo());
+            });
+        }
+
+        if ($request->getAhrefsExtBacklinksFrom()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('eb', '>=', $request->getAhrefsExtBacklinksFrom());
+            });
+        }
+        if ($request->getAhrefsExtBacklinksFrom() < $request->getAhrefsExtBacklinksTo()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('eb', '<=', $request->getAhrefsExtBacklinksTo());
+            });
+        }
+
+        if ($request->getAhrefsRefDFrom()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('rd', '>=', $request->getAhrefsExtBacklinksFrom());
+            });
+        }
+        if ($request->getAhrefsRefDFrom() < $request->getAhrefsRefDTo()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('rd', '<=', $request->getAhrefsRefDTo());
+            });
+        }
+
+        if ($request->getAhrefsDofollowFrom()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('dofollow', '>=', $request->getAhrefsDofollowFrom());
+            });
+        }
+        if ($request->getAhrefsDofollowFrom() < $request->getAhrefsDofollowTo()) {
+            $filterQuery = $filterQuery->whereHas('ahrefs', function($query) use ($request){
+                $query->where('dofollow', '<=', $request->getAhrefsDofollowTo());
+            });
+        }
+
+        if ($request->getCheckTrustFrom()) {
+            $filterQuery = $filterQuery
+                ->where('trust', '>=', $request->getCheckTrustFrom());
+        }
+        if ($request->getCheckTrustFrom() < $request->getCheckTrustTo()) {
+            $filterQuery = $filterQuery
+                ->where('trust', '<=', $request->getCheckTrustTo());
+        }
+
+        if ($request->getSpamFrom()) {
+            $filterQuery = $filterQuery
+                ->where('spam', '>=', $request->getSpamFrom());
+        }
+        if ($request->getSpamFrom() < $request->getSpamTo()) {
+            $filterQuery = $filterQuery
+                ->where('spam', '<=', $request->getSpamTo());
+        }
+
+        if ($request->getPowerTrustFrom()) {
+            $filterQuery = $filterQuery
+                ->where('lrt_power_trust', '>=', $request->getPowerTrustFrom());
+        }
+        if ($request->getPowerTrustFrom() < $request->getPowerTrustTo()) {
+            $filterQuery = $filterQuery
+                ->where('lrt_power_trust', '<=', $request->getPowerTrustTo());
         }
 
         if ($sorting === 'moz.da') {

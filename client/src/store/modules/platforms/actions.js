@@ -11,6 +11,7 @@ export default {
         const platforms = response?.data;
         const metaData = response?.meta;
         await dispatch(actions.FETCH_TOPICS);
+        await dispatch(actions.FETCH_DOMAIN_ZONES);
         commit(mutations.SET_PLATFORMS, platforms);
         return Promise.resolve(metaData);
     },
@@ -53,5 +54,15 @@ export default {
     },
     [actions.EXPORT_PLATFORMS_ALL]: async () => {
         await platformService.exportPlatformsAll();
+    },
+    [actions.UPDATE_PLATFORMS_API_BY_IDS]: async (context, data) => {
+        await platformService.updatePlatformsApiByIds(data);
+    },
+    [actions.UPDATE_PLATFORMS_API_ALL]: async () => {
+        await platformService.updatePlatformsApiAll();
+    },
+    [actions.FETCH_DOMAIN_ZONES]: async ({ commit }) => {
+        const domainZones = await platformService.fetchDomainZones();
+        commit(mutations.SET_DOMAIN_ZONES, domainZones);
     }
 }

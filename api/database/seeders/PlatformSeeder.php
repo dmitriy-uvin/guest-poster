@@ -22,7 +22,7 @@ class PlatformSeeder extends Seeder
      */
     public function run()
     {
-        Platform::factory(10)->create()->each(function ($platform) {
+        Platform::factory(15)->create()->each(function ($platform) {
             $platform->topics()->attach(random_int(1, count(Topics::getTopics())));
             $platform->topics()->attach(random_int(1, count(Topics::getTopics())));
             Ahrefs::factory(1)->create(['platform_id' => $platform->id]);

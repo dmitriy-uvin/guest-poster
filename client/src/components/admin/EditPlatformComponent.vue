@@ -873,10 +873,10 @@ export default {
                 required, minValue: min_value
             },
             tf: {
-                required, maxValue: maxValue(100), minValue: min_value
+                required, minValue: min_value
             },
             cf: {
-                required, maxValue: maxValue(100), minValue: min_value
+                required, minValue: min_value
             },
             refd: { required, minValue: min_value },
             refd_edu: { required, minValue: min_value },
@@ -1520,8 +1520,6 @@ export default {
             errors.push('TF is required!');
             !this.$v.majestic.tf.minValue &&
             errors.push('TF must be more than 0!');
-            !this.$v.majestic.tf.maxValue &&
-            errors.push('TF must be less than 100!');
             return errors;
         },
         majesticCfErrors() {
@@ -1533,8 +1531,6 @@ export default {
             errors.push('CF is required!');
             !this.$v.majestic.cf.minValue &&
             errors.push('CF must be more than 0!');
-            !this.$v.majestic.cf.maxValue &&
-            errors.push('CF must be less than 100!');
             return errors;
         },
         majesticRefDErrors() {

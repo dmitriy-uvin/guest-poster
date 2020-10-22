@@ -19,31 +19,27 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 
-class UpdateDataFromApiForPlatformsImport implements ShouldQueue
+class UpdateApiDataByPlatformIdJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private array $platformsCollection;
+    private $platforms;
     private SeoRankService $seoRankService;
     private CheckTrustService $checkTrustService;
 
-    public function __construct(array $platformsCollection)
+    public function __construct($platforms)
     {
-        $this->platformsCollection = $platformsCollection;
+        $this->platforms = $platforms;
         $this->seoRankService = new SeoRankService();
         $this->checkTrustService = new CheckTrustService();
     }
 
     public function handle()
     {
-        foreach ($this->platformsCollection as $platformData) {
-            $url = $platformData['protocol'] . $platformData['website_url'];
-            $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
-            if (is_null($platform)) {
-                continue;
-            }
+        foreach ($this->platforms as $platform) {
+            $url = $platform->protocol . $platform->website_url;
+
             $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                 $url
             );
@@ -125,27 +121,16 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
 
             if (is_object($checkTrustData)) {
                 if ($checkTrustData->success) {
-                    $platform->spam = $checkTrustData->summary->spam;
-                    $platform->trust = $checkTrustData->summary->trust;
-                    $platform->lrt_power_trust = $checkTrustData->summary->lrtPowerTrust;
+                    $platform->spam ??= $checkTrustData->summary->spam;
+                    $platform->trust ??= $checkTrustData->summary->trust;
+                    $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
                     $platform->save();
-                } else {
-                    broadcast(new PlatformImportCreatedEvent(
-                        'error',
-                        "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'"
-                    ));
                 }
-            } else {
-                broadcast(new PlatformImportCreatedEvent(
-                    'error',
-                    "CheckTrust Data not set! Something went wrong!"
-                ));
             }
         }
-
         broadcast(new PlatformImportUpdatedEvent(
             'success',
-            "Updating platforms from import finished!"
+            "Platforms updating finished!"
         ));
     }
 }

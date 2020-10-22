@@ -21,6 +21,7 @@ class CreatePlatformsTable extends Migration
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');
             $table->boolean('niche_edit_link_active');
+            $table->boolean('money_anchor');
             $table->double('niche_edit_link_price')->nullable();
             $table->double('article_writing_price');
             $table->string('article_requirements');

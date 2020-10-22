@@ -61,6 +61,16 @@ const platformService = {
             API_PREFIX + '/export-by-ids?ids=' + ids,
             'export-' + moment(moment.now()).format('DD-M-Y_' + moment.now()) + '.csv'
         );
+    },
+    async updatePlatformsApiByIds(ids) {
+        await requestInternalService.post(API_PREFIX + '/update-by-ids', ids);
+    },
+    async updatePlatformsApiAll() {
+        await requestInternalService.post(API_PREFIX + '/update-all');
+    },
+    async fetchDomainZones() {
+        const response = await requestInternalService.get('/domain-zones');
+        return response?.data?.data;
     }
 };
 
