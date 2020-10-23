@@ -93,6 +93,10 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if ($request->getDomainZones()) {
+            $filterQuery = $filterQuery->whereIn('domain_zone', $request->getDomainZones());
+        }
+
         if ($request->getMozPaFrom()) {
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('pa', '>=', $request->getMozPaFrom());
