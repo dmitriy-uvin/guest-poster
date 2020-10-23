@@ -10,7 +10,8 @@ export default {
                 visible: filterItem.visible,
                 type: filterItem.type,
                 property: filterItem.property,
-                value: filterItem?.value
+                value: filterItem?.value,
+                items: filterItem?.items,
             }
         };
         if (filterItem.limit === 'from') {
@@ -29,6 +30,17 @@ export default {
         });
         state.filterItems = result;
     },
+    [mutations.DELETE_FILTER_ITEM_ARRAY]: (state, data) => {
+        const filteredItems = state.filterItems[data.key].items.filter(item => item !== data.value);
+
+        state.filterItems = {
+            ...state.filterItems,
+            [data.key]: {
+                ...state.filterItems[data.key],
+                items: filteredItems
+            }
+        }
+    },
     [mutations.SHOW_FILTER_ITEMS]: state => {
         const res = {};
         Object.keys(state.filterItems).map(key => {
@@ -41,16 +53,5 @@ export default {
     },
     [mutations.CLEAR_FILTER_ITEMS]: state => {
         state.filterItems = {};
-    },
-    [mutations.SET_FILTER_ITEM_ARRAY]: (state, arrayItems) => {
-        state.filterItems = {
-            ...state.filterItems,
-            [arrayItems.id]: {
-                name: arrayItems.name,
-                id: arrayItems.id,
-                items: arrayItems.items,
-                visible: arrayItems.visible
-            }
-        }
     }
 }
