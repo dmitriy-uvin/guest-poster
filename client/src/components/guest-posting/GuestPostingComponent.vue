@@ -34,8 +34,13 @@
                                 deletable-chips
                                 :items="Object.keys(topics)"
                                 clearable
-                                v-model="filter.topics"
-                                @change="selectFilterArrayItems('topics', $event)"
+                                v-model="filter.platform.topics"
+                                @change="onInputFilter(
+                                    $event,
+                                    'general',
+                                    'Topics',
+                                    'platform.topics'
+                                )"
                             >
                             </VSelect>
                         </VCol>
@@ -80,12 +85,18 @@
                                 multiple
                                 small-chips
                                 deletable-chips
-                                :items="domainZonesFormatted"
-                                v-model="filter.domainZones"
+                                :items="domainZonesList"
+                                v-model="filter.platform.domainZones"
                                 outlined
                                 dense
                                 clearable
                                 placeholder="Domains"
+                                @change="onInputFilter(
+                                    $event,
+                                    'general',
+                                    'Domains',
+                                    'platform.domainZones'
+                                )"
                             >
                             </VSelect>
                         </VCol>
@@ -102,6 +113,12 @@
                                 :items="Object.keys(countries)"
                                 placeholder="Any Country"
                                 v-model="filter.alexa.country"
+                                @change="onInputFilter(
+                                    $event,
+                                    'general',
+                                    'Country',
+                                    'alexa.country'
+                                )"
                             ></VSelect>
                         </VCol>
                     </VRow>
@@ -195,8 +212,18 @@
                     <h3 class="text-uppercase mb-6">Options</h3>
                     <VRow>
                         <VCol cols="12" md="4">
-                            <label>Do Follow</label>
-                            <VRadioGroup row class="mt-3" v-model="filter.dofollow">
+                            <label>DoFollow</label>
+                            <VRadioGroup
+                                row
+                                class="mt-3"
+                                v-model="filter.platform.dofollow"
+                                @change="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Dofollow',
+                                        'platform.dofollow'
+                                        )"
+                            >
                                 <VRadio label="Any" value="any"></VRadio>
                                 <VRadio label="Yes" color="green" value="yes"></VRadio>
                                 <VRadio label="No" color="red" value="no"></VRadio>
@@ -204,7 +231,17 @@
                         </VCol>
                         <VCol cols="12" md="4">
                             <label>Niche Edit Link</label>
-                            <VRadioGroup row class="mt-3" v-model="filter.niche_edit_link">
+                            <VRadioGroup
+                                row
+                                class="mt-3"
+                                v-model="filter.platform.niche_edit_link"
+                                @change="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Niche Edit Link',
+                                        'platform.niche_edit_link'
+                                        )"
+                            >
                                 <VRadio label="Any" value="any"></VRadio>
                                 <VRadio label="Yes" color="green" value="yes"></VRadio>
                                 <VRadio label="No" color="red" value="no"></VRadio>
@@ -212,7 +249,17 @@
                         </VCol>
                         <VCol cols="12" md="4">
                             <label>Home Featured</label>
-                            <VRadioGroup row class="mt-3" v-model="filter.home_featured">
+                            <VRadioGroup
+                                row
+                                class="mt-3"
+                                v-model="filter.platform.home_featured"
+                                @change="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Home Featured',
+                                        'platform.home_featured'
+                                        )"
+                            >
                                 <VRadio label="Any" value="any"></VRadio>
                                 <VRadio label="Yes" color="green" value="yes"></VRadio>
                                 <VRadio label="No" color="red" value="no"></VRadio>
@@ -220,7 +267,17 @@
                         </VCol>
                         <VCol cols="12" md="4">
                             <label>Money Anchor</label>
-                            <VRadioGroup row class="mt-3" v-model="filter.money_anchor">
+                            <VRadioGroup
+                                row
+                                class="mt-3"
+                                v-model="filter.platform.money_anchor"
+                                @change="onInputFilter(
+                                        $event,
+                                        'general',
+                                        'Money Anchor',
+                                        'platform.money_anchor'
+                                        )"
+                            >
                                 <VRadio label="Any" value="any"></VRadio>
                                 <VRadio label="Yes" color="green" value="yes"></VRadio>
                                 <VRadio label="No" color="red" value="no"></VRadio>
@@ -1651,12 +1708,13 @@
         </VCol>
 
         <div class="elevation-2 pa-2 rounded-lg mb-4">
-            <p class="d-inline-block ma-0 pa-0 mr-6"
-               style="font-size: 14px">
+            <p class="d-inline-block ma-0 pa-0 mr-6 font-14">
                 Founded: <b>{{ total }}</b> sites
             </p>
             <FilterChipsIcons
                 @filter-item-deleted="filterItemDeleted"
+                @filter-item-deleted-array="filterItemArrayDeleted"
+                @clear-all-filters="clearAllFilters"
             />
         </div>
 
@@ -2105,6 +2163,15 @@ export default {
             console.log(value);
             console.log(value.map(topic => this.topics[topic]));
         },
+        async filterItemArrayDeleted(type, value, property) {
+            const subFilterName = property.split('.')[0];
+            const filterPropertyName = property.split('.')[1];
+            if (this.filter[subFilterName][filterPropertyName]) {
+                this.filter[subFilterName][filterPropertyName] =
+                    this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
+            }
+            await this.onShowResults();
+        },
         async filterItemDeleted(name) {
             const subFilterName = name.split('.')[0];
             const filterPropertyName = name.split('.')[1];
@@ -2116,16 +2183,8 @@ export default {
                 'home_featured',
                 'money_anchor'
             ];
-            const arrayFilterItems = [
-                'topics',
-                'domainZones',
-                'summary',
-                'country',
-            ];
             if (subFilterName === 'platform' && flagFilterItems.includes(filterPropertyName)) {
                 this.filter[subFilterName][filterPropertyName] = 'any';
-            } else if (arrayFilterItems.includes(filterPropertyName)) {
-                this.filter[subFilterName][filterPropertyName] = [];
             } else {
                 if (
                     this.filter[subFilterName][filterItemNameFrom]
@@ -2146,17 +2205,24 @@ export default {
         },
         onInputFilter(value, type, name, property, limit = '') {
             const filterItem = {
-                id: name.toLowerCase().replace(' ', '_'),
+                id: name.toLowerCase().replace(/\s/g, '_'),
                 name,
                 type,
                 visible: false,
                 property,
                 limit
             };
-            console.log(value);
+            const radioKeys = [
+                'deadline',
+                'dofollow',
+                'niche_edit_link',
+                'home_featured',
+                'money_anchor',
+            ];
             if (limit === 'from') filterItem.from = value;
             if (limit === 'to') filterItem.to = value;
-            if (name === 'Deadline') filterItem.value = value;
+            if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
             this.setFilterItem(filterItem);
         },
         onRequestCreated() {
@@ -2628,5 +2694,9 @@ export default {
 label {
     font-size: 14px;
     font-weight: 500;
+}
+
+.font-14 {
+    font-size: 14px;
 }
 </style>
