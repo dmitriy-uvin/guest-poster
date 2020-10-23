@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <span v-for="(filterItem, key) in all" :key="key">
+        <span v-for="(filterItem, key) in allFilterItems" :key="key">
              <VChip
                  v-if="!filterItem.items"
                  label
@@ -43,8 +43,7 @@
         </span>
         <span
             v-if="
-            Object.values(visibleFilterItems).length
-            || Object.values(visibleFilterItemsArray).length"
+            Object.values(allFilterItems).length"
             @click="clearAllFilters"
         >
             <VIcon color="#2f80ed" small>mdi-delete</VIcon>
@@ -93,9 +92,7 @@ export default {
     computed: {
         ...mapGetters('filter', {
             filterItems: getters.GET_FILTER_ITEMS,
-            visibleFilterItems: getters.GET_VISIBLE_FILTER_ITEMS,
-            visibleFilterItemsArray: getters.GET_VISIBLE_FILTER_ITEMS_ARRAY,
-            all: getters.GET_VISIBLE_FILTER_ITEMS_ALL
+            allFilterItems: getters.GET_VISIBLE_FILTER_ITEMS_ALL,
         }),
     },
 }

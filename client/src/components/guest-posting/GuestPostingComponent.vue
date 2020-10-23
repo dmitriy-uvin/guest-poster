@@ -1969,6 +1969,7 @@ import guestPostingMixin from '@/mixins/guestPostingMixin';
 import { mapGetters, mapActions } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as filterActions from '@/store/modules/filter/types/actions';
+import * as filterGetters from '@/store/modules/filter/types/getters';
 import { countries } from '@/helpers/countries';
 import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
@@ -2158,11 +2159,6 @@ export default {
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
             clearFilterItems: filterActions.CLEAR_FILTER_ITEMS
         }),
-        selectFilterArrayItems(name, value) {
-            console.log(name);
-            console.log(value);
-            console.log(value.map(topic => this.topics[topic]));
-        },
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
@@ -2236,9 +2232,9 @@ export default {
             Object.keys(this.filter.alexa).forEach(key => this.filter.alexa[key] = '');
             Object.keys(this.filter.semRush).forEach(key => this.filter.semRush[key] = '');
             Object.keys(this.filter.platform).forEach(key => this.filter.platform[key] = '');
-            Object.keys(this.filter.facebook).forEach(key => this.filter.platform[key] = '');
-            Object.keys(this.filter.ahrefs).forEach(key => this.filter.platform[key] = '');
-            Object.keys(this.filter.trust).forEach(key => this.filter.platform[key] = '');
+            Object.keys(this.filter.facebook).forEach(key => this.filter.facebook[key] = '');
+            Object.keys(this.filter.ahrefs).forEach(key => this.filter.ahrefs[key] = '');
+            Object.keys(this.filter.trust).forEach(key => this.filter.trust[key] = '');
             this.filter.platform.topics =
                 this.filter.platform.domainZones =
                 this.filter.alexa.country =
@@ -2295,6 +2291,9 @@ export default {
         ...mapGetters('platforms', {
             topics: getters.GET_TOPICS,
             domainZonesList: getters.GET_DOMAIN_ZONES
+        }),
+        ...mapGetters('filter', {
+            canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM
         }),
         domainZonesFormatted() {
             return this.domainZonesList.map(domainZone => '.' + domainZone);
