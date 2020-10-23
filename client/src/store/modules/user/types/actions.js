@@ -5,3 +5,4 @@ export const FETCH_LOGGED_USER = 'fetchLoggedUser';
 export const VERIFY_EMAIL = 'verifyEmail';
 export const FORGOT_PASSWORD = 'forgotPassword';
 export const RESET_PASSWORD = 'resetPassword';
+export const UPDATE_AUTH_USER = 'updateAuthUser';

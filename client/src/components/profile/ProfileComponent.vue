@@ -54,6 +54,7 @@
                             depressed
                             block
                             large
+                            @click="onSaveChanges"
                         >
                             Save Changes
                         </VBtn>
@@ -75,8 +76,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
+import * as actions from '@/store/modules/user/types/actions';
+import notificationMixin from '@/mixins/notificationMixin';
 export default {
     name: 'ProfileComponent',
     data: () => ({
@@ -86,6 +89,36 @@ export default {
         website: '',
         emailVerified: ''
     }),
+    mixins: [notificationMixin],
+    methods: {
+        ...mapActions('user', {
+            updateAuthUser: actions.UPDATE_AUTH_USER
+        }),
+        async onSaveChanges() {
+            try {
+                const userData = {};
+                if (this.name !== this.user.name) {
+                    userData.name = this.name;
+                }
+                if (this.skype !== this.user.skype) {
+                    userData.skype = this.skype;
+                }
+                if (this.website !== this.user.website) {
+                    userData.website = this.website;
+                }
+                await this.updateAuthUser(userData);
+                this.setNotification({
+                    type: 'success',
+                    message: 'Profile was successfully updated!'
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        }
+    },
     async mounted() {
         this.name = this.user.name;
         this.email = this.user.email;
