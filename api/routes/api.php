@@ -38,6 +38,14 @@ Route::group([
     Route::get('/domain-zones', [\App\Http\Controllers\Api\DomainZoneController::class, 'getCollection']);
 });
 
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'profile'
+], function () {
+    Route::put('/', [\App\Http\Controllers\Api\ProfileController::class, 'updateAuthUser']);
+});
+
+
 
 Route::group([
     'prefix' => 'platforms',
