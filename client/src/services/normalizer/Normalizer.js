@@ -72,8 +72,10 @@ export const userMapper = User => ({
     id: User.id,
     name: User.name,
     email: User.email,
+    role: User.role,
     skype: User.skype,
     website: User.website,
+    emailVerifiedAt: User.email_verified_at
 });
 
 export const orderMapper = Order => ({
