@@ -2,8 +2,8 @@ import * as actions from './types/actions';
 import * as mutations from './types/mutations';
 
 export default {
-    [actions.SET_FILTER_ITEM]: ({ commit }, filterItem) => {
-        commit(mutations.SET_FILTER_ITEM, filterItem);
+    [actions.SET_FILTER_ITEM]: ({ commit, getters }, filterItem) => {
+        commit(mutations.SET_FILTER_ITEM, { filterItem, getters });
     },
     [actions.DELETE_FILTER_ITEM]: ({ commit }, id) => {
         commit(mutations.DELETE_FILTER_ITEM, id);
