@@ -27,7 +27,13 @@ export default {
         await authService.resetPassword(newPasswordData);
     },
     [actions.UPDATE_AUTH_USER]: async ({ commit }, userData) => {
-        await authService.updateAuthUser(userData);
-        commit(mutations.UPDATE_AUTH_USER, userData);
+        const response = await authService.updateAuthUser(userData);
+        commit(mutations.SET_LOGGED_USER, response);
+    },
+    [actions.SEND_VERIFY_EMAIL_LINK]: async () => {
+        await authService.sendVerifyEmailLink();
+    },
+    [actions.UPDATE_AUTH_USER_PASSWORD]: async (context, passwordData) => {
+        await authService.updateAuthUserPassword(passwordData);
     }
 }
