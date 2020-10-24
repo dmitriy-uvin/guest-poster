@@ -54,6 +54,12 @@ const authService = {
     async updateAuthUser(userData) {
         const response = await requestInternalService.put('/profile', userData);
         return response?.data?.data;
+    },
+    async sendVerifyEmailLink() {
+        return await requestInternalService.post(API_PREFIX + '/email-verification');
+    },
+    async updateAuthUserPassword(passwordData) {
+        return await requestInternalService.put('/profile/password', passwordData);
     }
 };
 
