@@ -25,5 +25,9 @@ export default {
     },
     [actions.RESET_PASSWORD]: async (context, newPasswordData) => {
         await authService.resetPassword(newPasswordData);
+    },
+    [actions.UPDATE_AUTH_USER]: async ({ commit }, userData) => {
+        await authService.updateAuthUser(userData);
+        commit(mutations.UPDATE_AUTH_USER, userData);
     }
 }

@@ -34,7 +34,6 @@ final class GetPlatformCollectionAction
             $filterQuery = $filterQuery
                 ->where('organic_traffic', '>=', $request->getOrganicTrafficFrom());
         }
-
         if ($request->getOrganicTrafficFrom() < $request->getOrganicTrafficTo()) {
             $filterQuery = $filterQuery
                 ->where('organic_traffic', '<=', $request->getOrganicTrafficTo());
@@ -43,9 +42,12 @@ final class GetPlatformCollectionAction
         if ($request->getPriceFrom()) {
             $filterQuery = $filterQuery->where('price', '>=', $request->getPriceFrom());
         }
-
         if ($request->getPriceFrom() < $request->getPriceTo()) {
             $filterQuery = $filterQuery->where('price', '<=', $request->getPriceTo());
+        }
+
+        if ($request->getDeadline()) {
+            $filterQuery = $filterQuery->where('deadline', '<=', $request->getDeadline());
         }
 
         if ($request->getDofollow() === 'no') {
@@ -89,6 +91,10 @@ final class GetPlatformCollectionAction
             $filterQuery = $filterQuery->whereHas('moz', function($query) use ($request){
                 $query->where('da', '<=', $request->getMozDaTo());
             });
+        }
+
+        if ($request->getDomainZones()) {
+            $filterQuery = $filterQuery->whereIn('domain_zone', $request->getDomainZones());
         }
 
         if ($request->getMozPaFrom()) {

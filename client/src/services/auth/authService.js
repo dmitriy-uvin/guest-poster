@@ -50,6 +50,10 @@ const authService = {
     async resetPassword(newPasswordData) {
         const response = await requestInternalService.post(API_PREFIX + '/reset-password', newPasswordData);
         return response?.data?.data;
+    },
+    async updateAuthUser(userData) {
+        const response = await requestInternalService.put('/profile', userData);
+        return response?.data?.data;
     }
 };
 
