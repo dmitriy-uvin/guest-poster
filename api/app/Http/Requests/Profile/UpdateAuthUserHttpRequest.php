@@ -10,8 +10,9 @@ class UpdateAuthUserHttpRequest extends ApiFormRequest
     {
         return [
             'name' => 'string',
-            'skype' => 'string',
-            'website' => 'string',
+            'skype' => 'string|nullable',
+            'website' => 'string|nullable',
+            'email' => 'string',
         ];
     }
 }
