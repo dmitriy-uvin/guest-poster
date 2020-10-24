@@ -86,6 +86,10 @@
                 </VContainer>
             </VCardText>
         </VCard>
+        <PasswordChangedDialog
+            :visibility="passwordChangedDialog"
+            @close-dialog="passwordChangedDialog = false"
+        />
     </VDialog>
 </template>
 
@@ -98,12 +102,17 @@ import {
     minLength,
     sameAs
 } from 'vuelidate/lib/validators';
+import PasswordChangedDialog from '@/components/profile/PasswordChangedDialog';
 export default {
     name: 'ChangePasswordFormDialog',
+    components: {
+        PasswordChangedDialog
+    },
     data: () => ({
         oldPasswordShow: false,
         newPasswordShow: false,
         newPasswordConfirmShow: false,
+        passwordChangedDialog: false,
         oldPassword: '',
         newPassword: '',
         newPasswordConfirmation: '',
@@ -134,6 +143,7 @@ export default {
                         new_password_confirmation: this.newPasswordConfirmation,
                     });
                     this.showDialog = false;
+                    this.passwordChangedDialog = true;
                     this.error = '';
                 } catch (error) {
                     this.error = error;

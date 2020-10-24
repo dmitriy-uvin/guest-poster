@@ -86,6 +86,11 @@
             :visibility="changePasswordFormDialog"
             @close-dialog="changePasswordFormDialog = false"
         />
+
+        <ConfirmEmailSentDialog
+            :visibility="confirmEmailSentDialog"
+            @close-dialog="confirmEmailSentDialog = false"
+        />
     </div>
 </template>
 
@@ -100,10 +105,12 @@ import {
     email
 } from 'vuelidate/lib/validators';
 import ChangePasswordFormDialog from '@/components/profile/ChangePasswordFormDialog';
+import ConfirmEmailSentDialog from '@/components/profile/ConfirmEmailSentDialog';
 export default {
     name: 'ProfileComponent',
     components: {
-        ChangePasswordFormDialog
+        ChangePasswordFormDialog,
+        ConfirmEmailSentDialog
     },
     validations: {
         name: { required },
@@ -116,6 +123,7 @@ export default {
         website: '',
         emailVerified: '',
         changePasswordFormDialog: false,
+        confirmEmailSentDialog: false
     }),
     mixins: [validationMixin, notificationMixin],
     methods: {
@@ -126,10 +134,7 @@ export default {
         async onConfirmEmail() {
             try {
                 await this.sendVerifyEmailLink();
-                this.setNotification({
-                    type: 'success',
-                    message: 'Verify email link was sent!'
-                })
+                this.confirmEmailSentDialog = true;
             } catch (error) {
                 this.setNotification({
                     type: 'error',
