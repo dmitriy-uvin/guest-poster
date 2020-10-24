@@ -24,7 +24,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'password',
         'skype',
         'website',
-        'role'
+        'role',
+        'email_verified_at'
     ];
 
     protected $attributes = [

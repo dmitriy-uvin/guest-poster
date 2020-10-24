@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Auth;
 
-use App\Notifications\VerifyEmailNotification;
+use App\Jobs\SendConfirmEmailJob;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +20,6 @@ final class SendEmailVerifyAction
     public function execute()
     {
         $user = $this->userRepository->getById(Auth::id());
-        $user->notify(new VerifyEmailNotification());
+        SendConfirmEmailJob::dispatch($user);
     }
 }
