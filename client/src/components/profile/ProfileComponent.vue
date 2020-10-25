@@ -12,7 +12,11 @@
                         <span>Your email is not confirmed</span>
                     </VCol>
                     <VCol cols="12" md="6" class="text-right">
-                        <VBtn depressed text>
+                        <VBtn
+                            depressed
+                            text
+                            @click="onConfirmEmail"
+                        >
                             Confirm Email
                         </VBtn>
                     </VCol>
@@ -23,6 +27,8 @@
                         label="Name"
                         append-icon="mdi-account"
                         v-model="name"
+                        :error-messages="nameErrors"
+                        @input="onNameInput"
                     ></VTextField>
                 </VCol>
                 <VCol cols="12">
@@ -30,6 +36,8 @@
                         label="Email"
                         append-icon="mdi-at"
                         v-model="email"
+                        :error-messages="emailErrors"
+                        @input="onEmailInput"
                     ></VTextField>
                 </VCol>
                 <VCol cols="12">
@@ -65,6 +73,7 @@
                             depressed
                             block
                             large
+                            @click="changePasswordFormDialog = true"
                         >
                             <span style="color: #2f80ed">Change Password</span>
                         </VBtn>
@@ -72,6 +81,16 @@
                 </VRow>
             </div>
         </VCol>
+
+        <ChangePasswordFormDialog
+            :visibility="changePasswordFormDialog"
+            @close-dialog="changePasswordFormDialog = false"
+        />
+
+        <ConfirmEmailSentDialog
+            :visibility="confirmEmailSentDialog"
+            @close-dialog="confirmEmailSentDialog = false"
+        />
     </div>
 </template>
 
@@ -80,42 +99,77 @@ import { mapGetters, mapActions } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 import * as actions from '@/store/modules/user/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
+import { validationMixin } from 'vuelidate';
+import {
+    required,
+    email
+} from 'vuelidate/lib/validators';
+import ChangePasswordFormDialog from '@/components/profile/ChangePasswordFormDialog';
+import ConfirmEmailSentDialog from '@/components/profile/ConfirmEmailSentDialog';
 export default {
     name: 'ProfileComponent',
+    components: {
+        ChangePasswordFormDialog,
+        ConfirmEmailSentDialog
+    },
+    validations: {
+        name: { required },
+        email: { required, email }
+    },
     data: () => ({
         name: '',
         email: '',
         skype: '',
         website: '',
-        emailVerified: ''
+        emailVerified: '',
+        changePasswordFormDialog: false,
+        confirmEmailSentDialog: false
     }),
-    mixins: [notificationMixin],
+    mixins: [validationMixin, notificationMixin],
     methods: {
         ...mapActions('user', {
-            updateAuthUser: actions.UPDATE_AUTH_USER
+            updateAuthUser: actions.UPDATE_AUTH_USER,
+            sendVerifyEmailLink: actions.SEND_VERIFY_EMAIL_LINK
         }),
-        async onSaveChanges() {
+        async onConfirmEmail() {
             try {
-                const userData = {};
-                if (this.name !== this.user.name) {
-                    userData.name = this.name;
-                }
-                if (this.skype !== this.user.skype) {
-                    userData.skype = this.skype;
-                }
-                if (this.website !== this.user.website) {
-                    userData.website = this.website;
-                }
-                await this.updateAuthUser(userData);
-                this.setNotification({
-                    type: 'success',
-                    message: 'Profile was successfully updated!'
-                });
+                await this.sendVerifyEmailLink();
+                this.confirmEmailSentDialog = true;
             } catch (error) {
                 this.setNotification({
                     type: 'error',
                     message: error
                 });
+            }
+        },
+        onNameInput() {
+            this.$v.name.$touch();
+        },
+        onEmailInput() {
+            this.$v.email.$touch();
+        },
+        async onSaveChanges() {
+            this.$v.$touch();
+            if (!this.$v.$invalid) {
+                try {
+                    const userData = {
+                        name: this.name,
+                        skype: this.skype,
+                        website: this.website,
+                        email: this.email
+                    };
+                    await this.updateAuthUser(userData);
+                    this.emailVerified = !!this.user.emailVerifiedAt;
+                    this.setNotification({
+                        type: 'success',
+                        message: 'Profile was successfully updated!'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        type: 'error',
+                        message: error
+                    });
+                }
             }
         }
     },
@@ -133,7 +187,27 @@ export default {
         changed() {
             return !((this.name === this.user.name) && (this.email === this.user.email)
                 && (this.skype === this.user.skype) && (this.website === this.user.website));
-        }
+        },
+        nameErrors() {
+            const errors = [];
+            if (!this.$v.name.$dirty) {
+                return errors;
+            }
+            !this.$v.name.required &&
+                errors.push('Name is required!');
+            return errors;
+        },
+        emailErrors() {
+            const errors = [];
+            if (!this.$v.email.$dirty) {
+                return errors;
+            }
+            !this.$v.email.required &&
+                errors.push('Email is required!');
+            !this.$v.email.email &&
+                errors.push('Email must be valid!');
+            return errors;
+        },
     }
 }
 </script>

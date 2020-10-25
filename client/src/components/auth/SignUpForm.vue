@@ -146,7 +146,7 @@ export default {
                 return errors;
             }
             !this.$v.regUserData.name.required &&
-                errors.push('Email is required!');
+                errors.push('Name is required!');
             return errors;
         },
         emailErrors() {
@@ -168,7 +168,7 @@ export default {
             !this.$v.regUserData.password.required &&
                 errors.push('Password is required!');
             !this.$v.regUserData.password.minLength &&
-                errors.push('Password must be longer than 8 characters!');
+                errors.push('Password must be minimum 8 characters!');
             return errors;
         },
         passwordConfirmationErrors() {

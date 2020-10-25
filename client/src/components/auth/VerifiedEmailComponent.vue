@@ -23,27 +23,30 @@
 <script>
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
-import * as notifyActions from '@/store/modules/notification/types/actions';
+import notificationMixin from '@/mixins/notificationMixin';
+import authService from '@/services/auth/authService';
 
 export default {
     name: 'VerifiedEmailComponent',
+    mixins: [notificationMixin],
     data: () => ({
         verified: false
     }),
     methods: {
         ...mapActions('user', {
-            verifyEmail: actions.VERIFY_EMAIL
-        }),
-        ...mapActions('notification', {
-            setNotification: notifyActions.SET_NOTIFICATION
+            verifyEmail: actions.VERIFY_EMAIL,
+            fetchLoggedUser: actions.FETCH_LOGGED_USER
         }),
     },
     async created() {
         try {
             await this.verifyEmail(this.$route.query);
+            if (authService.hasToken()) {
+                await this.fetchLoggedUser();
+            }
             this.verified = true;
             this.setNotification({
-                message: 'Email was verified! Sign In!',
+                message: 'Email was verified!',
                 type: 'success'
             });
         } catch (error) {

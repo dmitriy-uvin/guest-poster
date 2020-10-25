@@ -24,7 +24,8 @@ class VerifyEmailNotification extends Notification
 
     public function toMail($notifiable)
     {
-        return (new EmailVerificationMail())->build($this->verificationUrl($notifiable));
+        return (new EmailVerificationMail())
+            ->build($this->verificationUrl($notifiable));
     }
 
     protected function verificationUrl($notifiable)

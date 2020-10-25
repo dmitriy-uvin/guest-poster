@@ -43,6 +43,7 @@ Route::group([
     'prefix' => 'profile'
 ], function () {
     Route::put('/', [\App\Http\Controllers\Api\ProfileController::class, 'updateAuthUser']);
+    Route::put('/password', [\App\Http\Controllers\Api\ProfileController::class, 'updateAuthUserPassword']);
 });
 
 
