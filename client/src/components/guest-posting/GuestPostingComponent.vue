@@ -285,8 +285,26 @@
                         </VCol>
                     </VRow>
 
-                    <h3 class="text-uppercase mt-6 mb-3">Additional Filters</h3>
-                    <VRow>
+                    <VBtn
+                        color="#eaf3ff"
+                        depressed
+                        @click="openAdditionalFilters"
+                        v-if="additionalFiltersOpened"
+                    >
+                        <VIcon left color="#2f80ed">mdi-chevron-up</VIcon>
+                        <span style="color: #2f80ed">Hide</span>
+                    </VBtn>
+                    <VBtn
+                        color="#eaf3ff"
+                        depressed
+                        @click="openAdditionalFilters"
+                        v-else
+                    >
+                        <VIcon left color="#2f80ed">mdi-chevron-down</VIcon>
+                        <span style="color: #2f80ed">Additional Filters</span>
+                    </VBtn>
+<!--                    <h3 class="text-uppercase mt-6 mb-3">Additional Filters</h3>-->
+                    <VRow v-if="additionalFiltersOpened">
                         <VTabs fixed-tabs v-model="tab">
                             <VTab key="Trust">Trust</VTab>
                             <VTab key="Moz">Moz</VTab>
@@ -1804,7 +1822,15 @@
                     <td>
                         <div class="link">
                             <span class="website-link">
-                                {{ deleteProtocol(platform.websiteUrl) }}
+                                <img
+                                    v-if="platform.alexa.country"
+                                    :src="require('../../assets/svg/country-flags/' +
+                                     platform.alexa.country.toLowerCase()
+                                      + '.svg')"
+                                    :alt="platform.alexa.country"
+                                    class="platform-country-image"
+                                >
+                                {{ platform.alexa.country }}{{ platform.websiteUrl }}
                             </span>
                         </div>
                         <div class="topics">
@@ -2043,6 +2069,7 @@ export default {
         tab: 'Ahrefs',
         filtersOpened: false,
         filtersApplied: false,
+        additionalFiltersOpened: false,
         filterChips: {},
         countries: countries,
         deadlineList: {
@@ -2198,6 +2225,9 @@ export default {
         },
         openFilters() {
             this.filtersOpened = !this.filtersOpened;
+        },
+        openAdditionalFilters() {
+            this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
         onInputFilter(value, type, name, property, limit = '') {
             const filterItem = {
@@ -2697,5 +2727,10 @@ label {
 
 .font-14 {
     font-size: 14px;
+}
+
+.platform-country-image {
+    width: 18px;
+    height: 13px;
 }
 </style>
