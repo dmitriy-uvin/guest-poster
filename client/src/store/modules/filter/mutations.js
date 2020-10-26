@@ -1,46 +1,25 @@
 import * as mutations from './types/mutations';
-import * as gettersTypes from './types/getters';
+// import * as gettersTypes from './types/getters';
 
 export default {
-    [mutations.SET_FILTER_ITEM]: (state, { getters, filterItem }) => {
-        if (filterItem.type === 'additional' && getters[gettersTypes.CAN_ADD_FILTER_ITEM]) {
-            state.filterItems = {
-                ...state.filterItems,
-                [filterItem.id]: {
-                    ...state.filterItems[filterItem.id],
-                    name: filterItem.name,
-                    visible: filterItem.visible,
-                    type: filterItem.type,
-                    property: filterItem.property,
-                    value: filterItem?.value,
-                    items: filterItem?.items,
-                }
-            };
-            if (filterItem.limit === 'from') {
-                state.filterItems[filterItem.id].from = filterItem.from;
+    [mutations.SET_FILTER_ITEM]: (state, { filterItem }) => {
+        state.filterItems = {
+            ...state.filterItems,
+            [filterItem.id]: {
+                ...state.filterItems[filterItem.id],
+                name: filterItem.name,
+                visible: filterItem.visible,
+                type: filterItem.type,
+                property: filterItem.property,
+                value: filterItem?.value,
+                items: filterItem?.items,
             }
-            if (filterItem.limit === 'to') {
-                state.filterItems[filterItem.id].to = filterItem.to;
-            }
-        } else if (filterItem.type === 'general') {
-            state.filterItems = {
-                ...state.filterItems,
-                [filterItem.id]: {
-                    ...state.filterItems[filterItem.id],
-                    name: filterItem.name,
-                    visible: filterItem.visible,
-                    type: filterItem.type,
-                    property: filterItem.property,
-                    value: filterItem?.value,
-                    items: filterItem?.items,
-                }
-            };
-            if (filterItem.limit === 'from') {
-                state.filterItems[filterItem.id].from = filterItem.from;
-            }
-            if (filterItem.limit === 'to') {
-                state.filterItems[filterItem.id].to = filterItem.to;
-            }
+        };
+        if (filterItem.limit === 'from') {
+            state.filterItems[filterItem.id].from = filterItem.from;
+        }
+        if (filterItem.limit === 'to') {
+            state.filterItems[filterItem.id].to = filterItem.to;
         }
     },
     [mutations.DELETE_FILTER_ITEM]: (state, id) => {

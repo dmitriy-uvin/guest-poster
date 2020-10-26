@@ -1786,7 +1786,6 @@
                 </VCol>
             </VRow>
         </VCol>
-
         <div class="elevation-2 pa-2 rounded-lg mb-4">
             <p class="d-inline-block ma-0 pa-0 mr-6 font-14">
                 Founded: <b>{{ total }}</b> sites
@@ -2062,6 +2061,7 @@ import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
 import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
 import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
+import notificationMixin from '@/mixins/notificationMixin';
 
 export default {
     name: 'GuestPostingComponent',
@@ -2241,7 +2241,8 @@ export default {
         valueFormatMixin,
         guestPostingMixin,
         validationMixin,
-        additionalFilterCounterMixin
+        additionalFilterCounterMixin,
+        notificationMixin
     ],
     methods: {
         ...mapActions('filter', {
@@ -2293,26 +2294,32 @@ export default {
             this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
         onInputFilter(value, type, name, property, limit = '') {
-            const filterItem = {
-                id: name.toLowerCase().replace(/\s/g, '_'),
-                name,
-                type,
-                visible: false,
-                property,
-                limit
-            };
-            const radioKeys = [
-                'deadline',
-                'dofollow',
-                'niche_edit_link',
-                'home_featured',
-                'money_anchor',
-            ];
-            if (limit === 'from') filterItem.from = value;
-            if (limit === 'to') filterItem.to = value;
-            if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
-            this.setFilterItem(filterItem);
+            if (this.additionalFiltersCounter !== 5) {
+                const filterItem = {
+                    id: name.toLowerCase().replace(/\s/g, '_'),
+                    name,
+                    type,
+                    visible: false,
+                    property,
+                    limit
+                };
+                const radioKeys = [
+                    'deadline',
+                    'dofollow',
+                    'niche_edit_link',
+                    'home_featured',
+                    'money_anchor',
+                ];
+                if (limit === 'from') filterItem.from = value;
+                if (limit === 'to') filterItem.to = value;
+                if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+                if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+                this.setFilterItem(filterItem);
+            } else {
+                this.setNotification({
+                    message: 'Sorry, but for filtering are available only five numerical range!'
+                });
+            }
         },
         onRequestCreated() {
             this.unSelectAll();
@@ -2386,8 +2393,12 @@ export default {
             domainZonesList: getters.GET_DOMAIN_ZONES
         }),
         ...mapGetters('filter', {
-            canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM
+            canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM,
+            additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS
         }),
+        disabledAdditional() {
+            return this.additionalFiltersCounter === 5;
+        },
         domainZonesFormatted() {
             return this.domainZonesList.map(domainZone => '.' + domainZone);
         },

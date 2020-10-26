@@ -42,8 +42,7 @@
             </span>
         </span>
         <span
-            v-if="
-            Object.values(allFilterItems).length"
+            v-if="!isEmpty"
             @click="clearAllFilters"
         >
             <VIcon color="#2f80ed" small>mdi-delete</VIcon>
@@ -93,6 +92,7 @@ export default {
         ...mapGetters('filter', {
             filterItems: getters.GET_FILTER_ITEMS,
             allFilterItems: getters.GET_VISIBLE_FILTER_ITEMS_ALL,
+            isEmpty: getters.IS_EMPTY_FILTERS
         }),
     },
 }
