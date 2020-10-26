@@ -19,7 +19,7 @@
 
 .guest-poster-table th:nth-child(2),
 .guest-poster-table td:nth-child(2) {
-    width: 17%;
+    width: 15%;
 }
 
 .guest-poster-table th:nth-child(3),
@@ -50,7 +50,7 @@
 .guest-poster-table tr td:nth-child(12)
 {
     min-width: 6%;
-    max-width: 12%;
+    max-width: 10%;
 }
 
 .guest-poster-table tr th:nth-child(13),
@@ -59,8 +59,7 @@
 }
 
 .guest-poster-table tr th:nth-child(14),
-.guest-poster-table tr td:nth-child(14)
-{
+.guest-poster-table tr td:nth-child(14) {
     width: 15%;
 }
 
@@ -71,7 +70,7 @@ td.features {
 
 th.editorial-fee,
 td.editorial-fee {
-    width: 15%;
+    width: 14%;
 }
 
 .guest-poster-table th,

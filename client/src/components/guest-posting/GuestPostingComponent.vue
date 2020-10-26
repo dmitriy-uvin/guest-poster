@@ -305,13 +305,76 @@
                     </VBtn>
                     <VRow v-if="additionalFiltersOpened" class="mt-4">
                         <VTabs fixed-tabs v-model="tab">
-                            <VTab key="Trust">Trust</VTab>
-                            <VTab key="Moz">Moz</VTab>
-                            <VTab key="Alexa">Alexa</VTab>
-                            <VTab key="Ahrefs">Ahrefs</VTab>
-                            <VTab key="Majestic">Majestic</VTab>
-                            <VTab key="SemRush">SemRush</VTab>
-                            <VTab key="Facebook">Facebook</VTab>
+                            <VTab key="Trust">
+                                <VBadge
+                                    color="green"
+                                    :content="trustFilterCounter"
+                                    v-if="trustFilterCounter"
+                                >
+                                    Trust
+                                </VBadge>
+                                <span v-else>Trust</span>
+                            </VTab>
+                            <VTab key="Moz">
+                                <VBadge
+                                    color="green"
+                                    :content="mozFilterCounter"
+                                    v-if="mozFilterCounter"
+                                >
+                                    Moz
+                                </VBadge>
+                                <span v-else>Moz</span>
+                            </VTab>
+                            <VTab key="Alexa">
+                                <VBadge
+                                    color="green"
+                                    :content="alexaFilterCounter"
+                                    v-if="alexaFilterCounter"
+                                >
+                                    Alexa
+                                </VBadge>
+                                <span v-else>Alexa</span>
+                            </VTab>
+                            <VTab key="Ahrefs">
+                                <VBadge
+                                    color="green"
+                                    :content="ahrefsFilterCounter"
+                                    v-if="ahrefsFilterCounter"
+                                >
+                                    Ahrefs
+                                </VBadge>
+                                <span v-else>Ahrefs</span>
+                            </VTab>
+                            <VTab key="Majestic">
+                                <VBadge
+                                    color="green"
+                                    :content="majesticFilterCounter"
+                                    v-if="majesticFilterCounter"
+                                >
+                                    Majestic
+                                </VBadge>
+                                <span v-else>Majestic</span>
+                            </VTab>
+                            <VTab key="SemRush">
+                                <VBadge
+                                    color="green"
+                                    :content="semRushFilterCounter"
+                                    v-if="semRushFilterCounter"
+                                >
+                                    SemRush
+                                </VBadge>
+                                <span v-else>SemRush</span>
+                            </VTab>
+                            <VTab key="Facebook">
+                                <VBadge
+                                    color="green"
+                                    :content="facebookFilterCounter"
+                                    v-if="facebookFilterCounter"
+                                >
+                                    Facebook
+                                </VBadge>
+                                <span v-else>Facebook</span>
+                            </VTab>
                         </VTabs>
                         <VTabsItems v-model="tab" >
                             <VTabItem key="Trust">
@@ -1734,7 +1797,6 @@
                 @clear-all-filters="clearAllFilters"
             />
         </div>
-
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
                 <tr>
@@ -1801,12 +1863,12 @@
 <!--                            RD-->
 <!--                        </span>-->
 <!--                    </th>-->
-<!--                    <th class="features">Features</th>-->
-<!--                    <th @click="changeSortingAndDirection('price')" class="editorial-fee">-->
-<!--                        <span :class="{ 'underline' : sorting === 'price' }">-->
-<!--                            Editorial Fee-->
-<!--                        </span>-->
-<!--                    </th>-->
+                    <th class="features">Features</th>
+                    <th @click="changeSortingAndDirection('price')" class="editorial-fee">
+                        <span :class="{ 'underline' : sorting === 'price' }">
+                            Editorial Fee
+                        </span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -1999,6 +2061,7 @@ import { countries } from '@/helpers/countries';
 import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
 import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
+import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
 
 export default {
     name: 'GuestPostingComponent',
@@ -2177,7 +2240,8 @@ export default {
         rolemixin,
         valueFormatMixin,
         guestPostingMixin,
-        validationMixin
+        validationMixin,
+        additionalFilterCounterMixin
     ],
     methods: {
         ...mapActions('filter', {
