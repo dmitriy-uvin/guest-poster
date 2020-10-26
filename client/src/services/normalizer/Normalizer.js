@@ -21,47 +21,47 @@ export const platformMapper = Platform => ({
     createdAt: Platform.created_at,
     updatedAt: Platform.updated_at,
     inTrash: Platform.in_trash,
-    trust: Platform?.trust,
+    checktrust: Platform?.trust,
     spam: Platform?.spam,
-    lrtPowerTrust: Platform?.lrt_power_trust,
+    powertrust: Platform?.lrt_power_trust,
     topics: Platform.topics.map(topicMapper),
     moz: MozMapper(Platform.moz),
     alexa: AlexaMapper(Platform.alexa),
-    semrush: SemRushMapper(Platform.semrush),
+    semRush: SemRushMapper(Platform.semrush),
     majestic: MajesticMapper(Platform.majestic),
-    fb: Platform.fb,
-    ahrefs: Platform.ahrefs
+    facebook: FacebookMapper(Platform.fb),
+    ahrefs: AhrefsMapper(Platform.ahrefs)
 });
 
 export const MozMapper = Moz => ({
     pa: Moz?.pa,
     da: Moz?.da,
     rank: Moz?.rank,
-    linksIn: Moz?.links_in,
+    links_in: Moz?.links_in,
     equity: Moz?.equity
 });
 
 export const AlexaMapper = Alexa => ({
     rank: Alexa?.rank,
     country: Alexa?.country,
-    countryRank: Alexa?.country_rank
+    country_rank: Alexa?.country_rank
 });
 
 export const SemRushMapper = SemRush => ({
     rank: SemRush?.rank,
-    keywordNum: SemRush?.keyword_num,
+    keyword_num: SemRush?.keyword_num,
     trafficCosts: SemRush?.traffic_costs
 });
 
 export const MajesticMapper = Majestic => ({
-    externalBacklinks: Majestic?.external_backlinks,
-    externalGov: Majestic?.external_gov,
-    externalEdu: Majestic?.external_edu,
+    external_backlinks: Majestic?.external_backlinks,
+    external_gov: Majestic?.external_gov,
+    external_edu: Majestic?.external_edu,
     tf: Majestic?.tf,
     cf: Majestic?.cf,
     refd: Majestic?.refd,
-    refdEdu: Majestic?.refd_edu,
-    refdGov: Majestic?.refd_gov,
+    refd_edu: Majestic?.refd_edu,
+    refd_gov: Majestic?.refd_gov,
 });
 
 export const topicMapper = Topic => ({
@@ -87,4 +87,18 @@ export const orderMapper = Order => ({
     createdAt: Order.created_at,
     totalPrice: Order.total_price,
     items: Order.items.map(item => platformMapper(item[0]))
+});
+
+export const AhrefsMapper = Ahrefs => ({
+    rank: Ahrefs?.rank,
+    dr: Ahrefs?.dr,
+    ext_backlinks: Ahrefs?.eb,
+    refd: Ahrefs?.rd,
+    dofollow: Ahrefs?.dofollow
+});
+
+export const FacebookMapper = Facebook => ({
+    comments: Facebook?.comments,
+    reactions: Facebook?.reactions,
+    shares: Facebook?.shares,
 });

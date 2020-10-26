@@ -16,5 +16,17 @@ export default {
     },
     [actions.DELETE_FILTER_ITEM_ARRAY]: ({ commit }, data) => {
         commit(mutations.DELETE_FILTER_ITEM_ARRAY, data);
+    },
+    [actions.SET_COLUMN]: ({ commit }, column) => {
+        commit(mutations.SET_COLUMN, column);
+    },
+    [actions.REMOVE_COLUMN_BY_PROPERTY]: ({ commit }, property) => {
+        commit(mutations.REMOVE_COLUMN_BY_PROPERTY, property);
+    },
+    [actions.CLEAR_COLUMNS]: ({ commit }) => {
+        commit(mutations.CLEAR_COLUMNS);
+    },
+    [actions.SHOW_COLUMNS]: ({ commit }) => {
+        commit(mutations.SHOW_COLUMNS);
     }
 }

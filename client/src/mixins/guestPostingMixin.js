@@ -1,7 +1,6 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as actions from '@/store/modules/platforms/types/actions';
-// import {countries} from "@/helpers/countries";
 // import { countries } from '@/helpers/countries';
 
 export default {

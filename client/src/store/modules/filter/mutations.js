@@ -54,5 +54,25 @@ export default {
     },
     [mutations.CLEAR_FILTER_ITEMS]: state => {
         state.filterItems = {};
+    },
+    [mutations.SET_COLUMN]: (state, column) => {
+        const columns = state.columns;
+        columns.push(column);
+        state.columns = columns;
+    },
+    [mutations.REMOVE_COLUMN_BY_PROPERTY]: (state, property) => {
+        const index = state.columns.findIndex(column => column.property === property);
+        state.columns = [
+            ...state.columns.slice(0, index),
+            ...state.columns.slice(index + 1),
+        ];
+    },
+    [mutations.CLEAR_COLUMNS]: state => {
+        state.columns = [];
+    },
+    [mutations.SHOW_COLUMNS]: state => {
+        state.columns.map(column => {
+            column.visible = true;
+        });
     }
 }

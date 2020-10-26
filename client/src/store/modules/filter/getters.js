@@ -78,5 +78,14 @@ export default {
             }
         });
         return isEmpty;
+    },
+    [gettersTypes.GET_VISIBLE_COLUMNS]: state => {
+        const result = [];
+        state.columns.map(column => {
+            if (column.visible) {
+                result.push(column);
+            }
+        })
+        return result;
     }
 }

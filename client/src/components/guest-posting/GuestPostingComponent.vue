@@ -16,7 +16,6 @@
                 </VBtn>
             </div>
         </div>
-
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="pr-2">
                 <VCol cols="12" md="9" class="px-4">
@@ -565,7 +564,8 @@
                                                         'additional',
                                                         'Moz DA',
                                                         'moz.da',
-                                                        'from'
+                                                        'from',
+                                                        'DA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -582,7 +582,8 @@
                                                         'additional',
                                                         'Moz DA',
                                                         'moz.da',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.DA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -610,7 +611,8 @@
                                                         'additional',
                                                         'Moz PA',
                                                         'moz.pa',
-                                                        'from'
+                                                        'from',
+                                                        'PA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -627,7 +629,8 @@
                                                         'additional',
                                                         'Moz PA',
                                                         'moz.pa',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.PA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -655,7 +658,8 @@
                                                         'additional',
                                                         'Moz Rank',
                                                         'moz.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Moz.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -672,7 +676,8 @@
                                                         'additional',
                                                         'Moz Rank',
                                                         'moz.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -700,7 +705,8 @@
                                                         'additional',
                                                         'Moz Links In',
                                                         'moz.links_in',
-                                                        'from'
+                                                        'from',
+                                                        'LinksIn'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -717,7 +723,8 @@
                                                         'additional',
                                                         'Moz Links In',
                                                         'moz.links_in',
-                                                        'to'
+                                                        'to',
+                                                        'LinksIn'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -745,7 +752,8 @@
                                                         'additional',
                                                         'Moz Equity',
                                                         'moz.equity',
-                                                        'from'
+                                                        'from',
+                                                        'Equity'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -762,7 +770,8 @@
                                                         'additional',
                                                         'Moz Equity',
                                                         'moz.equity',
-                                                        'to'
+                                                        'to',
+                                                         'Equity'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -794,7 +803,8 @@
                                                         'additional',
                                                         'Alexa Rank',
                                                         'alexa.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Al.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -811,7 +821,8 @@
                                                         'additional',
                                                         'Alexa Rank',
                                                         'alexa.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Al.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -839,7 +850,8 @@
                                                         'additional',
                                                         'Alexa CountryRank',
                                                         'alexa.country_rank',
-                                                        'from'
+                                                        'from',
+                                                        'Cnt.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -856,7 +868,8 @@
                                                         'additional',
                                                         'Alexa CountryRank',
                                                         'alexa.country_rank',
-                                                        'to'
+                                                        'to',
+                                                        'Cnt.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -888,7 +901,8 @@
                                                         'additional',
                                                         'Ahrefs Rank',
                                                         'ahrefs.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -905,7 +919,8 @@
                                                         'additional',
                                                         'Ahrefs Rank',
                                                         'ahrefs.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -978,7 +993,8 @@
                                                         'additional',
                                                         'Ahrefs Ext. Backlinks',
                                                         'ahrefs.ext_backlinks',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Ext'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -995,7 +1011,8 @@
                                                         'additional',
                                                         'Ahrefs Ext. Backlinks',
                                                         'ahrefs.ext_backlinks',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Ext'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1068,7 +1085,8 @@
                                                         'additional',
                                                         'Ahrefs Dofollow',
                                                         'ahrefs.dofollow',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Dofollow'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1085,7 +1103,8 @@
                                                         'additional',
                                                         'Ahrefs Dofollow',
                                                         'ahrefs.dofollow',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Dofollow'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1115,9 +1134,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ext. Edu',
+                                                        'Majestic Ext.',
                                                         'majestic.external_backlinks',
-                                                        'from'
+                                                        'from',
+                                                        'Ext.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1132,9 +1152,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ext. Edu',
+                                                        'Majestic Ext.',
                                                         'majestic.external_backlinks',
-                                                        'to'
+                                                        'to',
+                                                        'Ext.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1162,7 +1183,8 @@
                                                         'additional',
                                                         'Majestic Ext. Edu',
                                                         'majestic.external_edu',
-                                                        'from'
+                                                        'from',
+                                                        'Ext. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1179,7 +1201,8 @@
                                                         'additional',
                                                         'Majestic Ext. Edu',
                                                         'majestic.external_edu',
-                                                        'to'
+                                                        'to',
+                                                        'Ext. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1207,7 +1230,8 @@
                                                         'additional',
                                                         'Majestic Ext. Gov',
                                                         'majestic.external_gov',
-                                                        'from'
+                                                        'from',
+                                                        'Ext. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1224,7 +1248,8 @@
                                                         'additional',
                                                         'Majestic Ext. Gov',
                                                         'majestic.external_gov',
-                                                        'to'
+                                                        'to',
+                                                        'Ext. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1250,9 +1275,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD.',
                                                         'majestic.refd',
-                                                        'from'
+                                                        'from',
+                                                        'RefD.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1267,9 +1293,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD.',
                                                         'majestic.refd',
-                                                        'to'
+                                                        'to',
+                                                        'RefD.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1295,9 +1322,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD. EDU',
                                                         'majestic.refd_edu',
-                                                        'from'
+                                                        'from',
+                                                        'RefD. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1312,9 +1340,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD. EDU',
                                                         'majestic.refd_edu',
-                                                        'to'
+                                                        'to',
+                                                        'RefD. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1340,9 +1369,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. GOV',
+                                                        'Majestic RefD. GOV',
                                                         'majestic.refd_gov',
-                                                        'from'
+                                                        'from',
+                                                        'RefD. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1357,9 +1387,10 @@
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. GOV',
+                                                        'Majestic RefD. GOV',
                                                         'majestic.refd_gov',
-                                                        'to'
+                                                        'to',
+                                                        'RefD. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1433,7 +1464,8 @@
                                                         'additional',
                                                         'Majestic CF',
                                                         'majestic.cf',
-                                                        'from'
+                                                        'from',
+                                                        'CF'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1451,7 +1483,8 @@
                                                         'additional',
                                                         'Majestic CF',
                                                         'majestic.cf',
-                                                        'to'
+                                                        'to',
+                                                        'CF'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1483,7 +1516,8 @@
                                                         'additional',
                                                         'SemRush Rank',
                                                         'semRush.rank',
-                                                        'from'
+                                                        'from',
+                                                        'SR.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1500,7 +1534,8 @@
                                                         'additional',
                                                         'SemRush Rank',
                                                         'semRush.rank',
-                                                        'to'
+                                                        'to',
+                                                        'SR.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1528,7 +1563,8 @@
                                                         'additional',
                                                         'SemRush Keywords Num.',
                                                         'semRush.keyword_num',
-                                                        'from'
+                                                        'from',
+                                                        'SR.Keywords'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1545,7 +1581,8 @@
                                                         'additional',
                                                         'SemRush Keywords Num.',
                                                         'semRush.keyword_num',
-                                                        'to'
+                                                        'to',
+                                                        'SR.Keywords'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1622,7 +1659,8 @@
                                                         'additional',
                                                         'Facebook Comments',
                                                         'facebook.comments',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Comments'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1639,7 +1677,8 @@
                                                         'additional',
                                                         'Facebook Comments',
                                                         'facebook.comments',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Comments'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1667,7 +1706,8 @@
                                                         'additional',
                                                         'Facebook Shares',
                                                         'facebook.shares',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Shares'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1684,7 +1724,8 @@
                                                         'additional',
                                                         'Facebook Shares',
                                                         'facebook.shares',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Shares'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1712,7 +1753,8 @@
                                                         'additional',
                                                         'Facebook Reactions',
                                                         'facebook.reactions',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Reacts'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1729,7 +1771,8 @@
                                                         'additional',
                                                         'Facebook Reactions',
                                                         'facebook.reactions',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Reacts'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1817,8 +1860,8 @@
                             Trust
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('semrush.traffic')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic' }">
+                    <th @click="changeSortingAndDirection('semRush.traffic')">
+                        <span :class="{ 'underline' : sorting === 'semRush.traffic' }">
                             SR.Trf
                         </span>
                     </th>
@@ -1827,8 +1870,8 @@
                             DR
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('semrush.traffic_costs')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic_costs' }">
+                    <th @click="changeSortingAndDirection('semRush.traffic_costs')">
+                        <span :class="{ 'underline' : sorting === 'semRush.traffic_costs' }">
                             SR.Cost
                         </span>
                     </th>
@@ -1837,31 +1880,17 @@
                             TF
                         </span>
                     </th>
-<!--                    <th @click="changeSortingAndDirection('majestic.cf')">-->
-<!--                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">-->
-<!--                            CF-->
-<!--                        </span>-->
-<!--                    </th>-->
-<!--                    <th @click="changeSortingAndDirection('alexa.rank')">-->
-<!--                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">-->
-<!--                            Alx.Rank-->
-<!--                        </span>-->
-<!--                    </th>-->
-<!--                    <th @click="changeSortingAndDirection('majestic.ebl')">-->
-<!--                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">-->
-<!--                            EBL-->
-<!--                        </span>-->
-<!--                    </th>-->
-<!--                    <th @click="changeSortingAndDirection('semrush.rank')">-->
-<!--                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">-->
-<!--                            SR.Rank-->
-<!--                        </span>-->
-<!--                    </th>-->
-<!--                    <th @click="changeSortingAndDirection('ahrefs.rd')">-->
-<!--                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">-->
-<!--                            RD-->
-<!--                        </span>-->
-<!--                    </th>-->
+                    <template v-for="(column, index) in columns">
+                        <th
+                            v-if="column.visible"
+                            :key="index"
+                            @click="changeSortingAndDirection(column.property)"
+                        >
+                            <span :class="{ 'underline' : sorting === column.property }">
+                                {{ column.name }}
+                            </span>
+                        </th>
+                    </template>
                     <th class="features">Features</th>
                     <th @click="changeSortingAndDirection('price')" class="editorial-fee">
                         <span :class="{ 'underline' : sorting === 'price' }">
@@ -1905,9 +1934,9 @@
                     </td>
                     <td class="trust">
                         <PlatformTrust
-                            :check-trust="platform.trust"
+                            :check-trust="platform.checktrust"
                             :check-trust-spam="platform.spam"
-                            :power-trust="platform.lrtPowerTrust"
+                            :power-trust="platform.powertrust"
                         />
                     </td>
                     <td>
@@ -1922,7 +1951,7 @@
                     </td>
                     <td>
                         <span class="table-value">
-                            {{ platform.semrush.trafficCosts | notAvailableFilter | formatNumberFilter }}
+                            {{ platform.semRush.trafficCosts | notAvailableFilter | formatNumberFilter }}
                         </span>
                     </td>
                     <td>
@@ -1930,31 +1959,16 @@
                             {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
                     </td>
-<!--                    <td>-->
-<!--                        <span class="table-value">-->
-<!--                            {{ platform.majestic.cf | notAvailableFilter }}-->
-<!--                        </span>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <span class="table-value">-->
-<!--                            {{ platform.alexa.rank | notAvailableFilter }}-->
-<!--                        </span>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <span class="table-value">-->
-<!--                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}-->
-<!--                        </span>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <span class="table-value">-->
-<!--                            {{ platform.semrush.rank | notAvailableFilter }}-->
-<!--                        </span>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <span class="table-value">-->
-<!--                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}-->
-<!--                        </span>-->
-<!--                    </td>-->
+                    <template v-for="(column, index) in columns">
+                        <td
+                            v-if="column.visible"
+                            :key="index"
+                        >
+                            <span class="table-value">
+                                {{ platform[column.property.split('.')[0]][column.property.split('.')[1]] | formatNumberFilter }}
+                            </span>
+                        </td>
+                    </template>
                     <td class="features">
                         <PlatformFeatures :platform="platform" />
                     </td>
@@ -2234,7 +2248,7 @@ export default {
                 dofollow_to: '',
             }
         },
-        filterQuery: {}
+        filterQuery: {},
     }),
     mixins: [
         rolemixin,
@@ -2248,7 +2262,11 @@ export default {
         ...mapActions('filter', {
             setFilterItem: filterActions.SET_FILTER_ITEM,
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
-            clearFilterItems: filterActions.CLEAR_FILTER_ITEMS
+            clearFilterItems: filterActions.CLEAR_FILTER_ITEMS,
+            setColumn: filterActions.SET_COLUMN,
+            removeColumnByProperty: filterActions.REMOVE_COLUMN_BY_PROPERTY,
+            clearColumns: filterActions.CLEAR_COLUMNS,
+            showColumns: filterActions.SHOW_COLUMNS
         }),
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
@@ -2257,6 +2275,7 @@ export default {
                 this.filter[subFilterName][filterPropertyName] =
                     this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
             }
+            this.removeColumnByProperty(property);
             await this.onShowResults();
         },
         async filterItemDeleted(name) {
@@ -2270,6 +2289,7 @@ export default {
                 'home_featured',
                 'money_anchor'
             ];
+            this.removeColumnByProperty(name);
             if (subFilterName === 'platform' && flagFilterItems.includes(filterPropertyName)) {
                 this.filter[subFilterName][filterPropertyName] = 'any';
             } else {
@@ -2293,33 +2313,63 @@ export default {
         openAdditionalFilters() {
             this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
-        onInputFilter(value, type, name, property, limit = '') {
-            if (this.additionalFiltersCounter !== 5) {
-                const filterItem = {
-                    id: name.toLowerCase().replace(/\s/g, '_'),
-                    name,
-                    type,
-                    visible: false,
-                    property,
-                    limit
-                };
-                const radioKeys = [
-                    'deadline',
-                    'dofollow',
-                    'niche_edit_link',
-                    'home_featured',
-                    'money_anchor',
-                ];
-                if (limit === 'from') filterItem.from = value;
-                if (limit === 'to') filterItem.to = value;
-                if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-                if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
-                this.setFilterItem(filterItem);
-            } else {
-                this.setNotification({
-                    message: 'Sorry, but for filtering are available only five numerical range!'
-                });
+        onInputFilter(value, type, name, property, limit = '', columnName = '') {
+            const filterItem = {
+                id: name.toLowerCase()
+                    .replace(/\s/g, '_')
+                    .replace(/\./g, ''),
+                name,
+                type,
+                visible: false,
+                property,
+                limit
+            };
+            const radioKeys = [
+                'deadline',
+                'dofollow',
+                'niche_edit_link',
+                'home_featured',
+                'money_anchor',
+            ];
+            if (type === 'additional') {
+                if (columnName) {
+                    const subFilterName = property.split('.')[0];
+                    const filterItemNameFrom = property.split('.')[1] + '_from';
+                    const filterItemNameTo = property.split('.')[1] + '_to';
+                    if (typeof this.filter[subFilterName][filterItemNameFrom] === 'string'
+                        ||
+                        typeof this.filter[subFilterName][filterItemNameTo] === 'string')
+                    {
+                        if (!this.columnExists(columnName)) {
+                            this.setColumn({
+                                property: property,
+                                name: columnName,
+                                sorting: property,
+                                visible: false
+                            });
+                        }
+                    }
+                }
             }
+            if (limit === 'from') filterItem.from = value;
+            if (limit === 'to') filterItem.to = value;
+            if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+            this.setFilterItem(filterItem);
+            // if (this.additionalFiltersCounter !== 5) {
+            //
+            // } else {
+            //     this.setNotification({
+            //         message: 'Sorry, but for filtering are available only five numerical range!'
+            //     });
+            // }
+        },
+        columnExists(columnName) {
+            let exists = false;
+            this.columns.map(column => {
+                if (columnName === column.name) exists = true;
+            });
+            return exists;
         },
         onRequestCreated() {
             this.unSelectAll();
@@ -2327,6 +2377,7 @@ export default {
         async clearAllFilters() {
             this.$v.$reset();
             this.clearFilterItems();
+            this.sorting = this.direction = '';
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
             Object.keys(this.filter.moz).forEach(key => this.filter.moz[key] = '');
             Object.keys(this.filter.alexa).forEach(key => this.filter.alexa[key] = '');
@@ -2344,6 +2395,7 @@ export default {
                 this.filter.platform.home_featured =
                 this.filter.platform.money_anchor = 'any';
             this.filterQuery = this.filter;
+            this.clearColumns();
             const response = await this.loadPlatforms();
             this.currentPage = response.current_page;
             this.lastPage = response.last_page;
@@ -2353,6 +2405,7 @@ export default {
         },
         async onShowResults() {
             this.showFilterItems();
+            this.showColumns();
             this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
@@ -2394,7 +2447,8 @@ export default {
         }),
         ...mapGetters('filter', {
             canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM,
-            additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS
+            additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS,
+            columns: filterGetters.GET_VISIBLE_COLUMNS
         }),
         disabledAdditional() {
             return this.additionalFiltersCounter === 5;

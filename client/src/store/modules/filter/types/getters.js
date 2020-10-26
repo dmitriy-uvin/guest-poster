@@ -4,3 +4,4 @@ export const GET_VISIBLE_FILTER_ITEMS_ALL = 'getVisibleFilterItemsAll';
 export const MAX_AMOUNT_FILTERS = 'maxAdditionalFilters';
 export const CAN_ADD_FILTER_ITEM = 'canAddFilterItem';
 export const IS_EMPTY_FILTERS = 'isEmptyFilters';
+export const GET_VISIBLE_COLUMNS = 'getVisibleColumns';
