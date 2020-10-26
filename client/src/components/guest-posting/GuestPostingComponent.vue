@@ -303,8 +303,7 @@
                         <VIcon left color="#2f80ed">mdi-chevron-down</VIcon>
                         <span style="color: #2f80ed">Additional Filters</span>
                     </VBtn>
-<!--                    <h3 class="text-uppercase mt-6 mb-3">Additional Filters</h3>-->
-                    <VRow v-if="additionalFiltersOpened">
+                    <VRow v-if="additionalFiltersOpened" class="mt-4">
                         <VTabs fixed-tabs v-model="tab">
                             <VTab key="Trust">Trust</VTab>
                             <VTab key="Moz">Moz</VTab>
@@ -1747,12 +1746,12 @@
                         >
                         </VCheckbox>
                     </td>
-                    <th @click="changeSortingAndDirection('website')">
+                    <th @click="changeSortingAndDirection('website')" class="website">
                         <span :class="{ 'underline' : sorting === 'website' }">
                             Website
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('trust')">
+                    <th @click="changeSortingAndDirection('trust')" class="trust">
                         <span :class="{ 'underline' : sorting === 'trust' }">
                             Trust
                         </span>
@@ -1777,37 +1776,37 @@
                             TF
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('majestic.cf')">
-                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">
-                            CF
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('alexa.rank')">
-                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">
-                            Alx.Rank
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('majestic.ebl')">
-                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">
-                            EBL
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('semrush.rank')">
-                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">
-                            SR.Rank
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('ahrefs.rd')">
-                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">
-                            RD
-                        </span>
-                    </th>
-                    <th>Features</th>
-                    <th @click="changeSortingAndDirection('price')">
-                        <span :class="{ 'underline' : sorting === 'price' }">
-                            Editorial Fee
-                        </span>
-                    </th>
+<!--                    <th @click="changeSortingAndDirection('majestic.cf')">-->
+<!--                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">-->
+<!--                            CF-->
+<!--                        </span>-->
+<!--                    </th>-->
+<!--                    <th @click="changeSortingAndDirection('alexa.rank')">-->
+<!--                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">-->
+<!--                            Alx.Rank-->
+<!--                        </span>-->
+<!--                    </th>-->
+<!--                    <th @click="changeSortingAndDirection('majestic.ebl')">-->
+<!--                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">-->
+<!--                            EBL-->
+<!--                        </span>-->
+<!--                    </th>-->
+<!--                    <th @click="changeSortingAndDirection('semrush.rank')">-->
+<!--                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">-->
+<!--                            SR.Rank-->
+<!--                        </span>-->
+<!--                    </th>-->
+<!--                    <th @click="changeSortingAndDirection('ahrefs.rd')">-->
+<!--                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">-->
+<!--                            RD-->
+<!--                        </span>-->
+<!--                    </th>-->
+<!--                    <th class="features">Features</th>-->
+<!--                    <th @click="changeSortingAndDirection('price')" class="editorial-fee">-->
+<!--                        <span :class="{ 'underline' : sorting === 'price' }">-->
+<!--                            Editorial Fee-->
+<!--                        </span>-->
+<!--                    </th>-->
                 </tr>
             </thead>
             <tbody>
@@ -1819,7 +1818,7 @@
                             hide-details
                         ></VCheckbox>
                     </td>
-                    <td>
+                    <td class="website">
                         <div class="link">
                             <span class="website-link">
                                 <img
@@ -1830,7 +1829,7 @@
                                     :alt="platform.alexa.country"
                                     class="platform-country-image"
                                 >
-                                {{ platform.alexa.country }}{{ platform.websiteUrl }}
+                                {{ platform.websiteUrl }}
                             </span>
                         </div>
                         <div class="topics">
@@ -1843,7 +1842,7 @@
                             </VChip>
                         </div>
                     </td>
-                    <td>
+                    <td class="trust">
                         <PlatformTrust
                             :check-trust="platform.trust"
                             :check-trust-spam="platform.spam"
@@ -1870,35 +1869,35 @@
                             {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
                     </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.majestic.cf | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.alexa.rank | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.semrush.rank | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                    </td>
-                    <td>
+<!--                    <td>-->
+<!--                        <span class="table-value">-->
+<!--                            {{ platform.majestic.cf | notAvailableFilter }}-->
+<!--                        </span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <span class="table-value">-->
+<!--                            {{ platform.alexa.rank | notAvailableFilter }}-->
+<!--                        </span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <span class="table-value">-->
+<!--                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}-->
+<!--                        </span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <span class="table-value">-->
+<!--                            {{ platform.semrush.rank | notAvailableFilter }}-->
+<!--                        </span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <span class="table-value">-->
+<!--                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}-->
+<!--                        </span>-->
+<!--                    </td>-->
+                    <td class="features">
                         <PlatformFeatures :platform="platform" />
                     </td>
-                    <td>
+                    <td class="editorial-fee">
                         <span class="fee fee-active">
                             <span class="left">{{ totalPrice(platform.price) }} $</span>
                             <span class="right">Guest Post</span>
@@ -2704,9 +2703,9 @@ export default {
     width: 100%;
     background: white;
     box-shadow:
-        0px 2px 4px 4px rgba(0, 0, 0, 0.2),
-        0px 4px 5px 5px rgba(0, 0, 0, 0.14),
-        0px 1px 10px 4px rgba(0, 0, 0, 0.12);
+        0 2px 4px 4px rgba(0, 0, 0, 0.2),
+        0 4px 5px 5px rgba(0, 0, 0, 0.14),
+        0 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
 }
 
