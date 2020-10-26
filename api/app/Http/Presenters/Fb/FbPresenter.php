@@ -11,9 +11,9 @@ final class FbPresenter
     public function present(Facebook $fb)
     {
         return [
-            'fb_comments' => $fb->fb_comments,
-            'fb_reac' => $fb->fb_reac,
-            'fb_shares' => $fb->fb_shares,
+            'comments' => $fb->fb_comments,
+            'reactions' => $fb->fb_reac,
+            'shares' => $fb->fb_shares,
         ];
     }
 }
