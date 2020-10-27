@@ -17,6 +17,7 @@ export default {
         firstPages: [],
         lastPages: [],
         perPage: 10,
+        disabledFilterFields: {},
     }),
     methods: {
         onChangePage(page) {
@@ -89,7 +90,18 @@ export default {
             this.platforms.map(platform => {
                 this.chosen[platform.id] = null;
             });
-        }
+        },
+        initializeDisabledFields() {
+            const additionalKeys = ['moz', 'alexa', 'semRush', 'majestic', 'facebook', 'ahrefs'];
+            Object.keys(this.filter).map(subKey => {
+                if (additionalKeys.includes(subKey)) {
+                    this.disabledFilterFields[subKey] = {};
+                    Object.keys(this.filter[subKey]).map(key => {
+                        this.disabledFilterFields[subKey][key] = false;
+                    });
+                }
+            });
+        },
     },
     async mounted() {
         this.filterQuery = this.filter;
@@ -99,6 +111,7 @@ export default {
         this.total = response.total;
         this.reCalculatePages();
         this.initializeChosenPlatformsState();
+        this.initializeDisabledFields();
     },
     watch: {
         async page() {

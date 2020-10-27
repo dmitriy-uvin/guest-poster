@@ -556,6 +556,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.da_from"
                                                         :hide-details="!mozDaFromErrors.length"
                                                         v-model="filter.moz.da_from"
                                                         :error-messages="mozDaFromErrors"
@@ -576,6 +577,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.da_to"
                                                         v-model="filter.moz.da_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -603,6 +605,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.pa_from"
                                                         v-model="filter.moz.pa_from"
                                                         :error-messages="mozPaFromErrors"
                                                         :hide-details="!mozPaFromErrors.length"
@@ -623,6 +626,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.pa_to"
                                                         v-model="filter.moz.pa_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -650,6 +654,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.rank_from"
                                                         v-model="filter.moz.rank_from"
                                                         :error-messages="mozRankFromErrors"
                                                         :hide-details="!mozRankFromErrors.length"
@@ -670,6 +675,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.rank_to"
                                                         v-model="filter.moz.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -697,6 +703,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.links_in_from"
                                                         v-model="filter.moz.links_in_from"
                                                         :error-messages="mozLinksInFromErrors"
                                                         :hide-details="!mozLinksInFromErrors.length"
@@ -716,6 +723,7 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.links_in_to"
                                                         v-model="filter.moz.links_in_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -744,6 +752,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.equity_from"
                                                         v-model="filter.moz.equity_from"
                                                         :error-messages="mozEquityFromErrors"
                                                         :hide-details="!mozEquityFromErrors.length"
@@ -763,6 +772,7 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.equity_to"
                                                         v-model="filter.moz.equity_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -795,6 +805,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.rank_from"
                                                         v-model="filter.alexa.rank_from"
                                                         :error-messages="alexaRankFromErrors"
                                                         :hide-details="!alexaRankFromErrors.length"
@@ -814,6 +825,7 @@
                                                         placeholder="100000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.rank_to"
                                                         v-model="filter.alexa.rank_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -842,6 +854,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.country_rank_from"
                                                         v-model="filter.alexa.country_rank_from"
                                                         :error-messages="alexaCountryRankFromErrors"
                                                         :hide-details="!alexaCountryRankFromErrors.length"
@@ -862,6 +875,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.alexa.country_rank_to"
                                                         v-model="filter.alexa.country_rank_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -893,6 +907,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.rank_from"
                                                         :hide-details="!ahrefsRankFromErrors.length"
                                                         v-model="filter.ahrefs.rank_from"
                                                         :error-messages="ahrefsRankFromErrors"
@@ -913,6 +928,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.ahrefs.rank_to"
                                                         v-model="filter.ahrefs.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -940,6 +956,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.dr_from"
                                                         :hide-details="!ahrefsDomainRatingFromErrors.length"
                                                         v-model="filter.ahrefs.dr_from"
                                                         :error-messages="ahrefsDomainRatingFromErrors"
@@ -959,6 +976,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.ahrefs.dr_to"
                                                         v-model="filter.ahrefs.dr_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -985,6 +1003,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.ext_backlinks_from"
                                                         v-model="filter.ahrefs.ext_backlinks_from"
                                                         :error-messages="ahrefsExtBacklinksFromErrors"
                                                         :hide-details="!ahrefsExtBacklinksFromErrors.length"
@@ -1004,6 +1023,7 @@
                                                         placeholder="1000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.ext_backlinks_to"
                                                         v-model="filter.ahrefs.ext_backlinks_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -1032,6 +1052,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.refd_from"
                                                         :hide-details="!ahrefsRefDFromErrors.length"
                                                         v-model="filter.ahrefs.refd_from"
                                                         :error-messages="ahrefsRefDFromErrors"
@@ -1051,6 +1072,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.ahrefs.refd_to"
                                                         v-model="filter.ahrefs.refd_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1077,6 +1099,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.dofollow_from"
                                                         v-model="filter.ahrefs.dofollow_from"
                                                         :error-messages="ahrefsDofollowFromErrors"
                                                         :hide-details="!ahrefsDofollowFromErrors.length"
@@ -1096,6 +1119,7 @@
                                                         placeholder="1000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.dofollow_to"
                                                         v-model="filter.ahrefs.dofollow_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -1128,6 +1152,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_backlinks_from"
                                                         :hide-details="!majesticExtBacklinksFromErrors.length"
                                                         v-model="filter.majestic.external_backlinks_from"
                                                         :error-messages="majesticExtBacklinksFromErrors"
@@ -1148,6 +1173,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_backlinks_to"
                                                         v-model="filter.majestic.external_backlinks_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1175,6 +1201,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_edu_from"
                                                         :hide-details="!majesticExtEduFromErrors.length"
                                                         v-model="filter.majestic.external_edu_from"
                                                         :error-messages="majesticExtEduFromErrors"
@@ -1195,6 +1222,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_edu_to"
                                                         v-model="filter.majestic.external_edu_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1222,6 +1250,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_gov_from"
                                                         :hide-details="!majesticExtGovFromErrors.length"
                                                         v-model="filter.majestic.external_gov_from"
                                                         :error-messages="majesticExtGovFromErrors"
@@ -1242,6 +1271,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_gov_to"
                                                         v-model="filter.majestic.external_gov_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1272,6 +1302,7 @@
                                                         :hide-details="!majesticRefDFromErrors.length"
                                                         v-model="filter.majestic.refd_from"
                                                         :error-messages="majesticRefDFromErrors"
+                                                        :disabled="disabledFilterFields.majestic.refd_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
@@ -1289,6 +1320,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.refd_to"
                                                         v-model="filter.majestic.refd_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1319,6 +1351,7 @@
                                                         :hide-details="!majesticRefDEduFromErrors.length"
                                                         v-model="filter.majestic.refd_edu_from"
                                                         :error-messages="majesticRefDEduFromErrors"
+                                                        :disabled="disabledFilterFields.majestic.refd_edu_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
@@ -1336,6 +1369,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.refd_edu_to"
                                                         v-model="filter.majestic.refd_edu_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1366,6 +1400,7 @@
                                                         v-model="filter.majestic.refd_gov_from"
                                                         :error-messages="majesticRefDGovFromErrors"
                                                         :hide-details="!majesticRefDGovFromErrors.length"
+                                                        :disabled="disabledFilterFields.majestic.refd_gov_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
@@ -1382,6 +1417,7 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.refd_gov_to"
                                                         v-model="filter.majestic.refd_gov_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -1410,6 +1446,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.tf_from"
                                                         :hide-details="!majesticTfFromErrors.length"
                                                         v-model="filter.majestic.tf_from"
                                                         :error-messages="majesticTfFromErrors"
@@ -1428,6 +1465,7 @@
                                                         placeholder="100"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.tf_to"
                                                         :hide-details="!majesticTfToErrors.length"
                                                         v-model="filter.majestic.tf_to"
                                                         :error-messages="majesticTfToErrors"
@@ -1456,6 +1494,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.cf_from"
                                                         v-model="filter.majestic.cf_from"
                                                         :error-messages="majesticCfFromErrors"
                                                         :hide-details="!majesticCfFromErrors.length"
@@ -1475,6 +1514,7 @@
                                                         placeholder="100"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.cf_to"
                                                         v-model="filter.majestic.cf_to"
                                                         :error-messages="majesticCfToErrors"
                                                         :hide-details="!majesticCfToErrors.length"
@@ -1508,6 +1548,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.semRush.rank_from"
                                                         :hide-details="!semRushRankFromErrors.length"
                                                         v-model="filter.semRush.rank_from"
                                                         :error-messages="semRushRankFromErrors"
@@ -1528,6 +1569,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.semRush.rank_to"
                                                         v-model="filter.semRush.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1555,6 +1597,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.semRush.keyword_num_from"
                                                         v-model="filter.semRush.keyword_num_from"
                                                         :error-messages="semRushKeywordNumFromErrors"
                                                         :hide-details="!semRushKeywordNumFromErrors.length"
@@ -1575,6 +1618,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.semRush.keyword_num_to"
                                                         v-model="filter.semRush.keyword_num_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1602,6 +1646,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.semRush.traffic_costs_from"
                                                         :hide-details="!semRushTrafficCostsFromErrors.length"
                                                         v-model="filter.semRush.traffic_costs_from"
                                                         :error-messages="semRushTrafficCostsFromErrors"
@@ -1621,6 +1666,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.semRush.traffic_costs_to"
                                                         v-model="filter.semRush.traffic_costs_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1651,6 +1697,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.facebook.comments_from"
                                                         :hide-details="!facebookCommentsFromErrors.length"
                                                         v-model="filter.facebook.comments_from"
                                                         :error-messages="facebookCommentsFromErrors"
@@ -1671,6 +1718,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.facebook.comments_to"
                                                         v-model="filter.facebook.comments_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1701,6 +1749,7 @@
                                                         :hide-details="!facebookSharesFromErrors.length"
                                                         v-model="filter.facebook.shares_from"
                                                         :error-messages="facebookSharesFromErrors"
+                                                        :disabled="disabledFilterFields.facebook.shares_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
@@ -1719,6 +1768,7 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.facebook.shares_to"
+                                                        :disabled="disabledFilterFields.facebook.shares_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
@@ -1745,6 +1795,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.facebook.reactions_from"
                                                         :hide-details="!facebookReactionsFromErrors.length"
                                                         v-model="filter.facebook.reactions_from"
                                                         :error-messages="facebookReactionsFromErrors"
@@ -1765,6 +1816,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.facebook.reactions_to"
                                                         v-model="filter.facebook.reactions_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1965,7 +2017,7 @@
                             :key="index"
                         >
                             <span class="table-value">
-                                {{ platform[column.property.split('.')[0]][column.property.split('.')[1]] | formatNumberFilter }}
+                                {{ platform[column.property.split('.')[0]][column.property.split('.')[1]] | notAvailableFilter | formatNumberFilter }}
                             </span>
                         </td>
                     </template>
@@ -2076,6 +2128,7 @@ import { maxValue, minValue } from 'vuelidate/lib/validators';
 import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
 import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
 import notificationMixin from '@/mixins/notificationMixin';
+import { maxAdditionalFilters } from '@/constants/constants';
 
 export default {
     name: 'GuestPostingComponent',
@@ -2275,8 +2328,33 @@ export default {
                 this.filter[subFilterName][filterPropertyName] =
                     this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
             }
-            this.removeColumnByProperty(property);
             await this.onShowResults();
+        },
+        disableFields() {
+            const additionalKeys = ['moz', 'alexa', 'semRush', 'majestic', 'facebook', 'ahrefs'];
+            Object.keys(this.filter).map(addFilterKey => {
+                if (additionalKeys.includes(addFilterKey)) {
+                    Object.keys(this.filter[addFilterKey]).map(key => {
+                        if (key.includes('_from') || key.includes('_to')) {
+                            let keyProperty = '';
+                            if (key.includes('_from')) {
+                                keyProperty = key.split('_from')[0];
+                            }
+                            if (key.includes('_to')) {
+                                keyProperty = key.split('_to')[0];
+                            }
+                            if (keyProperty) {
+                                if (!this.chosenFiltersProperties.includes(addFilterKey + '.' + keyProperty)) {
+                                    this.disabledFilterFields[addFilterKey][key] = true;
+                                    this.filter[addFilterKey][key] = '';
+                                } else {
+                                    this.disabledFilterFields[addFilterKey][key] = false;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         },
         async filterItemDeleted(name) {
             const subFilterName = name.split('.')[0];
@@ -2289,7 +2367,7 @@ export default {
                 'home_featured',
                 'money_anchor'
             ];
-            this.removeColumnByProperty(name);
+
             if (subFilterName === 'platform' && flagFilterItems.includes(filterPropertyName)) {
                 this.filter[subFilterName][filterPropertyName] = 'any';
             } else {
@@ -2304,7 +2382,6 @@ export default {
                     this.filter[subFilterName][filterPropertyName] = '';
                 }
             }
-
             await this.onShowResults();
         },
         openFilters() {
@@ -2314,62 +2391,62 @@ export default {
             this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
         onInputFilter(value, type, name, property, limit = '', columnName = '') {
-            const filterItem = {
-                id: name.toLowerCase()
-                    .replace(/\s/g, '_')
-                    .replace(/\./g, ''),
-                name,
-                type,
-                visible: false,
-                property,
-                limit
-            };
-            const radioKeys = [
-                'deadline',
-                'dofollow',
-                'niche_edit_link',
-                'home_featured',
-                'money_anchor',
-            ];
-            if (type === 'additional') {
-                if (columnName) {
-                    const subFilterName = property.split('.')[0];
-                    const filterItemNameFrom = property.split('.')[1] + '_from';
-                    const filterItemNameTo = property.split('.')[1] + '_to';
-                    if (typeof this.filter[subFilterName][filterItemNameFrom] === 'string'
-                        ||
-                        typeof this.filter[subFilterName][filterItemNameTo] === 'string')
-                    {
-                        if (!this.columnExists(columnName)) {
-                            this.setColumn({
-                                property: property,
-                                name: columnName,
-                                sorting: property,
-                                visible: false
-                            });
-                        }
-                    }
+            if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+                const filterItem = {
+                    id: name.toLowerCase()
+                        .replace(/\s/g, '_')
+                        .replace(/\./g, ''),
+                    name,
+                    type,
+                    visible: false,
+                    property,
+                    limit,
+                    columnName
+                };
+                const radioKeys = [
+                    'deadline',
+                    'dofollow',
+                    'niche_edit_link',
+                    'home_featured',
+                    'money_anchor',
+                ];
+                if (limit === 'from') filterItem.from = value;
+                if (limit === 'to') filterItem.to = value;
+                if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+                if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+                this.setFilterItem(filterItem);
+            } else {
+                if (this.chosenFiltersProperties.includes(property)) {
+                    const filterItem = {
+                        id: name.toLowerCase()
+                            .replace(/\s/g, '_')
+                            .replace(/\./g, ''),
+                        name,
+                        type,
+                        visible: false,
+                        property,
+                        limit,
+                        columnName
+                    };
+                    const radioKeys = [
+                        'deadline',
+                        'dofollow',
+                        'niche_edit_link',
+                        'home_featured',
+                        'money_anchor',
+                    ];
+                    if (limit === 'from') filterItem.from = value;
+                    if (limit === 'to') filterItem.to = value;
+                    if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+                    if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+                    this.setFilterItem(filterItem);
+                } else {
+                    this.setNotification({
+                        message: 'Sorry, but for filtering are available only five numerical range!'
+                    });
+                    this.disableFields();
                 }
             }
-            if (limit === 'from') filterItem.from = value;
-            if (limit === 'to') filterItem.to = value;
-            if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
-            this.setFilterItem(filterItem);
-            // if (this.additionalFiltersCounter !== 5) {
-            //
-            // } else {
-            //     this.setNotification({
-            //         message: 'Sorry, but for filtering are available only five numerical range!'
-            //     });
-            // }
-        },
-        columnExists(columnName) {
-            let exists = false;
-            this.columns.map(column => {
-                if (columnName === column.name) exists = true;
-            });
-            return exists;
         },
         onRequestCreated() {
             this.unSelectAll();
@@ -2440,6 +2517,13 @@ export default {
             }
         }
     },
+    watch: {
+        chosenFiltersProperties() {
+            if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+                this.initializeDisabledFields();
+            }
+        }
+    },
     computed: {
         ...mapGetters('platforms', {
             topics: getters.GET_TOPICS,
@@ -2448,7 +2532,8 @@ export default {
         ...mapGetters('filter', {
             canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM,
             additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS,
-            columns: filterGetters.GET_VISIBLE_COLUMNS
+            columns: filterGetters.GET_VISIBLE_COLUMNS,
+            chosenFiltersProperties: filterGetters.CHOSEN_FILTERS_PROPERTIES,
         }),
         disabledAdditional() {
             return this.additionalFiltersCounter === 5;
