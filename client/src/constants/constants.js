@@ -1,0 +1,1 @@
+export const maxAdditionalFilters = 5;
