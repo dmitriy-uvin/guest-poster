@@ -11,7 +11,7 @@ export default {
                 visible: filterItem.visible,
                 type: filterItem.type,
                 property: filterItem.property,
-                value: filterItem?.value,
+                value: filterItem.value ? filterItem.value : '',
                 items: filterItem?.items,
                 columnName: filterItem.columnName
             }

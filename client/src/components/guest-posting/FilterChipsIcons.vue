@@ -2,18 +2,20 @@
     <div class="d-inline-block">
         <span v-for="(filterItem, key) in allFilterItems" :key="key">
              <VChip
-                 v-if="!filterItem.items"
+                 v-if="!filterItem.items && (filterItem.value || filterItem.from || filterItem.to )"
                  label
                  class="mr-1 mb-1"
                  small
              >
                 <span v-if="key !== 'deadline'">{{ filterItem.name }}:</span>
-                <span
-                    v-if="filterItem.value && radioKeys.includes(key)"
-                    class="ml-1"
-                >{{ filterItem.value }}</span>
+                 <span v-if="filterItem.value !== ''">
+                     <span
+                         v-if="radioKeys.includes(key)"
+                         class="ml-1"
+                     >{{ filterItem.value }}</span>
+                 </span>
                 <span v-if="filterItem.from" class="ml-1">from {{ filterItem.from }}</span>
-                <span v-if="filterItem.to"  class="ml-1">to {{ filterItem.to }}</span>
+                <span v-if="filterItem.to" class="ml-1">to {{ filterItem.to }}</span>
                 <VIcon
                     right
                     small

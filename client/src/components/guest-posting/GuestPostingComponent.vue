@@ -20,7 +20,7 @@
             <VRow class="pr-2">
                 <VCol cols="12" md="9" class="px-4">
                     <h3 class="text-uppercase mt-4 mb-4">General Filters</h3>
-                    <VRow class="">
+                    <VRow>
                         <VCol cols="12" md="8" class="">
                             <label>Topics</label>
                             <VSelect
@@ -1975,7 +1975,8 @@
                             </span>
                         </div>
                         <div class="topics">
-                            <VChip x-small
+                            <VChip small
+                                   label
                                    class="pa-0 px-1 mr-1 mb-1 chip"
                                    v-for="(topic, id) in platform.topics"
                                    :key="id"

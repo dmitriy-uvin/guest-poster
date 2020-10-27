@@ -36,6 +36,7 @@ export default {
                 }
             }
         });
+        console.log(result);
         return result;
     },
     [gettersTypes.MAX_AMOUNT_FILTERS]: state => {
@@ -73,8 +74,9 @@ export default {
                 return;
             }
             if(state.filterItems[key].value && state.filterItems[key].visible) {
-                isEmpty = false;
-                return;
+                if (state.filterItems[key].value !== 'any') {
+                    isEmpty = false;
+                }
             }
         });
         return isEmpty;
