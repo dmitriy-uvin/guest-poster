@@ -43,13 +43,14 @@
             </VChip>
             </span>
         </span>
-        <span
+        <div
             v-if="!isEmpty"
             @click="clearAllFilters"
+            class="d-inline-block"
         >
             <VIcon color="#2f80ed" small>mdi-delete</VIcon>
             <span class="clear">Clear Filters</span>
-        </span>
+        </div>
     </div>
 </template>
 

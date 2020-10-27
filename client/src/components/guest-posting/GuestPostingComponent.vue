@@ -1866,6 +1866,7 @@
                                     depressed
                                     color="#ebebeb"
                                     block
+                                    @click="onSaveClick"
                                 >Save</VBtn>
                             </VCol>
                             <VCol cols="12" md="6">
@@ -2109,6 +2110,11 @@
             @request-created="onRequestCreated"
             @platform-removed="onPlatformRemoved"
         />
+
+        <SaveFilterNameDialog
+            :visibility="filterNameDialog"
+            @close-dialog="filterNameDialog = false"
+        />
     </div>
 </template>
 
@@ -2130,6 +2136,7 @@ import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
 import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
 import notificationMixin from '@/mixins/notificationMixin';
 import { maxAdditionalFilters } from '@/constants/constants';
+import SaveFilterNameDialog from '@/components/guest-posting/SaveFilterNameDialog';
 
 export default {
     name: 'GuestPostingComponent',
@@ -2137,7 +2144,8 @@ export default {
         SendRequestFooter,
         PlatformTrust,
         PlatformFeatures,
-        FilterChipsIcons
+        FilterChipsIcons,
+        SaveFilterNameDialog
     },
     validations: {
         filter: {
@@ -2200,6 +2208,8 @@ export default {
         filtersOpened: false,
         filtersApplied: false,
         additionalFiltersOpened: false,
+        filterNameDialog: false,
+        filterData: {},
         filterChips: {},
         countries: countries,
         deadlineList: {
@@ -2320,7 +2330,8 @@ export default {
             setColumn: filterActions.SET_COLUMN,
             removeColumnByProperty: filterActions.REMOVE_COLUMN_BY_PROPERTY,
             clearColumns: filterActions.CLEAR_COLUMNS,
-            showColumns: filterActions.SHOW_COLUMNS
+            showColumns: filterActions.SHOW_COLUMNS,
+            saveUserFilter: filterActions.SAVE_USER_FILTER
         }),
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
@@ -2330,6 +2341,25 @@ export default {
                     this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
             }
             await this.onShowResults();
+        },
+        async onSaveClick() {
+            try {
+                this.filterNameDialog = true;
+                console.log(this.filterData);
+                // await this.saveUserFilter({
+                //     name: 'TestFilter',
+                //     filter_items: this.filterData
+                // });
+                this.setNotification({
+                    type: 'success',
+                    message: 'Filter was added!'
+                });
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
         },
         disableFields() {
             const additionalKeys = ['moz', 'alexa', 'semRush', 'majestic', 'facebook', 'ahrefs'];
@@ -2391,64 +2421,95 @@ export default {
         openAdditionalFilters() {
             this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
+        setFilterItemFromInput(value, type, name, property, limit = '', columnName = '') {
+            const filterItem = {
+                id: name.toLowerCase()
+                    .replace(/\s/g, '_')
+                    .replace(/\./g, ''),
+                name,
+                type,
+                visible: false,
+                property,
+                limit,
+                columnName
+            };
+            const radioKeys = [
+                'deadline',
+                'dofollow',
+                'niche_edit_link',
+                'home_featured',
+                'money_anchor',
+            ];
+            if (limit === 'from') filterItem.from = value;
+            if (limit === 'to') filterItem.to = value;
+            if (radioKeys.includes(filterItem.id)) filterItem.value = value;
+            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+            this.setFilterItem(filterItem);
+            const filterData = {
+                id: name.toLowerCase()
+                    .replace(/\s/g, '_')
+                    .replace(/\./g, ''),
+                name,
+                column_name: columnName,
+                property,
+            };
+            if (limit === 'from') filterData.from = value;
+            if (limit === 'to') filterData.to = value;
+            if (radioKeys.includes(filterItem.id)) filterData.value = value;
+            if (['Topics', 'Country', 'Domains'].includes(name)) filterData.items = value;
+            this.filterData = {
+                ...this.filterData,
+                [filterData.id]: {
+                    ...this.filterData[filterData.id],
+                    name: filterData.name,
+                    property: filterData.property,
+                    value: filterData.value ? filterData.value : '',
+                    items: filterData?.items ? filterData.items : '',
+                    column_name: filterData.column_name ? filterData.column_name : '',
+                    from: filterData.from ? filterData.from : '',
+                    to: filterData.to ? filterData.to : '',
+                }
+            };
+        },
         onInputFilter(value, type, name, property, limit = '', columnName = '') {
-            if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
-                const filterItem = {
-                    id: name.toLowerCase()
-                        .replace(/\s/g, '_')
-                        .replace(/\./g, ''),
-                    name,
-                    type,
-                    visible: false,
-                    property,
-                    limit,
-                    columnName
-                };
-                const radioKeys = [
-                    'deadline',
-                    'dofollow',
-                    'niche_edit_link',
-                    'home_featured',
-                    'money_anchor',
-                ];
-                if (limit === 'from') filterItem.from = value;
-                if (limit === 'to') filterItem.to = value;
-                if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-                if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
-                this.setFilterItem(filterItem);
-            } else {
-                if (this.chosenFiltersProperties.includes(property)) {
-                    const filterItem = {
-                        id: name.toLowerCase()
-                            .replace(/\s/g, '_')
-                            .replace(/\./g, ''),
-                        name,
+            if (type === 'additional') {
+                if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+                    this.setFilterItemFromInput(
+                        value,
                         type,
-                        visible: false,
+                        name,
                         property,
                         limit,
                         columnName
-                    };
-                    const radioKeys = [
-                        'deadline',
-                        'dofollow',
-                        'niche_edit_link',
-                        'home_featured',
-                        'money_anchor',
-                    ];
-                    if (limit === 'from') filterItem.from = value;
-                    if (limit === 'to') filterItem.to = value;
-                    if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-                    if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
-                    this.setFilterItem(filterItem);
+                    );
                 } else {
-                    this.setNotification({
-                        message: 'Sorry, but for filtering are available only ' +
-                        maxAdditionalFilters
-                            + ' numerical range!'
-                    });
-                    this.disableFields();
+                    if (this.chosenFiltersProperties.includes(property)) {
+                        this.setFilterItemFromInput(
+                            value,
+                            type,
+                            name,
+                            property,
+                            limit,
+                            columnName
+                        );
+                    } else {
+                        this.setNotification({
+                            message: 'Sorry, but for filtering are available only ' +
+                                maxAdditionalFilters
+                                + ' numerical range!'
+                        });
+                        this.disableFields();
+                    }
                 }
+            } else {
+                this.setFilterItemFromInput(
+                    value,
+                    type,
+                    name,
+                    property,
+                    limit,
+                    columnName
+                );
             }
         },
         onRequestCreated() {

@@ -1,5 +1,6 @@
 import * as actions from './types/actions';
 import * as mutations from './types/mutations';
+import filterService from '@/services/filter/filterService';
 
 export default {
     [actions.SET_FILTER_ITEM]: ({ commit, getters }, filterItem) => {
@@ -28,5 +29,8 @@ export default {
     },
     [actions.SHOW_COLUMNS]: ({ commit }) => {
         commit(mutations.SHOW_COLUMNS);
+    },
+    [actions.SAVE_USER_FILTER]: async (context, filterData) => {
+        await filterService.saveUserFilter(filterData);
     }
 }

@@ -36,7 +36,6 @@ export default {
                 }
             }
         });
-        console.log(result);
         return result;
     },
     [gettersTypes.MAX_AMOUNT_FILTERS]: state => {
