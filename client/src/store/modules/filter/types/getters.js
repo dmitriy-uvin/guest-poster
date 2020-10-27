@@ -5,3 +5,5 @@ export const MAX_AMOUNT_FILTERS = 'maxAdditionalFilters';
 export const CAN_ADD_FILTER_ITEM = 'canAddFilterItem';
 export const IS_EMPTY_FILTERS = 'isEmptyFilters';
 export const GET_VISIBLE_COLUMNS = 'getVisibleColumns';
+export const CHOSEN_FILTERS_PROPERTIES = 'chosenFiltersProperties';
+export const ADDITIONAL_FILTERS_LIMIT_ACHIEVED = 'additionalFiltersLimitAchieved';

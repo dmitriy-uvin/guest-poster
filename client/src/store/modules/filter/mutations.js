@@ -13,6 +13,7 @@ export default {
                 property: filterItem.property,
                 value: filterItem?.value,
                 items: filterItem?.items,
+                columnName: filterItem.columnName
             }
         };
         if (filterItem.limit === 'from') {
@@ -62,17 +63,32 @@ export default {
     },
     [mutations.REMOVE_COLUMN_BY_PROPERTY]: (state, property) => {
         const index = state.columns.findIndex(column => column.property === property);
-        state.columns = [
-            ...state.columns.slice(0, index),
-            ...state.columns.slice(index + 1),
+        let columns = state.columns;
+        columns = [
+            ...columns.slice(0, index),
+            ...columns.slice(index + 1),
         ];
+        state.columns = columns;
     },
     [mutations.CLEAR_COLUMNS]: state => {
         state.columns = [];
     },
     [mutations.SHOW_COLUMNS]: state => {
-        state.columns.map(column => {
-            column.visible = true;
+        const columns = [];
+        Object.keys(state.filterItems).map(key => {
+            if (state.filterItems[key].type === 'additional') {
+                if (state.filterItems[key].from || state.filterItems[key].to) {
+                    if (state.filterItems[key].columnName) {
+                        columns.push({
+                            property: state.filterItems[key].property,
+                            name: state.filterItems[key].columnName,
+                            sorting: state.filterItems[key].property,
+                            visible: true
+                        });
+                    }
+                }
+            }
         });
+        state.columns = columns;
     }
 }

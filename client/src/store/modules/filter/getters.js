@@ -83,9 +83,23 @@ export default {
         const result = [];
         state.columns.map(column => {
             if (column.visible) {
-                result.push(column);
+                    result.push(column);
             }
-        })
+        });
+        return result;
+    },
+    [gettersTypes.CHOSEN_FILTERS_PROPERTIES]: state => {
+        const result = [];
+
+        Object.keys(state.filterItems).map(key => {
+            if (state.filterItems[key].type === 'additional') {
+                if (state.filterItems[key].from || state.filterItems[key].to) {
+                    if (state.filterItems[key].columnName) {
+                        result.push(state.filterItems[key].property);
+                    }
+                }
+            }
+        });
         return result;
     }
 }
