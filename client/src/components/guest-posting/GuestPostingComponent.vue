@@ -2877,7 +2877,6 @@ export default {
 </script>
 
 <style scoped>
-/*@import "../../assets/styles/main.css";*/
 @import "../../assets/styles/table.css";
 .float-btn-action {
     position: fixed;
