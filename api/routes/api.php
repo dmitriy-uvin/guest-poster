@@ -47,6 +47,13 @@ Route::group([
 });
 
 
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'filters'
+], function () {
+    Route::post('/', [\App\Http\Controllers\Api\FilterController::class, 'saveFilter']);
+});
+
 
 Route::group([
     'prefix' => 'platforms',
