@@ -29,7 +29,6 @@
     max-width: 10%;
 }
 
-
 .guest-poster-table th:nth-child(4),
 .guest-poster-table td:nth-child(4),
 .guest-poster-table th:nth-child(5),
@@ -55,12 +54,12 @@
 
 .guest-poster-table tr th:nth-child(13),
 .guest-poster-table tr td:nth-child(13) {
-    width: 10%;
+    max-width: 10%;
 }
 
 .guest-poster-table tr th:nth-child(14),
 .guest-poster-table tr td:nth-child(14) {
-    width: 15%;
+    max-width: 15%;
 }
 
 th.features,
