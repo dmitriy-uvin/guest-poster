@@ -2442,7 +2442,9 @@ export default {
                     this.setFilterItem(filterItem);
                 } else {
                     this.setNotification({
-                        message: 'Sorry, but for filtering are available only five numerical range!'
+                        message: 'Sorry, but for filtering are available only ' +
+                        maxAdditionalFilters
+                            + ' numerical range!'
                     });
                     this.disableFields();
                 }
