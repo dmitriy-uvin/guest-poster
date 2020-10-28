@@ -1,10 +1,15 @@
 <template>
     <div class="d-inline-block ml-4">
         <div
+            :class="{ 'active-border' : appliedFilterId === Number(id) }"
             class="user-filter-block mr-2"
             v-for="(userFilter, id) in userFilters" :key="id"
+            @click="onApplyFilter(id)"
         >
-            <span class="user-filter-name d-inline-block mr-2">
+            <span
+                class="user-filter-name d-inline-block mr-2"
+                :class="{ 'active-text' : appliedFilterId === Number(id) }"
+            >
                 {{ userFilter.name }}
             </span>
             <UserFilterDropDown
@@ -28,8 +33,12 @@ export default {
     },
     methods: {
         ...mapActions('filter', {
-            deleteFilterById: actions.DELETE_USER_FILTER
+            deleteFilterById: actions.DELETE_USER_FILTER,
+            applyUserFilter: actions.APPLY_USER_FILTER
         }),
+        onApplyFilter(id) {
+            this.applyUserFilter(id);
+        },
         async onDeleteFilterById(id) {
             try {
                 await this.deleteFilterById(id);
@@ -43,8 +52,15 @@ export default {
     },
     computed: {
         ...mapGetters('filter', {
-            userFilters: getters.GET_USER_FILTERS
-        })
+            userFilters: getters.GET_USER_FILTERS,
+            appliedFilter: getters.GET_APPLIED_USER_FILTER
+        }),
+        appliedFilterId() {
+            if (this.appliedFilter) {
+                return this.appliedFilter.id;
+            }
+            return '';
+        }
     }
 }
 </script>
@@ -61,5 +77,13 @@ export default {
 .user-filter-name {
     font-size: 14px;
     font-weight: 500;
+}
+
+.active-border {
+    border: 2px solid #2f80ed;
+}
+
+.active-text {
+    color: #2f80ed;
 }
 </style>

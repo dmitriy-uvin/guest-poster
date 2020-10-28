@@ -5,7 +5,7 @@
                 <VIcon
                     small
                     class="user-filter-dots"
-                    color="black"
+                    :color="color"
                     v-bind="attrs"
                     v-on="on"
                 >
@@ -30,10 +30,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import * as actions from '@/store/modules/filter/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
 import ConfirmDeleteFilterDialog from '@/components/user-filter/ConfirmDeleteFilterDialog';
+import * as getters from "@/store/modules/filter/types/getters";
 export default {
     name: 'UserFilterDropDown',
     props: {
@@ -69,6 +70,17 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters('filter', {
+            appliedFilter: getters.GET_APPLIED_USER_FILTER
+        }),
+        color() {
+            if (this.appliedFilter) {
+                if (this.appliedFilter.id === Number(this.filterId)) return '#2f80ed';
+            }
+            return 'black';
+        }
+    }
 }
 </script>
 

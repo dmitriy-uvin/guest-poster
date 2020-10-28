@@ -2332,7 +2332,8 @@ export default {
             clearColumns: filterActions.CLEAR_COLUMNS,
             showColumns: filterActions.SHOW_COLUMNS,
             saveUserFilter: filterActions.SAVE_USER_FILTER,
-            getUserFilters: filterActions.GET_USER_FILTERS
+            getUserFilters: filterActions.GET_USER_FILTERS,
+            setFilterItemFromAppliedFilter: filterActions.SET_FILTER_ITEM_FROM_APPLIED_FILTER
         }),
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
@@ -2348,8 +2349,6 @@ export default {
         },
         async onSaveFilter(name) {
             try {
-                console.log('save');
-                console.log(this.filterData);
                 await this.saveUserFilter({
                     name,
                     filter_items: this.filterData
@@ -2539,7 +2538,6 @@ export default {
                         deadline: this.filter.platform.deadline ?
                             this.deadlineList[this.filter.platform.deadline] : '',
                     },
-
                     trust: {
                         ...this.filter.trust,
                         summary: this.filter.trust.summary.length ?
@@ -2600,6 +2598,7 @@ export default {
                                 to: this.filterItems[key].to,
                                 value: this.filterItems[key].value,
                                 items: this.filterItems[key].items,
+                                type: this.filterItems[key].type,
                                 ...this.filterItems[key],
                             }
                         }
@@ -2607,6 +2606,42 @@ export default {
                 });
             },
             deep:true
+        },
+        async appliedFilter() {
+            Object.keys(this.appliedFilter.filter_items).map(key => {
+                const subFilter = this.appliedFilter.filter_items[key].property.split('.')[0];
+                const property = this.appliedFilter.filter_items[key].property.split('.')[1];
+                if (this.appliedFilter.filter_items[key].from || this.appliedFilter.filter_items[key].to) {
+                    const propertyFrom = property + '_from';
+                    const propertyTo = property + '_to';
+                    this.filter[subFilter][propertyFrom] = this.appliedFilter.filter_items[key].from;
+                    this.filter[subFilter][propertyTo] = this.appliedFilter.filter_items[key].to;
+                }
+                if (this.appliedFilter.filter_items[key].value) {
+                    this.filter[subFilter][property] = this.appliedFilter.filter_items[key].value;
+                }
+                if (this.appliedFilter.filter_items[key].items?.length) {
+                    this.filter[subFilter][property] = this.appliedFilter.filter_items[key].items;
+                }
+            });
+            Object.keys(this.appliedFilter.filter_items).map(key => {
+                const filterItem = {
+                    id: this.appliedFilter.filter_items[key].name.toLowerCase()
+                        .replace(/\s/g, '_')
+                        .replace(/\./g, ''),
+                    name: this.appliedFilter.filter_items[key].name,
+                    visible: true,
+                    type: this.appliedFilter.filter_items[key].type,
+                    property: this.appliedFilter.filter_items[key].property,
+                    value: this.appliedFilter.filter_items[key].value,
+                    items: this.appliedFilter.filter_items[key].items,
+                    columnName: this.appliedFilter.filter_items[key].column_name,
+                    from: this.appliedFilter.filter_items[key].from,
+                    to: this.appliedFilter.filter_items[key].to,
+                };
+                this.setFilterItemFromAppliedFilter(filterItem);
+            });
+            await this.onShowResults();
         }
     },
     computed: {
@@ -2620,6 +2655,7 @@ export default {
             columns: filterGetters.GET_VISIBLE_COLUMNS,
             chosenFiltersProperties: filterGetters.CHOSEN_FILTERS_PROPERTIES,
             filterItems: filterGetters.GET_FILTER_ITEMS,
+            appliedFilter: filterGetters.GET_APPLIED_USER_FILTER
         }),
         disabledAdditional() {
             return this.additionalFiltersCounter === 5;
