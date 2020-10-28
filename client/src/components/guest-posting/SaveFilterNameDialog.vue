@@ -19,7 +19,7 @@
                         color="primary"
                         depressed
                         class="mr-3"
-                        @click="showDialog = false"
+                        @click="onSaveName"
                     >
                         Save
                     </VBtn>
@@ -53,6 +53,21 @@ export default {
     data: () => ({
        name: ''
     }),
+    methods: {
+        onSaveName() {
+            this.$v.$touch();
+            if (!this.$v.$invalid) {
+                try {
+                    this.$emit('save-name', this.name);
+                    this.name = '';
+                    this.$v.$reset();
+                    this.showDialog = false;
+                } catch(error) {
+                    this.showDialog = true;
+                }
+            }
+        }
+    },
     computed: {
         showDialog: {
             get() {

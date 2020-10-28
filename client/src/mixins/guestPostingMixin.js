@@ -1,6 +1,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/platforms/types/getters';
 import * as actions from '@/store/modules/platforms/types/actions';
+import * as filterActions from '@/store/modules/filter/types/actions';
 // import { countries } from '@/helpers/countries';
 
 export default {
@@ -28,6 +29,9 @@ export default {
         },
         ...mapActions('platforms', {
             fetchPlatforms: actions.FETCH_PLATFORMS,
+        }),
+        ...mapActions('filter', {
+            getUserFilters: filterActions.GET_USER_FILTERS
         }),
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
@@ -109,6 +113,7 @@ export default {
         this.currentPage = response.current_page;
         this.lastPage = response.last_page;
         this.total = response.total;
+        await this.getUserFilters();
         this.reCalculatePages();
         this.initializeChosenPlatformsState();
         this.initializeDisabledFields();

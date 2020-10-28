@@ -1,11 +1,13 @@
 <template>
     <div class="container">
-        <div class="row justify-space-between align-center">
+        <div class="">
             <div class="left">
                 <h1>Guest Posting</h1>
                 <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
-            <div class="right">
+        </div>
+        <div class="mb-8">
+            <div class="d-inline-block">
                 <VBtn color="primary" depressed @click="openFilters" v-if="!filtersOpened">
                     <VIcon left>mdi-filter-variant</VIcon>
                     Filters
@@ -15,6 +17,7 @@
                     <span style="color: #2f80ed">Hide Filters</span>
                 </VBtn>
             </div>
+            <UserFiltersBlock />
         </div>
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="pr-2">
@@ -956,7 +959,6 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
-                                                        :disabled="disabledFilterFields.ahrefs.dr_from"
                                                         :hide-details="!ahrefsDomainRatingFromErrors.length"
                                                         v-model="filter.ahrefs.dr_from"
                                                         :error-messages="ahrefsDomainRatingFromErrors"
@@ -976,7 +978,6 @@
                                                         outlined
                                                         dense
                                                         hide-details
-                                                        :disabled="disabledFilterFields.ahrefs.dr_to"
                                                         v-model="filter.ahrefs.dr_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1446,7 +1447,6 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
-                                                        :disabled="disabledFilterFields.majestic.tf_from"
                                                         :hide-details="!majesticTfFromErrors.length"
                                                         v-model="filter.majestic.tf_from"
                                                         :error-messages="majesticTfFromErrors"
@@ -1465,7 +1465,6 @@
                                                         placeholder="100"
                                                         outlined
                                                         dense
-                                                        :disabled="disabledFilterFields.majestic.tf_to"
                                                         :hide-details="!majesticTfToErrors.length"
                                                         v-model="filter.majestic.tf_to"
                                                         :error-messages="majesticTfToErrors"
@@ -1646,7 +1645,6 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
-                                                        :disabled="disabledFilterFields.semRush.traffic_costs_from"
                                                         :hide-details="!semRushTrafficCostsFromErrors.length"
                                                         v-model="filter.semRush.traffic_costs_from"
                                                         :error-messages="semRushTrafficCostsFromErrors"
@@ -1666,7 +1664,6 @@
                                                         outlined
                                                         dense
                                                         hide-details
-                                                        :disabled="disabledFilterFields.semRush.traffic_costs_to"
                                                         v-model="filter.semRush.traffic_costs_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -1866,7 +1863,7 @@
                                     depressed
                                     color="#ebebeb"
                                     block
-                                    @click="onSaveClick"
+                                    @click="onOpenFilterNameDialog"
                                 >Save</VBtn>
                             </VCol>
                             <VCol cols="12" md="6">
@@ -2114,7 +2111,9 @@
         <SaveFilterNameDialog
             :visibility="filterNameDialog"
             @close-dialog="filterNameDialog = false"
+            @save-name="onSaveFilter"
         />
+        <VBtn @click="test">test</VBtn>
     </div>
 </template>
 
@@ -2137,10 +2136,12 @@ import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin'
 import notificationMixin from '@/mixins/notificationMixin';
 import { maxAdditionalFilters } from '@/constants/constants';
 import SaveFilterNameDialog from '@/components/guest-posting/SaveFilterNameDialog';
+import UserFiltersBlock from '@/components/user-filter/UserFiltersBlock';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
+        UserFiltersBlock,
         SendRequestFooter,
         PlatformTrust,
         PlatformFeatures,
@@ -2331,8 +2332,12 @@ export default {
             removeColumnByProperty: filterActions.REMOVE_COLUMN_BY_PROPERTY,
             clearColumns: filterActions.CLEAR_COLUMNS,
             showColumns: filterActions.SHOW_COLUMNS,
-            saveUserFilter: filterActions.SAVE_USER_FILTER
+            saveUserFilter: filterActions.SAVE_USER_FILTER,
+            getUserFilters: filterActions.GET_USER_FILTERS
         }),
+        test() {
+            console.log(this.filterData);
+        },
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
@@ -2342,14 +2347,17 @@ export default {
             }
             await this.onShowResults();
         },
-        async onSaveClick() {
+        onOpenFilterNameDialog() {
+            this.filterNameDialog = true;
+        },
+        async onSaveFilter(name) {
             try {
-                this.filterNameDialog = true;
+                console.log('save');
                 console.log(this.filterData);
-                // await this.saveUserFilter({
-                //     name: 'TestFilter',
-                //     filter_items: this.filterData
-                // });
+                await this.saveUserFilter({
+                    name,
+                    filter_items: this.filterData
+                });
                 this.setNotification({
                     type: 'success',
                     message: 'Filter was added!'
@@ -2445,34 +2453,9 @@ export default {
             if (radioKeys.includes(filterItem.id)) filterItem.value = value;
             if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
             this.setFilterItem(filterItem);
-            const filterData = {
-                id: name.toLowerCase()
-                    .replace(/\s/g, '_')
-                    .replace(/\./g, ''),
-                name,
-                column_name: columnName,
-                property,
-            };
-            if (limit === 'from') filterData.from = value;
-            if (limit === 'to') filterData.to = value;
-            if (radioKeys.includes(filterItem.id)) filterData.value = value;
-            if (['Topics', 'Country', 'Domains'].includes(name)) filterData.items = value;
-            this.filterData = {
-                ...this.filterData,
-                [filterData.id]: {
-                    ...this.filterData[filterData.id],
-                    name: filterData.name,
-                    property: filterData.property,
-                    value: filterData.value ? filterData.value : '',
-                    items: filterData?.items ? filterData.items : '',
-                    column_name: filterData.column_name ? filterData.column_name : '',
-                    from: filterData.from ? filterData.from : '',
-                    to: filterData.to ? filterData.to : '',
-                }
-            };
         },
         onInputFilter(value, type, name, property, limit = '', columnName = '') {
-            if (type === 'additional') {
+            if (type === 'additional' && columnName) {
                 if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
                     this.setFilterItemFromInput(
                         value,
@@ -2501,7 +2484,7 @@ export default {
                         this.disableFields();
                     }
                 }
-            } else {
+            } else if (type === 'general'){
                 this.setFilterItemFromInput(
                     value,
                     type,
@@ -2518,6 +2501,7 @@ export default {
         async clearAllFilters() {
             this.$v.$reset();
             this.clearFilterItems();
+            this.filterData = {};
             this.sorting = this.direction = '';
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
             Object.keys(this.filter.moz).forEach(key => this.filter.moz[key] = '');
@@ -2586,6 +2570,47 @@ export default {
             if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
                 this.initializeDisabledFields();
             }
+        },
+        filterData: {
+            handler() {
+                Object.keys(this.filterData).map(key => {
+                    Object.keys(this.filterData[key]).map(subKey => {
+                        if (this.filterData[key][subKey] === undefined) {
+                            this.filterData[key][subKey] = '';
+                        }
+                    });
+                });
+            },
+            deep: true
+        },
+        filterItems: {
+            handler() {
+                this.filterData = {};
+                Object.keys(this.filterItems).map(key => {
+                    if (
+                        (this.filterItems[key].to || this.filterItems[key].from)
+                        ||
+                        (this.filterItems[key].value)
+                        ||
+                        (this.filterItems[key]?.items?.length)
+                    ) {
+                        this.filterData = {
+                            ...this.filterData,
+                            [key]: {
+                                name: this.filterItems[key].name,
+                                column_name: this.filterItems[key].columnName,
+                                property: this.filterItems[key].property,
+                                from: this.filterItems[key].from,
+                                to: this.filterItems[key].to,
+                                value: this.filterItems[key].value,
+                                items: this.filterItems[key].items,
+                                ...this.filterItems[key],
+                            }
+                        }
+                    }
+                });
+            },
+            deep:true
         }
     },
     computed: {
@@ -2598,6 +2623,7 @@ export default {
             additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS,
             columns: filterGetters.GET_VISIBLE_COLUMNS,
             chosenFiltersProperties: filterGetters.CHOSEN_FILTERS_PROPERTIES,
+            filterItems: filterGetters.GET_FILTER_ITEMS,
         }),
         disabledAdditional() {
             return this.additionalFiltersCounter === 5;

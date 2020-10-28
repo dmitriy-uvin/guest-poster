@@ -93,7 +93,6 @@ export default {
     },
     computed: {
         ...mapGetters('filter', {
-            filterItems: getters.GET_FILTER_ITEMS,
             allFilterItems: getters.GET_VISIBLE_FILTER_ITEMS_ALL,
             isEmpty: getters.IS_EMPTY_FILTERS
         }),
