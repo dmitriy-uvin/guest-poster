@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Action\Filter;
 
+use App\Exceptions\Filter\MaxAmountOfCustomFiltersException;
+use App\Models\Constants\FilterConstants;
 use App\Models\Filter;
 use App\Models\FilterItem;
 use App\Repositories\User\UserRepositoryInterface;
@@ -18,9 +20,13 @@ final class SaveUserFilterAction
         $this->userRepository = $userRepository;
     }
 
-    public function execute(SaveUserFilterRequest $request)
+    public function execute(SaveUserFilterRequest $request): SaveUserFilterResponse
     {
         $user = $this->userRepository->getById(Auth::id());
+
+        if ($user->filters->count() === FilterConstants::MAX_AMOUNT_CUSTOM_FILTERS) {
+            throw new MaxAmountOfCustomFiltersException();
+        }
 
         $filter = new Filter();
         $filter->name = $request->getName();
@@ -30,15 +36,25 @@ final class SaveUserFilterAction
             $filterItemObj = new FilterItem();
             $filterItemObj->filter_id = $filter->id;
             $filterItemObj->name = $filterItem['name'];
-            $filterItemObj->from = $filterItem['from'];
-            $filterItemObj->to = $filterItem['to'];
-            $filterItemObj->value = $filterItem['value'];
-            $filterItemObj->items = $filterItem['items'];
+            if (array_key_exists('from', $filterItem)) {
+                $filterItemObj->from = $filterItem['from'];
+            }
+            if (array_key_exists('to', $filterItem)) {
+                $filterItemObj->to = $filterItem['to'];
+            }
+            if (array_key_exists('value', $filterItem)) {
+                $filterItemObj->value = $filterItem['value'];
+            }
+            if (array_key_exists('items', $filterItem)) {
+                $filterItemObj->items = $filterItem['items'];
+            }
             $filterItemObj->property = $filterItem['property'];
             $filterItemObj->column_name = $filterItem['column_name'];
             $filterItemObj->save();
         }
 
         $user->filters()->attach($filter->id);
+
+        return new SaveUserFilterResponse($filter);
     }
 }

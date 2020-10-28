@@ -52,6 +52,8 @@ Route::group([
     'prefix' => 'filters'
 ], function () {
     Route::post('/', [\App\Http\Controllers\Api\FilterController::class, 'saveFilter']);
+    Route::get('/', [\App\Http\Controllers\Api\FilterController::class, 'getFiltersForAuthUser']);
+    Route::delete('/{id}', [\App\Http\Controllers\Api\FilterController::class, 'deleteFilterById']);
 });
 
 

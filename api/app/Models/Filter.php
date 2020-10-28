@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Constants\FilterTypes;
+use App\Models\Constants\FilterConstants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Filter extends Model
     ];
 
     protected $attributes = [
-        'type' => FilterTypes::DEFAULT
+        'type' => FilterConstants::CUSTOM_TYPE
     ];
 
     public function users()
