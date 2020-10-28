@@ -2113,7 +2113,6 @@
             @close-dialog="filterNameDialog = false"
             @save-name="onSaveFilter"
         />
-        <VBtn @click="test">test</VBtn>
     </div>
 </template>
 
@@ -2335,9 +2334,6 @@ export default {
             saveUserFilter: filterActions.SAVE_USER_FILTER,
             getUserFilters: filterActions.GET_USER_FILTERS
         }),
-        test() {
-            console.log(this.filterData);
-        },
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
