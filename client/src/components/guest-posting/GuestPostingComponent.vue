@@ -1886,7 +1886,7 @@
             <FilterChipsIcons
                 @filter-item-deleted="filterItemDeleted"
                 @filter-item-deleted-array="filterItemArrayDeleted"
-                @clear-all-filters="clearAllFilters"
+                @clear-all-filters="clearAllFilters('all')"
             />
         </div>
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
@@ -2479,7 +2479,7 @@ export default {
                         this.disableFields();
                     }
                 }
-            } else if (type === 'general'){
+            } else {
                 this.setFilterItemFromInput(
                     value,
                     type,
@@ -2493,9 +2493,9 @@ export default {
         onRequestCreated() {
             this.unSelectAll();
         },
-        async clearAllFilters() {
+        async clearAllFilters(mode = 'filters') {
             this.$v.$reset();
-            this.clearFilterItems();
+            this.clearFilterItems(mode);
             this.filterData = {};
             this.sorting = this.direction = '';
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
@@ -2608,40 +2608,41 @@ export default {
             deep:true
         },
         async appliedFilter() {
-            Object.keys(this.appliedFilter.filter_items).map(key => {
-                const subFilter = this.appliedFilter.filter_items[key].property.split('.')[0];
-                const property = this.appliedFilter.filter_items[key].property.split('.')[1];
-                if (this.appliedFilter.filter_items[key].from || this.appliedFilter.filter_items[key].to) {
-                    const propertyFrom = property + '_from';
-                    const propertyTo = property + '_to';
-                    this.filter[subFilter][propertyFrom] = this.appliedFilter.filter_items[key].from;
-                    this.filter[subFilter][propertyTo] = this.appliedFilter.filter_items[key].to;
-                }
-                if (this.appliedFilter.filter_items[key].value) {
-                    this.filter[subFilter][property] = this.appliedFilter.filter_items[key].value;
-                }
-                if (this.appliedFilter.filter_items[key].items?.length) {
-                    this.filter[subFilter][property] = this.appliedFilter.filter_items[key].items;
-                }
-            });
-            Object.keys(this.appliedFilter.filter_items).map(key => {
-                const filterItem = {
-                    id: this.appliedFilter.filter_items[key].name.toLowerCase()
-                        .replace(/\s/g, '_')
-                        .replace(/\./g, ''),
-                    name: this.appliedFilter.filter_items[key].name,
-                    visible: true,
-                    type: this.appliedFilter.filter_items[key].type,
-                    property: this.appliedFilter.filter_items[key].property,
-                    value: this.appliedFilter.filter_items[key].value,
-                    items: this.appliedFilter.filter_items[key].items,
-                    columnName: this.appliedFilter.filter_items[key].column_name,
-                    from: this.appliedFilter.filter_items[key].from,
-                    to: this.appliedFilter.filter_items[key].to,
-                };
-                this.setFilterItemFromAppliedFilter(filterItem);
-            });
-            await this.onShowResults();
+            if (Object.keys(this.appliedFilter).length) {
+                await this.clearAllFilters();
+                Object.keys(this.appliedFilter.filter_items).map(key => {
+                    const subFilter = this.appliedFilter.filter_items[key].property.split('.')[0];
+                    const property = this.appliedFilter.filter_items[key].property.split('.')[1];
+                    if (this.appliedFilter.filter_items[key].from || this.appliedFilter.filter_items[key].to) {
+                        const propertyFrom = property + '_from';
+                        const propertyTo = property + '_to';
+                        this.filter[subFilter][propertyFrom] = this.appliedFilter.filter_items[key].from;
+                        this.filter[subFilter][propertyTo] = this.appliedFilter.filter_items[key].to;
+                    }
+                    if (this.appliedFilter.filter_items[key].value) {
+                        this.filter[subFilter][property] = this.appliedFilter.filter_items[key].value;
+                    }
+                    if (this.appliedFilter.filter_items[key].items?.length) {
+                        this.filter[subFilter][property] = this.appliedFilter.filter_items[key].items;
+                    }
+                    const filterItem = {
+                        id: this.appliedFilter.filter_items[key].name.toLowerCase()
+                            .replace(/\s/g, '_')
+                            .replace(/\./g, ''),
+                        name: this.appliedFilter.filter_items[key].name,
+                        visible: true,
+                        type: this.appliedFilter.filter_items[key].type,
+                        property: this.appliedFilter.filter_items[key].property,
+                        value: this.appliedFilter.filter_items[key].value,
+                        items: this.appliedFilter.filter_items[key].items,
+                        columnName: this.appliedFilter.filter_items[key].column_name,
+                        from: this.appliedFilter.filter_items[key].from,
+                        to: this.appliedFilter.filter_items[key].to,
+                    };
+                    this.setFilterItemFromAppliedFilter(filterItem);
+                });
+                await this.onShowResults();
+            }
         }
     },
     computed: {

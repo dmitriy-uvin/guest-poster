@@ -70,9 +70,12 @@ export default {
         });
         state.filterItems = res;
     },
-    [mutations.CLEAR_FILTER_ITEMS]: state => {
+    [mutations.CLEAR_FILTER_ITEMS]: (state, mode) => {
         state.filterItems = {};
-        state.appliedFilter = {};
+        console.log(mode);
+        if (mode === 'all') {
+            state.appliedFilter = {};
+        }
     },
     [mutations.SET_COLUMN]: (state, column) => {
         const columns = state.columns;

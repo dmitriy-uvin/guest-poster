@@ -12,8 +12,8 @@ export default {
     [actions.SHOW_FILTER_ITEMS]: ({ commit }) => {
         commit(mutations.SHOW_FILTER_ITEMS);
     },
-    [actions.CLEAR_FILTER_ITEMS]: ({ commit }) => {
-        commit(mutations.CLEAR_FILTER_ITEMS);
+    [actions.CLEAR_FILTER_ITEMS]: ({ commit }, mode) => {
+        commit(mutations.CLEAR_FILTER_ITEMS, mode);
     },
     [actions.DELETE_FILTER_ITEM_ARRAY]: ({ commit }, data) => {
         commit(mutations.DELETE_FILTER_ITEM_ARRAY, data);
