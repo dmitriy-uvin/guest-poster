@@ -19,6 +19,7 @@ class FilterItem extends Model
         'to',
         'value',
         'items',
+        'type'
     ];
 
     protected $casts = [

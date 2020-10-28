@@ -20,12 +20,17 @@ final class FilterPresenter
         return [
             'id' => $filter->id,
             'name' => $filter->name,
-            'filter_items' => $filter->filterItems->map(fn($filterItem) => $this->filterItemPresenter->present($filterItem))
+            'filter_items' => $filter->filterItems
+                ->map(fn($filterItem) =>
+                    $this->filterItemPresenter->present($filterItem)
+                )
         ];
     }
 
     public function presentCollection(Collection $filters)
     {
-        return $filters->map(fn($filter) => $this->present($filter))->toArray();
+        return $filters->map(
+            fn($filter) => $this->present($filter)
+        )->toArray();
     }
 }

@@ -48,6 +48,7 @@ final class SaveUserFilterAction
             if (array_key_exists('items', $filterItem)) {
                 $filterItemObj->items = $filterItem['items'];
             }
+            $filterItemObj->type = $filterItem['type'];
             $filterItemObj->property = $filterItem['property'];
             $filterItemObj->column_name = $filterItem['column_name'];
             $filterItemObj->save();

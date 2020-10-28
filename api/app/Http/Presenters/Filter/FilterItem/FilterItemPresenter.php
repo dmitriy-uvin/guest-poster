@@ -17,6 +17,7 @@ final class FilterItemPresenter
             'to' => $filterItem->to,
             'value' => $filterItem->value,
             'items' => $filterItem->items,
+            'type' => $filterItem->type
         ];
     }
 }

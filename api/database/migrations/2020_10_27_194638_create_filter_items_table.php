@@ -18,6 +18,7 @@ class CreateFilterItemsTable extends Migration
             $table->unsignedBigInteger('filter_id');
             $table->string('name');
             $table->string('column_name')->nullable();
+            $table->string('type');
             $table->string('property');
             $table->string('from')->nullable();
             $table->string('to')->nullable();
