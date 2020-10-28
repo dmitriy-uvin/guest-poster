@@ -13,7 +13,7 @@ export default {
                 property: filterItem.property,
                 value: filterItem.value ? filterItem.value : '',
                 items: filterItem?.items,
-                columnName: filterItem.columnName
+                columnName: filterItem.columnName,
             }
         };
         if (filterItem.limit === 'from') {
@@ -22,6 +22,23 @@ export default {
         if (filterItem.limit === 'to') {
             state.filterItems[filterItem.id].to = filterItem.to;
         }
+    },
+    [mutations.SET_FILTER_ITEM_FROM_APPLIED_FILTER]: (state, filterItem) => {
+        state.filterItems = {
+            ...state.filterItems,
+            [filterItem.id]: {
+                ...state.filterItems[filterItem.id],
+                name: filterItem.name,
+                visible: filterItem.visible,
+                type: filterItem.type,
+                property: filterItem.property,
+                value: filterItem.value,
+                items: filterItem?.items,
+                columnName: filterItem.columnName,
+                from: filterItem.from,
+                to: filterItem.to,
+            }
+        };
     },
     [mutations.DELETE_FILTER_ITEM]: (state, id) => {
         const result = {};
@@ -55,6 +72,7 @@ export default {
     },
     [mutations.CLEAR_FILTER_ITEMS]: state => {
         state.filterItems = {};
+        state.appliedFilter = {};
     },
     [mutations.SET_COLUMN]: (state, column) => {
         const columns = state.columns;
@@ -107,6 +125,7 @@ export default {
                             to: next.to,
                             value: next.value,
                             items: next.items,
+                            type: next.type
                         }
                     }),
                     {}
@@ -121,6 +140,7 @@ export default {
                 (prevFilter, filter) => ({
                     ...prevFilter,
                     [filter.id]: {
+                        id: filter.id,
                         name: filter.name,
                         filter_items: filter.filter_items.reduce(
                             (prev, next) => ({
@@ -133,6 +153,7 @@ export default {
                                     to: next.to,
                                     value: next.value,
                                     items: next.items,
+                                    type: next.type
                                 }
                             }),
                             {}
@@ -149,5 +170,9 @@ export default {
         state.userFilters = {
             ...state.userFilters
         };
+    },
+    [mutations.APPLY_USER_FILTER]: (state, id) => {
+        state.filterItems = {};
+        state.appliedFilter = state.userFilters[id];
     }
 }

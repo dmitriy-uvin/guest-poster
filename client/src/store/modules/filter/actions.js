@@ -41,5 +41,11 @@ export default {
     [actions.DELETE_USER_FILTER]: async ({ commit }, id) => {
         await filterService.deleteUserFilterById(id);
         commit(mutations.DELETE_USER_FILTER, id);
+    },
+    [actions.APPLY_USER_FILTER]: async ({ commit }, id) => {
+        commit(mutations.APPLY_USER_FILTER, id);
+    },
+    [actions.SET_FILTER_ITEM_FROM_APPLIED_FILTER]: ({ commit }, filterItem) => {
+        commit(mutations.SET_FILTER_ITEM_FROM_APPLIED_FILTER, filterItem);
     }
 }

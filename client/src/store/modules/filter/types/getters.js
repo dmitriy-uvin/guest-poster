@@ -10,3 +10,4 @@ export const ADDITIONAL_FILTERS_LIMIT_ACHIEVED = 'additionalFiltersLimitAchieved
 
 
 export const GET_USER_FILTERS = 'getUserFilters';
+export const GET_APPLIED_USER_FILTER = 'getAppliedUserFilter';

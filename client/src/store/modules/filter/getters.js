@@ -103,5 +103,6 @@ export default {
         });
         return result;
     },
-    [gettersTypes.GET_USER_FILTERS]: state => state.userFilters
+    [gettersTypes.GET_USER_FILTERS]: state => state.userFilters,
+    [gettersTypes.GET_APPLIED_USER_FILTER]: state => state.appliedFilter
 }

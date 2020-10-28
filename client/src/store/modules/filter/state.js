@@ -2,5 +2,6 @@ export default {
     filterItems: {},
     columns: [],
     additionalFiltersLimitAchieved: false,
-    userFilters: {}
+    userFilters: {},
+    appliedFilter: {}
 }
