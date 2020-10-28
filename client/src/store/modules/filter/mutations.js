@@ -90,5 +90,64 @@ export default {
             }
         });
         state.columns = columns;
+    },
+    [mutations.SET_USER_FILTER]: (state, filterData) => {
+        state.userFilters = {
+            ...state.userFilters,
+            [filterData.id]: {
+                name: filterData.name,
+                filter_items: filterData.filter_items.reduce(
+                    (prev, next) => ({
+                        ...prev,
+                        [next.id]: {
+                            name: next.name,
+                            column_name: next.column_name,
+                            property: next.property,
+                            from: next.from,
+                            to: next.to,
+                            value: next.value,
+                            items: next.items,
+                        }
+                    }),
+                    {}
+                )
+            }
+        }
+    },
+    [mutations.SET_USER_FILTERS]: (state, filters) => {
+        state.userFilters = {
+            ...state.userFilters,
+            ...filters.reduce(
+                (prevFilter, filter) => ({
+                    ...prevFilter,
+                    [filter.id]: {
+                        name: filter.name,
+                        filter_items: filter.filter_items.reduce(
+                            (prev, next) => ({
+                                ...prev,
+                                [next.id]: {
+                                    name: next.name,
+                                    column_name: next.column_name,
+                                    property: next.property,
+                                    from: next.from,
+                                    to: next.to,
+                                    value: next.value,
+                                    items: next.items,
+                                }
+                            }),
+                            {}
+                        )
+                    }
+                }),
+                {}
+            )
+        }
+    },
+    [mutations.DELETE_USER_FILTER]: (state, id) => {
+        const userFilters = state.userFilters;
+        delete userFilters[id];
+        state.userFilters = {
+            ...state.userFilters
+        };
     }
 }

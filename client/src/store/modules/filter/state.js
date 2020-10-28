@@ -1,5 +1,6 @@
 export default {
     filterItems: {},
     columns: [],
-    additionalFiltersLimitAchieved: false
+    additionalFiltersLimitAchieved: false,
+    userFilters: {}
 }

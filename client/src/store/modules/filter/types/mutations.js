@@ -7,3 +7,7 @@ export const SET_COLUMN = 'setColumn';
 export const REMOVE_COLUMN_BY_PROPERTY = 'removeColumnByProperty';
 export const CLEAR_COLUMNS = 'clearColumns';
 export const SHOW_COLUMNS = 'showColumns';
+
+export const SET_USER_FILTER = 'setUserFilter';
+export const SET_USER_FILTERS = 'setUserFilters';
+export const DELETE_USER_FILTER = 'deleteUserFilter';

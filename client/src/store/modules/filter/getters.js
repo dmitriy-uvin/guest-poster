@@ -102,5 +102,6 @@ export default {
             }
         });
         return result;
-    }
+    },
+    [gettersTypes.GET_USER_FILTERS]: state => state.userFilters
 }

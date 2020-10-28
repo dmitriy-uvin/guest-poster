@@ -4,6 +4,14 @@ const API_PREFIX = '/filters';
 
 export default {
     async saveUserFilter(filterData) {
-        return await requestInternalService.post(API_PREFIX, filterData);
+        const response = await requestInternalService.post(API_PREFIX, filterData);
+        return response?.data?.data;
+    },
+    async getUserFilters() {
+        const response = await requestInternalService.get(API_PREFIX);
+        return response?.data?.data;
+    },
+    async deleteUserFilterById(id) {
+        return await requestInternalService.delete(API_PREFIX + '/' + id);
     }
 };

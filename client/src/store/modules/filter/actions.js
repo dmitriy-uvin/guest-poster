@@ -30,7 +30,16 @@ export default {
     [actions.SHOW_COLUMNS]: ({ commit }) => {
         commit(mutations.SHOW_COLUMNS);
     },
-    [actions.SAVE_USER_FILTER]: async (context, filterData) => {
-        await filterService.saveUserFilter(filterData);
+    [actions.SAVE_USER_FILTER]: async ({ commit }, filterData) => {
+        const response = await filterService.saveUserFilter(filterData);
+        commit(mutations.SET_USER_FILTER, response);
+    },
+    [actions.GET_USER_FILTERS]: async ({ commit }) => {
+        const response = await filterService.getUserFilters();
+        commit(mutations.SET_USER_FILTERS, response);
+    },
+    [actions.DELETE_USER_FILTER]: async ({ commit }, id) => {
+        await filterService.deleteUserFilterById(id);
+        commit(mutations.DELETE_USER_FILTER, id);
     }
 }
