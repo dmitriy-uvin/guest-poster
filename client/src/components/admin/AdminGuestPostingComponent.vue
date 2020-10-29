@@ -89,7 +89,14 @@
                     </span>
                 </td>
                 <td class="text-right">
-                    <VBtn fab x-small color="purple" dark class="mr-3">
+                    <VBtn
+                        fab
+                        x-small
+                        color="purple"
+                        dark
+                        class="mr-3"
+                        @click="onViewPlatform(platform)"
+                    >
                         <VIcon>mdi-eye</VIcon>
                     </VBtn>
                     <VBtn
@@ -193,6 +200,12 @@
             @close="deletePlatformsDialog = false"
             @on-delete="onPlatformsDeleted"
         />
+
+        <ViewPlatformDialog
+            :visibility="viewPlatformDialog"
+            :platform="viewPlatform"
+            @close-dialog="viewPlatformDialog = false"
+        />
     </div>
 </template>
 
@@ -207,6 +220,7 @@ import AdminPlatformsFooter from '@/components/platform/AdminPlatformsFooter';
 import DeletePlatformsDialog from '@/components/platform/DeletePlatformsDialog';
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
+import ViewPlatformDialog from '@/components/admin/ViewPlatformDialog';
 
 export default {
     name: 'AdminPostingComponent',
@@ -214,19 +228,26 @@ export default {
         DeletePlatformsDialog,
         DeleteOnePlatformDialog,
         ActionButtons,
-        AdminPlatformsFooter
+        AdminPlatformsFooter,
+        ViewPlatformDialog
     },
     mixins: [rolemixin, filterMixin, valueFormatMixin, guestPostingMixin],
     data: () => ({
         deleteOnePlatformDialog: false,
         deletePlatformsDialog: false,
         deletePlatformObj: {},
-        perPage: 10
+        perPage: 10,
+        viewPlatformDialog: false,
+        viewPlatform: {}
     }),
     methods: {
         ...mapActions('platforms', {
             fetchPlatformsNotInTrash: actions.FETCH_PLATFORMS_NOT_IN_TRASH
         }),
+        onViewPlatform(platform) {
+            this.viewPlatform = platform;
+            this.viewPlatformDialog = true;
+        },
         onEditPlatform(id) {
             this.$router.push({ path: '/platforms/' + id });
         },
