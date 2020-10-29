@@ -17,7 +17,9 @@
                     <span style="color: #2f80ed">Hide Filters</span>
                 </VBtn>
             </div>
-            <UserFiltersBlock />
+            <UserFiltersBlock
+                @edit-filter="onEditFilterClick"
+            />
         </div>
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="pr-2">
@@ -1864,7 +1866,19 @@
                                     color="#ebebeb"
                                     block
                                     @click="onOpenFilterNameDialog"
-                                >Save</VBtn>
+                                    v-if="!Object.keys(appliedFilter).length"
+                                >
+                                    Save
+                                </VBtn>
+                                <VBtn
+                                    depressed
+                                    color="#ebebeb"
+                                    block
+                                    @click="onUpdateFilterByIdClick"
+                                    v-else
+                                >
+                                    Update
+                                </VBtn>
                             </VCol>
                             <VCol cols="12" md="6">
                                 <VBtn
@@ -2323,6 +2337,30 @@ export default {
         notificationMixin
     ],
     methods: {
+        onEditFilterClick(id) {
+            this.filtersOpened = true;
+            alert(id);
+        },
+        async onUpdateFilterByIdClick() {
+            if (this.appliedFilter) {
+                try {
+                    await this.updateFilterById({
+                        id: this.appliedFilter.id,
+                        filter_items: this.filterData
+                    });
+                    await this.onShowResults();
+                    this.setNotification({
+                        type: 'success',
+                        message: 'Filter was updated!'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        type: 'error',
+                        message: error
+                    });
+                }
+            }
+        },
         ...mapActions('filter', {
             setFilterItem: filterActions.SET_FILTER_ITEM,
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
@@ -2332,7 +2370,8 @@ export default {
             clearColumns: filterActions.CLEAR_COLUMNS,
             showColumns: filterActions.SHOW_COLUMNS,
             getUserFilters: filterActions.GET_USER_FILTERS,
-            setFilterItemFromAppliedFilter: filterActions.SET_FILTER_ITEM_FROM_APPLIED_FILTER
+            setFilterItemFromAppliedFilter: filterActions.SET_FILTER_ITEM_FROM_APPLIED_FILTER,
+            updateFilterById: filterActions.UPDATE_USER_FILTER_BY_ID
         }),
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];

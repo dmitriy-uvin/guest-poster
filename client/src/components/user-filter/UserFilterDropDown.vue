@@ -13,7 +13,7 @@
                 </VIcon>
             </template>
             <VList>
-                <VListItem dense @click="onEditFilter">
+                <VListItem dense @click="onEditFilter" v-if="appliedFilterId">
                     <VListItemTitle>Edit</VListItemTitle>
                 </VListItem>
                 <VListItem dense @click="onRenameById">
@@ -65,7 +65,7 @@ export default {
             deleteFilterById: actions.DELETE_USER_FILTER
         }),
         onEditFilter() {
-
+            this.$emit('edit-filter');
         },
         onRenameById() {
             this.renameNameDialog = true;
@@ -93,6 +93,12 @@ export default {
                 if (this.appliedFilter.id === Number(this.filter.id)) return '#2f80ed';
             }
             return 'black';
+        },
+        appliedFilterId() {
+            if (this.appliedFilter) {
+                if (this.appliedFilter.id === Number(this.filter.id)) return true;
+            }
+            return false;
         }
     }
 }

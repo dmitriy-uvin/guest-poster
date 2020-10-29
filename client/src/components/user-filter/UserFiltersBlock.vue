@@ -14,6 +14,7 @@
             </span>
             <UserFilterDropDown
                 :filter="userFilter"
+                @edit-filter="onEditFilter(id)"
             />
         </div>
     </div>
@@ -36,6 +37,9 @@ export default {
             deleteFilterById: actions.DELETE_USER_FILTER,
             applyUserFilter: actions.APPLY_USER_FILTER
         }),
+        onEditFilter(id) {
+            this.$emit('edit-filter', id);
+        },
         onApplyFilter(id) {
             this.applyUserFilter(id);
         },
