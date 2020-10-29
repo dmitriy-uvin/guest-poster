@@ -13,7 +13,7 @@ export default {
         direction: null,
         currentPage: 1,
         lastPage: 1,
-        total: 1,
+        total: 0,
         pages: [],
         firstPages: [],
         lastPages: [],
