@@ -66,15 +66,19 @@ Route::group([
         Route::post('/update-all', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataAll']);
         Route::post('/update-by-ids', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataByIds']);
         Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
-        Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
-        Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);
-        Route::get('/export-all', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsAll']);
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
+
         Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
         Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
         Route::put('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'updatePlatformById']);
+
+        Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);
+        Route::get('/export-all', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsAll']);
+        Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
+        Route::get('/all', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsNotInTrash']);
         Route::get('/trash', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsInTrashCollection']);
         Route::get('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformById']);
+
         Route::delete('/', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformsByIds']);
     });
 

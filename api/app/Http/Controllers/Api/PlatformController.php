@@ -14,6 +14,8 @@ use App\Action\Platform\GetPlatformCollectionAction;
 use App\Action\Platform\GetPlatformCollectionRequest;
 use App\Action\Platform\GetPlatformsInTrashCollectionAction;
 use App\Action\Platform\GetPlatformsInTrashCollectionRequest;
+use App\Action\Platform\GetPlatformsNotInTrashAction;
+use App\Action\Platform\GetPlatformsNotInTrashRequest;
 use App\Action\Platform\MoveFromTrashByIdsAction;
 use App\Action\Platform\MoveInTrashByIdsAction;
 use App\Action\Platform\UpdateApiDataAllAction;
@@ -41,6 +43,7 @@ final class PlatformController extends ApiController
     private GetPlatformByIdAction $getPlatformByIdAction;
     private UpdateApiDataByIdsAction $updateApiDataByIdsAction;
     private UpdateApiDataAllAction $updateApiDataAction;
+    private GetPlatformsNotInTrashAction $getPlatformsNotInTrashAction;
 
     public function __construct(
         AddPlatformAction $addPlatformAction,
@@ -53,7 +56,8 @@ final class PlatformController extends ApiController
         UpdatePlatformByIdAction $updatePlatformByIdAction,
         GetPlatformByIdAction $getPlatformByIdAction,
         UpdateApiDataByIdsAction $updateApiDataByIdsAction,
-        UpdateApiDataAllAction $updateApiDataAction
+        UpdateApiDataAllAction $updateApiDataAction,
+        GetPlatformsNotInTrashAction $getPlatformsNotInTrashAction
     ) {
         $this->platformPresenter = $platformPresenter;
         $this->addPlatformAction = $addPlatformAction;
@@ -66,6 +70,24 @@ final class PlatformController extends ApiController
         $this->getPlatformByIdAction = $getPlatformByIdAction;
         $this->updateApiDataByIdsAction = $updateApiDataByIdsAction;
         $this->updateApiDataAction = $updateApiDataAction;
+        $this->getPlatformsNotInTrashAction = $getPlatformsNotInTrashAction;
+    }
+
+    public function getPlatformsNotInTrash(PaginatedHttpRequest $request)
+    {
+        $response = $this->getPlatformsNotInTrashAction->execute(
+            new GetPlatformsNotInTrashRequest(
+                (int)$request->page,
+                (int)$request->perPage,
+                $request->sorting,
+                $request->direction,
+            )
+        );
+
+        return $this->createPaginatedResponse(
+            $response->getPaginator(),
+            $this->platformPresenter
+        );
     }
 
     public function savePlatform(AddPlatformHttpRequest $request): JsonResponse
@@ -160,7 +182,10 @@ final class PlatformController extends ApiController
             )
         );
 
-        return $this->createPaginatedResponse($response->getPaginator(), $this->platformPresenter);
+        return $this->createPaginatedResponse(
+            $response->getPaginator(),
+            $this->platformPresenter
+        );
     }
 
     public function moveInTrashByIds(IdsHttpRequest $request): JsonResponse
