@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('skype')->nullable();
             $table->string('website')->nullable();
             $table->string('role')->default(UserRoles::USER);
-            $table->boolean('subscription_active')->default(false);
+            $table->boolean('blocked')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
