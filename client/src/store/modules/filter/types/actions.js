@@ -9,6 +9,7 @@ export const CLEAR_COLUMNS = 'clearColumns';
 export const SHOW_COLUMNS = 'showColumns';
 
 export const SAVE_USER_FILTER = 'saveUserFilter';
+export const UPDATE_USER_FILTER_BY_ID = 'updateUserFilterById';
 export const RENAME_USER_FILTER = 'renameUserFilter';
 export const GET_USER_FILTERS = 'getUserFilters';
 export const DELETE_USER_FILTER = 'deleteUserFilter';

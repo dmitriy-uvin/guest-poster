@@ -72,7 +72,6 @@ export default {
     },
     [mutations.CLEAR_FILTER_ITEMS]: (state, mode) => {
         state.filterItems = {};
-        console.log(mode);
         if (mode === 'all') {
             state.appliedFilter = {};
         }
@@ -116,6 +115,7 @@ export default {
         state.userFilters = {
             ...state.userFilters,
             [filterData.id]: {
+                id: filterData.id,
                 name: filterData.name,
                 filter_items: filterData.filter_items.reduce(
                     (prev, next) => ({
@@ -186,5 +186,8 @@ export default {
                 name: data.name
             }
         };
+    },
+    [mutations.UPDATE_USER_FILTER_BY_ID]: (state, id) => {
+        state.userFilters[id].filter_items = {};
     }
 }

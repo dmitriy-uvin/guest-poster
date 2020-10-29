@@ -9,9 +9,12 @@ use App\Action\Filter\RenameFilterByIdAction;
 use App\Action\Filter\RenameFilterByIdRequest;
 use App\Action\Filter\SaveUserFilterAction;
 use App\Action\Filter\SaveUserFilterRequest;
+use App\Action\Filter\UpdateFilterByIdAction;
+use App\Action\Filter\UpdateFilterByIdRequest;
 use App\Http\Presenters\Filter\FilterPresenter;
 use App\Http\Requests\Filter\RenameFilterByIdHttpRequest;
 use App\Http\Requests\Filter\SaveUserFilterHttpRequest;
+use App\Http\Requests\Filter\UpdateFilterByIdHttpRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -22,19 +25,22 @@ final class FilterController extends ApiController
     private RenameFilterByIdAction $renameFilterByIdAction;
     private GetUserFiltersForAuthUserAction $getUserFilterForAuthUserAction;
     private DeleteFilterByIdAction $deleteFilterByIdAction;
+    private UpdateFilterByIdAction $updateFilterByIdAction;
 
     public function __construct(
         SaveUserFilterAction $saveUserFilterAction,
         RenameFilterByIdAction $renameFilterByIdAction,
         FilterPresenter $filterItemPresenter,
         GetUserFiltersForAuthUserAction $getUserFilterForAuthUserAction,
-        DeleteFilterByIdAction $deleteFilterByIdAction
+        DeleteFilterByIdAction $deleteFilterByIdAction,
+        UpdateFilterByIdAction $updateFilterByIdAction
     ) {
         $this->saveUserFilterAction = $saveUserFilterAction;
         $this->renameFilterByIdAction = $renameFilterByIdAction;
         $this->filterPresenter = $filterItemPresenter;
         $this->getUserFilterForAuthUserAction = $getUserFilterForAuthUserAction;
         $this->deleteFilterByIdAction = $deleteFilterByIdAction;
+        $this->updateFilterByIdAction = $updateFilterByIdAction;
     }
 
     public function getFiltersForAuthUser(): JsonResponse
@@ -80,5 +86,19 @@ final class FilterController extends ApiController
         );
 
         return $this->emptyResponse();
+    }
+
+    public function updateFilterById(string $id, UpdateFilterByIdHttpRequest $request)
+    {
+        $response = $this->updateFilterByIdAction->execute(
+            new UpdateFilterByIdRequest(
+                (int)$id,
+                $request->filter_items
+            )
+        );
+
+        return $this->successResponse(
+            $this->filterPresenter->present($response->getFilter())
+        );
     }
 }

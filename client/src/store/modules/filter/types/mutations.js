@@ -9,8 +9,8 @@ export const CLEAR_COLUMNS = 'clearColumns';
 export const SHOW_COLUMNS = 'showColumns';
 
 export const SET_USER_FILTER = 'setUserFilter';
+export const UPDATE_USER_FILTER_BY_ID = 'updateUserFilterById';
 export const RENAME_USER_FILTER = 'renameUserFilter';
-
 export const SET_USER_FILTERS = 'setUserFilters';
 export const DELETE_USER_FILTER = 'deleteUserFilter';
 export const APPLY_USER_FILTER = 'applyUserFilter';

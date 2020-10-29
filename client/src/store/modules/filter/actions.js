@@ -51,5 +51,10 @@ export default {
     [actions.RENAME_USER_FILTER]: async ({ commit }, data) => {
         await filterService.renameUserFilterById(data);
         commit(mutations.RENAME_USER_FILTER, data);
+    },
+    [actions.UPDATE_USER_FILTER_BY_ID]: async ({ commit }, filterData) => {
+        const filterResponse = await filterService.updateFilterById(filterData);
+        commit(mutations.UPDATE_USER_FILTER_BY_ID, filterResponse.id);
+        commit(mutations.SET_USER_FILTER, filterResponse);
     }
 }

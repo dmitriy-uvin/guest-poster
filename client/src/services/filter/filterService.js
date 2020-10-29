@@ -18,5 +18,10 @@ export default {
         return await requestInternalService.put(API_PREFIX + '/' + data.id + '/name', {
             name: data.name
         });
+    },
+    async updateFilterById(filterData) {
+        const response = await requestInternalService.put(API_PREFIX + '/' + filterData.id,
+            filterData);
+        return response?.data?.data;
     }
 };
