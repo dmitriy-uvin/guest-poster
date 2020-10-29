@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1 class="mt-6">Orders</h1>
-        <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+        <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 
         <table v-if="Object.keys(orders).length">
             <thead>

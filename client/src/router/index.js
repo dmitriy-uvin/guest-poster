@@ -89,6 +89,12 @@ const routes = [
                 component: () => import('../views/EditPlatform'),
                 meta: { adminRoute: true, AuthorizedUser: true }
             },
+            {
+                path: 'users',
+                name: 'Users',
+                component: () => import('../views/Users'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            }
         ]
     }
 ];

@@ -2348,6 +2348,20 @@ export default {
         this.initializeDisabledFields();
     },
     methods: {
+        async changeSortingAndDirection(sorting) {
+            this.sorting = sorting;
+            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
+            await this.loadPlatforms();
+        },
+        async loadPlatforms() {
+            return await this.fetchPlatforms({
+                page: this.page,
+                perPage: this.perPage,
+                sorting: this.sorting,
+                direction: this.direction,
+                filter: this.filterQuery
+            });
+        },
         onEditFilterClick(id) {
             this.filtersOpened = true;
             alert(id);
@@ -2592,6 +2606,21 @@ export default {
         }
     },
     watch: {
+        async page() {
+            this.chosen = {};
+            await this.loadPlatforms();
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        },
+        async perPage() {
+            this.page = 1;
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        },
         chosenFiltersProperties() {
             if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
                 this.initializeDisabledFields();

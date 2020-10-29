@@ -25,8 +25,8 @@
                         ID
                     </span>
                 </th>
-                <th @click="changeSortingAndDirection('website')">
-                    <span :class="{ 'underline' : sorting === 'website' }">
+                <th @click="changeSortingAndDirection('website_url')">
+                    <span :class="{ 'underline' : sorting === 'website_url' }">
                         Website
                     </span>
                 </th>
@@ -265,12 +265,6 @@ export default {
             await this.fetchPlatformsNotInTrashAction();
         },
         async fetchPlatformsNotInTrashAction() {
-            console.log({
-                page: this.page,
-                perPage: this.perPage,
-                sorting: this.sorting,
-                direction: this.direction,
-            });
             return await this.fetchPlatformsNotInTrash({
                 page: this.page,
                 perPage: this.perPage,
@@ -289,7 +283,6 @@ export default {
     },
     watch: {
         async page() {
-            console.log(123);
             this.chosen = {};
             await this.fetchPlatformsNotInTrashAction();
             this.reCalculatePages();
