@@ -7,6 +7,7 @@ import notAvailableFilter from '@/filters/notAvailableFilter';
 import formatNumberFilter from '@/filters/formatNumberFilter';
 import formatDataFilter from '@/filters/formatDataFilter';
 import formatDomainFilter from '@/filters/formatDomainFilter';
+import priceFilter from '@/filters/priceFilter';
 import CustomTooltip from '@/components/mini-components/Tooltip';
 
 Vue.config.productionTip = false
@@ -15,6 +16,7 @@ Vue.filter('notAvailableFilter', notAvailableFilter);
 Vue.filter('formatNumberFilter', formatNumberFilter);
 Vue.filter('formatDataFilter', formatDataFilter);
 Vue.filter('formatDomainFilter', formatDomainFilter);
+Vue.filter('priceFilter', priceFilter);
 
 Vue.component('CustomTooltip', CustomTooltip);
 

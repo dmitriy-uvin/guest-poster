@@ -41,9 +41,16 @@
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.skype | notAvailableFilter}}</td>
-                    <td class="website">{{ user.website | notAvailableFilter | formatDomainFilter }}</td>
+                    <td class="website">
+                        {{ user.website | notAvailableFilter | formatDomainFilter }}
+                    </td>
                     <td>
-                        <VBtn small color="primary" class="mr-1">
+                        <VBtn
+                            small
+                            color="primary"
+                            class="mr-1"
+                            @click="onViewUser(user.id)"
+                        >
                             <CustomTooltip message="View User" icon="mdi-eye" />
                         </VBtn>
                         <VBtn
@@ -150,6 +157,9 @@ export default {
         },
         onSelectPerPage(perPage) {
             this.perPage = perPage;
+        },
+        onViewUser(id) {
+            this.$router.push({ path: '/users/' + id});
         },
         async fetchAllUsersAction() {
             return await this.fetchAllUsers({

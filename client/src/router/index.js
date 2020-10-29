@@ -94,7 +94,13 @@ const routes = [
                 name: 'Users',
                 component: () => import('../views/Users'),
                 meta: { adminRoute: true, AuthorizedUser: true }
-            }
+            },
+            {
+                path: 'users/:id',
+                name: 'UserPage',
+                component: () => import('../views/UserPage'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            },
         ]
     }
 ];
