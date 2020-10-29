@@ -2336,6 +2336,17 @@ export default {
         additionalFilterCounterMixin,
         notificationMixin
     ],
+    async mounted() {
+        this.filterQuery = this.filter;
+        const response = await this.loadPlatforms();
+        this.currentPage = response.current_page;
+        this.lastPage = response.last_page;
+        this.total = response.total;
+        await this.getUserFilters();
+        this.reCalculatePages();
+        this.initializeChosenPlatformsState();
+        this.initializeDisabledFields();
+    },
     methods: {
         onEditFilterClick(id) {
             this.filtersOpened = true;
