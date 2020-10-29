@@ -33,7 +33,7 @@ const routes = [
                 path: '/reset-password',
                 name: 'ResetPassword',
                 component: () => import('../views/ResetPassword'),
-                meta: { notAuthorizedUser: true, layout: 'auth' }
+                meta: { layout: 'auth' }
             },
             {
                 path: '',
