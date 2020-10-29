@@ -16,5 +16,8 @@ export default {
         const orders = [...state.orders];
         orders[index].status = status;
         state.orders = orders;
+    },
+    [mutations.SET_ORDERS_BY_USER_ID]: (state, orders) => {
+        state.ordersByUserId = orders.map(orderMapper)
     }
 };

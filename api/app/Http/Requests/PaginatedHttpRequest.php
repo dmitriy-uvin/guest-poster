@@ -9,8 +9,8 @@ class PaginatedHttpRequest extends ApiFormRequest
         return [
             'page' => 'integer',
             'perPage' => 'integer',
-            'sorting' => 'string',
-            'direction' => 'string'
+            'sorting' => 'string|nullable',
+            'direction' => 'string|nullable'
         ];
     }
 }

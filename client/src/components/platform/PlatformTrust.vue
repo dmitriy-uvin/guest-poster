@@ -1,11 +1,13 @@
 <template>
-    <div>
-        <span :class="colorClasses[keyString]" class="head">
-            {{ keyNames[keyString] }}
-        </span>
-        <span>{{ CheckTrust === null ? 'N/A' : CheckTrust + ' CT' }}</span>
-        <span>{{ CheckTrustSpam === null ? 'N/A' : CheckTrustSpam + ' CS' }}</span>
-        <span>{{ PowerTrust === null ? 'N/A' : PowerTrust + ' PT' }}</span>
+    <div class="d-flex justify-center">
+        <div class="text-left">
+            <span :class="colorClasses[keyString]" class="head">
+                {{ keyNames[keyString] }}
+            </span>
+            <span>{{ CheckTrust === null ? 'N/A' : CheckTrust + ' CT' }}</span>
+            <span>{{ CheckTrustSpam === null ? 'N/A' : CheckTrustSpam + ' CS' }}</span>
+            <span>{{ PowerTrust === null ? 'N/A' : PowerTrust + ' PT' }}</span>
+        </div>
     </div>
 </template>
 

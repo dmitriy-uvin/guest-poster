@@ -1,11 +1,13 @@
 <template>
     <div class="container">
-        <div class="row justify-space-between align-center">
+        <div class="">
             <div class="left">
                 <h1>Guest Posting</h1>
                 <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
-            <div class="right">
+        </div>
+        <div class="mb-8">
+            <div class="d-inline-block">
                 <VBtn color="primary" depressed @click="openFilters" v-if="!filtersOpened">
                     <VIcon left>mdi-filter-variant</VIcon>
                     Filters
@@ -15,13 +17,15 @@
                     <span style="color: #2f80ed">Hide Filters</span>
                 </VBtn>
             </div>
+            <UserFiltersBlock
+                @edit-filter="onEditFilterClick"
+            />
         </div>
-
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="pr-2">
                 <VCol cols="12" md="9" class="px-4">
                     <h3 class="text-uppercase mt-4 mb-4">General Filters</h3>
-                    <VRow class="">
+                    <VRow>
                         <VCol cols="12" md="8" class="">
                             <label>Topics</label>
                             <VSelect
@@ -303,16 +307,78 @@
                         <VIcon left color="#2f80ed">mdi-chevron-down</VIcon>
                         <span style="color: #2f80ed">Additional Filters</span>
                     </VBtn>
-<!--                    <h3 class="text-uppercase mt-6 mb-3">Additional Filters</h3>-->
-                    <VRow v-if="additionalFiltersOpened">
+                    <VRow v-if="additionalFiltersOpened" class="mt-4">
                         <VTabs fixed-tabs v-model="tab">
-                            <VTab key="Trust">Trust</VTab>
-                            <VTab key="Moz">Moz</VTab>
-                            <VTab key="Alexa">Alexa</VTab>
-                            <VTab key="Ahrefs">Ahrefs</VTab>
-                            <VTab key="Majestic">Majestic</VTab>
-                            <VTab key="SemRush">SemRush</VTab>
-                            <VTab key="Facebook">Facebook</VTab>
+                            <VTab key="Trust">
+                                <VBadge
+                                    color="green"
+                                    :content="trustFilterCounter"
+                                    v-if="trustFilterCounter"
+                                >
+                                    Trust
+                                </VBadge>
+                                <span v-else>Trust</span>
+                            </VTab>
+                            <VTab key="Moz">
+                                <VBadge
+                                    color="green"
+                                    :content="mozFilterCounter"
+                                    v-if="mozFilterCounter"
+                                >
+                                    Moz
+                                </VBadge>
+                                <span v-else>Moz</span>
+                            </VTab>
+                            <VTab key="Alexa">
+                                <VBadge
+                                    color="green"
+                                    :content="alexaFilterCounter"
+                                    v-if="alexaFilterCounter"
+                                >
+                                    Alexa
+                                </VBadge>
+                                <span v-else>Alexa</span>
+                            </VTab>
+                            <VTab key="Ahrefs">
+                                <VBadge
+                                    color="green"
+                                    :content="ahrefsFilterCounter"
+                                    v-if="ahrefsFilterCounter"
+                                >
+                                    Ahrefs
+                                </VBadge>
+                                <span v-else>Ahrefs</span>
+                            </VTab>
+                            <VTab key="Majestic">
+                                <VBadge
+                                    color="green"
+                                    :content="majesticFilterCounter"
+                                    v-if="majesticFilterCounter"
+                                >
+                                    Majestic
+                                </VBadge>
+                                <span v-else>Majestic</span>
+                            </VTab>
+                            <VTab key="SemRush">
+                                <VBadge
+                                    color="green"
+                                    :content="semRushFilterCounter"
+                                    v-if="semRushFilterCounter"
+                                >
+                                    SemRush
+                                </VBadge>
+                                <span v-else>SemRush</span>
+                            </VTab>
+                            <VTab key="Facebook">
+                                <VBadge
+                                    color="green"
+                                    :content="facebookFilterCounter"
+                                    v-if="facebookFilterCounter"
+                                >
+                                    Facebook
+                                </VBadge>
+                                <span v-else>Facebook</span>
+                            </VTab>
                         </VTabs>
                         <VTabsItems v-model="tab" >
                             <VTabItem key="Trust">
@@ -495,6 +561,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.da_from"
                                                         :hide-details="!mozDaFromErrors.length"
                                                         v-model="filter.moz.da_from"
                                                         :error-messages="mozDaFromErrors"
@@ -503,7 +570,8 @@
                                                         'additional',
                                                         'Moz DA',
                                                         'moz.da',
-                                                        'from'
+                                                        'from',
+                                                        'DA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -514,13 +582,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.da_to"
                                                         v-model="filter.moz.da_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Moz DA',
                                                         'moz.da',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.DA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -540,6 +610,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.pa_from"
                                                         v-model="filter.moz.pa_from"
                                                         :error-messages="mozPaFromErrors"
                                                         :hide-details="!mozPaFromErrors.length"
@@ -548,7 +619,8 @@
                                                         'additional',
                                                         'Moz PA',
                                                         'moz.pa',
-                                                        'from'
+                                                        'from',
+                                                        'PA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -559,13 +631,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.pa_to"
                                                         v-model="filter.moz.pa_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Moz PA',
                                                         'moz.pa',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.PA',
                                                         )"
                                                     >
                                                     </VTextField>
@@ -585,6 +659,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.rank_from"
                                                         v-model="filter.moz.rank_from"
                                                         :error-messages="mozRankFromErrors"
                                                         :hide-details="!mozRankFromErrors.length"
@@ -593,7 +668,8 @@
                                                         'additional',
                                                         'Moz Rank',
                                                         'moz.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Moz.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -604,13 +680,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.moz.rank_to"
                                                         v-model="filter.moz.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Moz Rank',
                                                         'moz.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Moz.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -630,6 +708,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.links_in_from"
                                                         v-model="filter.moz.links_in_from"
                                                         :error-messages="mozLinksInFromErrors"
                                                         :hide-details="!mozLinksInFromErrors.length"
@@ -638,7 +717,8 @@
                                                         'additional',
                                                         'Moz Links In',
                                                         'moz.links_in',
-                                                        'from'
+                                                        'from',
+                                                        'LinksIn'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -648,6 +728,7 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.links_in_to"
                                                         v-model="filter.moz.links_in_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -655,7 +736,8 @@
                                                         'additional',
                                                         'Moz Links In',
                                                         'moz.links_in',
-                                                        'to'
+                                                        'to',
+                                                        'LinksIn'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -675,6 +757,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.equity_from"
                                                         v-model="filter.moz.equity_from"
                                                         :error-messages="mozEquityFromErrors"
                                                         :hide-details="!mozEquityFromErrors.length"
@@ -683,7 +766,8 @@
                                                         'additional',
                                                         'Moz Equity',
                                                         'moz.equity',
-                                                        'from'
+                                                        'from',
+                                                        'Equity'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -693,6 +777,7 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.moz.equity_to"
                                                         v-model="filter.moz.equity_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -700,7 +785,8 @@
                                                         'additional',
                                                         'Moz Equity',
                                                         'moz.equity',
-                                                        'to'
+                                                        'to',
+                                                         'Equity'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -724,6 +810,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.rank_from"
                                                         v-model="filter.alexa.rank_from"
                                                         :error-messages="alexaRankFromErrors"
                                                         :hide-details="!alexaRankFromErrors.length"
@@ -732,7 +819,8 @@
                                                         'additional',
                                                         'Alexa Rank',
                                                         'alexa.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Al.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -742,6 +830,7 @@
                                                         placeholder="100000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.rank_to"
                                                         v-model="filter.alexa.rank_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -749,7 +838,8 @@
                                                         'additional',
                                                         'Alexa Rank',
                                                         'alexa.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Al.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -769,6 +859,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.alexa.country_rank_from"
                                                         v-model="filter.alexa.country_rank_from"
                                                         :error-messages="alexaCountryRankFromErrors"
                                                         :hide-details="!alexaCountryRankFromErrors.length"
@@ -777,7 +868,8 @@
                                                         'additional',
                                                         'Alexa CountryRank',
                                                         'alexa.country_rank',
-                                                        'from'
+                                                        'from',
+                                                        'Cnt.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -788,13 +880,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.alexa.country_rank_to"
                                                         v-model="filter.alexa.country_rank_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Alexa CountryRank',
                                                         'alexa.country_rank',
-                                                        'to'
+                                                        'to',
+                                                        'Cnt.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -818,6 +912,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.rank_from"
                                                         :hide-details="!ahrefsRankFromErrors.length"
                                                         v-model="filter.ahrefs.rank_from"
                                                         :error-messages="ahrefsRankFromErrors"
@@ -826,7 +921,8 @@
                                                         'additional',
                                                         'Ahrefs Rank',
                                                         'ahrefs.rank',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -837,13 +933,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.ahrefs.rank_to"
                                                         v-model="filter.ahrefs.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Ahrefs Rank',
                                                         'ahrefs.rank',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -908,6 +1006,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.ext_backlinks_from"
                                                         v-model="filter.ahrefs.ext_backlinks_from"
                                                         :error-messages="ahrefsExtBacklinksFromErrors"
                                                         :hide-details="!ahrefsExtBacklinksFromErrors.length"
@@ -916,7 +1015,8 @@
                                                         'additional',
                                                         'Ahrefs Ext. Backlinks',
                                                         'ahrefs.ext_backlinks',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Ext'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -926,6 +1026,7 @@
                                                         placeholder="1000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.ext_backlinks_to"
                                                         v-model="filter.ahrefs.ext_backlinks_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -933,7 +1034,8 @@
                                                         'additional',
                                                         'Ahrefs Ext. Backlinks',
                                                         'ahrefs.ext_backlinks',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Ext'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -953,6 +1055,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.refd_from"
                                                         :hide-details="!ahrefsRefDFromErrors.length"
                                                         v-model="filter.ahrefs.refd_from"
                                                         :error-messages="ahrefsRefDFromErrors"
@@ -972,6 +1075,7 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.ahrefs.refd_to"
                                                         v-model="filter.ahrefs.refd_to"
                                                         @input="onInputFilter(
                                                         $event,
@@ -998,6 +1102,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.dofollow_from"
                                                         v-model="filter.ahrefs.dofollow_from"
                                                         :error-messages="ahrefsDofollowFromErrors"
                                                         :hide-details="!ahrefsDofollowFromErrors.length"
@@ -1006,7 +1111,8 @@
                                                         'additional',
                                                         'Ahrefs Dofollow',
                                                         'ahrefs.dofollow',
-                                                        'from'
+                                                        'from',
+                                                        'Ahr.Dofollow'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1016,6 +1122,7 @@
                                                         placeholder="1000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.ahrefs.dofollow_to"
                                                         v-model="filter.ahrefs.dofollow_to"
                                                         hide-details
                                                         @input="onInputFilter(
@@ -1023,7 +1130,8 @@
                                                         'additional',
                                                         'Ahrefs Dofollow',
                                                         'ahrefs.dofollow',
-                                                        'to'
+                                                        'to',
+                                                        'Ahr.Dofollow'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1047,15 +1155,17 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_backlinks_from"
                                                         :hide-details="!majesticExtBacklinksFromErrors.length"
                                                         v-model="filter.majestic.external_backlinks_from"
                                                         :error-messages="majesticExtBacklinksFromErrors"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ext. Edu',
+                                                        'Majestic Ext.',
                                                         'majestic.external_backlinks',
-                                                        'from'
+                                                        'from',
+                                                        'Ext.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1066,13 +1176,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_backlinks_to"
                                                         v-model="filter.majestic.external_backlinks_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ext. Edu',
+                                                        'Majestic Ext.',
                                                         'majestic.external_backlinks',
-                                                        'to'
+                                                        'to',
+                                                        'Ext.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1092,6 +1204,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_edu_from"
                                                         :hide-details="!majesticExtEduFromErrors.length"
                                                         v-model="filter.majestic.external_edu_from"
                                                         :error-messages="majesticExtEduFromErrors"
@@ -1100,7 +1213,8 @@
                                                         'additional',
                                                         'Majestic Ext. Edu',
                                                         'majestic.external_edu',
-                                                        'from'
+                                                        'from',
+                                                        'Ext. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1111,13 +1225,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_edu_to"
                                                         v-model="filter.majestic.external_edu_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Majestic Ext. Edu',
                                                         'majestic.external_edu',
-                                                        'to'
+                                                        'to',
+                                                        'Ext. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1137,6 +1253,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.external_gov_from"
                                                         :hide-details="!majesticExtGovFromErrors.length"
                                                         v-model="filter.majestic.external_gov_from"
                                                         :error-messages="majesticExtGovFromErrors"
@@ -1145,7 +1262,8 @@
                                                         'additional',
                                                         'Majestic Ext. Gov',
                                                         'majestic.external_gov',
-                                                        'from'
+                                                        'from',
+                                                        'Ext. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1156,13 +1274,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.external_gov_to"
                                                         v-model="filter.majestic.external_gov_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Majestic Ext. Gov',
                                                         'majestic.external_gov',
-                                                        'to'
+                                                        'to',
+                                                        'Ext. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1185,12 +1305,14 @@
                                                         :hide-details="!majesticRefDFromErrors.length"
                                                         v-model="filter.majestic.refd_from"
                                                         :error-messages="majesticRefDFromErrors"
+                                                        :disabled="disabledFilterFields.majestic.refd_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD.',
                                                         'majestic.refd',
-                                                        'from'
+                                                        'from',
+                                                        'RefD.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1201,13 +1323,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.refd_to"
                                                         v-model="filter.majestic.refd_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD.',
                                                         'majestic.refd',
-                                                        'to'
+                                                        'to',
+                                                        'RefD.'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1230,12 +1354,14 @@
                                                         :hide-details="!majesticRefDEduFromErrors.length"
                                                         v-model="filter.majestic.refd_edu_from"
                                                         :error-messages="majesticRefDEduFromErrors"
+                                                        :disabled="disabledFilterFields.majestic.refd_edu_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD. EDU',
                                                         'majestic.refd_edu',
-                                                        'from'
+                                                        'from',
+                                                        'RefD. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1246,13 +1372,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.majestic.refd_edu_to"
                                                         v-model="filter.majestic.refd_edu_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. EDU',
+                                                        'Majestic RefD. EDU',
                                                         'majestic.refd_edu',
-                                                        'to'
+                                                        'to',
+                                                        'RefD. EDU'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1275,12 +1403,14 @@
                                                         v-model="filter.majestic.refd_gov_from"
                                                         :error-messages="majesticRefDGovFromErrors"
                                                         :hide-details="!majesticRefDGovFromErrors.length"
+                                                        :disabled="disabledFilterFields.majestic.refd_gov_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. GOV',
+                                                        'Majestic RefD. GOV',
                                                         'majestic.refd_gov',
-                                                        'from'
+                                                        'from',
+                                                        'RefD. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1290,14 +1420,16 @@
                                                         placeholder="10000000"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.refd_gov_to"
                                                         v-model="filter.majestic.refd_gov_to"
                                                         hide-details
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
-                                                        'Majestic Ref. D. GOV',
+                                                        'Majestic RefD. GOV',
                                                         'majestic.refd_gov',
-                                                        'to'
+                                                        'to',
+                                                        'RefD. GOV'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1363,6 +1495,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.cf_from"
                                                         v-model="filter.majestic.cf_from"
                                                         :error-messages="majesticCfFromErrors"
                                                         :hide-details="!majesticCfFromErrors.length"
@@ -1371,7 +1504,8 @@
                                                         'additional',
                                                         'Majestic CF',
                                                         'majestic.cf',
-                                                        'from'
+                                                        'from',
+                                                        'CF'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1381,6 +1515,7 @@
                                                         placeholder="100"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.majestic.cf_to"
                                                         v-model="filter.majestic.cf_to"
                                                         :error-messages="majesticCfToErrors"
                                                         :hide-details="!majesticCfToErrors.length"
@@ -1389,7 +1524,8 @@
                                                         'additional',
                                                         'Majestic CF',
                                                         'majestic.cf',
-                                                        'to'
+                                                        'to',
+                                                        'CF'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1413,6 +1549,7 @@
                                                         placeholder="1"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.semRush.rank_from"
                                                         :hide-details="!semRushRankFromErrors.length"
                                                         v-model="filter.semRush.rank_from"
                                                         :error-messages="semRushRankFromErrors"
@@ -1421,7 +1558,8 @@
                                                         'additional',
                                                         'SemRush Rank',
                                                         'semRush.rank',
-                                                        'from'
+                                                        'from',
+                                                        'SR.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1432,13 +1570,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.semRush.rank_to"
                                                         v-model="filter.semRush.rank_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'SemRush Rank',
                                                         'semRush.rank',
-                                                        'to'
+                                                        'to',
+                                                        'SR.Rank'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1458,6 +1598,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.semRush.keyword_num_from"
                                                         v-model="filter.semRush.keyword_num_from"
                                                         :error-messages="semRushKeywordNumFromErrors"
                                                         :hide-details="!semRushKeywordNumFromErrors.length"
@@ -1466,7 +1607,8 @@
                                                         'additional',
                                                         'SemRush Keywords Num.',
                                                         'semRush.keyword_num',
-                                                        'from'
+                                                        'from',
+                                                        'SR.Keywords'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1477,13 +1619,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.semRush.keyword_num_to"
                                                         v-model="filter.semRush.keyword_num_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'SemRush Keywords Num.',
                                                         'semRush.keyword_num',
-                                                        'to'
+                                                        'to',
+                                                        'SR.Keywords'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1552,6 +1696,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.facebook.comments_from"
                                                         :hide-details="!facebookCommentsFromErrors.length"
                                                         v-model="filter.facebook.comments_from"
                                                         :error-messages="facebookCommentsFromErrors"
@@ -1560,7 +1705,8 @@
                                                         'additional',
                                                         'Facebook Comments',
                                                         'facebook.comments',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Comments'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1571,13 +1717,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.facebook.comments_to"
                                                         v-model="filter.facebook.comments_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Facebook Comments',
                                                         'facebook.comments',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Comments'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1600,12 +1748,14 @@
                                                         :hide-details="!facebookSharesFromErrors.length"
                                                         v-model="filter.facebook.shares_from"
                                                         :error-messages="facebookSharesFromErrors"
+                                                        :disabled="disabledFilterFields.facebook.shares_from"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Facebook Shares',
                                                         'facebook.shares',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Shares'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1617,12 +1767,14 @@
                                                         dense
                                                         hide-details
                                                         v-model="filter.facebook.shares_to"
+                                                        :disabled="disabledFilterFields.facebook.shares_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Facebook Shares',
                                                         'facebook.shares',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Shares'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1642,6 +1794,7 @@
                                                         placeholder="0"
                                                         outlined
                                                         dense
+                                                        :disabled="disabledFilterFields.facebook.reactions_from"
                                                         :hide-details="!facebookReactionsFromErrors.length"
                                                         v-model="filter.facebook.reactions_from"
                                                         :error-messages="facebookReactionsFromErrors"
@@ -1650,7 +1803,8 @@
                                                         'additional',
                                                         'Facebook Reactions',
                                                         'facebook.reactions',
-                                                        'from'
+                                                        'from',
+                                                        'FB.Reacts'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1661,13 +1815,15 @@
                                                         outlined
                                                         dense
                                                         hide-details
+                                                        :disabled="disabledFilterFields.facebook.reactions_to"
                                                         v-model="filter.facebook.reactions_to"
                                                         @input="onInputFilter(
                                                         $event,
                                                         'additional',
                                                         'Facebook Reactions',
                                                         'facebook.reactions',
-                                                        'to'
+                                                        'to',
+                                                        'FB.Reacts'
                                                         )"
                                                     >
                                                     </VTextField>
@@ -1709,14 +1865,27 @@
                                     depressed
                                     color="#ebebeb"
                                     block
-                                >Save</VBtn>
+                                    @click="onOpenFilterNameDialog"
+                                    v-if="!Object.keys(appliedFilter).length"
+                                >
+                                    Save
+                                </VBtn>
+                                <VBtn
+                                    depressed
+                                    color="#ebebeb"
+                                    block
+                                    @click="onUpdateFilterByIdClick"
+                                    v-else
+                                >
+                                    Update
+                                </VBtn>
                             </VCol>
                             <VCol cols="12" md="6">
                                 <VBtn
                                     depressed
                                     color="#ebebeb"
                                     block
-                                    @click="clearAllFilters"
+                                    @click="clearAllFilters('all')"
                                 >Clear All</VBtn>
                             </VCol>
                         </VRow>
@@ -1724,7 +1893,6 @@
                 </VCol>
             </VRow>
         </VCol>
-
         <div class="elevation-2 pa-2 rounded-lg mb-4">
             <p class="d-inline-block ma-0 pa-0 mr-6 font-14">
                 Founded: <b>{{ total }}</b> sites
@@ -1732,10 +1900,9 @@
             <FilterChipsIcons
                 @filter-item-deleted="filterItemDeleted"
                 @filter-item-deleted-array="filterItemArrayDeleted"
-                @clear-all-filters="clearAllFilters"
+                @clear-all-filters="clearAllFilters('all')"
             />
         </div>
-
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
                 <tr>
@@ -1747,18 +1914,18 @@
                         >
                         </VCheckbox>
                     </td>
-                    <th @click="changeSortingAndDirection('website')">
+                    <th @click="changeSortingAndDirection('website')" class="website">
                         <span :class="{ 'underline' : sorting === 'website' }">
                             Website
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('trust')">
+                    <th @click="changeSortingAndDirection('trust')" class="trust">
                         <span :class="{ 'underline' : sorting === 'trust' }">
                             Trust
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('semrush.traffic')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic' }">
+                    <th @click="changeSortingAndDirection('semRush.traffic')">
+                        <span :class="{ 'underline' : sorting === 'semRush.traffic' }">
                             SR.Trf
                         </span>
                     </th>
@@ -1767,8 +1934,8 @@
                             DR
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('semrush.traffic_costs')">
-                        <span :class="{ 'underline' : sorting === 'semrush.traffic_costs' }">
+                    <th @click="changeSortingAndDirection('semRush.traffic_costs')">
+                        <span :class="{ 'underline' : sorting === 'semRush.traffic_costs' }">
                             SR.Cost
                         </span>
                     </th>
@@ -1777,33 +1944,19 @@
                             TF
                         </span>
                     </th>
-                    <th @click="changeSortingAndDirection('majestic.cf')">
-                        <span :class="{ 'underline' : sorting === 'majestic.cf' }">
-                            CF
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('alexa.rank')">
-                        <span :class="{ 'underline' : sorting === 'alexa.rank' }">
-                            Alx.Rank
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('majestic.ebl')">
-                        <span :class="{ 'underline' : sorting === 'majestic.ebl' }">
-                            EBL
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('semrush.rank')">
-                        <span :class="{ 'underline' : sorting === 'semrush.rank' }">
-                            SR.Rank
-                        </span>
-                    </th>
-                    <th @click="changeSortingAndDirection('ahrefs.rd')">
-                        <span :class="{ 'underline' : sorting === 'ahrefs.rd' }">
-                            RD
-                        </span>
-                    </th>
-                    <th>Features</th>
-                    <th @click="changeSortingAndDirection('price')">
+                    <template v-for="(column, index) in columns">
+                        <th
+                            v-if="column.visible"
+                            :key="index"
+                            @click="changeSortingAndDirection(column.property)"
+                        >
+                            <span :class="{ 'underline' : sorting === column.property }">
+                                {{ column.name }}
+                            </span>
+                        </th>
+                    </template>
+                    <th class="features">Features</th>
+                    <th @click="changeSortingAndDirection('price')" class="editorial-fee">
                         <span :class="{ 'underline' : sorting === 'price' }">
                             Editorial Fee
                         </span>
@@ -1819,7 +1972,7 @@
                             hide-details
                         ></VCheckbox>
                     </td>
-                    <td>
+                    <td class="website">
                         <div class="link">
                             <span class="website-link">
                                 <img
@@ -1830,11 +1983,12 @@
                                     :alt="platform.alexa.country"
                                     class="platform-country-image"
                                 >
-                                {{ platform.alexa.country }}{{ platform.websiteUrl }}
+                                {{ platform.websiteUrl }}
                             </span>
                         </div>
                         <div class="topics">
-                            <VChip x-small
+                            <VChip small
+                                   label
                                    class="pa-0 px-1 mr-1 mb-1 chip"
                                    v-for="(topic, id) in platform.topics"
                                    :key="id"
@@ -1843,11 +1997,11 @@
                             </VChip>
                         </div>
                     </td>
-                    <td>
+                    <td class="trust">
                         <PlatformTrust
-                            :check-trust="platform.trust"
+                            :check-trust="platform.checktrust"
                             :check-trust-spam="platform.spam"
-                            :power-trust="platform.lrtPowerTrust"
+                            :power-trust="platform.powertrust"
                         />
                     </td>
                     <td>
@@ -1862,7 +2016,7 @@
                     </td>
                     <td>
                         <span class="table-value">
-                            {{ platform.semrush.trafficCosts | notAvailableFilter | formatNumberFilter }}
+                            {{ platform.semRush.trafficCosts | notAvailableFilter | formatNumberFilter }}
                         </span>
                     </td>
                     <td>
@@ -1870,35 +2024,20 @@
                             {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
                     </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.majestic.cf | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.alexa.rank | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.majestic.externalBacklinks | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ platform.semrush.rank | notAvailableFilter }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="table-value">
-                            {{ (platform.ahrefs ? platform.ahrefs.rd : null ) | notAvailableFilter | formatNumberFilter }}
-                        </span>
-                    </td>
-                    <td>
+                    <template v-for="(column, index) in columns">
+                        <td
+                            v-if="column.visible"
+                            :key="index"
+                        >
+                            <span class="table-value">
+                                {{ platform[column.property.split('.')[0]][column.property.split('.')[1]] | notAvailableFilter | formatNumberFilter }}
+                            </span>
+                        </td>
+                    </template>
+                    <td class="features">
                         <PlatformFeatures :platform="platform" />
                     </td>
-                    <td>
+                    <td class="editorial-fee">
                         <span class="fee fee-active">
                             <span class="left">{{ totalPrice(platform.price) }} $</span>
                             <span class="right">Guest Post</span>
@@ -1982,6 +2121,12 @@
             @request-created="onRequestCreated"
             @platform-removed="onPlatformRemoved"
         />
+
+        <SaveFilterNameDialog
+            :visibility="filterNameDialog"
+            :filter-data="filterData"
+            @close-dialog="filterNameDialog = false"
+        />
     </div>
 </template>
 
@@ -2000,14 +2145,21 @@ import { countries } from '@/helpers/countries';
 import { validationMixin } from 'vuelidate';
 import { maxValue, minValue } from 'vuelidate/lib/validators';
 import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
+import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
+import notificationMixin from '@/mixins/notificationMixin';
+import { maxAdditionalFilters } from '@/constants/constants';
+import SaveFilterNameDialog from '@/components/user-filter/SaveFilterNameDialog';
+import UserFiltersBlock from '@/components/user-filter/UserFiltersBlock';
 
 export default {
     name: 'GuestPostingComponent',
     components: {
+        UserFiltersBlock,
         SendRequestFooter,
         PlatformTrust,
         PlatformFeatures,
-        FilterChipsIcons
+        FilterChipsIcons,
+        SaveFilterNameDialog
     },
     validations: {
         filter: {
@@ -2070,6 +2222,8 @@ export default {
         filtersOpened: false,
         filtersApplied: false,
         additionalFiltersOpened: false,
+        filterNameDialog: false,
+        filterData: {},
         filterChips: {},
         countries: countries,
         deadlineList: {
@@ -2172,19 +2326,77 @@ export default {
                 dofollow_to: '',
             }
         },
-        filterQuery: {}
+        filterQuery: {},
     }),
     mixins: [
         rolemixin,
         valueFormatMixin,
         guestPostingMixin,
-        validationMixin
+        validationMixin,
+        additionalFilterCounterMixin,
+        notificationMixin
     ],
+    async mounted() {
+        this.filterQuery = this.filter;
+        const response = await this.loadPlatforms();
+        this.currentPage = response.current_page;
+        this.lastPage = response.last_page;
+        this.total = response.total;
+        await this.getUserFilters();
+        this.reCalculatePages();
+        this.initializeChosenPlatformsState();
+        this.initializeDisabledFields();
+    },
     methods: {
+        async changeSortingAndDirection(sorting) {
+            this.sorting = sorting;
+            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
+            await this.loadPlatforms();
+        },
+        async loadPlatforms() {
+            return await this.fetchPlatforms({
+                page: this.page,
+                perPage: this.perPage,
+                sorting: this.sorting,
+                direction: this.direction,
+                filter: this.filterQuery
+            });
+        },
+        onEditFilterClick(id) {
+            this.filtersOpened = true;
+            alert(id);
+        },
+        async onUpdateFilterByIdClick() {
+            if (this.appliedFilter) {
+                try {
+                    await this.updateFilterById({
+                        id: this.appliedFilter.id,
+                        filter_items: this.filterData
+                    });
+                    await this.onShowResults();
+                    this.setNotification({
+                        type: 'success',
+                        message: 'Filter was updated!'
+                    });
+                } catch (error) {
+                    this.setNotification({
+                        type: 'error',
+                        message: error
+                    });
+                }
+            }
+        },
         ...mapActions('filter', {
             setFilterItem: filterActions.SET_FILTER_ITEM,
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
-            clearFilterItems: filterActions.CLEAR_FILTER_ITEMS
+            clearFilterItems: filterActions.CLEAR_FILTER_ITEMS,
+            setColumn: filterActions.SET_COLUMN,
+            removeColumnByProperty: filterActions.REMOVE_COLUMN_BY_PROPERTY,
+            clearColumns: filterActions.CLEAR_COLUMNS,
+            showColumns: filterActions.SHOW_COLUMNS,
+            getUserFilters: filterActions.GET_USER_FILTERS,
+            setFilterItemFromAppliedFilter: filterActions.SET_FILTER_ITEM_FROM_APPLIED_FILTER,
+            updateFilterById: filterActions.UPDATE_USER_FILTER_BY_ID
         }),
         async filterItemArrayDeleted(type, value, property) {
             const subFilterName = property.split('.')[0];
@@ -2194,6 +2406,35 @@ export default {
                     this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
             }
             await this.onShowResults();
+        },
+        onOpenFilterNameDialog() {
+            this.filterNameDialog = true;
+        },
+        disableFields() {
+            const additionalKeys = ['moz', 'alexa', 'semRush', 'majestic', 'facebook', 'ahrefs'];
+            Object.keys(this.filter).map(addFilterKey => {
+                if (additionalKeys.includes(addFilterKey)) {
+                    Object.keys(this.filter[addFilterKey]).map(key => {
+                        if (key.includes('_from') || key.includes('_to')) {
+                            let keyProperty = '';
+                            if (key.includes('_from')) {
+                                keyProperty = key.split('_from')[0];
+                            }
+                            if (key.includes('_to')) {
+                                keyProperty = key.split('_to')[0];
+                            }
+                            if (keyProperty) {
+                                if (!this.chosenFiltersProperties.includes(addFilterKey + '.' + keyProperty)) {
+                                    this.disabledFilterFields[addFilterKey][key] = true;
+                                    this.filter[addFilterKey][key] = '';
+                                } else {
+                                    this.disabledFilterFields[addFilterKey][key] = false;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         },
         async filterItemDeleted(name) {
             const subFilterName = name.split('.')[0];
@@ -2206,6 +2447,7 @@ export default {
                 'home_featured',
                 'money_anchor'
             ];
+
             if (subFilterName === 'platform' && flagFilterItems.includes(filterPropertyName)) {
                 this.filter[subFilterName][filterPropertyName] = 'any';
             } else {
@@ -2220,7 +2462,6 @@ export default {
                     this.filter[subFilterName][filterPropertyName] = '';
                 }
             }
-
             await this.onShowResults();
         },
         openFilters() {
@@ -2229,14 +2470,17 @@ export default {
         openAdditionalFilters() {
             this.additionalFiltersOpened = !this.additionalFiltersOpened;
         },
-        onInputFilter(value, type, name, property, limit = '') {
+        setFilterItemFromInput(value, type, name, property, limit = '', columnName = '') {
             const filterItem = {
-                id: name.toLowerCase().replace(/\s/g, '_'),
+                id: name.toLowerCase()
+                    .replace(/\s/g, '_')
+                    .replace(/\./g, ''),
                 name,
                 type,
                 visible: false,
                 property,
-                limit
+                limit,
+                columnName
             };
             const radioKeys = [
                 'deadline',
@@ -2251,12 +2495,55 @@ export default {
             if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
             this.setFilterItem(filterItem);
         },
+        onInputFilter(value, type, name, property, limit = '', columnName = '') {
+            if (type === 'additional' && columnName) {
+                if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+                    this.setFilterItemFromInput(
+                        value,
+                        type,
+                        name,
+                        property,
+                        limit,
+                        columnName
+                    );
+                } else {
+                    if (this.chosenFiltersProperties.includes(property)) {
+                        this.setFilterItemFromInput(
+                            value,
+                            type,
+                            name,
+                            property,
+                            limit,
+                            columnName
+                        );
+                    } else {
+                        this.setNotification({
+                            message: 'Sorry, but for filtering are available only ' +
+                                maxAdditionalFilters
+                                + ' numerical range!'
+                        });
+                        this.disableFields();
+                    }
+                }
+            } else {
+                this.setFilterItemFromInput(
+                    value,
+                    type,
+                    name,
+                    property,
+                    limit,
+                    columnName
+                );
+            }
+        },
         onRequestCreated() {
             this.unSelectAll();
         },
-        async clearAllFilters() {
+        async clearAllFilters(mode = 'filters') {
             this.$v.$reset();
-            this.clearFilterItems();
+            this.clearFilterItems(mode);
+            this.filterData = {};
+            this.sorting = this.direction = '';
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
             Object.keys(this.filter.moz).forEach(key => this.filter.moz[key] = '');
             Object.keys(this.filter.alexa).forEach(key => this.filter.alexa[key] = '');
@@ -2274,6 +2561,7 @@ export default {
                 this.filter.platform.home_featured =
                 this.filter.platform.money_anchor = 'any';
             this.filterQuery = this.filter;
+            this.clearColumns();
             const response = await this.loadPlatforms();
             this.currentPage = response.current_page;
             this.lastPage = response.last_page;
@@ -2283,6 +2571,7 @@ export default {
         },
         async onShowResults() {
             this.showFilterItems();
+            this.showColumns();
             this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
@@ -2295,7 +2584,6 @@ export default {
                         deadline: this.filter.platform.deadline ?
                             this.deadlineList[this.filter.platform.deadline] : '',
                     },
-
                     trust: {
                         ...this.filter.trust,
                         summary: this.filter.trust.summary.length ?
@@ -2317,14 +2605,124 @@ export default {
             }
         }
     },
+    watch: {
+        async page() {
+            this.chosen = {};
+            await this.loadPlatforms();
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        },
+        async perPage() {
+            this.page = 1;
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        },
+        chosenFiltersProperties() {
+            if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+                this.initializeDisabledFields();
+            }
+        },
+        filterData: {
+            handler() {
+                Object.keys(this.filterData).map(key => {
+                    Object.keys(this.filterData[key]).map(subKey => {
+                        if (this.filterData[key][subKey] === undefined) {
+                            this.filterData[key][subKey] = '';
+                        }
+                    });
+                });
+            },
+            deep: true
+        },
+        filterItems: {
+            handler() {
+                this.filterData = {};
+                Object.keys(this.filterItems).map(key => {
+                    if (
+                        (this.filterItems[key].to || this.filterItems[key].from)
+                        ||
+                        (this.filterItems[key].value)
+                        ||
+                        (this.filterItems[key]?.items?.length)
+                    ) {
+                        this.filterData = {
+                            ...this.filterData,
+                            [key]: {
+                                name: this.filterItems[key].name,
+                                column_name: this.filterItems[key].columnName,
+                                property: this.filterItems[key].property,
+                                from: this.filterItems[key].from,
+                                to: this.filterItems[key].to,
+                                value: this.filterItems[key].value,
+                                items: this.filterItems[key].items,
+                                type: this.filterItems[key].type,
+                                ...this.filterItems[key],
+                            }
+                        }
+                    }
+                });
+            },
+            deep:true
+        },
+        async appliedFilter() {
+            if (Object.keys(this.appliedFilter).length) {
+                await this.clearAllFilters();
+                Object.keys(this.appliedFilter.filter_items).map(key => {
+                    const subFilter = this.appliedFilter.filter_items[key].property.split('.')[0];
+                    const property = this.appliedFilter.filter_items[key].property.split('.')[1];
+                    if (this.appliedFilter.filter_items[key].from || this.appliedFilter.filter_items[key].to) {
+                        const propertyFrom = property + '_from';
+                        const propertyTo = property + '_to';
+                        this.filter[subFilter][propertyFrom] = this.appliedFilter.filter_items[key].from;
+                        this.filter[subFilter][propertyTo] = this.appliedFilter.filter_items[key].to;
+                    }
+                    if (this.appliedFilter.filter_items[key].value) {
+                        this.filter[subFilter][property] = this.appliedFilter.filter_items[key].value;
+                    }
+                    if (this.appliedFilter.filter_items[key].items?.length) {
+                        this.filter[subFilter][property] = this.appliedFilter.filter_items[key].items;
+                    }
+                    const filterItem = {
+                        id: this.appliedFilter.filter_items[key].name.toLowerCase()
+                            .replace(/\s/g, '_')
+                            .replace(/\./g, ''),
+                        name: this.appliedFilter.filter_items[key].name,
+                        visible: true,
+                        type: this.appliedFilter.filter_items[key].type,
+                        property: this.appliedFilter.filter_items[key].property,
+                        value: this.appliedFilter.filter_items[key].value,
+                        items: this.appliedFilter.filter_items[key].items,
+                        columnName: this.appliedFilter.filter_items[key].column_name,
+                        from: this.appliedFilter.filter_items[key].from,
+                        to: this.appliedFilter.filter_items[key].to,
+                    };
+                    this.setFilterItemFromAppliedFilter(filterItem);
+                });
+                await this.onShowResults();
+            }
+        },
+    },
     computed: {
         ...mapGetters('platforms', {
             topics: getters.GET_TOPICS,
             domainZonesList: getters.GET_DOMAIN_ZONES
         }),
         ...mapGetters('filter', {
-            canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM
+            canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM,
+            additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS,
+            columns: filterGetters.GET_VISIBLE_COLUMNS,
+            chosenFiltersProperties: filterGetters.CHOSEN_FILTERS_PROPERTIES,
+            filterItems: filterGetters.GET_FILTER_ITEMS,
+            appliedFilter: filterGetters.GET_APPLIED_USER_FILTER,
+            visibleFilterItems: filterGetters.GET_VISIBLE_FILTER_ITEMS_ALL
         }),
+        disabledAdditional() {
+            return this.additionalFiltersCounter === 5;
+        },
         domainZonesFormatted() {
             return this.domainZonesList.map(domainZone => '.' + domainZone);
         },
@@ -2664,7 +3062,6 @@ export default {
 </script>
 
 <style scoped>
-/*@import "../../assets/styles/main.css";*/
 @import "../../assets/styles/table.css";
 .float-btn-action {
     position: fixed;
@@ -2704,9 +3101,9 @@ export default {
     width: 100%;
     background: white;
     box-shadow:
-        0px 2px 4px 4px rgba(0, 0, 0, 0.2),
-        0px 4px 5px 5px rgba(0, 0, 0, 0.14),
-        0px 1px 10px 4px rgba(0, 0, 0, 0.12);
+        0 2px 4px 4px rgba(0, 0, 0, 0.2),
+        0 4px 5px 5px rgba(0, 0, 0, 0.14),
+        0 1px 10px 4px rgba(0, 0, 0, 0.12);
     display: none;
 }
 

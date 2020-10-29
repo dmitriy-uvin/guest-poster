@@ -15,7 +15,12 @@
                             </span>
                         </VCol>
                         <VCol cols="12" md="4" class="text-right">
-                            <span class="link">Or recovery password</span>
+                            <span
+                                class="link underline"
+                                @click="onRecoveryPassword"
+                            >
+                                Or recovery password
+                            </span>
                         </VCol>
                     </VRow>
                 </VContainer>
@@ -94,8 +99,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as getters from '@/store/modules/user/types/getters';
 import { validationMixin } from 'vuelidate';
 import {
     required,
@@ -103,6 +109,7 @@ import {
     sameAs
 } from 'vuelidate/lib/validators';
 import PasswordChangedDialog from '@/components/profile/PasswordChangedDialog';
+import notificationMixin from '@/mixins/notificationMixin';
 export default {
     name: 'ChangePasswordFormDialog',
     components: {
@@ -118,7 +125,7 @@ export default {
         newPasswordConfirmation: '',
         error: ''
     }),
-    mixins: [validationMixin],
+    mixins: [validationMixin, notificationMixin],
     validations: {
         oldPassword: { required, minLength: minLength(8) },
         newPassword: { required, minLength: minLength(8) },
@@ -131,8 +138,26 @@ export default {
     },
     methods: {
         ...mapActions('user', {
-            updateAuthUserPassword: actions.UPDATE_AUTH_USER_PASSWORD
+            updateAuthUserPassword: actions.UPDATE_AUTH_USER_PASSWORD,
+            sendResetPasswordLink: actions.FORGOT_PASSWORD
         }),
+        async onRecoveryPassword() {
+            try {
+                await this.sendResetPasswordLink({
+                    email: this.user.email
+                });
+                this.setNotification({
+                    type: 'success',
+                    message: 'Reset link was sent!'
+                });
+                this.passwordChangedDialog = false;
+            } catch (error) {
+                this.setNotification({
+                    type: 'error',
+                    message: error
+                });
+            }
+        },
         async onSaveNewPassword() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
@@ -152,6 +177,9 @@ export default {
         }
     },
     computed: {
+        ...mapGetters('user', {
+            user: getters.GET_LOGGED_USER
+        }),
         showDialog: {
             get() {
                 return this.visibility;
@@ -210,5 +238,6 @@ export default {
 .link {
     font-size: 14px;
     color: #2f80ed;
+    cursor: pointer;
 }
 </style>

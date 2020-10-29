@@ -1,5 +1,6 @@
 import requestInternalService from '@/services/requestInternalService';
 import moment from 'moment';
+
 const API_PREFIX = '/platforms';
 
 const platformService = {
@@ -71,6 +72,10 @@ const platformService = {
     async fetchDomainZones() {
         const response = await requestInternalService.get('/domain-zones');
         return response?.data?.data;
+    },
+    async fetchPlatformsNotInTrash(params) {
+        const response = await requestInternalService.get(API_PREFIX + '/all', params);
+        return response?.data;
     }
 };
 

@@ -2,7 +2,7 @@
     <VSnackbar
         v-model="notification.visible"
         bottom
-        left
+        top
         :color="color"
         timeout="3500"
         multi-line

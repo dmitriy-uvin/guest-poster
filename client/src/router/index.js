@@ -33,7 +33,7 @@ const routes = [
                 path: '/reset-password',
                 name: 'ResetPassword',
                 component: () => import('../views/ResetPassword'),
-                meta: { notAuthorizedUser: true, layout: 'auth' }
+                meta: { layout: 'auth' }
             },
             {
                 path: '',
@@ -87,6 +87,18 @@ const routes = [
                 path: 'platforms/:id',
                 name: 'EditPlatform',
                 component: () => import('../views/EditPlatform'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            },
+            {
+                path: 'users',
+                name: 'Users',
+                component: () => import('../views/Users'),
+                meta: { adminRoute: true, AuthorizedUser: true }
+            },
+            {
+                path: 'users/:id',
+                name: 'UserPage',
+                component: () => import('../views/UserPage'),
                 meta: { adminRoute: true, AuthorizedUser: true }
             },
         ]

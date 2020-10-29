@@ -1,6 +1,7 @@
 export const FETCH_PLATFORMS = 'fetchPlatforms';
 export const FETCH_PLATFORM_BY_ID = 'fetchPlatformById';
 export const FETCH_PLATFORMS_IN_TRASH = 'fetchPlatformsInTrash';
+export const FETCH_PLATFORMS_NOT_IN_TRASH = 'fetchPlatformsNotInTrash';
 export const CREATE_PLATFORM = 'createPlatform';
 export const DELETE_PLATFORM_BY_ID = 'deletePlatformById';
 export const DELETE_PLATFORMS_BY_IDS = 'deletePlatformsByIds';

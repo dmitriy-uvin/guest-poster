@@ -13,20 +13,20 @@
     text-align: center;
 }
 
-
 .guest-poster-table td:nth-child(1) {
     padding: 12px 8px;
 }
 
 .guest-poster-table th:nth-child(2),
 .guest-poster-table td:nth-child(2) {
-    width: 16%;
+    width: 15%;
 }
 
 .guest-poster-table th:nth-child(3),
 .guest-poster-table td:nth-child(3) {
     padding: 15px 8px;
-    width: 7%;
+    min-width: 7%;
+    max-width: 10%;
 }
 
 .guest-poster-table th:nth-child(4),
@@ -48,18 +48,28 @@
 .guest-poster-table tr th:nth-child(12),
 .guest-poster-table tr td:nth-child(12)
 {
-    width: 6%;
+    min-width: 6%;
+    max-width: 10%;
 }
 
 .guest-poster-table tr th:nth-child(13),
 .guest-poster-table tr td:nth-child(13) {
-    width: 10%;
+    max-width: 10%;
 }
 
 .guest-poster-table tr th:nth-child(14),
-.guest-poster-table tr td:nth-child(14)
-{
-    width: 15%;
+.guest-poster-table tr td:nth-child(14) {
+    max-width: 15%;
+}
+
+th.features,
+td.features {
+    width: 10%;
+}
+
+th.editorial-fee,
+td.editorial-fee {
+    width: 14%;
 }
 
 .guest-poster-table th,
@@ -69,11 +79,27 @@
 }
 
 .guest-poster-table th {
-    text-align: left;
     font-size: 12px;
     color: #828282;
     font-weight: 700;
     cursor: pointer;
+}
+
+th, td {
+    text-align: center;
+}
+
+th.trust {
+    text-align: center;
+}
+
+th.website,
+td.website,
+th.features,
+td.features,
+th.editorial-fee,
+td.editorial-fee {
+    text-align: left;
 }
 
 .guest-poster-table td {
@@ -94,6 +120,7 @@ td div.link .website-link{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 td .trust-head {
     font-weight: bold;
     font-size: 12px;

@@ -23,5 +23,9 @@ export default {
             orderId,
             status
         });
+    },
+    [actions.FETCH_ORDERS_BY_USER_ID]: async ({ commit }, id) => {
+        const response = await orderService.getOrdersByUserId(id);
+        commit(mutations.SET_ORDERS_BY_USER_ID, response);
     }
 };

@@ -15,6 +15,15 @@ export default {
         commit(mutations.SET_PLATFORMS, platforms);
         return Promise.resolve(metaData);
     },
+    [actions.FETCH_PLATFORMS_NOT_IN_TRASH]: async ({ commit, dispatch}, params = {}) => {
+        const response = await platformService.fetchPlatformsNotInTrash(params);
+        const platforms = response?.data;
+        const metaData = response?.meta;
+        await dispatch(actions.FETCH_TOPICS);
+        await dispatch(actions.FETCH_DOMAIN_ZONES);
+        commit(mutations.SET_PLATFORMS, platforms);
+        return Promise.resolve(metaData);
+    },
     [actions.FETCH_TOPICS]: async ({ commit }) => {
         const response = await platformService.fetchTopics();
         commit(mutations.SET_TOPICS, response);

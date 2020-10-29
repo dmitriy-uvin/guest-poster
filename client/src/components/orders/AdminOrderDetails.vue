@@ -2,7 +2,7 @@
     <div class="container">
         <VBtn depressed @click="backToOrders" color="#eaf3ff" class="mt-6">
             <VIcon left color="#408bef">mdi-chevron-left</VIcon>
-            <span style="color: #408bef;">BACK TO ORDER LIST</span>
+            <span style="color: #408bef;">BACK TO ORDERS LIST</span>
         </VBtn>
         <div class="mt-8 row justify-space-between align-center">
             <div class="left-info">
@@ -239,9 +239,8 @@
         <VCol cols="12">
             <h3 class="mb-3">From: </h3>
             <VRow>
-                <VCol cols="12" md="2">
+                <VCol cols="12" md="3">
                     <VRow>
-                        <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
                             <VIcon color="#bbbbbb">mdi-account</VIcon>
                         </div>
@@ -251,9 +250,8 @@
                         </div>
                     </VRow>
                 </VCol>
-                <VCol cols="12" md="2" v-if="order.user.skype">
+                <VCol cols="12" md="3" v-if="order.user.skype">
                     <VRow>
-                        <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
                             <VIcon>mdi-skype</VIcon>
                         </div>
@@ -263,9 +261,8 @@
                         </div>
                     </VRow>
                 </VCol>
-                <VCol cols="12" md="2">
+                <VCol cols="12" md="3">
                     <VRow>
-                        <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
                             <VIcon>mdi-email</VIcon>
                         </div>
@@ -275,15 +272,16 @@
                         </div>
                     </VRow>
                 </VCol>
-                <VCol cols="12" md="2" v-if="order.user.website">
+                <VCol cols="12" md="3" v-if="order.user.website">
                     <VRow>
-                        <span style="color: #bbbbbb"></span>
                         <div class="mx-4">
                             <VIcon>mdi-web</VIcon>
                         </div>
                         <div>
                             <p class="mb-0">
-                                <a :href="getProtocol(order.user.website) + deleteProtocol(order.user.website)" target="_blank">{{ deleteProtocol(order.user.website) }}</a>
+                                <a :href="link" target="_blank">
+                                    {{ order.user.website | formatDomainFilter }}
+                                </a>
                             </p>
                             <span class="website">Website</span>
                         </div>
@@ -297,7 +295,7 @@
         </VCol>
         <VBtn depressed @click="backToOrders" color="#eaf3ff" class="mt-6">
             <VIcon left color="#408bef">mdi-chevron-left</VIcon>
-            <span style="color: #408bef;">BACK TO ORDER LIST</span>
+            <span style="color: #408bef;">BACK TO ORDERS LIST</span>
         </VBtn>
     </div>
 </template>
@@ -311,6 +309,14 @@ export default {
     methods: {
         backToOrders() {
             this.$router.push({ name: 'Orders' });
+        }
+    },
+    computed: {
+        link() {
+            if (!this.order.user.website.match(/http[s]?:\/\/(www.)?/)) {
+                return 'https://' + this.order.user.website;
+            }
+            return this.order.user.website;
         }
     }
 }

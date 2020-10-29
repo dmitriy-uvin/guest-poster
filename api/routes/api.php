@@ -47,6 +47,17 @@ Route::group([
 });
 
 
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'filters'
+], function () {
+    Route::post('/', [\App\Http\Controllers\Api\FilterController::class, 'saveFilter']);
+    Route::get('/', [\App\Http\Controllers\Api\FilterController::class, 'getFiltersForAuthUser']);
+    Route::put('/{id}/name', [\App\Http\Controllers\Api\FilterController::class, 'renameFilterById']);
+    Route::put('/{id}', [\App\Http\Controllers\Api\FilterController::class, 'updateFilterById']);
+    Route::delete('/{id}', [\App\Http\Controllers\Api\FilterController::class, 'deleteFilterById']);
+});
+
 
 Route::group([
     'prefix' => 'platforms',
@@ -55,15 +66,19 @@ Route::group([
         Route::post('/update-all', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataAll']);
         Route::post('/update-by-ids', [\App\Http\Controllers\Api\PlatformController::class, 'updateApiDataByIds']);
         Route::post('/import', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'importPlatforms']);
-        Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
-        Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);
-        Route::get('/export-all', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsAll']);
         Route::post('/', [\App\Http\Controllers\Api\PlatformController::class, 'savePlatform']);
+
         Route::put('/trash-in', [\App\Http\Controllers\Api\PlatformController::class, 'moveInTrashByIds']);
         Route::put('/trash-from', [\App\Http\Controllers\Api\PlatformController::class, 'moveFromTrashByIds']);
         Route::put('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'updatePlatformById']);
+
+        Route::get('/export-by-ids', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsByIds']);
+        Route::get('/export-all', [\App\Http\Controllers\Api\ExportPlatformsController::class, 'exportPlatformsAll']);
+        Route::get('/import-file', [\App\Http\Controllers\Api\ImportPlatformsController::class, 'downloadImportFileTemplate']);
+        Route::get('/all', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsNotInTrash']);
         Route::get('/trash', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformsInTrashCollection']);
         Route::get('/{id}', [\App\Http\Controllers\Api\PlatformController::class, 'getPlatformById']);
+
         Route::delete('/', [\App\Http\Controllers\Api\PlatformController::class, 'deletePlatformsByIds']);
     });
 
@@ -100,7 +115,18 @@ Route::group([
     Route::group([
         'middleware' => 'admin'
     ], function () {
+        Route::get('/users/{id}', [\App\Http\Controllers\Api\OrderController::class, 'getOrdersByUserId']);
         Route::get('/', [\App\Http\Controllers\Api\OrderController::class, 'getAllOrders']);
         Route::put('/{id}/status', [\App\Http\Controllers\Api\OrderController::class, 'changeStatus']);
     });
+});
+
+Route::group([
+    'prefix' => 'users',
+    'middleware' => 'admin'
+], function () {
+    Route::get('/', [\App\Http\Controllers\Api\UserController::class, 'getAllUsers']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\UserController::class, 'getUserById']);
+    Route::put('/{id}/block', [\App\Http\Controllers\Api\UserController::class, 'changeUserBlockStatusById']);
+    Route::delete('/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteUserById']);
 });

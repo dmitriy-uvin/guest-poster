@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Action\ByIdRequest;
 use App\Action\Order\ChangeStatusAction;
 use App\Action\Order\ChangeStatusRequest;
 use App\Action\Order\CreateOrderAction;
@@ -12,6 +13,7 @@ use App\Action\Order\GetAllOrdersAction;
 use App\Action\Order\GetOrderByIdAction;
 use App\Action\Order\GetOrderByIdRequest;
 use App\Action\Order\GetOrderCollectionByAuthUserAction;
+use App\Action\Order\GetOrdersByUserIdAction;
 use App\Http\Presenters\Order\OrderPresenter;
 use App\Http\Requests\Order\ChangeOrderStatusHttpRequest;
 use App\Http\Requests\Order\CreateOrderHttpRequest;
@@ -27,6 +29,7 @@ final class OrderController extends ApiController
     private GetOrderByIdAction $getOrderByIdAction;
     private GetAllOrdersAction $getAllOrdersAction;
     private ChangeStatusAction $changeStatusAction;
+    private GetOrdersByUserIdAction $getOrdersByUserIdAction;
 
     public function __construct(
         OrderPresenter $orderPresenter,
@@ -34,7 +37,8 @@ final class OrderController extends ApiController
         GetOrderCollectionByAuthUserAction $getOrderCollectionByAuthUserAction,
         GetOrderByIdAction $getOrderByIdAction,
         GetAllOrdersAction $getAllOrdersAction,
-        ChangeStatusAction $changeStatusAction
+        ChangeStatusAction $changeStatusAction,
+        GetOrdersByUserIdAction $getOrdersByUserIdAction
     ) {
         $this->orderPresenter = $orderPresenter;
         $this->createOrderAction = $createOrderAction;
@@ -42,6 +46,7 @@ final class OrderController extends ApiController
         $this->getOrderByIdAction = $getOrderByIdAction;
         $this->getAllOrdersAction = $getAllOrdersAction;
         $this->changeStatusAction = $changeStatusAction;
+        $this->getOrdersByUserIdAction = $getOrdersByUserIdAction;
     }
 
     public function createOrder(CreateOrderHttpRequest $request): JsonResponse
@@ -105,5 +110,16 @@ final class OrderController extends ApiController
         );
 
         return $this->emptyResponse();
+    }
+
+    public function getOrdersByUserId(string $id): JsonResponse
+    {
+        $response = $this->getOrdersByUserIdAction->execute(
+            new ByIdRequest((int)$id)
+        );
+
+        return $this->successResponse(
+            $this->orderPresenter->presentCollection($response->getOrders())
+        );
     }
 }
