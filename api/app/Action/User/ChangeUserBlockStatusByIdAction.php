@@ -17,7 +17,7 @@ final class ChangeUserBlockStatusByIdAction
             throw new UserNotFoundException();
         }
 
-        $user->block = $request->getBlockStatus();
+        $user->blocked = $request->getBlockStatus();
         $user->save();
     }
 }

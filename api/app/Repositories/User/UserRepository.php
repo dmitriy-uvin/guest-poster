@@ -9,7 +9,7 @@ use App\Models\User;
 final class UserRepository implements UserRepositoryInterface
 {
     public const DEFAULT_PAGE = 1;
-    public const DEFAULT_PER_PAGE = 5;
+    public const DEFAULT_PER_PAGE = 10;
     public const DEFAULT_SORTING = 'id';
     public const DEFAULT_DIRECTION = 'desc';
 
