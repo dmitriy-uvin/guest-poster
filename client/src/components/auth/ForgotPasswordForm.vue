@@ -21,7 +21,7 @@
                     class="py-2"
                     large
                 >
-                    BACK TO SIGN IN
+                    CONTINUE
                 </VBtn>
             </RouterLink>
         </div>
