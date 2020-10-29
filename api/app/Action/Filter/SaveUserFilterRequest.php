@@ -11,7 +11,7 @@ final class SaveUserFilterRequest
 
     public function __construct(string $name, array $filterItems)
     {
-        $this->name = $name;
+        $this->name = trim($name);
         $this->filterItems = $filterItems;
     }
 

@@ -10,6 +10,7 @@ use App\Action\Filter\RenameFilterByIdRequest;
 use App\Action\Filter\SaveUserFilterAction;
 use App\Action\Filter\SaveUserFilterRequest;
 use App\Http\Presenters\Filter\FilterPresenter;
+use App\Http\Requests\Filter\RenameFilterByIdHttpRequest;
 use App\Http\Requests\Filter\SaveUserFilterHttpRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ final class FilterController extends ApiController
         );
     }
 
-    public function renameFilterById(string $id, Request $request): JsonResponse
+    public function renameFilterById(string $id, RenameFilterByIdHttpRequest $request): JsonResponse
     {
         $response = $this->renameFilterByIdAction->execute(
             new RenameFilterByIdRequest(
@@ -53,11 +54,14 @@ final class FilterController extends ApiController
                 (int)$id
             )
         );
+
+        return $this->successResponse(
+            $this->filterPresenter->present($response->getFilter())
+        );
     }
 
     public function saveFilter(SaveUserFilterHttpRequest $request)
     {
-//        return $request->name;
         $response = $this->saveUserFilterAction->execute(
             new SaveUserFilterRequest(
                 $request->name,

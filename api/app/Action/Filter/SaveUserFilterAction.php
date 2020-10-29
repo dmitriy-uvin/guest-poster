@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Filter;
 
+use App\Exceptions\Filter\FilterWithSuchNameAlreadyExistsException;
 use App\Exceptions\Filter\MaxAmountOfCustomFiltersException;
 use App\Models\Constants\FilterConstants;
 use App\Models\Filter;
@@ -26,6 +27,10 @@ final class SaveUserFilterAction
 
         if ($user->filters->count() === FilterConstants::MAX_AMOUNT_CUSTOM_FILTERS) {
             throw new MaxAmountOfCustomFiltersException();
+        }
+
+        if (!is_null($user->filters->where('name', '=', $request->getName())->first())) {
+            throw new FilterWithSuchNameAlreadyExistsException();
         }
 
         $filter = new Filter();

@@ -9,7 +9,7 @@ final class RenameFilterByIdRequest
 
     public function __construct(string $name, int $id)
     {
-        $this->name = $name;
+        $this->name = trim($name);
         $this->id = $id;
     }
 

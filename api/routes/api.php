@@ -53,6 +53,7 @@ Route::group([
 ], function () {
     Route::post('/', [\App\Http\Controllers\Api\FilterController::class, 'saveFilter']);
     Route::get('/', [\App\Http\Controllers\Api\FilterController::class, 'getFiltersForAuthUser']);
+    Route::put('/{id}/name', [\App\Http\Controllers\Api\FilterController::class, 'renameFilterById']);
     Route::delete('/{id}', [\App\Http\Controllers\Api\FilterController::class, 'deleteFilterById']);
 });
 
