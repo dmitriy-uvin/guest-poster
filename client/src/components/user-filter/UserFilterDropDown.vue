@@ -26,27 +26,35 @@
             @close-dialog="deleteFilterConfirm = false"
             @delete-filter="onDeleteFilterById"
         />
+        <RenameFilterNameDialog
+            :filter="filter"
+            :visibility="renameNameDialog"
+            @close-dialog="renameNameDialog = false"
+        />
     </span>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/filter/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
 import ConfirmDeleteFilterDialog from '@/components/user-filter/ConfirmDeleteFilterDialog';
-import * as getters from "@/store/modules/filter/types/getters";
+import * as getters from '@/store/modules/filter/types/getters';
+import RenameFilterNameDialog from '@/components/guest-posting/RenameFilterNameDialog';
 export default {
     name: 'UserFilterDropDown',
     props: {
-        filterId: {
+        filter: {
             required: true
         }
     },
     components: {
-        ConfirmDeleteFilterDialog
+        ConfirmDeleteFilterDialog,
+        RenameFilterNameDialog
     },
     data: () => ({
-        deleteFilterConfirm: false
+        deleteFilterConfirm: false,
+        renameNameDialog: false,
     }),
     mixins: [notificationMixin],
     methods: {
@@ -54,14 +62,14 @@ export default {
             deleteFilterById: actions.DELETE_USER_FILTER
         }),
         onRenameById() {
-
+            this.renameNameDialog = true;
         },
         onClickDelete() {
             this.deleteFilterConfirm = true;
         },
         async onDeleteFilterById() {
             try {
-                await this.deleteFilterById(this.filterId);
+                await this.deleteFilterById(this.filter.id);
             } catch (error) {
                 this.setNotification({
                     type: 'error',
@@ -76,7 +84,7 @@ export default {
         }),
         color() {
             if (this.appliedFilter) {
-                if (this.appliedFilter.id === Number(this.filterId)) return '#2f80ed';
+                if (this.appliedFilter.id === Number(this.filter.id)) return '#2f80ed';
             }
             return 'black';
         }

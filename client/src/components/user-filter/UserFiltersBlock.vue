@@ -13,7 +13,7 @@
                 {{ userFilter.name }}
             </span>
             <UserFilterDropDown
-                :filter-id="id"
+                :filter="userFilter"
             />
         </div>
     </div>

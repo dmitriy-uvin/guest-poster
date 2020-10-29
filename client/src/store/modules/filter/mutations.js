@@ -177,5 +177,14 @@ export default {
     [mutations.APPLY_USER_FILTER]: (state, id) => {
         state.filterItems = {};
         state.appliedFilter = state.userFilters[id];
+    },
+    [mutations.RENAME_USER_FILTER]: (state, data) => {
+        state.userFilters = {
+            ...state.userFilters,
+            [data.id]: {
+                ...state.userFilters[data.id],
+                name: data.name
+            }
+        };
     }
 }

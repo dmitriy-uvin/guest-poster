@@ -19,9 +19,9 @@
                         color="primary"
                         depressed
                         class="mr-3"
-                        @click="onSaveFilter"
+                        @click="onRenameClick"
                     >
-                        Save
+                        Rename
                     </VBtn>
                     <VBtn
                         color="#eaf3ff"
@@ -37,51 +37,54 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import * as actions from '@/store/modules/filter/types/actions';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import notificationMixin from '@/mixins/notificationMixin';
-import { mapActions } from 'vuex';
-import * as actions from '@/store/modules/filter/types/actions';
 export default {
-    name: 'SaveFilterNameDialog',
+    name: 'RenameFilterNameDialog',
     props: {
         visibility: {
             required: true
         },
-        filterData: {
+        filter: {
             required: true
         }
+    },
+    data: () => ({
+        name: ''
+    }),
+    created() {
+        this.name = this.filter.name;
     },
     validations: {
         name: { required }
     },
     mixins: [validationMixin, notificationMixin],
-    data: () => ({
-       name: ''
-    }),
     methods: {
         ...mapActions('filter', {
-            saveUserFilter: actions.SAVE_USER_FILTER
+            renameUserFilter: actions.RENAME_USER_FILTER
         }),
         onCancelClick() {
             this.showDialog = false;
             this.name = '';
+            this.$v.$reset();
         },
-        async onSaveFilter() {
+        async onRenameClick() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 try {
-                    await this.saveUserFilter({
-                        name: this.name,
-                        filter_items: this.filterData
+                    await this.renameUserFilter({
+                        id: this.filter.id,
+                        name: this.name
                     });
                     this.setNotification({
                         type: 'success',
-                        message: 'Filter was added!'
+                        message: 'Filter was renamed!'
                     });
-                    this.name = '';
-                    this.$v.$reset();
                     this.showDialog = false;
+                    this.$v.$reset();
                 } catch (error) {
                     this.setNotification({
                         type: 'error',
@@ -89,7 +92,7 @@ export default {
                     });
                 }
             }
-        },
+        }
     },
     computed: {
         showDialog: {
@@ -108,7 +111,7 @@ export default {
                 return errors;
             }
             !this.$v.name.required &&
-                errors.push('Name is required!');
+            errors.push('Name is required!');
             return errors;
         }
     }

@@ -1871,7 +1871,7 @@
                                     depressed
                                     color="#ebebeb"
                                     block
-                                    @click="clearAllFilters"
+                                    @click="clearAllFilters('all')"
                                 >Clear All</VBtn>
                             </VCol>
                         </VRow>
@@ -2110,8 +2110,8 @@
 
         <SaveFilterNameDialog
             :visibility="filterNameDialog"
+            :filter-data="filterData"
             @close-dialog="filterNameDialog = false"
-            @save-name="onSaveFilter"
         />
     </div>
 </template>
@@ -2331,7 +2331,6 @@ export default {
             removeColumnByProperty: filterActions.REMOVE_COLUMN_BY_PROPERTY,
             clearColumns: filterActions.CLEAR_COLUMNS,
             showColumns: filterActions.SHOW_COLUMNS,
-            saveUserFilter: filterActions.SAVE_USER_FILTER,
             getUserFilters: filterActions.GET_USER_FILTERS,
             setFilterItemFromAppliedFilter: filterActions.SET_FILTER_ITEM_FROM_APPLIED_FILTER
         }),
@@ -2346,23 +2345,6 @@ export default {
         },
         onOpenFilterNameDialog() {
             this.filterNameDialog = true;
-        },
-        async onSaveFilter(name) {
-            try {
-                await this.saveUserFilter({
-                    name,
-                    filter_items: this.filterData
-                });
-                this.setNotification({
-                    type: 'success',
-                    message: 'Filter was added!'
-                });
-            } catch (error) {
-                this.setNotification({
-                    type: 'error',
-                    message: error
-                });
-            }
         },
         disableFields() {
             const additionalKeys = ['moz', 'alexa', 'semRush', 'majestic', 'facebook', 'ahrefs'];
@@ -2643,7 +2625,7 @@ export default {
                 });
                 await this.onShowResults();
             }
-        }
+        },
     },
     computed: {
         ...mapGetters('platforms', {
@@ -2656,7 +2638,8 @@ export default {
             columns: filterGetters.GET_VISIBLE_COLUMNS,
             chosenFiltersProperties: filterGetters.CHOSEN_FILTERS_PROPERTIES,
             filterItems: filterGetters.GET_FILTER_ITEMS,
-            appliedFilter: filterGetters.GET_APPLIED_USER_FILTER
+            appliedFilter: filterGetters.GET_APPLIED_USER_FILTER,
+            visibleFilterItems: filterGetters.GET_VISIBLE_FILTER_ITEMS_ALL
         }),
         disabledAdditional() {
             return this.additionalFiltersCounter === 5;

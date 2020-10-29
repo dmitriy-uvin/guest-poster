@@ -47,5 +47,9 @@ export default {
     },
     [actions.SET_FILTER_ITEM_FROM_APPLIED_FILTER]: ({ commit }, filterItem) => {
         commit(mutations.SET_FILTER_ITEM_FROM_APPLIED_FILTER, filterItem);
+    },
+    [actions.RENAME_USER_FILTER]: async ({ commit }, data) => {
+        await filterService.renameUserFilterById(data);
+        commit(mutations.RENAME_USER_FILTER, data);
     }
 }

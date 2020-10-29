@@ -13,5 +13,10 @@ export default {
     },
     async deleteUserFilterById(id) {
         return await requestInternalService.delete(API_PREFIX + '/' + id);
+    },
+    async renameUserFilterById(data) {
+        return await requestInternalService.put(API_PREFIX + '/' + data.id + '/name', {
+            name: data.name
+        });
     }
 };
