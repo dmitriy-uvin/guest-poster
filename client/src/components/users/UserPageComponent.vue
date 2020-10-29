@@ -56,27 +56,27 @@
                 </VCol>
                 <VCol cols="12" md="3">
                     <VRow>
-                        <div class="mx-4" style="width: 10%">
+                        <div class="mx-2" style="width: 10%">
                             <VIcon>mdi-web</VIcon>
                         </div>
-                        <div style="width: 50%">
+                        <div style="width: 80%">
                             <span class="field-text">
-                                <VTooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <a
-                                            :href="link"
-                                            target="_blank"
-                                            v-if="user.website"
-                                            class="website-link"
-                                            v-bind="attrs"
-                                            v-on="on"
-                                        >
-                                        {{ user.website | formatDomainFilter }}
-                                    </a>
-                                    <span v-else>N/A</span>
-                                </template>
+                                <a
+                                    :href="link"
+                                    target="_blank"
+                                    v-if="user.website !== ''"
+                                    class="website-link"
+                                >
+                                    <VTooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                              <span v-bind="attrs" v-on="on">
+                                                  {{ user.website | formatDomainFilter }}
+                                              </span>
+                                        </template>
                                     <span>{{ user.website | formatDomainFilter }}</span>
-                                </VTooltip>
+                                    </VTooltip>
+                                </a>
+                                <span v-else class="website-link">N/A</span>
                             </span>
                             <span class="d-block field-hint">Website</span>
                         </div>
@@ -233,11 +233,18 @@ export default {
     },
     computed: {
         ...mapGetters('user', {
-            user: getters.GET_USER_BY_ID
+            userObj: getters.GET_USER_BY_ID
         }),
         ...mapGetters('order', {
             orders: orderGetters.GET_ORDERS_BY_USER_ID
         }),
+        user() {
+            return {
+                ...this.userObj,
+                website: this.userObj.website ? this.userObj.website : '',
+                skype: this.userObj.skype ? this.userObj.skype : '',
+            }
+        },
         completedOrders() {
             let amount = 0;
             if (Object.keys(this.orders).length) {
