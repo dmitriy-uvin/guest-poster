@@ -202,6 +202,7 @@
         />
 
         <ViewPlatformDialog
+            v-if="Object.keys(viewPlatform).length"
             :visibility="viewPlatformDialog"
             :platform="viewPlatform"
             @close-dialog="viewPlatformDialog = false"

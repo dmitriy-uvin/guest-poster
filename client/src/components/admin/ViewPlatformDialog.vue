@@ -295,6 +295,9 @@
                                 <VListItemContent>
                                     <VListItemTitle>In trash</VListItemTitle>
                                 </VListItemContent>
+                                <VListItemIcon>
+                                    <VIcon>mdi-delete</VIcon>
+                                </VListItemIcon>
                             </VListItem>
                         </VCard>
                     </VCol>

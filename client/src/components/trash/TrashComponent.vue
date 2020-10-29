@@ -94,6 +94,7 @@
                                 dark class="mr-3"
                                 v-bind="attrs"
                                 v-on="on"
+                                @click="onViewPlatform(platform)"
                             >
                                 <VIcon>mdi-eye</VIcon>
                             </VBtn>
@@ -226,6 +227,13 @@
             @close="restorePlatformsDialog = false"
             @restore="onRestorePlatformsRequest"
         />
+
+        <ViewPlatformDialog
+            v-if="Object.keys(viewPlatform).length"
+            :visibility="viewPlatformDialog"
+            :platform="viewPlatform"
+            @close-dialog="viewPlatformDialog = false"
+        />
     </div>
 </template>
 
@@ -242,6 +250,8 @@ import DeleteOnePlatformFromTrashDialog from '@/components/trash/DeleteOnePlatfo
 import notificationMixin from '@/mixins/notificationMixin';
 import RestoreOneFromTrashDialog from '@/components/trash/RestoreOneFromTrashDialog';
 import RestoreFromTrashDialog from '@/components/trash/RestoreFromTrashDialog';
+import ViewPlatformDialog from '@/components/admin/ViewPlatformDialog';
+
 export default {
     name: 'TrashComponent',
     mixins: [valueFormatMixin, guestPostingMixin, rolemixin, filterMixin, notificationMixin],
@@ -250,7 +260,8 @@ export default {
         DeleteFromTrashDialog,
         DeleteOnePlatformFromTrashDialog,
         RestoreOneFromTrashDialog,
-        RestoreFromTrashDialog
+        RestoreFromTrashDialog,
+        ViewPlatformDialog
     },
     data: () => ({
         perPage: 5,
@@ -259,13 +270,19 @@ export default {
         restoreOnePlatformDialog: false,
         restorePlatformsDialog: false,
         chosenPlatforms: [],
-        platformById: {}
+        platformById: {},
+        viewPlatform: {},
+        viewPlatformDialog: false
     }),
     methods: {
         ...mapActions('platforms', {
             fetchTrashPlatforms: actions.FETCH_PLATFORMS_IN_TRASH,
             restoreFromTrash: actions.MOVE_FROM_TRASH_BY_IDS
         }),
+        onViewPlatform(platform) {
+            this.viewPlatform = platform;
+            this.viewPlatformDialog = true;
+        },
         async onRestoreOnePlatformRequest(platform) {
               try {
                   await this.restoreFromTrash({
@@ -286,6 +303,11 @@ export default {
                       message: error
                   });
               }
+        },
+        async changeSortingAndDirection(sorting) {
+            this.sorting = sorting;
+            this.direction = this.direction === 'desc' ? 'asc' : 'desc';
+            await this.fetchPlatformsNotInTrashAction();
         },
         async onRestorePlatformsRequest(ids) {
             try {
