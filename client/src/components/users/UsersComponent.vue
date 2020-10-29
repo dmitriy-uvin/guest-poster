@@ -62,7 +62,13 @@
                             <CustomTooltip v-if="!user.blocked" message="Block User" icon="mdi-lock" />
                             <CustomTooltip v-else message="Unblock User" icon="mdi-lock" />
                         </VBtn>
-                        <VBtn small color="red" class="mr-1" dark>
+                        <VBtn
+                            small
+                            color="red"
+                            class="mr-1"
+                            dark
+                            @click="onDeleteUserClick(user)"
+                        >
                             <CustomTooltip message="Delete User" icon="mdi-delete" />
                         </VBtn>
                     </td>
@@ -124,6 +130,13 @@
                 </VSelect>
             </VCol>
         </VRow>
+
+        <ConfirmDeleteUserDialog
+            :visibility="deleteUserDialog"
+            :user="deleteUser"
+            @close-dialog="deleteUserDialog = false"
+            @delete-user="onDeleteUser"
+        />
     </VContainer>
 </template>
 
@@ -132,9 +145,13 @@ import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
 import * as getters from '@/store/modules/user/types/getters';
 import notificationMixin from '@/mixins/notificationMixin';
+import ConfirmDeleteUserDialog from '@/components/users/ConfirmDeleteUserDialog';
 export default {
     name: 'UsersComponent',
     mixins: [notificationMixin],
+    components: {
+        ConfirmDeleteUserDialog
+    },
     data: () => ({
         page: 1,
         perPage: 10,
@@ -145,13 +162,19 @@ export default {
         currentPage: 1,
         firstPages: [],
         lastPages: [],
-        pages: []
+        pages: [],
+        deleteUser: {},
+        deleteUserDialog: false,
     }),
     methods: {
         ...mapActions('user', {
             fetchAllUsers: actions.GET_ALL_USERS,
             changeBlockStatusByUserId: actions.CHANGE_USER_BLOCK_STATUS_BY_ID
         }),
+        onDeleteUserClick(user) {
+            this.deleteUser = user;
+            this.deleteUserDialog = true;
+        },
         onChangePage(page) {
             this.page = page;
         },
@@ -202,15 +225,22 @@ export default {
                     message: error
                 });
             }
+        },
+        async onDeleteUser() {
+            this.page = 1;
+            await this.updateUsersList();
+        },
+        async updateUsersList() {
+            const response = await this.fetchAllUsersAction();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.perPage = response.per_page;
+            this.reCalculatePages();
         }
     },
     async mounted() {
-        const response = await this.fetchAllUsersAction();
-        this.currentPage = response.current_page;
-        this.lastPage = response.last_page;
-        this.total = response.total;
-        this.perPage = response.per_page;
-        this.reCalculatePages();
+        await this.updateUsersList();
     },
     watch: {
         async page() {

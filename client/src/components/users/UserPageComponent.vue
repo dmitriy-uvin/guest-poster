@@ -56,22 +56,29 @@
                 </VCol>
                 <VCol cols="12" md="3">
                     <VRow>
-                        <div class="mx-4">
+                        <div class="mx-4" style="width: 10%">
                             <VIcon>mdi-web</VIcon>
                         </div>
-                        <div>
-                            <span class="d-block field-text">
-                                <a
-                                    :href="link"
-                                    target="_blank"
-                                    v-if="user.website"
-                                    class="d-block"
-                                >
-                                    {{ user.website | formatDomainFilter }}
-                                </a>
-                                <span v-else>N/A</span>
+                        <div style="width: 50%">
+                            <span class="field-text">
+                                <VTooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <a
+                                            :href="link"
+                                            target="_blank"
+                                            v-if="user.website"
+                                            class="website-link"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        >
+                                        {{ user.website | formatDomainFilter }}
+                                    </a>
+                                    <span v-else>N/A</span>
+                                </template>
+                                    <span>{{ user.website | formatDomainFilter }}</span>
+                                </VTooltip>
                             </span>
-                            <span class="field-hint">Website</span>
+                            <span class="d-block field-hint">Website</span>
                         </div>
                     </VRow>
                 </VCol>
@@ -271,9 +278,13 @@ export default {
 <style scoped>
 .field-text {
     font-size: 18px;
+}
+
+.website-link {
+    display: block;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .field-hint {
@@ -311,10 +322,5 @@ export default {
 .order-status,
 .order-price {
     font-weight: bold;
-}
-.website {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
 }
 </style>
