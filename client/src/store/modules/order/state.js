@@ -1,4 +1,5 @@
 export default {
     orders: {},
-    orderById: {}
+    orderById: {},
+    ordersByUserId: {}
 }

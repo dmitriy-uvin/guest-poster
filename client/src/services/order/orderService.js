@@ -33,5 +33,9 @@ export default {
             status
         );
         return response?.data?.data;
+    },
+    async getOrdersByUserId(id) {
+        const response = await requestInternalService.get(API_PREFIX + '/users/' + id);
+        return response?.data?.data;
     }
 };
