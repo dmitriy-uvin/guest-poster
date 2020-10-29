@@ -21,12 +21,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'skype',
         'website',
         'role',
-        'email_verified_at'
+        'email_verified_at',
+        'blocked'
     ];
 
     protected $attributes = [
         'role' => UserRoles::USER,
-        'subscription_active' => false
+        'blocked' => false,
     ];
 
 

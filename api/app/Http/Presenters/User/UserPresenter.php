@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Presenters\User;
 
+use App\Http\Presenters\Contracts\PresenterCollectionInterface;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
-final class UserPresenter
+final class UserPresenter implements PresenterCollectionInterface
 {
     public function present(User $user)
     {
@@ -18,8 +19,8 @@ final class UserPresenter
             'skype' => $user->skype,
             'website' => $user->website,
             'role' => $user->role,
-            'subscription_active' => $user->subscription_active,
-            'email_verified_at' => $user->email_verified_at
+            'email_verified_at' => $user->email_verified_at,
+            'blocked' => $user->blocked
         ];
     }
 

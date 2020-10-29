@@ -11,6 +11,7 @@ use App\Action\Auth\LogOutAction;
 use App\Action\Auth\RegisterAction;
 use App\Action\Auth\RegisterRequest;
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Presenters\Auth\AuthPresenter;
 use App\Http\Presenters\User\UserPresenter;
 use App\Http\Requests\Auth\LoginFormHttpRequest;
 use App\Http\Requests\Auth\RegisterFormHttpRequest;
@@ -18,20 +19,20 @@ use Illuminate\Http\JsonResponse;
 
 final class AuthController extends ApiController
 {
-    private UserPresenter $userPresenter;
+    private AuthPresenter $authPresenter;
     private LoginAction $loginAction;
     private LogOutAction $logOutAction;
     private GetAuthenticatedUserAction $getAuthenticatedUserAction;
     private RegisterAction $registerAction;
 
     public function __construct(
-        UserPresenter $userPresenter,
+        AuthPresenter $authPresenter,
         LoginAction $loginAction,
         LogOutAction $logOutAction,
         RegisterAction $registerAction,
         GetAuthenticatedUserAction $getAuthenticatedUserAction
     ) {
-        $this->userPresenter = $userPresenter;
+        $this->authPresenter = $authPresenter;
         $this->loginAction = $loginAction;
         $this->logOutAction = $logOutAction;
         $this->registerAction = $registerAction;
@@ -66,7 +67,7 @@ final class AuthController extends ApiController
             )
         );
 
-        return $this->successResponse($this->userPresenter->present(
+        return $this->successResponse($this->authPresenter->present(
             $response->getUser()
         ));
     }
@@ -81,6 +82,8 @@ final class AuthController extends ApiController
     public function me(): JsonResponse
     {
         $response = $this->getAuthenticatedUserAction->execute();
-        return $this->successResponse($this->userPresenter->present($response->getUser()));
+        return $this->successResponse(
+            $this->authPresenter->present($response->getUser())
+        );
     }
 }
