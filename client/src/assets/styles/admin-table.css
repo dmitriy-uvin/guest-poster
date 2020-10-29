@@ -33,12 +33,14 @@
 .admin-table th:nth-child(2),
 .admin-table td:nth-child(2)
 {
+    text-align: left;
     width: 5%;
 }
 
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3)
 {
+    text-align: left;
     width: 45%;
 }
 
