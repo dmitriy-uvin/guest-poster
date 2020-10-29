@@ -2134,7 +2134,7 @@ import FilterChipsIcons from '@/components/guest-posting/FilterChipsIcons';
 import additionalFilterCounterMixin from '@/mixins/additionalFilterCounterMixin';
 import notificationMixin from '@/mixins/notificationMixin';
 import { maxAdditionalFilters } from '@/constants/constants';
-import SaveFilterNameDialog from '@/components/guest-posting/SaveFilterNameDialog';
+import SaveFilterNameDialog from '@/components/user-filter/SaveFilterNameDialog';
 import UserFiltersBlock from '@/components/user-filter/UserFiltersBlock';
 
 export default {

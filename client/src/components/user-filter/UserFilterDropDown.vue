@@ -13,6 +13,9 @@
                 </VIcon>
             </template>
             <VList>
+                <VListItem dense @click="onEditFilter">
+                    <VListItemTitle>Edit</VListItemTitle>
+                </VListItem>
                 <VListItem dense @click="onRenameById">
                     <VListItemTitle>Rename</VListItemTitle>
                 </VListItem>
@@ -40,7 +43,7 @@ import * as actions from '@/store/modules/filter/types/actions';
 import notificationMixin from '@/mixins/notificationMixin';
 import ConfirmDeleteFilterDialog from '@/components/user-filter/ConfirmDeleteFilterDialog';
 import * as getters from '@/store/modules/filter/types/getters';
-import RenameFilterNameDialog from '@/components/guest-posting/RenameFilterNameDialog';
+import RenameFilterNameDialog from '@/components/user-filter/RenameFilterNameDialog';
 export default {
     name: 'UserFilterDropDown',
     props: {
@@ -54,13 +57,16 @@ export default {
     },
     data: () => ({
         deleteFilterConfirm: false,
-        renameNameDialog: false,
+        renameNameDialog: false
     }),
     mixins: [notificationMixin],
     methods: {
         ...mapActions('filter', {
             deleteFilterById: actions.DELETE_USER_FILTER
         }),
+        onEditFilter() {
+
+        },
         onRenameById() {
             this.renameNameDialog = true;
         },
