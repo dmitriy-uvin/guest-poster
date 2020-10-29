@@ -119,3 +119,13 @@ Route::group([
         Route::put('/{id}/status', [\App\Http\Controllers\Api\OrderController::class, 'changeStatus']);
     });
 });
+
+Route::group([
+    'prefix' => 'users',
+    'middleware' => 'admin'
+], function () {
+    Route::get('/', [\App\Http\Controllers\Api\UserController::class, 'getAllUsers']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\UserController::class, 'getUserById']);
+    Route::put('/{id}/block', [\App\Http\Controllers\Api\UserController::class, 'changeUserBlockStatusById']);
+    Route::delete('/{id}', [\App\Http\Controllers\Api\UserController::class, 'deleteUserById']);
+});
