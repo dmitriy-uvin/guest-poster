@@ -1,6 +1,8 @@
 import axios from 'axios';
 import authService from '@/services/auth/authService';
 import router from '@/router';
+import store from '@/store';
+import * as notificationActions from '@/store/modules/notification/types/actions';
 
 const API_URL = process.env.VUE_APP_API_URL;
 
@@ -22,6 +24,14 @@ axios.interceptors.response.use(
     },
     function (error) {
         if (error.response.status === 401) {
+            authService.removeToken();
+            router.push({ name: 'SignIn' });
+        }
+        if (error.response.data.error === 'blocked') {
+            store.dispatch('notification/' + notificationActions.SET_NOTIFICATION, {
+                type: 'error',
+                message: 'Your account was blocked!'
+            });
             authService.removeToken();
             router.push({ name: 'SignIn' });
         }
