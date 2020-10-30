@@ -11,6 +11,7 @@ use App\Exceptions\Import\ImportFieldsRequiredException;
 use App\Exceptions\Import\WrongImportValueException;
 use App\Jobs\GetDataFromApiForPlatformsImport;
 use App\Jobs\UpdateDataFromApiForPlatformsImport;
+use App\Models\Constants\JobConstants;
 use App\Services\SeoRankService;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,7 +48,7 @@ final class ImportPlatformsTableAction
 
     private function getDataFromApi(array $platforms)
     {
-        $chunkSize = 20;
+        $chunkSize = JobConstants::CHUNK_SIZE;
         $chunkedPlatforms = collect($platforms)->chunk($chunkSize);
         foreach ($chunkedPlatforms as $index => $platformsDataSet) {
             $row = 1 + $index * ($chunkSize + 1);

@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Events\PlatformImportCreatedEvent;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
+use App\Models\Ahrefs;
 use App\Models\Alexa;
 use App\Models\Facebook;
 use App\Models\Majestic;
@@ -114,6 +115,9 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                             in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
                     ]);
                     $platform->facebook()->save($fb);
+
+                    $ahrefs = new Ahrefs();
+                    $platform->ahrefs()->save($ahrefs);
                 }
 
 
