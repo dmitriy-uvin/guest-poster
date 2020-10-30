@@ -46,8 +46,9 @@ export default {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
         }),
-        async onLogOut() {
-            await this.signOut();
+        onLogOut() {
+            this.signOut();
+            this.$router.push({ name: 'SignIn' });
         },
         onProfile() {
             this.$router.push({ name: 'Profile' });
