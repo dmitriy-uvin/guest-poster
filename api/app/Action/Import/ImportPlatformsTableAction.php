@@ -121,6 +121,7 @@ final class ImportPlatformsTableAction
                     case 'dofollow_active':
                     case 'home_featured_active':
                     case 'niche_edit_link_active':
+                    case 'money_anchor':
                         if ((int)$value !== 0 && (int)$value !== 1) {
                             throw new WrongImportValueException($row, $columnName);
                         }
