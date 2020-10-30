@@ -6,7 +6,7 @@
                 v-on="on"
                 class="user-menu"
             >
-                {{ user.name }}
+                {{ name }}
                 <VIcon color="#2F80ED">mdi-menu-down</VIcon>
             </span>
         </template>
@@ -40,12 +40,17 @@ export default {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
         }),
-        onLogOut() {
-            this.signOut();
-            this.$router.push({ name: 'SignIn' });
+        async onLogOut() {
+            await this.signOut();
         },
         onProfile() {
             this.$router.push({ name: 'Profile' });
+        },
+        name() {
+            if (Object.keys(this.user).length) {
+                return this.user?.name;
+            }
+            return '';
         }
     }
 }

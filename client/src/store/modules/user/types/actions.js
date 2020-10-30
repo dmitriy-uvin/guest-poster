@@ -13,3 +13,4 @@ export const GET_ALL_USERS = 'getAllUsers';
 export const GET_USER_BY_ID = 'getUserById';
 export const DELETE_USER_BY_ID = 'deleteUserById';
 export const CHANGE_USER_BLOCK_STATUS_BY_ID = 'changeUserBlockStatusById';
+export const CHECK_IF_UNAUTHORIZED = 'checkIfUnAuthorized';
