@@ -27,7 +27,7 @@ axios.interceptors.response.use(
             authService.removeToken();
             router.push({ name: 'SignIn' });
         }
-        if (error.response.data.error === 'blocked') {
+        if (error.response.data.error === 'blocked' && error.response.status === 403) {
             store.dispatch('notification/' + notificationActions.SET_NOTIFICATION, {
                 type: 'error',
                 message: 'Your account was blocked!'
@@ -35,7 +35,7 @@ axios.interceptors.response.use(
             authService.removeToken();
             router.push({ name: 'SignIn' });
         }
-        return Promise.reject(error.response.data.message);
+        // return Promise.reject(error.response.data.message);
     }
 );
 

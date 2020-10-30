@@ -2233,7 +2233,7 @@
         <SendRequestFooter
             :chosen-platforms-ids="chosenPlatformsIds"
             @unselected="unSelectAll"
-            v-if="!isAdmin"
+            v-if="!isAdmin && Object.keys(this.chosen).length"
             @request-created="onRequestCreated"
             @platform-removed="onPlatformRemoved"
         />

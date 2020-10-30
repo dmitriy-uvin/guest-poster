@@ -6,7 +6,7 @@
                 v-on="on"
                 class="user-menu"
             >
-                {{ user.name }}
+                {{ name }}
                 <VIcon color="#2F80ED">mdi-menu-down</VIcon>
             </span>
         </template>
@@ -30,24 +30,29 @@ import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 import * as actions from '@/store/modules/user/types/actions';
 export default {
-    name: "UserMenu",
+    name: 'UserMenu',
     computed: {
         ...mapGetters('user', {
             user: getters.GET_LOGGED_USER
-        })
+        }),
+        name() {
+            if (Object.keys(this.user).length) {
+                return this.user?.name;
+            }
+            return '';
+        }
     },
     methods: {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
         }),
-        onLogOut() {
-            this.signOut();
-            this.$router.push({ name: 'SignIn' });
+        async onLogOut() {
+            await this.signOut();
         },
         onProfile() {
             this.$router.push({ name: 'Profile' });
-        }
-    }
+        },
+    },
 }
 </script>
 

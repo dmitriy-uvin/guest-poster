@@ -2,6 +2,8 @@ import * as actions from './types/actions';
 import * as mutations from './types/mutations';
 import authService from '@/services/auth/authService';
 import userService from '@/services/user/userService';
+import router from '@/router';
+import * as notificationActions from '@/store/modules/notification/types/actions';
 
 export default {
     [actions.SIGN_IN]: async (context, userData) => {
@@ -14,9 +16,14 @@ export default {
         const userData = await authService.fetchLoggedUser();
         commit(mutations.SET_LOGGED_USER, userData);
     },
-    [actions.SIGN_OUT]: async ({ commit }) => {
-        authService.removeToken();
-        commit(mutations.USER_SIGN_OUT);
+    [actions.SIGN_OUT]: async ({ commit, dispatch }) => {
+        try {
+            await authService.signOut();
+            authService.removeToken();
+            commit(mutations.USER_SIGN_OUT);
+        } catch (error) {
+            dispatch(actions.CHECK_IF_UNAUTHORIZED, error);
+        }
     },
     [actions.VERIFY_EMAIL]: async (context, verifyData) => {
         await authService.verifyEmail(verifyData);
@@ -54,5 +61,19 @@ export default {
     },
     [actions.DELETE_USER_BY_ID]: async (context, id) => {
         await userService.deleteUserById(id);
-    }
+    },
+    [actions.CHECK_IF_UNAUTHORIZED]: (
+        { state, dispatch },
+        error
+    ) => {
+        if (error.response.status === 401) {
+            authService.removeToken();
+            state.user = null;
+            router.push({ name: 'SignIn' });
+            dispatch('notification/' + notificationActions.SET_NOTIFICATION, {
+                type: 'error',
+                message: 'Unauthorized!'
+            });
+        }
+    },
 }

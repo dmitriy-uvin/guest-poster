@@ -115,7 +115,6 @@
                 </VCardText>
             </VCard>
         </VDialog>
-
         <VDialog
             v-model="dialogResult"
             width="500"
