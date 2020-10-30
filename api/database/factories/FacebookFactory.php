@@ -13,9 +13,9 @@ class FacebookFactory extends Factory
     public function definition()
     {
         return [
-            'fb_comments' => $this->faker->numberBetween(0),
-            'fb_reac' => $this->faker->numberBetween(0),
-            'fb_shares' => $this->faker->numberBetween(0),
+            'fb_comments' => $this->faker->numberBetween(0, 1000000),
+            'fb_reac' => $this->faker->numberBetween(0, 10000000),
+            'fb_shares' => $this->faker->numberBetween(0, 1000000),
         ];
     }
 }
