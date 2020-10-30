@@ -10,6 +10,7 @@ final class AddPlatformRequest
     private string $protocol;
     private ?int $organicTraffic;
     private bool $do_follow_active;
+    private bool $money_anchor;
     private bool $free_home_featured_active;
     private bool $niche_edit_link_active;
     private float $article_writing_price;
@@ -54,13 +55,11 @@ final class AddPlatformRequest
     private ?int $majesticRefD_EDU;
     private ?int $majesticRefD_GOV;
 
-    private ?string $ahrefsStatus;
     private ?float $ahrefsRank;
     private ?float $ahrefsDr;
     private ?int $ahrefsEb;
     private ?int $ahrefsRd;
     private ?int $ahrefsDofollow;
-    private ?int $ahrefsIps;
 
 
     public function __construct(
@@ -88,7 +87,8 @@ final class AddPlatformRequest
         array $fb,
         ?string $trust,
         ?string $spam,
-        ?string $lrtPowerTrust
+        ?string $lrtPowerTrust,
+        bool $money_anchor
     ) {
         $this->website_url = $this->explodeWebsiteUrl($website_url)['website_url'];
         $this->protocol = $this->explodeWebsiteUrl($website_url)['protocol'];
@@ -110,6 +110,7 @@ final class AddPlatformRequest
         $this->trust = is_null($trust) ? null : (int)$trust;
         $this->spam = is_null($spam) ? null : (float)$spam;
         $this->lrtPowerTrust = is_null($lrtPowerTrust) ? null : (int)$lrtPowerTrust;
+        $this->money_anchor = $money_anchor;
 
         $this->mozDA =
             is_null($this->checkIfNotAvailable($moz['da'])) ? null
@@ -184,13 +185,11 @@ final class AddPlatformRequest
 
 
         // TODO: Must be tested and fixed if needed
-        $this->ahrefsStatus = $ahrefs ? $ahrefs['status'] : null;
         $this->ahrefsRank = $ahrefs ? (float)$ahrefs['rank'] : null;
         $this->ahrefsDr = $ahrefs ? (float)$ahrefs['dr'] : null;
-        $this->ahrefsEb = $ahrefs ? (int)$ahrefs['eb'] : null;
-        $this->ahrefsRd = $ahrefs ? (int)$ahrefs['rd'] : null;
+        $this->ahrefsEb = $ahrefs ? (int)$ahrefs['external_backlinks'] : null;
+        $this->ahrefsRd = $ahrefs ? (int)$ahrefs['refd'] : null;
         $this->ahrefsDofollow = $ahrefs ? (int)$ahrefs['dofollow'] : null;
-        $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
     private function explodeWebsiteUrl(string $websiteUrl): array
@@ -420,11 +419,6 @@ final class AddPlatformRequest
         return $this->majesticRefD_GOV;
     }
 
-    public function getAhrefsStatus()
-    {
-        return $this->ahrefsStatus;
-    }
-
     public function getAhrefsRank(): ?float
     {
         return $this->ahrefsRank;
@@ -450,8 +444,8 @@ final class AddPlatformRequest
         return $this->ahrefsDofollow;
     }
 
-    public function getAhrefsIps(): ?int
+    public function getMoneyAnchor(): bool
     {
-        return $this->ahrefsIps;
+        return $this->money_anchor;
     }
 }

@@ -12,6 +12,7 @@ class UpdatePlatformByIdRequest
     private string $website_url;
     private ?int $organicTraffic;
     private bool $do_follow_active;
+    private bool $money_anchor;
     private bool $free_home_featured_active;
     private bool $niche_edit_link_active;
     private float $article_writing_price;
@@ -88,7 +89,8 @@ class UpdatePlatformByIdRequest
         array $fb,
         ?string $trust,
         ?string $spam,
-        ?string $powerTrust
+        ?string $powerTrust,
+        bool $money_anchor
     ) {
         $this->platformId = $id;
 
@@ -96,6 +98,7 @@ class UpdatePlatformByIdRequest
         $this->website_url = $this->explodeWebsiteUrl($website_url)['website_url'];
         $this->organicTraffic = is_null($organicTraffic) ? null : (int)$organicTraffic;
         $this->do_follow_active = $do_follow_active;
+        $this->money_anchor = $money_anchor;
         $this->free_home_featured_active = $free_home_featured_active;
         $this->niche_edit_link_active = $niche_edit_link_active;
         $this->article_writing_price = $article_writing_price;
@@ -447,5 +450,10 @@ class UpdatePlatformByIdRequest
     public function getAhrefsDofollow(): ?int
     {
         return $this->ahrefsDofollow;
+    }
+
+    public function getMoneyAnchor(): bool
+    {
+        return $this->money_anchor;
     }
 }

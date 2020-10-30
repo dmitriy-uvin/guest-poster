@@ -94,7 +94,7 @@ class UpdateApiDataByPlatformIdJob implements ShouldQueue
                 $platform->website_url
             );
             if (!in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) && is_object($majesticData))  {
-                $majestic = Majestic::where(['platform_id' => $platform->id])->update([
+                Majestic::where(['platform_id' => $platform->id])->update([
                     'external_backlinks' =>
                         in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
                     'external_gov' =>
@@ -112,7 +112,6 @@ class UpdateApiDataByPlatformIdJob implements ShouldQueue
                     'refd_gov' =>
                         in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
                 ]);
-                $majestic->save();
             }
 
             $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
