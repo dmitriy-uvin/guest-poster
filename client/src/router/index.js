@@ -36,7 +36,7 @@ const routes = [
                 meta: { layout: 'auth' }
             },
             {
-                path: '',
+                path: '/',
                 name: 'GuestPosting',
                 component: () => import('../views/GuestPosting'),
                 meta: { AuthorizedUser: true }

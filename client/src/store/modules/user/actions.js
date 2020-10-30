@@ -18,7 +18,7 @@ export default {
     },
     [actions.SIGN_OUT]: async ({ commit, dispatch }) => {
         try {
-            await authService.signOut();
+            authService.signOut();
             authService.removeToken();
             commit(mutations.USER_SIGN_OUT);
         } catch (error) {
