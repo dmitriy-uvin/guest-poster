@@ -151,10 +151,10 @@ final class PlatformController extends ApiController
                 $request->article_requirements,
                 (int)$request->deadline,
                 $request->where_posted,
-                $request->fb,
+                $request->facebook,
                 $this->checkIfValueIsKnown($request->trust),
                 $this->checkIfValueIsKnown($request->spam),
-                $this->checkIfValueIsKnown($request->lrt_power_trust),
+                $this->checkIfValueIsKnown($request->power_trust),
             )
         );
 

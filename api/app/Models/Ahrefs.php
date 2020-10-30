@@ -14,11 +14,10 @@ class Ahrefs extends Model
 
     protected $fillable = [
         'platfrom_id',
-        'status',
         'rank',
         'dr',
-        'eb',
-        'rd',
+        'ext_backlinks',
+        'refd',
         'dofollow',
         'ips'
     ];

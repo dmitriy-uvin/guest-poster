@@ -2,7 +2,7 @@
     <div class="container">
         <div class="">
             <div class="left">
-                <h1>Guest Posting</h1>
+                <h1 id="text">Guest Posting</h1>
                 <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
         </div>
@@ -1920,29 +1920,105 @@
                         </span>
                     </th>
                     <th @click="changeSortingAndDirection('trust')" class="trust">
-                        <span :class="{ 'underline' : sorting === 'trust' }">
-                            Trust
-                        </span>
+                        <VTooltip
+                            top
+                            open-on-hover
+                            max-width="330px"
+                            nudge-right="40"
+                            nudge-top="10"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <span
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    :class="{ 'underline' : sorting === 'trust' }">
+                                    Trust
+                                </span>
+                            </template>
+                            <div>
+                                Trust
+                            </div>
+                        </VTooltip>
                     </th>
                     <th @click="changeSortingAndDirection('semRush.traffic')">
-                        <span :class="{ 'underline' : sorting === 'semRush.traffic' }">
-                            SR.Trf
-                        </span>
+                        <VTooltip
+                            top
+                            open-on-hover
+                            max-width="330px"
+                            nudge-right="40"
+                            nudge-top="10"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <span v-bind="attrs"
+                                      v-on="on"
+                                      :class="{ 'underline' : sorting === 'semRush.traffic' }">
+                                    SR.Trf
+                                </span>
+                            </template>
+                            <div>
+                                SemRush Traffic
+                            </div>
+                        </VTooltip>
                     </th>
                     <th @click="changeSortingAndDirection('ahrefs.dr')">
-                        <span :class="{ 'underline' : sorting === 'ahrefs.dr' }">
-                            DR
-                        </span>
+                        <VTooltip
+                            top
+                            open-on-hover
+                            max-width="330px"
+                            nudge-right="40"
+                            nudge-top="10"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <span  v-bind="attrs"
+                                       v-on="on"
+                                       :class="{ 'underline' : sorting === 'ahrefs.dr' }">
+                                    DR
+                                </span>
+                            </template>
+                            <div>
+                                Ahrefs Domain Rating
+                            </div>
+                        </VTooltip>
                     </th>
                     <th @click="changeSortingAndDirection('semRush.traffic_costs')">
-                        <span :class="{ 'underline' : sorting === 'semRush.traffic_costs' }">
-                            SR.Cost
-                        </span>
+                        <VTooltip
+                            top
+                            open-on-hover
+                            max-width="330px"
+                            nudge-right="40"
+                            nudge-top="10"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <span v-bind="attrs"
+                                      v-on="on"
+                                      :class="{ 'underline' : sorting === 'semRush.traffic_costs' }">
+                                    SR.Cost
+                                </span>
+                            </template>
+                            <div>
+                                SemRush Traffic Costs
+                            </div>
+                        </VTooltip>
                     </th>
                     <th @click="changeSortingAndDirection('majestic.tf')">
-                        <span :class="{ 'underline' : sorting === 'majestic.tf' }">
-                            TF
-                        </span>
+                        <VTooltip
+                            top
+                            open-on-hover
+                            max-width="330px"
+                            nudge-right="40"
+                            nudge-top="10"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <span v-bind="attrs"
+                                      v-on="on"
+                                      :class="{ 'underline' : sorting === 'majestic.tf' }">
+                                    TF
+                                </span>
+                            </template>
+                            <div>
+                                Majestic Trust Flow
+                            </div>
+                        </VTooltip>
                     </th>
                     <template v-for="(column, index) in columns">
                         <th
@@ -1950,9 +2026,24 @@
                             :key="index"
                             @click="changeSortingAndDirection(column.property)"
                         >
-                            <span :class="{ 'underline' : sorting === column.property }">
-                                {{ column.name }}
-                            </span>
+                            <VTooltip
+                                top
+                                open-on-hover
+                                max-width="330px"
+                                nudge-right="40"
+                                nudge-top="10"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs"
+                                          v-on="on"
+                                          :class="{ 'underline' : sorting === column.property }">
+                                        {{ column.name }}
+                                    </span>
+                                </template>
+                                <div>
+                                    {{ getTooltip(column.property) }}
+                                </div>
+                            </VTooltip>
                         </th>
                     </template>
                     <th class="features">Features</th>
@@ -1973,18 +2064,41 @@
                         ></VCheckbox>
                     </td>
                     <td class="website">
-                        <div class="link">
-                            <span class="website-link">
-                                <img
-                                    v-if="platform.alexa.country"
-                                    :src="require('../../assets/svg/country-flags/' +
-                                     platform.alexa.country.toLowerCase()
-                                      + '.svg')"
-                                    :alt="platform.alexa.country"
-                                    class="platform-country-image"
-                                >
-                                {{ platform.websiteUrl }}
-                            </span>
+                        <div class="link website-block">
+                            <VTooltip
+                                right
+                                open-on-hover
+                                max-width="350px"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span class="website-link" v-bind="attrs"
+                                          v-on="on">
+                                        <img
+                                            v-if="platform.alexa.country"
+                                            :src="require('../../assets/svg/country-flags/' +
+                                             platform.alexa.country.toLowerCase()
+                                              + '.svg')"
+                                            :alt="platform.alexa.country"
+                                            class="platform-country-image"
+                                        >
+                                        {{ platform.websiteUrl }}
+                                    </span>
+                                </template>
+                                <div class="pa-5">
+                                    <div class="mb-3">
+                                        <b>Publications deadline:</b><br>
+                                        {{ platform.deadLine }} day<span v-if="platform.deadLine > 1">s</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <b>Publication requirements:</b><br>
+                                        {{ platform.articleRequirements }}
+                                    </div>
+                                    <div class="">
+                                        <b>Will be published in:</b><br>
+                                        {{ platform.wherePosted }}
+                                    </div>
+                                </div>
+                            </VTooltip>
                         </div>
                         <div class="topics">
                             <VChip small
@@ -2150,6 +2264,7 @@ import notificationMixin from '@/mixins/notificationMixin';
 import { maxAdditionalFilters } from '@/constants/constants';
 import SaveFilterNameDialog from '@/components/user-filter/SaveFilterNameDialog';
 import UserFiltersBlock from '@/components/user-filter/UserFiltersBlock';
+import tooltips from '@/constants/tooltips';
 
 export default {
     name: 'GuestPostingComponent',
@@ -2348,6 +2463,9 @@ export default {
         this.initializeDisabledFields();
     },
     methods: {
+        getTooltip(property) {
+            return tooltips[property];
+        },
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
             this.direction = this.direction === 'desc' ? 'asc' : 'desc';
@@ -2362,9 +2480,8 @@ export default {
                 filter: this.filterQuery
             });
         },
-        onEditFilterClick(id) {
+        onEditFilterClick() {
             this.filtersOpened = true;
-            alert(id);
         },
         async onUpdateFilterByIdClick() {
             if (this.appliedFilter) {
@@ -3061,8 +3178,14 @@ export default {
 }
 </script>
 
+
 <style scoped>
 @import "../../assets/styles/table.css";
+.v-tooltip__content.menuable__content__active {
+    background: #333333;
+    opacity: 1 !important;
+}
+
 .float-btn-action {
     position: fixed;
     bottom: 25px;

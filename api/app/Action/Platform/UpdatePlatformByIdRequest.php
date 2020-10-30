@@ -27,7 +27,7 @@ class UpdatePlatformByIdRequest
     private ?array $topics;
     private ?int $trust;
     private ?float $spam;
-    private ?int $lrtPowerTrust;
+    private ?int $powerTrust;
 
     private ?int $mozDA;
     private ?int $mozPA;
@@ -44,7 +44,7 @@ class UpdatePlatformByIdRequest
     private ?int $semrushTrafficCosts;
 
     private ?int $fbComments;
-    private ?int $fbReac;
+    private ?int $fbReactions;
     private ?int $fbShares;
 
     private ?int $majesticExternalBacklinks;
@@ -56,13 +56,11 @@ class UpdatePlatformByIdRequest
     private ?int $majesticRefD_EDU;
     private ?int $majesticRefD_GOV;
 
-    private ?string $ahrefsStatus;
     private ?float $ahrefsRank;
     private ?float $ahrefsDr;
-    private ?int $ahrefsEb;
-    private ?int $ahrefsRd;
+    private ?int $ahrefsExternalBacklinks;
+    private ?int $ahrefsRefD;
     private ?int $ahrefsDofollow;
-    private ?int $ahrefsIps;
 
     public function __construct(
         int $id,
@@ -90,7 +88,7 @@ class UpdatePlatformByIdRequest
         array $fb,
         ?string $trust,
         ?string $spam,
-        ?string $lrtPowerTrust
+        ?string $powerTrust
     ) {
         $this->platformId = $id;
 
@@ -113,7 +111,7 @@ class UpdatePlatformByIdRequest
         $this->topics = $topics;
         $this->trust = is_null($trust) ? null : (int)$trust;
         $this->spam = is_null($spam) ? null : (float)$spam;
-        $this->lrtPowerTrust = is_null($lrtPowerTrust) ? null : (int)$lrtPowerTrust;
+        $this->powerTrust = is_null($powerTrust) ? null : (int)$powerTrust;
 
         $this->mozDA =
             is_null($this->checkIfNotAvailable($moz['da'])) ? null
@@ -122,8 +120,8 @@ class UpdatePlatformByIdRequest
             is_null($this->checkIfNotAvailable($moz['pa'])) ? null
                 : (int)$moz['pa'];
         $this->mozRank =
-            is_null($this->checkIfNotAvailable($moz['mozrank'])) ? null
-                : (float)$moz['mozrank'];
+            is_null($this->checkIfNotAvailable($moz['rank'])) ? null
+                : (float)$moz['rank'];
         $this->mozLinksIn =
             is_null($this->checkIfNotAvailable($moz['links_in'])) ? null
                 : (int)$moz['links_in'];
@@ -152,14 +150,14 @@ class UpdatePlatformByIdRequest
                 : (int)$semrush['traffic_costs'];
 
         $this->fbComments =
-            is_null($this->checkIfNotAvailable($fb['fb_comments'])) ? null
-                : (int)$fb['fb_comments'];
-        $this->fbReac =
-            is_null($this->checkIfNotAvailable($fb['fb_reac'])) ? null
-                : (int)$fb['fb_reac'];
+            is_null($this->checkIfNotAvailable($fb['comments'])) ? null
+                : (int)$fb['comments'];
+        $this->fbReactions =
+            is_null($this->checkIfNotAvailable($fb['reactions'])) ? null
+                : (int)$fb['reactions'];
         $this->fbShares =
-            is_null($this->checkIfNotAvailable($fb['fb_shares'])) ? null
-                : (int)$fb['fb_shares'];
+            is_null($this->checkIfNotAvailable($fb['shares'])) ? null
+                : (int)$fb['shares'];
 
         $this->majesticExternalBacklinks =
             is_null($this->checkIfNotAvailable($majestic['external_backlinks'])) ? null
@@ -187,13 +185,11 @@ class UpdatePlatformByIdRequest
                 : (int)$majestic['refd_gov'];
 
         // TODO: Must be tested and fixed if needed
-        $this->ahrefsStatus = $ahrefs ? $ahrefs['status'] : null;
         $this->ahrefsRank = $ahrefs ? (float)$ahrefs['rank'] : null;
         $this->ahrefsDr = $ahrefs ? (float)$ahrefs['dr'] : null;
-        $this->ahrefsEb = $ahrefs ? (int)$ahrefs['eb'] : null;
-        $this->ahrefsRd = $ahrefs ? (int)$ahrefs['rd'] : null;
+        $this->ahrefsEb = $ahrefs ? (int)$ahrefs['external_backlinks'] : null;
+        $this->ahrefsRd = $ahrefs ? (int)$ahrefs['refd'] : null;
         $this->ahrefsDofollow = $ahrefs ? (int)$ahrefs['dofollow'] : null;
-        $this->ahrefsIps = $ahrefs ? (int)$ahrefs['ips'] : null;
     }
 
     private function explodeWebsiteUrl(string $websiteUrl): array
@@ -313,9 +309,9 @@ class UpdatePlatformByIdRequest
         return $this->spam;
     }
 
-    public function getLrtPowerTrust(): ?int
+    public function getPowerTrust(): ?int
     {
-        return $this->lrtPowerTrust;
+        return $this->powerTrust;
     }
 
     public function getMozDA(): ?int
@@ -378,9 +374,9 @@ class UpdatePlatformByIdRequest
         return $this->fbComments;
     }
 
-    public function getFbReac(): ?int
+    public function getFbReactions(): ?int
     {
-        return $this->fbReac;
+        return $this->fbReactions;
     }
 
     public function getFbShares(): ?int
@@ -428,11 +424,6 @@ class UpdatePlatformByIdRequest
         return $this->majesticRefD_GOV;
     }
 
-    public function getAhrefsStatus()
-    {
-        return $this->ahrefsStatus;
-    }
-
     public function getAhrefsRank(): ?float
     {
         return $this->ahrefsRank;
@@ -443,23 +434,18 @@ class UpdatePlatformByIdRequest
         return $this->ahrefsDr;
     }
 
-    public function getAhrefsEb(): ?int
+    public function getAhrefsExternalBacklinks(): ?int
     {
-        return $this->ahrefsEb;
+        return $this->ahrefsExternalBacklinks;
     }
 
-    public function getAhrefsRd(): ?int
+    public function getAhrefsRefD(): ?int
     {
-        return $this->ahrefsRd;
+        return $this->ahrefsRefD;
     }
 
     public function getAhrefsDofollow(): ?int
     {
         return $this->ahrefsDofollow;
-    }
-
-    public function getAhrefsIps(): ?int
-    {
-        return $this->ahrefsIps;
     }
 }

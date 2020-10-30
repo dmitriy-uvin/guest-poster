@@ -26,7 +26,7 @@ final class AddPlatformAction
 
     public function execute(AddPlatformRequest $request)
     {
-        if (!is_null(Platform::where('website_url', '=', $request->getWebsiteUrl()))) {
+        if (!is_null(Platform::where('website_url', '=', $request->getWebsiteUrl())->first())) {
             throw new PlatformAlreadyExistsException();
         }
         $platform = new Platform();
@@ -112,10 +112,9 @@ final class AddPlatformAction
                 'platform_id' => $platform->id,
                 'rank' => $request->getAhrefsRank(),
                 'dr' => $request->getAhrefsDr(),
-                'eb' => $request->getAhrefsEb(),
-                'rd' => $request->getAhrefsRd(),
+                'ext_backlinks' => $request->getAhrefsEb(),
+                'refd' => $request->getAhrefsRd(),
                 'dofollow' => $request->getAhrefsDofollow(),
-                'ips' => $request->getAhrefsIps(),
             ]);
             $ahrefs->save();
         }

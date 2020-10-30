@@ -41,13 +41,15 @@ export default {
         }
     },
     async created() {
-        const channel = pusher.subscribe('platform-import');
-        channel.bind('platform-import-updated', (data) => {
-            this.setNotification({
-                type: data.type,
-                message: data.message,
+        if (this.user.role === 'admin') {
+            const channel = pusher.subscribe('platform-import');
+            channel.bind('platform-import-updated', (data) => {
+                this.setNotification({
+                    type: data.type,
+                    message: data.message,
+                });
             });
-        });
+        }
     }
 };
 </script>

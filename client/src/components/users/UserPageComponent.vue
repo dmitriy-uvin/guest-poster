@@ -11,8 +11,15 @@
                 </div>
                 <VSpacer></VSpacer>
                 <div class="status-block">
-                    <span v-if="user.blocked" class="blocked">blocked</span>
-                    <span v-else class="active">Active</span>
+                    <div class="row">
+                        <div class="status-block-left">
+                            <span>Status</span>
+                        </div>
+                        <div class="status-block-right">
+                            <span v-if="user.blocked" class="blocked">blocked</span>
+                            <span v-else class="active">Active</span>
+                        </div>
+                    </div>
                 </div>
             </VRow>
             <VDivider class="mb-6"></VDivider>
@@ -85,7 +92,23 @@
             </VRow>
             <VDivider class="mb-6 mt-4"></VDivider>
 
-            <h2 class="mb-4">Orders details</h2>
+            <VRow>
+                <div class="">
+                    <h2 class="mb-4">Orders details</h2>
+                </div>
+                <VSpacer></VSpacer>
+                <div class="status-block">
+                    <div class="row">
+                        <div class="status-block-left">
+                            <span>Total</span>
+                        </div>
+                        <div class="status-block-right">
+                            <span v-if="totalSpent">{{ totalSpent | priceFilter }} $</span>
+                            <span v-else>0 $</span>
+                        </div>
+                    </div>
+                </div>
+            </VRow>
 
             <h3>Information</h3>
             <VDivider></VDivider>
@@ -277,6 +300,17 @@ export default {
                 return 'https://' + this.user.website;
             }
             return this.user.website;
+        },
+        totalSpent() {
+            let amount = 0;
+            if (Object.keys(this.orders).length) {
+                this.orders.map(order => {
+                    order.items.map(item => {
+                        amount += item.price;
+                    })
+                });
+            }
+            return amount;
         }
     }
 }
@@ -304,6 +338,15 @@ export default {
     padding: 10px 15px;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.status-block-left {
+    border-right: 1px solid lightgray;
+    padding: 0 20px;
+}
+
+.status-block-right {
+    padding: 0 20px;
 }
 
 .active {

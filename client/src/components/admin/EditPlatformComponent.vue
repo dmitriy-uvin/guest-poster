@@ -4,7 +4,7 @@
             <VIcon left color="#408bef">mdi-chevron-left</VIcon>
             <span style="color: #408bef;">BACK TO PLATFORMS LIST</span>
         </VBtn>
-        <h1>Edit Platform <u>{{ deleteProtocol(platform.websiteUrl) }}</u></h1>
+        <h1>Edit Platform <u>{{ platform.websiteUrl | formatDomainFilter }}</u></h1>
         <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         <VDivider></VDivider>
         <VRow>
@@ -199,7 +199,7 @@
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label>LRT PowerTrust</label>
+                                    <label>PowerTrust</label>
                                     <VIcon
                                         class="ml-1 align-center"
                                         small
@@ -207,13 +207,13 @@
                                         v-on="on"
                                     >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip LRT PowerTrust</span>
+                                <span>Tooltip PowerTrust</span>
                             </VTooltip>
                             <VTextField
                                 outlined
                                 placeholder="PowerTrust"
-                                v-model="lrtPowerTrust"
-                                :error-messages="lrtPowerTrustErrors"
+                                v-model="powerTrust"
+                                :error-messages="powerTrustErrors"
                             ></VTextField>
                         </VCol>
                     </VRow>
@@ -293,7 +293,7 @@
                         <VCol cols="12" md="2">
                             <VTooltip right>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <label>MozRank</label>
+                                    <label>Rank</label>
                                     <VIcon
                                         class="ml-1 align-center"
                                         small
@@ -301,12 +301,12 @@
                                         v-on="on"
                                     >mdi-information</VIcon>
                                 </template>
-                                <span>Tooltip MozRank</span>
+                                <span>Tooltip Moz Rank</span>
                             </VTooltip>
                             <VTextField
                                 outlined
-                                placeholder="MozRank"
-                                v-model="moz.mozrank"
+                                placeholder="Rank"
+                                v-model="moz.rank"
                                 :error-messages="mozRankErrors"
                             ></VTextField>
                         </VCol>
@@ -416,8 +416,8 @@
                             <VTextField
                                 outlined
                                 placeholder="Rank"
-                                v-model="semrush.rank"
-                                :error-messages="semrushRankErrors"
+                                v-model="semRush.rank"
+                                :error-messages="semRushRankErrors"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -436,8 +436,8 @@
                             <VTextField
                                 outlined
                                 placeholder="Keyword Number"
-                                v-model="semrush.keyword_num"
-                                :error-messages="semrushKeywordNumErrors"
+                                v-model="semRush.keyword_num"
+                                :error-messages="semRushKeywordNumErrors"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -476,8 +476,8 @@
                             <VTextField
                                 outlined
                                 placeholder="Traffic costs"
-                                v-model="semrush.traffic_costs"
-                                :error-messages="semrushTrafficCostsErrors"
+                                v-model="semRush.traffic_costs"
+                                :error-messages="semRushTrafficCostsErrors"
                             ></VTextField>
                         </VCol>
                     </VRow>
@@ -501,7 +501,7 @@
                             <VTextField
                                 outlined
                                 placeholder="FB Comments"
-                                v-model="fb.fb_comments"
+                                v-model="facebook.comments"
                                 :error-messages="fbCommentsErrors"
                             ></VTextField>
                         </VCol>
@@ -521,7 +521,7 @@
                             <VTextField
                                 outlined
                                 placeholder="FB Reactions"
-                                v-model="fb.fb_reac"
+                                v-model="facebook.reactions"
                                 :error-messages="fbReacErrors"
                             ></VTextField>
                         </VCol>
@@ -541,7 +541,7 @@
                             <VTextField
                                 outlined
                                 placeholder="FB Shares"
-                                v-model="fb.fb_shares"
+                                v-model="facebook.shares"
                                 :error-messages="fbSharesErrors"
                             ></VTextField>
                         </VCol>
@@ -786,7 +786,6 @@ import * as actions from '@/store/modules/platforms/types/actions';
 import * as getters from '@/store/modules/platforms/types/getters';
 import { validationMixin } from 'vuelidate';
 import notificationMixin from '@/mixins/notificationMixin';
-import valueFormatMixin from '@/mixins/valueFormatMixin';
 
 import {
     email, maxLength,
@@ -828,7 +827,7 @@ export default {
             links_in: {
                 required, minValue: min_value
             },
-            mozrank: {
+            rank: {
                 required, minValue: min_value
             },
             equity: {
@@ -846,7 +845,7 @@ export default {
                 required, minValue: min_value
             }
         },
-        semrush: {
+        semRush: {
             rank: {
                 required, minValue: min_value
             },
@@ -857,10 +856,10 @@ export default {
                 required, minValue: min_value
             },
         },
-        fb: {
-            fb_comments: { required, minValue: min_value },
-            fb_reac: { required, minValue: min_value },
-            fb_shares: { required, minValue: min_value },
+        facebook: {
+            comments: { required, minValue: min_value },
+            reactions: { required, minValue: min_value },
+            shares: { required, minValue: min_value },
         },
         majestic: {
             external_backlinks: {
@@ -897,9 +896,9 @@ export default {
         },
         trust: { required, minValue: min_value },
         spam: { required, minValue: min_value },
-        lrtPowerTrust: { required, minValue: min_value }
+        powerTrust: { required, minValue: min_value }
     },
-    mixins: [validationMixin, notificationMixin, valueFormatMixin],
+    mixins: [validationMixin, notificationMixin],
     data: () => ({
         platformId: '',
         checkTrustLoading: false,
@@ -926,7 +925,7 @@ export default {
             da: '',
             pa: '',
             links_in: '',
-            mozrank: '',
+            rank: '',
             equity: ''
         },
         alexa: {
@@ -934,15 +933,15 @@ export default {
             country: '',
             country_rank: ''
         },
-        semrush: {
+        semRush: {
             rank: '',
             keyword_num: '',
             traffic_costs: '',
         },
-        fb: {
-            fb_comments: '',
-            fb_reac: '',
-            fb_shares: ''
+        facebook: {
+            comments: '',
+            reactions: '',
+            shares: ''
         },
         majestic: {
             external_backlinks: '',
@@ -956,7 +955,7 @@ export default {
         },
         trust: '',
         spam: '',
-        lrtPowerTrust: ''
+        powerTrust: ''
     }),
     methods: {
         ...mapActions('platforms', {
@@ -1035,12 +1034,12 @@ export default {
                             topics: this.topics.map(topic => this.allTopics[topic]),
                             moz: this.moz,
                             alexa: this.alexa,
-                            semrush: this.semrush,
+                            semrush: this.semRush,
                             majestic: this.majestic,
-                            fb: this.fb,
+                            facebook: this.facebook,
                             trust: this.trust,
                             spam: this.spam,
-                            lrt_power_trust: this.lrtPowerTrust
+                            power_trust: this.powerTrust
                         }
                     });
                     this.setNotification({
@@ -1114,13 +1113,13 @@ export default {
                             type: 'error',
                             message: responseData.message + ' Try a little bit later!'
                         });
-                        this.trust = this.spam = this.lrtPowerTrust = 'N/A';
+                        this.trust = this.spam = this.powerTrust = 'N/A';
                         this.checkTrustLoading = false;
                         return;
                     } else {
                         this.trust = responseData?.summary?.trust;
                         this.spam = responseData?.summary?.spam;
-                        this.lrtPowerTrust = responseData?.summary?.lrtPowerTrust;
+                        this.powerTrust = responseData?.summary?.lrtPowerTrust;
                     }
                     this.checkTrustLoading = false;
                     this.setNotification({
@@ -1169,35 +1168,35 @@ export default {
             this.nicheEditLinkPrice !== null ? (this.platform.nicheEditLinkPrice - this.platform.price).toFixed(2) : null;
         this.topics = this.platform.topics.map(topic => topic.name);
 
-        this.trust = this.platform.trust === null ? 'N/A' : this.platform.trust;
+        this.trust = this.platform.checktrust === null ? 'N/A' : this.platform.checktrust;
         this.spam = this.platform.spam === null ? 'N/A' : this.platform.spam;
-        this.lrtPowerTrust = this.platform.lrtPowerTrust === null ? 'N/A' : this.platform.lrtPowerTrust;
+        this.powerTrust = this.platform.powertrust === null ? 'N/A' : this.platform.powertrust;
 
         this.moz.da = this.platform.moz.da === null ? 'N/A' : this.platform.moz.da;
         this.moz.pa = this.platform.moz.pa === null ? 'N/A' : this.platform.moz.pa;
-        this.moz.links_in = this.platform.moz.linksIn === null ? 'N/A' : this.platform.moz.linksIn;
-        this.moz.mozrank = this.platform.moz.rank === null ? 'N/A' : this.platform.moz.rank;
+        this.moz.links_in = this.platform.moz.links_in === null ? 'N/A' : this.platform.moz.links_in;
+        this.moz.rank = this.platform.moz.rank === null ? 'N/A' : this.platform.moz.rank;
         this.moz.equity = this.platform.moz.equity === null ? 'N/A' : this.platform.moz.equity;
 
         this.alexa.rank = this.platform.alexa.rank === null ? 'N/A' : this.platform.alexa.rank;
         this.alexa.country = this.platform.alexa.country === null ? 'N/A' : this.platform.alexa.country;
-        this.alexa.country_rank = this.platform.alexa.countryRank === null ? 'N/A' : this.platform.alexa.countryRank;
+        this.alexa.country_rank = this.platform.alexa.country_rank === null ? 'N/A' : this.platform.alexa.country_rank;
 
-        this.semrush.rank = this.platform.semrush.rank === null ? 'N/A' : this.platform.semrush.rank;
-        this.semrush.keyword_num = this.platform.semrush.keywordNum === null ? 'N/A' : this.platform.semrush.keywordNum;
+        this.semRush.rank = this.platform.semRush.rank === null ? 'N/A' : this.platform.semRush.rank;
+        this.semRush.keyword_num = this.platform.semRush.keyword_num === null ? 'N/A' : this.platform.semRush.keyword_num;
         this.organicTraffic = this.platform.organicTraffic === null ? 'N/A' : this.platform.organicTraffic;
-        this.semrush.traffic_costs = this.platform.semrush.trafficCosts === null ? 'N/A' : this.platform.semrush.trafficCosts;
+        this.semRush.traffic_costs = this.platform.semRush.trafficCosts === null ? 'N/A' : this.platform.semRush.trafficCosts;
 
-        this.fb.fb_comments = this.platform.fb.fb_comments === null ? 'N/A' : this.platform.fb.fb_comments;
-        this.fb.fb_reac = this.platform.fb.fb_reac === null ? 'N/A' : this.platform.fb.fb_reac;
-        this.fb.fb_shares = this.platform.fb.fb_shares === null ? 'N/A' : this.platform.fb.fb_shares;
+        this.facebook.comments = this.platform.facebook.comments === null ? 'N/A' : this.platform.facebook.comments;
+        this.facebook.reactions = this.platform.facebook.reactions === null ? 'N/A' : this.platform.facebook.reactions;
+        this.facebook.shares = this.platform.facebook.shares === null ? 'N/A' : this.platform.facebook.shares;
 
-        this.majestic.external_backlinks = this.platform.majestic.externalBacklinks === null ? 'N/A' : this.platform.majestic.externalBacklinks;
-        this.majestic.external_edu = this.platform.majestic.externalEdu === null ? 'N/A' : this.platform.majestic.externalEdu;
-        this.majestic.external_gov = this.platform.majestic.externalGov === null ? 'N/A' : this.platform.majestic.externalGov;
+        this.majestic.external_backlinks = this.platform.majestic.external_backlinks === null ? 'N/A' : this.platform.majestic.external_backlinks;
+        this.majestic.external_edu = this.platform.majestic.external_edu === null ? 'N/A' : this.platform.majestic.external_edu;
+        this.majestic.external_gov = this.platform.majestic.external_gov === null ? 'N/A' : this.platform.majestic.external_gov;
         this.majestic.refd = this.platform.majestic.refd === null ? 'N/A' : this.platform.majestic.refd;
-        this.majestic.refd_edu = this.platform.majestic.refdEdu === null ? 'N/A' : this.platform.majestic.refdEdu;
-        this.majestic.refd_gov = this.platform.majestic.refdGov === null ? 'N/A' : this.platform.majestic.refdGov;
+        this.majestic.refd_edu = this.platform.majestic.refd_edu === null ? 'N/A' : this.platform.majestic.refd_edu;
+        this.majestic.refd_gov = this.platform.majestic.refd_gov === null ? 'N/A' : this.platform.majestic.refd_gov;
         this.majestic.tf = this.platform.majestic.tf === null ? 'N/A' : this.platform.majestic.tf;
         this.majestic.cf = this.platform.majestic.cf === null ? 'N/A' : this.platform.majestic.cf;
 
@@ -1388,13 +1387,13 @@ export default {
         },
         mozRankErrors() {
             const errors = [];
-            if (!this.$v.moz.mozrank.$dirty) {
+            if (!this.$v.moz.rank.$dirty) {
                 return errors;
             }
-            !this.$v.moz.mozrank.required &&
+            !this.$v.moz.rank.required &&
             errors.push('MozRank is required!');
-            !this.$v.moz.mozrank.minValue &&
-            errors.push('Links In must be more than 0!');
+            !this.$v.moz.rank.minValue &&
+            errors.push('MozRank must be more than 0!');
             return errors;
         },
         mozEquityErrors() {
@@ -1443,36 +1442,36 @@ export default {
         },
 
         // SemRushErrors
-        semrushRankErrors() {
+        semRushRankErrors() {
             const errors = [];
-            if (!this.$v.semrush.rank.$dirty) {
+            if (!this.$v.semRush.rank.$dirty) {
                 return errors;
             }
-            !this.$v.semrush.rank.required &&
+            !this.$v.semRush.rank.required &&
             errors.push('Rank is required!');
-            !this.$v.semrush.rank.minValue &&
+            !this.$v.semRush.rank.minValue &&
             errors.push('Rank must be more than 0!');
             return errors;
         },
-        semrushKeywordNumErrors() {
+        semRushKeywordNumErrors() {
             const errors = [];
-            if (!this.$v.semrush.keyword_num.$dirty) {
+            if (!this.$v.semRush.keyword_num.$dirty) {
                 return errors;
             }
-            !this.$v.semrush.keyword_num.required &&
+            !this.$v.semRush.keyword_num.required &&
             errors.push('Keyword Num is required!');
-            !this.$v.semrush.keyword_num.minValue &&
+            !this.$v.semRush.keyword_num.minValue &&
             errors.push('Keyword Num must be more than 0!');
             return errors;
         },
-        semrushTrafficCostsErrors() {
+        semRushTrafficCostsErrors() {
             const errors = [];
-            if (!this.$v.semrush.traffic_costs.$dirty) {
+            if (!this.$v.semRush.traffic_costs.$dirty) {
                 return errors;
             }
-            !this.$v.semrush.traffic_costs.required &&
+            !this.$v.semRush.traffic_costs.required &&
             errors.push('Traffic Costs is required!');
-            !this.$v.semrush.traffic_costs.minValue &&
+            !this.$v.semRush.traffic_costs.minValue &&
             errors.push('Traffic Cost must be more than 0!');
             return errors;
         },
@@ -1566,36 +1565,38 @@ export default {
             errors.push('RefD_GOV must be more than 0!');
             return errors;
         },
+
+        // Facebook
         fbCommentsErrors() {
             const errors = [];
-            if (!this.$v.fb.fb_comments.$dirty) {
+            if (!this.$v.facebook.comments.$dirty) {
                 return errors;
             }
-            !this.$v.fb.fb_comments.required &&
+            !this.$v.facebook.comments.required &&
             errors.push('FB Comments are required!');
-            !this.$v.fb.fb_comments.minValue &&
+            !this.$v.facebook.comments.minValue &&
             errors.push('FB Comments must be more than 0!');
             return errors;
         },
         fbReacErrors() {
             const errors = [];
-            if (!this.$v.fb.fb_reac.$dirty) {
+            if (!this.$v.facebook.reactions.$dirty) {
                 return errors;
             }
-            !this.$v.fb.fb_reac.required &&
-            errors.push('FB Reac are required!');
-            !this.$v.fb.fb_reac.minValue &&
-            errors.push('FB Reac must be more than 0!');
+            !this.$v.facebook.reactions.required &&
+            errors.push('FB Reactions are required!');
+            !this.$v.facebook.reactions.minValue &&
+            errors.push('FB Reactions must be more than 0!');
             return errors;
         },
         fbSharesErrors() {
             const errors = [];
-            if (!this.$v.fb.fb_shares.$dirty) {
+            if (!this.$v.facebook.shares.$dirty) {
                 return errors;
             }
-            !this.$v.fb.fb_shares.required &&
+            !this.$v.facebook.shares.required &&
             errors.push('FB Shares are required!');
-            !this.$v.fb.fb_shares.minValue &&
+            !this.$v.facebook.shares.minValue &&
             errors.push('FB Shares must be more than 0!');
             return errors;
         },
@@ -1622,15 +1623,15 @@ export default {
                 errors.push('Spam must be more than 0!');
             return errors;
         },
-        lrtPowerTrustErrors() {
+        powerTrustErrors() {
             const errors = [];
-            if (!this.$v.lrtPowerTrust.$dirty) {
+            if (!this.$v.powerTrust.$dirty) {
                 return errors;
             }
-            !this.$v.lrtPowerTrust.required &&
-                errors.push('LRT PowerTrust is required!');
-            !this.$v.lrtPowerTrust.minValue &&
-                errors.push('LRT PowerTrust must be more than 0!');
+            !this.$v.powerTrust.required &&
+                errors.push('PowerTrust is required!');
+            !this.$v.powerTrust.minValue &&
+                errors.push('PowerTrust must be more than 0!');
             return errors;
         },
         ...mapGetters('platforms', {
