@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Action\Auth;
 
+use App\Exceptions\User\UserBlockedException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Auth\AuthenticationException;
@@ -24,6 +25,10 @@ final class LoginAction
 
         if (!$user) {
             throw new UserNotFoundException("No exists user for " . $request->getEmail());
+        }
+
+        if ($user->blocked) {
+            throw new UserBlockedException();
         }
 
         $token = Auth::attempt([

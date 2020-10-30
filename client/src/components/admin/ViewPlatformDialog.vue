@@ -418,12 +418,12 @@
                                     </VListItemContent>
                                 </VListItem>
                                 <VDivider />
-                                <VListItem two-line>
+                                <VListItem two-line v-if="countryImage">
                                     <VListItemContent>
                                         <VListItemTitle>
                                             <img
                                                 :src="require('../../assets/svg/country-flags/' +
-                                                platform.alexa.country.toLowerCase() + '.svg')"
+                                                countryImage)"
                                                 alt="" width="30" height="15">
                                             {{ platform.alexa.country }}
                                         </VListItemTitle>
@@ -707,6 +707,11 @@ export default {
                     this.$emit('close-dialog');
                 }
             }
+        },
+        countryImage() {
+            if (this.platform.alexa?.country)
+                return this.platform.alexa?.country.toLowerCase() + '.svg';
+            return '';
         }
     }
 }

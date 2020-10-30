@@ -242,7 +242,6 @@ import rolemixin from '@/mixins/rolemixin';
 import filterMixin from '@/mixins/filterMixin';
 import { mapActions } from 'vuex';
 import * as actions from '@/store/modules/platforms/types/actions';
-import guestPostingMixin from '@/mixins/guestPostingMixin';
 import valueFormatMixin from '@/mixins/valueFormatMixin';
 import TrashFooter from '@/components/trash/TrashFooter';
 import DeleteFromTrashDialog from '@/components/trash/DeleteFromTrashDialog';
@@ -251,6 +250,7 @@ import notificationMixin from '@/mixins/notificationMixin';
 import RestoreOneFromTrashDialog from '@/components/trash/RestoreOneFromTrashDialog';
 import RestoreFromTrashDialog from '@/components/trash/RestoreFromTrashDialog';
 import ViewPlatformDialog from '@/components/admin/ViewPlatformDialog';
+import guestPostingMixin from '@/mixins/guestPostingMixin';
 
 export default {
     name: 'TrashComponent',
@@ -279,6 +279,12 @@ export default {
             fetchTrashPlatforms: actions.FETCH_PLATFORMS_IN_TRASH,
             restoreFromTrash: actions.MOVE_FROM_TRASH_BY_IDS
         }),
+        onChangePage(page) {
+            this.page = page;
+        },
+        onSelectPerPage(value) {
+            this.perPage = value;
+        },
         onViewPlatform(platform) {
             this.viewPlatform = platform;
             this.viewPlatformDialog = true;
@@ -305,7 +311,7 @@ export default {
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
             this.direction = this.direction === 'desc' ? 'asc' : 'desc';
-            await this.fetchPlatformsNotInTrashAction();
+            await this.fetchTrashPlatforms();
         },
         async onRestorePlatformsRequest(ids) {
             try {
@@ -378,6 +384,23 @@ export default {
         this.total = response.total;
         this.reCalculatePages();
         this.initializeChosenPlatformsState();
+    },
+    watch: {
+        async page() {
+            this.chosen = {};
+            await this.loadPlatforms();
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        },
+        async perPage() {
+            this.page = 1;
+            const response = await this.loadPlatforms();
+            this.currentPage = response.current_page;
+            this.lastPage = response.last_page;
+            this.total = response.total;
+            this.reCalculatePages();
+            this.initializeChosenPlatformsState();
+        }
     },
     computed: {
         platformsByIds() {
