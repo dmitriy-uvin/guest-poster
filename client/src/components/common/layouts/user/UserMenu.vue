@@ -30,11 +30,17 @@ import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 import * as actions from '@/store/modules/user/types/actions';
 export default {
-    name: "UserMenu",
+    name: 'UserMenu',
     computed: {
         ...mapGetters('user', {
             user: getters.GET_LOGGED_USER
-        })
+        }),
+        name() {
+            if (Object.keys(this.user).length) {
+                return this.user?.name;
+            }
+            return '';
+        }
     },
     methods: {
         ...mapActions('user', {
@@ -46,13 +52,7 @@ export default {
         onProfile() {
             this.$router.push({ name: 'Profile' });
         },
-        name() {
-            if (Object.keys(this.user).length) {
-                return this.user?.name;
-            }
-            return '';
-        }
-    }
+    },
 }
 </script>
 
