@@ -103,6 +103,12 @@
                                 <VSwitch inset v-model="nicheEditLink"></VSwitch>
                             </div>
                         </VCol>
+                        <VCol cols="12" md="2">
+                            <div class="d-flex justify-space-between">
+                                <span class="d-flex align-center">Money Anchor</span>
+                                <VSwitch inset v-model="moneyAnchor"></VSwitch>
+                            </div>
+                        </VCol>
                     </VRow>
 
                     <h2>Feature Prices</h2>
@@ -913,6 +919,7 @@ export default {
         deadLine: 1,
         wherePosted: '',
         doFollow: false,
+        moneyAnchor: false,
         freeHomeFeatured: false,
         nicheEditLink: false,
         articleWritingPrice: '',
@@ -1039,7 +1046,8 @@ export default {
                             facebook: this.facebook,
                             trust: this.trust,
                             spam: this.spam,
-                            power_trust: this.powerTrust
+                            power_trust: this.powerTrust,
+                            money_anchor: this.moneyAnchor
                         }
                     });
                     this.setNotification({
@@ -1050,7 +1058,7 @@ export default {
                     this.setNotification({
                         type: 'error',
                         message: error
-                    })
+                    });
                 }
             }
         },
@@ -1159,6 +1167,7 @@ export default {
         this.wherePosted = this.platform.wherePosted;
         this.deadLine = this.platform.deadLine;
         this.doFollow = this.platform.doFollowActive;
+        this.moneyAnchor = this.platform.moneyAnchor;
         this.freeHomeFeatured = this.platform.freeHomeFeaturedActive;
         this.nicheEditLink = this.platform.nicheEditLinkActive;
         this.price = this.platform.price;

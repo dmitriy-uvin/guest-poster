@@ -99,6 +99,12 @@
                                 <VSwitch inset v-model="nicheEditLink"></VSwitch>
                             </div>
                         </VCol>
+                        <VCol cols="12" md="2">
+                            <div class="d-flex justify-space-between">
+                                <span class="d-flex align-center">Money Anchor</span>
+                                <VSwitch inset v-model="moneyAnchor"></VSwitch>
+                            </div>
+                        </VCol>
                     </VRow>
 
                     <h2>Feature Prices</h2>
@@ -902,6 +908,7 @@ export default {
         deadLine: 1,
         wherePosted: '',
         doFollow: false,
+        moneyAnchor: false,
         freeHomeFeatured: false,
         nicheEditLink: false,
         articleWritingPrice: '',
@@ -1131,7 +1138,8 @@ export default {
                         fb: this.fb,
                         trust: this.trust,
                         spam: this.spam,
-                        lrt_power_trust: this.lrtPowerTrust
+                        lrt_power_trust: this.lrtPowerTrust,
+                        money_anchor: this.moneyAnchor
                     });
                     this.setNotification({
                         message: 'Website was added!',
@@ -1142,6 +1150,7 @@ export default {
                     this.topics = [];
                     this.deadLine = 1;
                     this.doFollow = false;
+                    this.moneyAnchor = false;
                     this.freeHomeFeatured = false;
                     this.nicheEditLink = false;
                     this.articleWritingPrice =
