@@ -36,6 +36,9 @@ final class ImportPlatformsController extends ApiController
 
     public function downloadImportFileTemplate()
     {
+        if (!file_exists(storage_path('app/public/import'))) {
+            mkdir(storage_path('app/public/import'));
+        }
         File::put(storage_path('app/public/import/import-platforms-template.csv'),'');
         $f = fopen('../storage/app/public/import/import-platforms-template.csv', 'a+');
         fputcsv($f, [
