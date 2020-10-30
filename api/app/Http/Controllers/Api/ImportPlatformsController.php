@@ -51,6 +51,7 @@ final class ImportPlatformsController extends ApiController
             'where_posted',
             'deadline',
             'dofollow_active',
+            'money_anchor',
             'free_home_featured_active',
             'niche_edit_link_active',
             'price',
