@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Http;
 final class CheckTrustService
 {
     private string $checkTrustApiEndpoint = 'https://checktrust.ru/app.php?r=host/app/summary/basic&applicationKey=';
-    private string $checkTrustApiKey = 'a0aece19412bc5f00b4e595fbd158fb4';
     private array $params = [
         'trust',
         'spam',
@@ -21,7 +20,7 @@ final class CheckTrustService
         $paramsString = implode(',', $this->params);
 
         $url = $this->checkTrustApiEndpoint .
-            $this->checkTrustApiKey . '&host=' .
+            env('CHECK_TRUST_API_KEY') . '&host=' .
             $platform . '&parameterList=' . $paramsString;
         $response = Http::get($url);
         return $response->object();
