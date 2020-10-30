@@ -969,6 +969,8 @@ export default {
                             message: responseData.message
                         });
                         this.trust = this.spam = this.lrtPowerTrust = 'N/A';
+                        this.checkTrustLoading = false;
+                        return;
                     } else {
                         this.trust = responseData?.summary?.trust;
                         this.spam = responseData?.summary?.spam;
@@ -994,11 +996,22 @@ export default {
                     this.fillMajesticLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
                     const responseData = response?.data;
+                    console.log(responseData);
                     if (ErrorStatus.includes(responseData)) {
                         this.setNotification({
                             message: "Status: " + responseData,
                             type: 'error'
                         });
+                        this.majestic.external_backlinks = 'N/A';
+                        this.majestic.external_gov = 'N/A';
+                        this.majestic.external_edu = 'N/A';
+                        this.majestic.refd = 'N/A';
+                        this.majestic.refd_edu = 'N/A';
+                        this.majestic.refd_gov = 'N/A';
+                        this.majestic.tf = 'N/A';
+                        this.majestic.cf = 'N/A';
+                        this.fillMajesticLoading = false;
+                        return;
                     }
                     this.majestic.external_backlinks =
                         !PropertyNotFound.includes(responseData.ExtBackLinks) ? responseData.ExtBackLinks : 'N/A';
@@ -1041,6 +1054,20 @@ export default {
                             message: "Status: " + responseData,
                             type: 'error'
                         });
+                        Object.keys(this.moz).map(key => {
+                            this.moz[key] = 'N/A';
+                        });
+                        Object.keys(this.alexa).map(key => {
+                            this.alexa[key] = 'N/A';
+                        });
+                        Object.keys(this.semrush).map(key => {
+                            this.semrush[key] = 'N/A';
+                        });
+                        Object.keys(this.fb).map(key => {
+                            this.fb[key] = 'N/A';
+                        });
+                        this.fillMozAlexaSrFbLoading = false;
+                        return;
                     }
                     this.moz.pa = !PropertyNotFound.includes(responseData.pa) ? responseData.pa : 'N/A';
                     this.moz.da = !PropertyNotFound.includes(responseData.da) ? responseData.da : 'N/A';

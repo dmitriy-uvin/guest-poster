@@ -41,7 +41,7 @@ export const PropertyNotFound = [
     'notfound',
     'N/A',
     'unknown',
-    ''
+    '',
 ];
 
 export default requestExternalService;
