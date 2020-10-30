@@ -119,6 +119,7 @@ final class PlatformController extends ApiController
                 $this->checkIfValueIsKnown($request->trust),
                 $this->checkIfValueIsKnown($request->spam),
                 $this->checkIfValueIsKnown($request->lrt_power_trust),
+                (bool)$request->money_anchor
             )
         );
 
@@ -155,6 +156,7 @@ final class PlatformController extends ApiController
                 $this->checkIfValueIsKnown($request->trust),
                 $this->checkIfValueIsKnown($request->spam),
                 $this->checkIfValueIsKnown($request->power_trust),
+                (bool)$request->money_anchor
             )
         );
 

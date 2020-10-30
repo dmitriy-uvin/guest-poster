@@ -41,6 +41,7 @@ final class UpdatePlatformByIdAction
         $platform->website_url = $request->getWebsiteUrl();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
+        $platform->money_anchor = $request->getMoneyAnchor();
         $platform->free_home_featured_active = $request->getFreeHomeFeaturedActive();
         $platform->niche_edit_link_active = $request->getNicheEditLinkActive();
         if ($request->getNicheEditLinkActive()) {

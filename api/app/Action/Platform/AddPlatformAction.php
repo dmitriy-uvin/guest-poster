@@ -35,6 +35,7 @@ final class AddPlatformAction
         $platform->website_url = $request->getWebsiteUrl();
         $platform->organic_traffic = $request->getOrganicTraffic();
         $platform->dofollow_active = $request->getDoFollowActive();
+        $platform->money_anchor = $request->getMoneyAnchor();
         $platform->free_home_featured_active = $request->getFreeHomeFeaturedActive();
         $platform->niche_edit_link_active = $request->getNicheEditLinkActive();
         if ($request->getNicheEditLinkActive()) {
@@ -107,18 +108,15 @@ final class AddPlatformAction
         ]);
         $majestic->save();
 
-        if ($request->getAhrefsStatus()) {
-            $ahrefs = new Ahrefs([
-                'platform_id' => $platform->id,
-                'rank' => $request->getAhrefsRank(),
-                'dr' => $request->getAhrefsDr(),
-                'ext_backlinks' => $request->getAhrefsEb(),
-                'refd' => $request->getAhrefsRd(),
-                'dofollow' => $request->getAhrefsDofollow(),
-            ]);
-            $ahrefs->save();
-        }
-
+        $ahrefs = new Ahrefs([
+            'platform_id' => $platform->id,
+            'rank' => $request->getAhrefsRank(),
+            'dr' => $request->getAhrefsDr(),
+            'ext_backlinks' => $request->getAhrefsEb(),
+            'refd' => $request->getAhrefsRd(),
+            'dofollow' => $request->getAhrefsDofollow(),
+        ]);
+        $ahrefs->save();
         return new AddPlatformResponse($platform);
     }
 
