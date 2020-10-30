@@ -16,6 +16,7 @@ class ImportFields
             'free_home_featured_active',
             'niche_edit_link_price',
             'niche_edit_link_active',
+            'money_anchor',
             'article_writing_price',
             'article_requirements',
             'deadline',
