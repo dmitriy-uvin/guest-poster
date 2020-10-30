@@ -11,7 +11,6 @@ class AhrefsPresenter
     public function present(Ahrefs $ahrefs)
     {
         return [
-            'status' => $ahrefs->status,
             'rank' => $ahrefs->rank,
             'dr' => $ahrefs->dr,
             'ext_backlinks' => $ahrefs->ext_backlinks,

@@ -19,7 +19,6 @@ class Ahrefs extends Model
         'ext_backlinks',
         'refd',
         'dofollow',
-        'ips'
     ];
 
     public function platform()

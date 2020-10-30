@@ -16,7 +16,6 @@ class CreateAhrefsTable extends Migration
         Schema::create('ahrefs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->string('status');
             $table->double('rank')->nullable();
             $table->double('dr')->nullable();
             $table->integer('ext_backlinks')->nullable();
