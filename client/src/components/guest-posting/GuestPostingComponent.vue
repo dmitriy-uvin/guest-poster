@@ -2153,18 +2153,20 @@
                     </td>
                     <td class="editorial-fee">
                         <span class="fee fee-active">
-                            <span class="left">{{ totalPrice(platform.price) }} $</span>
+                            <span class="left">
+                                {{ platform.price | priceFilter }} $
+                            </span>
                             <span class="right">Guest Post</span>
                         </span>
                         <span class="fee" v-if="platform.freeHomeFeaturedActive">
                             <span class="left">
-                                {{ totalPrice(platform.price + platform.articleWritingPrice) }} $
+                                {{ (platform.price + platform.articleWritingPrice) | priceFilter }} $
                             </span>
                             <span class="right">GP + Article</span>
                         </span>
                         <span class="fee" v-if="platform.nicheEditLinkActive">
                             <span class="left">
-                                {{ totalPrice(platform.price + platform.nicheEditLinkPrice) }} $
+                                {{ (platform.price + platform.nicheEditLinkPrice) | priceFilter }} $
                             </span>
                             <span class="right">Niche Edit</span>
                         </span>

@@ -168,7 +168,7 @@ td .fee:hover .right {
 }
 
 td .fee .left {
-    padding: 6px;
+    padding: 5px 3px;
     font-size: 14px;
     color: #BDBDBD;
     border: 2px solid #BDBDBD;
