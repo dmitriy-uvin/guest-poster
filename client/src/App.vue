@@ -41,7 +41,7 @@ export default {
         }
     },
     async created() {
-        if (this.user.role === 'admin') {
+        if (this.user?.role === 'admin') {
             const channel = pusher.subscribe('platform-import');
             channel.bind('platform-import-updated', (data) => {
                 this.setNotification({
