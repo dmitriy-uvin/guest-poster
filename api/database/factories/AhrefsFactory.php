@@ -23,13 +23,11 @@ class AhrefsFactory extends Factory
     public function definition()
     {
         return [
-            'status' => $this->faker->randomElement(['bad_url', 'no_data', 'not_found', 'empty']),
             'rank' => $this->faker->randomFloat(1, 0, 10),
             'dr' => $this->faker->randomFloat(1, 0, 10),
-            'eb' => $this->faker->numberBetween(0),
-            'rd' => $this->faker->numberBetween(0),
+            'ext_backlinks' => $this->faker->numberBetween(0),
+            'refd' => $this->faker->numberBetween(0),
             'dofollow' => $this->faker->numberBetween(0),
-            'ips' => $this->faker->numberBetween(0),
         ];
     }
 }

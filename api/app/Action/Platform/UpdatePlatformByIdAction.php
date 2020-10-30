@@ -58,7 +58,7 @@ final class UpdatePlatformByIdAction
         $platform->domain_zone = $this->getDomainZone($request->getWebsiteUrl());
         $platform->trust = $request->getTrust();
         $platform->spam = $request->getSpam();
-        $platform->lrt_power_trust = $request->getLrtPowerTrust();
+        $platform->lrt_power_trust = $request->getPowerTrust();
         $platform = $this->platformRepository->save($platform);
 
         Moz::where('platform_id', '=', $platform->id)
@@ -84,7 +84,7 @@ final class UpdatePlatformByIdAction
 
         Facebook::where('platform_id', '=', $platform->id)->update([
             'fb_comments' => $request->getFbComments(),
-            'fb_reac' => $request->getFbReac(),
+            'fb_reac' => $request->getFbReactions(),
             'fb_shares' => $request->getFbShares()
         ]);
 

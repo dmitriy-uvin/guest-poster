@@ -1,46 +1,50 @@
 <template>
     <VCard class="pa-12">
-        <span class="mb-6 font-weight-bold d-block card-title">Log In to your account</span>
-        <div>
-            <VTextField
-                outlined
-                label="Email"
-                placeholder="user-email@guest-poster.com"
-                v-model="userData.email"
-                :error-messages="emailErrors"
-                id="email"
-                aria-autocomplete="none"
-            ></VTextField>
-
-            <VTextField
-                outlined
-                label="Password"
-                :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append="showPassword = !showPassword"
-                v-model="userData.password"
-                :error-messages="passwordErrors"
-                id="password"
-                aria-autocomplete="none"
-            ></VTextField>
-        </div>
-        <div class="pb-7">
-            <RouterLink :to="{ name: 'ForgotPassword' }" class="forgot-password">Forgot password?</RouterLink>
-        </div>
-        <div class="buttons">
-            <VBtn block color="blue" large @click="onSignIn">Sign In</VBtn>
-            <RouterLink :to="{ name: 'SignUp' }">
-                <VBtn
-                    block
-                    color="#eaf3ff"
-                    class="py-2"
-                    large
-                >
-                    DON'T HAVE AN ACCOUNT?
-                </VBtn>
-            </RouterLink>
-
-        </div>
+        <VForm @submit.prevent="onSignIn">
+            <span class="mb-6 font-weight-bold d-block card-title">Log In to your account</span>
+            <div>
+                <VTextField
+                    outlined
+                    label="Email"
+                    placeholder="user-email@guest-poster.com"
+                    v-model="userData.email"
+                    :error-messages="emailErrors"
+                    id="email"
+                    aria-autocomplete="none"
+                ></VTextField>
+                <VTextField
+                    outlined
+                    label="Password"
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    @click:append="showPassword = !showPassword"
+                    v-model="userData.password"
+                    :error-messages="passwordErrors"
+                    id="password"
+                    aria-autocomplete="none"
+                ></VTextField>
+            </div>
+            <div class="pb-7">
+                <RouterLink :to="{ name: 'ForgotPassword' }" class="forgot-password">Forgot password?</RouterLink>
+            </div>
+            <div class="buttons">
+                <VBtn block
+                      color="blue"
+                      large @click="onSignIn"
+                      type="submit"
+                >Sign In</VBtn>
+                <RouterLink :to="{ name: 'SignUp' }">
+                    <VBtn
+                        block
+                        color="#eaf3ff"
+                        class="py-2"
+                        large
+                    >
+                        DON'T HAVE AN ACCOUNT?
+                    </VBtn>
+                </RouterLink>
+            </div>
+        </VForm>
     </VCard>
 </template>
 

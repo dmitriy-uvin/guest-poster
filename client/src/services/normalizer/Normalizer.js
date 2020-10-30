@@ -92,8 +92,8 @@ export const orderMapper = Order => ({
 export const AhrefsMapper = Ahrefs => ({
     rank: Ahrefs?.rank,
     dr: Ahrefs?.dr,
-    ext_backlinks: Ahrefs?.eb,
-    refd: Ahrefs?.rd,
+    ext_backlinks: Ahrefs?.ext_backlinks,
+    refd: Ahrefs?.refd,
     dofollow: Ahrefs?.dofollow
 });
 

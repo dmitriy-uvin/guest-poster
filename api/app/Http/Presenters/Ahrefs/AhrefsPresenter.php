@@ -14,10 +14,9 @@ class AhrefsPresenter
             'status' => $ahrefs->status,
             'rank' => $ahrefs->rank,
             'dr' => $ahrefs->dr,
-            'eb' => $ahrefs->eb,
-            'rd' => $ahrefs->rd,
+            'ext_backlinks' => $ahrefs->ext_backlinks,
+            'refd' => $ahrefs->refd,
             'dofollow' => $ahrefs->dofollow,
-            'ips' => $ahrefs->ips,
         ];
     }
 }
