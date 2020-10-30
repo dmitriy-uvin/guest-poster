@@ -293,9 +293,7 @@ export default {
                   this.restoreOnePlatformDialog = false;
                   this.setNotification({
                       type: 'success',
-                      message: 'Platform ' +
-                          this.deleteProtocol(platform.websiteUrl)
-                          + ' was restored!'
+                      message: 'Platform was restored!'
                   });
               } catch (error) {
                   this.setNotification({
@@ -328,12 +326,11 @@ export default {
                 });
             }
         },
-        async platformDeleted(websiteUrl) {
-            const url = this.deleteProtocol(websiteUrl);
+        async platformDeleted() {
             this.setNotification({
                 type: 'success',
-                message: 'Platform ' + url + ' was deleted!'
-            })
+                message: 'Platform was deleted!'
+            });
             await this.updatePlatformsOnPage();
             this.deleteOnePlatformFromTrashDialog = false;
         },
