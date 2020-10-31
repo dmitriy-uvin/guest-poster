@@ -189,7 +189,7 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
 
                 broadcast(new PlatformImportCreatedEvent(
                     'success',
-                    "Platform <b>{$platform->protocol}{$platform->website_url}</b> was added!"
+                    "Platform <b>{$url}</b> was added!"
                 ));
             }
             $this->row += 1 ;
