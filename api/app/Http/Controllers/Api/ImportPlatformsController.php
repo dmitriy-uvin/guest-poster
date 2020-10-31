@@ -31,7 +31,7 @@ final class ImportPlatformsController extends ApiController
             )
         );
 
-        return $response->getResponse();
+        return $this->emptyResponse();
     }
 
     public function downloadImportFileTemplate()
