@@ -21,7 +21,7 @@ final class AddPlatformRequest
     private string $article_requirements;
     private int $deadLine;
     private string $wherePosted;
-    private string $email;
+    private ?string $email;
     private ?string $comment;
     private ?array $topics;
     private ?int $trust;
@@ -72,7 +72,7 @@ final class AddPlatformRequest
         ?float $niche_edit_link_price,
         ?string $contacts,
         float $price,
-        string $email,
+        ?string $email,
         ?string $comment,
         ?array $topics,
         array $moz,
@@ -279,7 +279,7 @@ final class AddPlatformRequest
         return $this->description;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }

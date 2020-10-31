@@ -144,11 +144,6 @@ final class ImportPlatformsTableAction
                             }
                         }
                         break;
-                    case 'email':
-                        if (!$value) {
-                            throw new WrongImportValueException($row, $columnName, "Email value is required");
-                        }
-                        break;
                 }
             }
             $row += 1;

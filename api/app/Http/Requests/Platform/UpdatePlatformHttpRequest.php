@@ -24,7 +24,7 @@ class UpdatePlatformHttpRequest extends ApiFormRequest
             'article_requirements' => 'required|string|max:255',
             'deadline' => 'required|integer|min:1|max:60',
             'where_posted' => 'required|string|max:255',
-            'email' => 'required|string',
+            'email' => 'string|nullable',
             'comment' => 'string|max:255|nullable',
             'trust' => 'required',
             'spam' => 'required',
