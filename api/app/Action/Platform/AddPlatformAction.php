@@ -117,6 +117,7 @@ final class AddPlatformAction
             'dofollow' => $request->getAhrefsDofollow(),
         ]);
         $ahrefs->save();
+
         return new AddPlatformResponse($platform);
     }
 
