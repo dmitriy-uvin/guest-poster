@@ -13,7 +13,7 @@ class Ahrefs extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'platfrom_id',
+        'platform_id',
         'rank',
         'dr',
         'ext_backlinks',
