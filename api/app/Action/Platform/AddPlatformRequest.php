@@ -294,17 +294,17 @@ final class AddPlatformRequest
         return $this->topics;
     }
 
-    public function getTrust(): int
+    public function getTrust(): ?int
     {
         return $this->trust;
     }
 
-    public function getSpam(): float
+    public function getSpam(): ?float
     {
         return $this->spam;
     }
 
-    public function getLrtPowerTrust(): int
+    public function getLrtPowerTrust(): ?int
     {
         return $this->lrtPowerTrust;
     }
