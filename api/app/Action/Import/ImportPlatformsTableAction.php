@@ -79,7 +79,7 @@ final class ImportPlatformsTableAction
             if ($row === 0) {
                 $fieldKeys = str_getcsv($line, ';');
             } else {
-                $platformsData[] = array_combine($fieldKeys, str_getcsv($line));
+                $platformsData[] = array_combine($fieldKeys, str_getcsv($line, ';'));
             }
             $row += 1;
         }
