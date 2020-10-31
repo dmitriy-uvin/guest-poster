@@ -21,6 +21,14 @@ class Ahrefs extends Model
         'dofollow',
     ];
 
+    protected $attributes = [
+        'rank' => null,
+        'dr' => null,
+        'ext_backlinks' => null,
+        'refd' => null,
+        'dofollow' => null,
+    ];
+
     public function platform()
     {
         return $this->belongsTo(Platform::class);
