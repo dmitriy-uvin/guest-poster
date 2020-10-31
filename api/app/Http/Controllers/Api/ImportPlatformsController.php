@@ -60,7 +60,7 @@ final class ImportPlatformsController extends ApiController
             'email',
             'contacts',
             'comment',
-        ]);
+        ], ';');
         fclose($f);
 
         return Storage::download('public/import/import-platforms-template.csv', 'import__template.csv');
