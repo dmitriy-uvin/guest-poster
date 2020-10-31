@@ -28,7 +28,7 @@ class CreatePlatformsTable extends Migration
             $table->integer('deadline');
             $table->string('domain_zone');
             $table->double('price');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('description');
             $table->string('where_posted');
             $table->string('contacts')->nullable();

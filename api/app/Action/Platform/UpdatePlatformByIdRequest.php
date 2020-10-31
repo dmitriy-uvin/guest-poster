@@ -23,7 +23,7 @@ class UpdatePlatformByIdRequest
     private string $article_requirements;
     private int $deadLine;
     private string $wherePosted;
-    private string $email;
+    private ?string $email;
     private ?string $comment;
     private ?array $topics;
     private ?int $trust;
@@ -74,7 +74,7 @@ class UpdatePlatformByIdRequest
         ?float $niche_edit_link_price,
         ?string $contacts,
         float $price,
-        string $email,
+        ?string $email,
         ?string $comment,
         ?array $topics,
         array $moz,
@@ -287,7 +287,7 @@ class UpdatePlatformByIdRequest
         return $this->wherePosted;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }

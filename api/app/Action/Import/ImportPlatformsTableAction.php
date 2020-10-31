@@ -40,10 +40,6 @@ final class ImportPlatformsTableAction
         $this->getDataFromApi($platformsData);
 
         $this->deleteFile($request->getFile());
-
-        return new ImportPlatformsTableResponse(
-            ['data' => 1]
-        );
     }
 
     private function getDataFromApi(array $platforms)
@@ -142,11 +138,6 @@ final class ImportPlatformsTableAction
                             if (!is_numeric($value)) {
                                 throw new WrongImportValueException($row, $columnName, "Niche Edit Price must be numeric");
                             }
-                        }
-                        break;
-                    case 'email':
-                        if (!$value) {
-                            throw new WrongImportValueException($row, $columnName, "Email value is required");
                         }
                         break;
                 }

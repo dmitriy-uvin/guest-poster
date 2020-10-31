@@ -878,7 +878,7 @@ export default {
             refd_edu: { required, minValue: min_value },
             refd_gov: { required, minValue: min_value },
         },
-        email: { required, email },
+        email: { email },
         contacts: { maxLength: maxLength(255) },
         comment: { maxLength: maxLength(255) },
         nicheEditLinkPrice: {
@@ -1259,8 +1259,6 @@ export default {
             if (!this.$v.email.$dirty) {
                 return errors;
             }
-            !this.$v.email.required &&
-                errors.push('Email is required!');
             !this.$v.email.email &&
                 errors.push('Email must be valid!');
             return errors;
