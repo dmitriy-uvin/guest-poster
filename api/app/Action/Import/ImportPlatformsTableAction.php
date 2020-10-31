@@ -40,6 +40,10 @@ final class ImportPlatformsTableAction
         $this->getDataFromApi($platformsData);
 
         $this->deleteFile($request->getFile());
+
+        return new ImportPlatformsTableResponse(
+            ['data' => 1]
+        );
     }
 
     private function getDataFromApi(array $platforms)
@@ -73,7 +77,7 @@ final class ImportPlatformsTableAction
         $row = 0;
         while (($line = fgets($fHandle)) !== false) {
             if ($row === 0) {
-                $fieldKeys = str_getcsv($line);
+                $fieldKeys = str_getcsv($line, ';');
             } else {
                 $platformsData[] = array_combine($fieldKeys, str_getcsv($line));
             }
