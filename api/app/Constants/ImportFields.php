@@ -11,7 +11,6 @@ class ImportFields
         return [
             'protocol',
             'website_url',
-            'organic_traffic',
             'dofollow_active',
             'free_home_featured_active',
             'niche_edit_link_price',
