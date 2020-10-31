@@ -45,7 +45,12 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
             $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
 
             if (!$platform) {
-                $url = $platformData['protocol'] . $platformData['website_url'];
+                $url = '';
+                if (mb_strpos('www', $platformData['protocol']) !== false) {
+                    $url = $platformData['protocol'] . '.' . $platformData['website_url'];
+                } else {
+                    $url = $platformData['protocol'] . $platformData['website_url'];
+                }
                 $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                     $url
                 );
