@@ -60,11 +60,13 @@ class GetDataFromApiForPlatformsImport implements ShouldQueue
                 }
                 else {
                     $platformTopics = explode(',', $platformData['topics']);
+                    $platformTopics = array_map(fn($topic) => trim($topic), $platformTopics);
                     $topicsIds = Topic::whereIn('name', $platformTopics)
                         ->get('id')
                         ->map(fn($topic) => $topic->id)
                         ->all();
                     $platform = new Platform($platformData);
+                    $platform->organic_traffic = null;
                     $platform->save();
 
                     $platform->topics()->attach($topicsIds);
