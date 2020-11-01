@@ -13,6 +13,7 @@ use App\Models\Moz;
 use App\Models\Platform;
 use App\Models\SemRush;
 use App\Repositories\Platform\PlatformRepositoryInterface;
+use App\Services\SummaryStatusService;
 
 final class UpdatePlatformByIdAction
 {
@@ -60,6 +61,12 @@ final class UpdatePlatformByIdAction
         $platform->trust = $request->getTrust();
         $platform->spam = $request->getSpam();
         $platform->lrt_power_trust = $request->getPowerTrust();
+        $summaryStatus = SummaryStatusService::getSummaryStatus(
+            (int)$platform->trust,
+            (int)$platform->spam,
+            (int)$platform->lrt_power_trust
+        );
+        $platform->summary_status = $summaryStatus;
         $platform = $this->platformRepository->save($platform);
 
         Moz::where('platform_id', '=', $platform->id)

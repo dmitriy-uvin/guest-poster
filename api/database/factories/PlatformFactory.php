@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Platform;
+use App\Services\SummaryStatusService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,13 @@ class PlatformFactory extends Factory
      */
     public function definition()
     {
+        $trust = (int)$this->faker->numberBetween(10, 100);
+        $spam = (int)$this->faker->numberBetween(10, 100);
+        $powerTrust = (int)$this->faker->numberBetween(10, 100);
+        $summaryStatus = SummaryStatusService::getSummaryStatus(
+            $trust, $spam, $powerTrust
+        );
+
         return [
             'protocol' => 'https://',
             'website_url' => mb_ereg_replace('^http[s]?://(www.)?', '', $this->faker->url),
@@ -41,9 +49,10 @@ class PlatformFactory extends Factory
             'deadline' => $this->faker->numberBetween(1, 60),
             'where_posted' => $this->faker->sentence(5),
             'domain_zone' => $this->faker->domainName,
-            'trust' => $this->faker->numberBetween(10, 100),
-            'spam' => $this->faker->randomFloat(2, 0, 100),
-            'lrt_power_trust' => $this->faker->numberBetween(10, 100),
+            'trust' => $trust,
+            'spam' => $spam,
+            'lrt_power_trust' => $powerTrust,
+            'summary_status' => $summaryStatus,
         ];
     }
 }
