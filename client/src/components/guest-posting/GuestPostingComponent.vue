@@ -402,6 +402,12 @@
                                                         :items="Object.keys(trustSummaryList)"
                                                         placeholder="Any"
                                                         v-model="filter.trust.summary"
+                                                        @change="onInputFilter(
+                                                            $event,
+                                                            'general',
+                                                            'Summary',
+                                                            'trust.summary'
+                                                        )"
                                                     ></VSelect>
                                                 </VCol>
                                             </VRow>
@@ -2518,6 +2524,9 @@ export default {
             updateFilterById: filterActions.UPDATE_USER_FILTER_BY_ID
         }),
         async filterItemArrayDeleted(type, value, property) {
+            console.log(type);
+            console.log(value);
+            console.log(property);
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
             if (this.filter[subFilterName][filterPropertyName]) {
@@ -2611,7 +2620,7 @@ export default {
             if (limit === 'from') filterItem.from = value;
             if (limit === 'to') filterItem.to = value;
             if (radioKeys.includes(filterItem.id)) filterItem.value = value;
-            if (['Topics', 'Country', 'Domains'].includes(name)) filterItem.items = value;
+            if (['Topics', 'Country', 'Domains', 'Summary'].includes(name)) filterItem.items = value;
             this.setFilterItem(filterItem);
         },
         onInputFilter(value, type, name, property, limit = '', columnName = '') {
