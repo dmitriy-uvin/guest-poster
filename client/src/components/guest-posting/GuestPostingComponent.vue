@@ -2524,9 +2524,6 @@ export default {
             updateFilterById: filterActions.UPDATE_USER_FILTER_BY_ID
         }),
         async filterItemArrayDeleted(type, value, property) {
-            console.log(type);
-            console.log(value);
-            console.log(property);
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
             if (this.filter[subFilterName][filterPropertyName]) {
