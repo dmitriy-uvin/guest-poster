@@ -31,6 +31,7 @@ class Platform extends Model
         'trust',
         'spam',
         'lrt_power_trust',
+        'summary_status',
         'in_trash'
     ];
 

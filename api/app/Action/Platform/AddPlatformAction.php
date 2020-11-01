@@ -14,6 +14,7 @@ use App\Models\Platform;
 use App\Models\SemRush;
 use App\Models\Topic;
 use App\Repositories\Platform\PlatformRepositoryInterface;
+use App\Services\SummaryStatusService;
 
 final class AddPlatformAction
 {
@@ -54,6 +55,12 @@ final class AddPlatformAction
         $platform->trust = $request->getTrust();
         $platform->spam = $request->getSpam();
         $platform->lrt_power_trust = $request->getLrtPowerTrust();
+        $summaryStatus = SummaryStatusService::getSummaryStatus(
+            (int)$platform->trust,
+            (int)$platform->spam,
+            (int)$platform->lrt_power_trust
+        );
+        $platform->summary_status = $summaryStatus;
 
         $platform = $this->platformRepository->save($platform);
 

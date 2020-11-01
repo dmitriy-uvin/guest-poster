@@ -297,6 +297,10 @@ final class GetPlatformCollectionAction
             });
         }
 
+        if (count($request->getSummary())) {
+            $filterQuery = $filterQuery->whereIn('summary_status', $request->getSummary());
+        }
+
         if ($request->getFacebookCommentsFrom()) {
             $filterQuery = $filterQuery->whereHas('facebook', function($query) use ($request){
                 $query->where('fb_comments', '>=', $request->getFacebookCommentsFrom());
@@ -442,7 +446,7 @@ final class GetPlatformCollectionAction
         else if ($sorting === 'website') {
             $filterQuery = $filterQuery->orderBy('website_url', $direction);
         } else if ($sorting === 'trust') {
-            $filterQuery = $filterQuery->orderBy('trust', $direction);
+            $filterQuery = $filterQuery->orderBy('summary_status', $direction);
         } else if ($sorting === 'semRush.traffic') {
             $filterQuery = $filterQuery->orderBy('organic_traffic', $direction);
         }

@@ -10,7 +10,6 @@ use App\Exceptions\Import\AnyPlatformsInFileException;
 use App\Exceptions\Import\ImportFieldsRequiredException;
 use App\Exceptions\Import\WrongImportValueException;
 use App\Jobs\GetDataFromApiForPlatformsImport;
-use App\Jobs\UpdateDataFromApiForPlatformsImport;
 use App\Models\Constants\JobConstants;
 use App\Services\SeoRankService;
 use Illuminate\Support\Facades\Storage;

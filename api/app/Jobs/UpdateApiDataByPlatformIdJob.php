@@ -14,6 +14,7 @@ use App\Models\Platform;
 use App\Models\SemRush;
 use App\Services\CheckTrustService;
 use App\Services\SeoRankService;
+use App\Services\SummaryStatusService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -123,6 +124,12 @@ class UpdateApiDataByPlatformIdJob implements ShouldQueue
                     $platform->spam ??= $checkTrustData->summary->spam;
                     $platform->trust ??= $checkTrustData->summary->trust;
                     $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
+                    $summaryStatus = SummaryStatusService::getSummaryStatus(
+                        (int)$platform->trust,
+                        (int)$platform->spam,
+                        (int)$platform->lrt_power_trust
+                    );
+                    $platform->summary_status = $summaryStatus;
                     $platform->save();
                 }
             }
