@@ -9,7 +9,7 @@ use App\Events\PlatformImportCreatedEvent;
 use App\Exceptions\Import\AnyPlatformsInFileException;
 use App\Exceptions\Import\ImportFieldsRequiredException;
 use App\Exceptions\Import\WrongImportValueException;
-use App\Jobs\GetDataFromApiForPlatformsImport;
+use App\Jobs\ImportPlatformsAndGetApiDataJob;
 use App\Models\Constants\JobConstants;
 use App\Services\SeoRankService;
 use Illuminate\Support\Facades\Storage;
@@ -47,7 +47,7 @@ final class ImportPlatformsTableAction
         $chunkedPlatforms = collect($platforms)->chunk($chunkSize);
         foreach ($chunkedPlatforms as $index => $platformsDataSet) {
             $row = 1 + $index * ($chunkSize + 1);
-            GetDataFromApiForPlatformsImport::dispatch($platformsDataSet->toArray(), $row);
+            ImportPlatformsAndGetApiDataJob::dispatch($platformsDataSet->toArray(), $row);
         }
     }
 

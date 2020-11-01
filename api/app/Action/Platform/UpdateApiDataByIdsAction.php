@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Action\Platform;
 
 use App\Action\ByIdsRequest;
-use App\Jobs\UpdateApiDataByPlatformIdJob;
+use App\Jobs\UpdatePlatformsByApiJob;
 use App\Models\Constants\JobConstants;
 use App\Models\Platform;
 
@@ -18,7 +18,7 @@ final class UpdateApiDataByIdsAction
             ->all())
             ->chunk(JobConstants::CHUNK_SIZE);
         foreach ($platformsChunks as $chunk) {
-            UpdateApiDataByPlatformIdJob::dispatch($chunk);
+            UpdatePlatformsByApiJob::dispatch($chunk);
         }
     }
 }

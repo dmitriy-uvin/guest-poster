@@ -14,35 +14,36 @@ use App\Models\Platform;
 use App\Models\SemRush;
 use App\Services\CheckTrustService;
 use App\Services\SeoRankService;
+use App\Services\SummaryStatusService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 
-class UpdateDataFromApiForPlatformsImport implements ShouldQueue
+class UpdatePlatformsByApiJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private array $platformsCollection;
+    private $platforms;
     private SeoRankService $seoRankService;
     private CheckTrustService $checkTrustService;
 
-    public function __construct(array $platformsCollection)
+    public function __construct($platforms)
     {
-        $this->platformsCollection = $platformsCollection;
+        $this->platforms = $platforms;
         $this->seoRankService = new SeoRankService();
         $this->checkTrustService = new CheckTrustService();
     }
 
     public function handle()
     {
-        foreach ($this->platformsCollection as $platformData) {
-            $url = $platformData['protocol'] . $platformData['website_url'];
-            $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
-            if (is_null($platform)) {
-                continue;
+        foreach ($this->platforms as $platform) {
+            $url = '';
+            if (mb_strpos('www', $platform->protocol) !== false) {
+                $url = $platform->protocol . '.' . $platform->website_url;
+            } else {
+                $url = $platform->protocol . $platform->website_url;
             }
             $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                 $url
@@ -98,7 +99,7 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
                 $platform->website_url
             );
             if (!in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) && is_object($majesticData))  {
-                $majestic = Majestic::where(['platform_id' => $platform->id])->update([
+                Majestic::where(['platform_id' => $platform->id])->update([
                     'external_backlinks' =>
                         in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
                     'external_gov' =>
@@ -116,7 +117,6 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
                     'refd_gov' =>
                         in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
                 ]);
-                $majestic->save();
             }
 
             $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
@@ -125,27 +125,22 @@ class UpdateDataFromApiForPlatformsImport implements ShouldQueue
 
             if (is_object($checkTrustData)) {
                 if ($checkTrustData->success) {
-                    $platform->spam = $checkTrustData->summary->spam;
-                    $platform->trust = $checkTrustData->summary->trust;
-                    $platform->lrt_power_trust = $checkTrustData->summary->lrtPowerTrust;
+                    $platform->spam ??= $checkTrustData->summary->spam;
+                    $platform->trust ??= $checkTrustData->summary->trust;
+                    $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
+                    $summaryStatus = SummaryStatusService::getSummaryStatus(
+                        (int)$platform->trust,
+                        (int)$platform->spam,
+                        (int)$platform->lrt_power_trust
+                    );
+                    $platform->summary_status = $summaryStatus;
                     $platform->save();
-                } else {
-                    broadcast(new PlatformImportCreatedEvent(
-                        'error',
-                        "CheckTrust Data not set! '<b>{$checkTrustData->message}</b>'"
-                    ));
                 }
-            } else {
-                broadcast(new PlatformImportCreatedEvent(
-                    'error',
-                    "CheckTrust Data not set! Something went wrong!"
-                ));
             }
         }
-
         broadcast(new PlatformImportUpdatedEvent(
             'success',
-            "Updating platforms from import finished!"
+            "Platforms updating finished!"
         ));
     }
 }
