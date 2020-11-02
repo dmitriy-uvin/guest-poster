@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacebookTable extends Migration
+class CreateSemrushDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateFacebookTable extends Migration
      */
     public function up()
     {
-        Schema::create('facebook', function (Blueprint $table) {
+        Schema::create('semrush_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->integer('fb_comments')->nullable();
-            $table->integer('fb_reac')->nullable();
-            $table->integer('fb_shares')->nullable();
+            $table->double('rank')->nullable();
+            $table->integer('keyword_num')->nullable();
+            $table->integer('traffic_costs')->nullable();
+            $table->timestamps();
 
             $table
                 ->foreign('platform_id')
@@ -35,9 +36,9 @@ class CreateFacebookTable extends Migration
      */
     public function down()
     {
-        Schema::table('facebook', function (Blueprint $table) {
-            $table->dropForeign('facebook_platform_id_foreign');
+        Schema::table('semrush_data', function (Blueprint $table) {
+            $table->dropForeign('semrush_data_platform_id_foreign');
         });
-        Schema::dropIfExists('facebook');
+        Schema::dropIfExists('semrush_data');
     }
 }
