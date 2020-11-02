@@ -38,9 +38,9 @@ export default {
         const response = await filterService.getUserFilters();
         commit(mutations.SET_USER_FILTERS, response);
     },
-    [actions.DELETE_USER_FILTER]: async ({ commit }, id) => {
+    [actions.DELETE_USER_FILTER]: async ({ commit, getters }, id) => {
         await filterService.deleteUserFilterById(id);
-        commit(mutations.DELETE_USER_FILTER, id);
+        commit(mutations.DELETE_USER_FILTER, { id, getters });
     },
     [actions.APPLY_USER_FILTER]: async ({ commit }, id) => {
         commit(mutations.APPLY_USER_FILTER, id);

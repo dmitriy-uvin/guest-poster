@@ -1,5 +1,5 @@
 import * as mutations from './types/mutations';
-// import * as gettersTypes from './types/getters';
+import * as gettersTypes from './types/getters';
 
 export default {
     [mutations.SET_FILTER_ITEM]: (state, { filterItem }) => {
@@ -167,15 +167,25 @@ export default {
             )
         }
     },
-    [mutations.DELETE_USER_FILTER]: (state, id) => {
+    [mutations.DELETE_USER_FILTER]: (state, { id, getters }) => {
         const userFilters = state.userFilters;
         delete userFilters[id];
+        // console.log('mutations');
+        // console.log(getters[gettersTypes.GET_APPLIED_USER_FILTER]);
+        // console.log(id);
+        if (Number(id) === Number(getters[gettersTypes.GET_APPLIED_USER_FILTER].id)) {
+            state.appliedFilter = {};
+        }
         state.userFilters = {
             ...state.userFilters
         };
     },
     [mutations.APPLY_USER_FILTER]: (state, id) => {
-        state.filterItems = {};
+        if (Object.keys(state.appliedFilter).length) {
+            if (Number(state.appliedFilter.id) !== Number(id)) {
+                state.filterItems = {};
+            }
+        }
         state.appliedFilter = state.userFilters[id];
     },
     [mutations.RENAME_USER_FILTER]: (state, data) => {

@@ -73,9 +73,11 @@ export default {
         onClickDelete() {
             this.deleteFilterConfirm = true;
         },
-        async onDeleteFilterById() {
+        onDeleteFilterById() {
             try {
-                await this.deleteFilterById(this.filter.id);
+                const id = this.filter.id;
+                this.deleteFilterById(this.filter.id);
+                this.$emit('filter-deleted', id);
             } catch (error) {
                 this.setNotification({
                     type: 'error',
