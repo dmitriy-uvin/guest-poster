@@ -18,6 +18,7 @@ class CreateSemrushDataTable extends Migration
             $table->unsignedBigInteger('platform_id');
             $table->double('rank')->nullable();
             $table->integer('keyword_num')->nullable();
+            $table->integer('traffic')->nullable();
             $table->integer('traffic_costs')->nullable();
             $table->timestamps();
 
