@@ -46,7 +46,7 @@ final class ImportPlatformsTableAction
         $chunkSize = JobConstants::CHUNK_SIZE;
         $chunkedPlatforms = collect($platforms)->chunk($chunkSize);
         foreach ($chunkedPlatforms as $index => $platformsDataSet) {
-            $row = 1 + $index * ($chunkSize + 1);
+            $row = 2 + $index * ($chunkSize + 1);
             ImportPlatformsAndGetApiDataJob::dispatch($platformsDataSet->toArray(), $row);
         }
     }
