@@ -2,55 +2,49 @@
 
 namespace App\Jobs;
 
-use App\Events\PlatformImportCreatedEvent;
-use App\Events\PlatformImportUpdatedEvent;
 use App\Exceptions\Import\ImportAPIErrorStatuses;
 use App\Exceptions\Import\ImportErrorPropertyStatuses;
-use App\Models\Alexa;
-use App\Models\Facebook;
-use App\Models\Majestic;
-use App\Models\Moz;
-use App\Models\Platform;
-use App\Models\SemRush;
-use App\Services\CheckTrustService;
+use App\Models\Data\AlexaData;
+use App\Models\Data\FacebookData;
+use App\Models\Data\MajesticData;
+use App\Models\Data\MozData;
+use App\Models\Data\SemRushData;
 use App\Services\SeoRankService;
-use App\Services\SummaryStatusService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
-class UpdateApiDataByPlatformIdJob implements ShouldQueue
+class GatherDataWeeklyFromApiJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $platforms;
+    private Collection $platforms;
     private SeoRankService $seoRankService;
-    private CheckTrustService $checkTrustService;
 
-    public function __construct($platforms)
+    public function __construct(Collection $platforms)
     {
         $this->platforms = $platforms;
         $this->seoRankService = new SeoRankService();
-        $this->checkTrustService = new CheckTrustService();
     }
 
     public function handle()
     {
         foreach ($this->platforms as $platform) {
-            $url = $platform->protocol . $platform->website_url;
-
+            $url = '';
+            if (mb_strpos('www', $platform->protocol) !== false) {
+                $url = $platform->protocol . '.' . $platform->website_url;
+            } else {
+                $url = $platform->protocol . $platform->website_url;
+            }
             $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                 $url
             );
             if (!in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
-                $platform->organic_traffic =
-                    in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
-                        null : $mozSrAlexaFbData->sr_traffic;
-                $platform->save();
-
-                Moz::where(['platform_id' => $platform->id])->update([
+                $mozData = new MozData([
+                    'platform_id' => $platform->id,
                     'pa' =>
                         in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
                     'da' =>
@@ -62,17 +56,23 @@ class UpdateApiDataByPlatformIdJob implements ShouldQueue
                     'equity' =>
                         in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
                 ]);
+                $mozData->save();
 
-                SemRush::where(['platform_id' => $platform->id])->update([
+                $semRushData = new SemRushData([
+                    'platform_id' => $platform->id,
                     'rank' =>
                         in_array($mozSrAlexaFbData->sr_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_rank,
                     'keyword_num' =>
                         in_array($mozSrAlexaFbData->sr_kwords, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_kwords,
+                    'traffic' => in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
+                        null : $mozSrAlexaFbData->sr_traffic,
                     'traffic_costs' =>
                         in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
                 ]);
+                $semRushData->save();
 
-                Alexa::where(['platform_id' => $platform->id])->update([
+                $alexaData = new AlexaData([
+                    'platform_id' => $platform->id,
                     'rank' =>
                         in_array($mozSrAlexaFbData->a_rank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_rank,
                     'country' =>
@@ -80,63 +80,46 @@ class UpdateApiDataByPlatformIdJob implements ShouldQueue
                     'country_rank' =>
                         in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
                 ]);
+                $alexaData->save();
 
-                Facebook::where(['platform_id' => $platform->id])->update([
-                    'fb_comments' =>
+                $facebookData = new FacebookData([
+                    'platform_id' => $platform->id,
+                    'comments' =>
                         in_array($mozSrAlexaFbData->fb_comments, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_comments,
-                    'fb_reac' =>
+                    'reactions' =>
                         in_array($mozSrAlexaFbData->fb_reac, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_reac,
-                    'fb_shares' =>
+                    'shares' =>
                         in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
                 ]);
+                $facebookData->save();
             }
 
-            $majesticData = $this->seoRankService->getDataForMajestic(
+            $majesticDataApi = $this->seoRankService->getDataForMajestic(
                 $platform->website_url
             );
-            if (!in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) && is_object($majesticData))  {
-                Majestic::where(['platform_id' => $platform->id])->update([
+            if (!in_array($majesticDataApi, ImportAPIErrorStatuses::getStatuses()) && is_object($majesticDataApi))  {
+                $majesticData = new MajesticData([
+                    'platform_id' => $platform->id,
                     'external_backlinks' =>
-                        in_array($majesticData->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinks,
+                        in_array($majesticDataApi->ExtBackLinks, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->ExtBackLinks,
                     'external_gov' =>
-                        in_array($majesticData->ExtBackLinksGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksGOV,
+                        in_array($majesticDataApi->ExtBackLinksGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->ExtBackLinksGOV,
                     'external_edu' =>
-                        in_array($majesticData->ExtBackLinksEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->ExtBackLinksEDU,
+                        in_array($majesticDataApi->ExtBackLinksEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->ExtBackLinksEDU,
                     'tf' =>
-                        in_array($majesticData->TrustFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->TrustFlow,
+                        in_array($majesticDataApi->TrustFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->TrustFlow,
                     'cf' =>
-                        in_array($majesticData->CitationFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->CitationFlow,
+                        in_array($majesticDataApi->CitationFlow, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->CitationFlow,
                     'refd' =>
-                        in_array($majesticData->RefDomains, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomains,
+                        in_array($majesticDataApi->RefDomains, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->RefDomains,
                     'refd_edu' =>
-                        in_array($majesticData->RefDomainsEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsEDU,
+                        in_array($majesticDataApi->RefDomainsEDU, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->RefDomainsEDU,
                     'refd_gov' =>
-                        in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
+                        in_array($majesticDataApi->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticDataApi->RefDomainsGOV,
+
                 ]);
-            }
-
-            $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
-                $url
-            );
-
-            if (is_object($checkTrustData)) {
-                if ($checkTrustData->success) {
-                    $platform->spam ??= $checkTrustData->summary->spam;
-                    $platform->trust ??= $checkTrustData->summary->trust;
-                    $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
-                    $summaryStatus = SummaryStatusService::getSummaryStatus(
-                        (int)$platform->trust,
-                        (int)$platform->spam,
-                        (int)$platform->lrt_power_trust
-                    );
-                    $platform->summary_status = $summaryStatus;
-                    $platform->save();
-                }
+                $majesticData->save();
             }
         }
-        broadcast(new PlatformImportUpdatedEvent(
-            'success',
-            "Platforms updating finished!"
-        ));
     }
 }

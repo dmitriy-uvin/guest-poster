@@ -45,7 +45,7 @@
                         </div>
                         <div>
                             <p class="mb-0 field-text" v-if="user.skype">{{ user.skype }}</p>
-                            <span v-else>N/A</span>
+                            <span v-else class="d-block">N/A</span>
                             <span class="field-hint">Skype</span>
                         </div>
                     </VRow>

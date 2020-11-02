@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacebookTable extends Migration
+class CreateAhrefsDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateFacebookTable extends Migration
      */
     public function up()
     {
-        Schema::create('facebook', function (Blueprint $table) {
+        Schema::create('ahrefs_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->integer('fb_comments')->nullable();
-            $table->integer('fb_reac')->nullable();
-            $table->integer('fb_shares')->nullable();
+            $table->double('rank')->nullable();
+            $table->double('dr')->nullable();
+            $table->integer('ext_backlinks')->nullable();
+            $table->integer('refd')->nullable();
+            $table->integer('dofollow')->nullable();
+            $table->timestamps();
 
             $table
                 ->foreign('platform_id')
@@ -35,9 +38,9 @@ class CreateFacebookTable extends Migration
      */
     public function down()
     {
-        Schema::table('facebook', function (Blueprint $table) {
-            $table->dropForeign('facebook_platform_id_foreign');
+        Schema::table('ahrefs_data', function (Blueprint $table) {
+            $table->dropForeign('ahrefs_data_platform_id_foreign');
         });
-        Schema::dropIfExists('facebook');
+        Schema::dropIfExists('ahrefs_data');
     }
 }

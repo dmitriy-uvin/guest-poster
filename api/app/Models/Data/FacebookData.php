@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Data;
 
+use App\Models\Platform;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Facebook extends Model
+class FacebookData extends Model
 {
     use HasFactory;
 
-    protected $table = 'facebook';
+    protected $table = 'facebook_data';
 
     protected $fillable = [
         'platform_id',
-        'fb_comments',
-        'fb_reac',
-        'fb_shares'
+        'comments',
+        'reactions',
+        'shares'
     ];
 
     protected $attributes = [
-        'fb_comments' => null,
-        'fb_reac' => null,
-        'fb_shares' => null
+        'comments' => null,
+        'reactions' => null,
+        'shares' => null
     ];
-
-    public $timestamps = false;
 
     public function platform()
     {
