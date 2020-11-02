@@ -19,6 +19,7 @@
             </div>
             <UserFiltersBlock
                 @edit-filter="onEditFilterClick"
+                @filter-deleted="onFilterDeleted"
             />
         </div>
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
@@ -2473,6 +2474,9 @@ export default {
     methods: {
         getTooltip(property) {
             return tooltips[property];
+        },
+        onFilterDeleted() {
+
         },
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
