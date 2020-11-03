@@ -65,6 +65,7 @@
                                 outlined
                                 dense
                                 clearable
+                                deletable-chips
                                 placeholder="Any deadline"
                                 @change="onInputFilter(
                                         $event,
@@ -2848,10 +2849,10 @@ export default {
                     if (typeof this.filter[subFilter][key] === 'string') {
                         if (this.filter[subFilter][key] !== '' && this.filter[subFilter][key] !== 'any') {
                             empty = false;
-                            return;
                         }
-                    } else {
-                        if (this.filter[subFilter][key].length) {
+                    }
+                    else {
+                        if (this.filter[subFilter][key]?.length) {
                             empty = false;
                         }
                     }
