@@ -65,7 +65,6 @@
                                 outlined
                                 dense
                                 clearable
-                                deletable-chips
                                 placeholder="Any deadline"
                                 @change="onInputFilter(
                                         $event,
