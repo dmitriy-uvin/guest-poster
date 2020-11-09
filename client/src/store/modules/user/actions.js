@@ -16,14 +16,8 @@ export default {
         const userData = await authService.fetchLoggedUser();
         commit(mutations.SET_LOGGED_USER, userData);
     },
-    [actions.SIGN_OUT]: async ({ commit, dispatch }) => {
-        try {
-            authService.signOut();
-            authService.removeToken();
-            commit(mutations.USER_SIGN_OUT);
-        } catch (error) {
-            dispatch(actions.CHECK_IF_UNAUTHORIZED, error);
-        }
+    [actions.SIGN_OUT]: ({ commit }) => {
+        commit(mutations.USER_SIGN_OUT);
     },
     [actions.VERIFY_EMAIL]: async (context, verifyData) => {
         await authService.verifyEmail(verifyData);

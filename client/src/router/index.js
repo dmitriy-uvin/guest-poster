@@ -8,7 +8,7 @@ import UserDataProvider from '@/components/guard/UserDataProvider';
 
 const routes = [
     {
-        path: '/',
+        path: '',
         component: UserDataProvider,
         children: [
             {
@@ -141,8 +141,8 @@ router.beforeEach(
             return;
         }
 
-        next({ path: to});
-    },
+        next({ path: to });
+    }
 );
 
 export default router;
