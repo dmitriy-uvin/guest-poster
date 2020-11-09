@@ -1872,6 +1872,7 @@
                                     depressed
                                     color="#ebebeb"
                                     block
+                                    :disabled="isFilterEmpty"
                                     @click="onOpenFilterNameDialog"
                                     v-if="!Object.keys(appliedFilter).length"
                                 >
@@ -2840,6 +2841,24 @@ export default {
             topics: getters.GET_TOPICS,
             domainZonesList: getters.GET_DOMAIN_ZONES
         }),
+        isFilterEmpty() {
+            let empty = true;
+            Object.keys(this.filter).map(subFilter => {
+                Object.keys(this.filter[subFilter]).map(key => {
+                    if (typeof this.filter[subFilter][key] === 'string') {
+                        if (this.filter[subFilter][key] !== '' && this.filter[subFilter][key] !== 'any') {
+                            empty = false;
+                        }
+                    }
+                    else {
+                        if (this.filter[subFilter][key]?.length) {
+                            empty = false;
+                        }
+                    }
+                })
+            });
+            return empty;
+        },
         ...mapGetters('filter', {
             canAddFilterItem: filterGetters.CAN_ADD_FILTER_ITEM,
             additionalFiltersCounter: filterGetters.MAX_AMOUNT_FILTERS,

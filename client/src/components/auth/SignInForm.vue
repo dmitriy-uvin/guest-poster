@@ -90,7 +90,7 @@ export default {
                         message: 'Welcome!',
                         type: 'success'
                     });
-                    this.$router.push({ name: 'GuestPosting' });
+                    this.$router.push({ name: 'GuestPosting' }).catch(error => {error});
                 } catch (error) {
                     this.setNotification({
                         message: error,

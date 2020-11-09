@@ -29,6 +29,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as getters from '@/store/modules/user/types/getters';
 import * as actions from '@/store/modules/user/types/actions';
+import authService from '@/services/auth/authService';
 export default {
     name: 'UserMenu',
     computed: {
@@ -46,9 +47,10 @@ export default {
         ...mapActions('user', {
             signOut: actions.SIGN_OUT
         }),
-        onLogOut() {
+        async onLogOut() {
+            await authService.signOut();
             this.signOut();
-            this.$router.push({ name: 'SignIn' });
+            this.$router.push({ name: 'SignIn' }).catch(error => {error});
         },
         onProfile() {
             this.$router.push({ name: 'Profile' });
