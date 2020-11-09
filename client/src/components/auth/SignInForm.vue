@@ -30,9 +30,11 @@
             <div class="buttons">
                 <VBtn block
                       color="blue"
-                      large @click="onSignIn"
+                      large
                       type="submit"
-                >Sign In</VBtn>
+                >
+                    Sign In
+                </VBtn>
                 <RouterLink :to="{ name: 'SignUp' }">
                     <VBtn
                         block
@@ -77,15 +79,13 @@ export default {
             setNotification: notifyActions.SET_NOTIFICATION
         }),
         ...mapActions('user', {
-            signIn: actions.SIGN_IN,
-            fetchLoggedUser: actions.FETCH_LOGGED_USER
+            signIn: actions.SIGN_IN
         }),
         async onSignIn() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 try {
                     await this.signIn(this.userData);
-                    await this.fetchLoggedUser();
                     this.setNotification({
                         message: 'Welcome!',
                         type: 'success'
