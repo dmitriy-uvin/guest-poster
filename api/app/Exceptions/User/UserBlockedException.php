@@ -6,5 +6,5 @@ use App\Exceptions\BaseException;
 
 class UserBlockedException extends BaseException
 {
-    protected $message = "Account is blocked!";
+    public $message = "Account is blocked!";
 }
