@@ -5,9 +5,11 @@ import userService from '@/services/user/userService';
 import router from '@/router';
 import * as notificationActions from '@/store/modules/notification/types/actions';
 
+
 export default {
-    [actions.SIGN_IN]: async (context, userData) => {
+    [actions.SIGN_IN]: async ({ dispatch }, userData) => {
         await authService.signIn(userData);
+        dispatch(actions.FETCH_LOGGED_USER);
     },
     [actions.SIGN_UP]: async (context, userData) => {
         await authService.signUp(userData);
