@@ -2,7 +2,7 @@
 
 namespace App\Models\Constants;
 
-class JobConstants
+final class JobConstants
 {
     public const CHUNK_SIZE = 15;
 }

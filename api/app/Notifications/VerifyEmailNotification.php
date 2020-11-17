@@ -31,11 +31,11 @@ class VerifyEmailNotification extends Notification
     protected function verificationUrl($notifiable)
     {
         return  env('CLIENT_APP_URL') . '/verified-email?' . http_build_query(
-                [
-                    'id' => $notifiable->getKey(),
-                    'hash' => sha1($notifiable->email),
-                ]
-            );
+            [
+                'id' => $notifiable->getKey(),
+                'hash' => sha1($notifiable->email),
+            ]
+        );
     }
 
     public function toArray($notifiable)
