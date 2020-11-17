@@ -130,6 +130,7 @@ export default {
                     this.regUserData.skype = '';
                     this.regUserData.website = '';
                     this.$v.$reset();
+                    this.$router.push({ name: 'SignIn' });
                 } catch (error) {
                     this.setNotification({
                         message: error,

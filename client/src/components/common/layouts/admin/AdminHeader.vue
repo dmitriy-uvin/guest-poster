@@ -14,12 +14,12 @@
                     >
                         Platforms List
                     </RouterLink>
-                    <RouterLink
-                        :to="{ name: 'Backlinks' }"
-                        :class="{'link-active': $route.name === 'Backlinks'}"
-                    >
-                        Backlinks
-                    </RouterLink>
+<!--                    <RouterLink-->
+<!--                        :to="{ name: 'Backlinks' }"-->
+<!--                        :class="{'link-active': $route.name === 'Backlinks'}"-->
+<!--                    >-->
+<!--                        Backlinks-->
+<!--                    </RouterLink>-->
                     <RouterLink
                         :to="{ name: 'Orders' }"
                         :class="{'link-active': $route.name === 'Orders'}"
