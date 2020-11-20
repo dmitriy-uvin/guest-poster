@@ -16,6 +16,9 @@ export default {
                 columnName: filterItem.columnName,
             }
         };
+        if (state.filterItems[filterItem.id]?.items.length) {
+            state.filterItems[filterItem.id].visible = true;
+        }
         if (filterItem.limit === 'from') {
             state.filterItems[filterItem.id].from = filterItem.from;
         }

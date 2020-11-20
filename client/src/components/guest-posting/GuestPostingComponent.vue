@@ -1,16 +1,20 @@
 <template>
-    <div class="container">
+    <div class="container main-app">
         <div class="">
             <div class="left">
-                <h1 id="text">Guest Posting</h1>
-                <p class="mt-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                <h1 class="h-1 mb-0">Guest Posting platforms</h1>
+                <p class="mt-0 mb-8 cm-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
         </div>
         <div class="mb-8">
             <div class="d-inline-block">
-                <VBtn color="primary" depressed @click="openFilters" v-if="!filtersOpened">
-                    <VIcon left>mdi-filter-variant</VIcon>
-                    Filters
+                <VBtn color="#2f80ed"
+                      depressed
+                      @click="openFilters"
+                      v-if="!filtersOpened"
+                >
+                    <VIcon left color="white">mdi-filter-variant</VIcon>
+                    <span class="white--text">Filters</span>
                 </VBtn>
                 <VBtn color="#eaf3ff" depressed @click="openFilters" v-else>
                     <VIcon left color="#2f80ed">mdi-filter-variant</VIcon>
@@ -20,12 +24,15 @@
             <UserFiltersBlock
                 @edit-filter="onEditFilterClick"
                 @filter-deleted="onFilterDeleted"
+                @create-filter="onCreateFilter"
             />
         </div>
         <VCol cols="12" md="12" class="filters mb-4" v-if="filtersOpened">
             <VRow class="pr-2">
-                <VCol cols="12" md="9" class="px-4">
-                    <h3 class="text-uppercase mt-4 mb-4">General Filters</h3>
+                <VCol cols="12" md="9" class="px-8">
+                    <h3 class="text-uppercase mt-4 mb-4 filter-header">
+                        General Filters
+                    </h3>
                     <VRow>
                         <VCol cols="12" md="8" class="">
                             <label>Topics</label>
@@ -58,12 +65,12 @@
                                 />
                             </label>
                             <VSelect
+                                dense
                                 small-chips
                                 hide-details
                                 :items="Object.keys(deadlineList)"
                                 v-model="filter.platform.deadline"
                                 outlined
-                                dense
                                 clearable
                                 placeholder="Any deadline"
                                 @change="onInputFilter(
@@ -131,7 +138,7 @@
                         <VCol cols="12" md="4">
                             <span class="subtitle-2">Price $</span>
                             <VRow>
-                                <VCol cols="12" md="6">
+                                <VCol cols="12" md="6" class="pt-0">
                                     <VTextField
                                         placeholder="0"
                                         outlined
@@ -148,7 +155,7 @@
                                     >
                                     </VTextField>
                                 </VCol>
-                                <VCol cols="12" md="6">
+                                <VCol cols="12" md="6" class="pt-0">
                                     <VTextField
                                         placeholder="1000000"
                                         outlined
@@ -175,7 +182,7 @@
                                 />
                             </span>
                             <VRow>
-                                <VCol cols="12" md="6">
+                                <VCol cols="12" md="6" class="pt-0">
                                     <VTextField
                                         placeholder="0"
                                         outlined
@@ -193,7 +200,7 @@
                                     >
                                     </VTextField>
                                 </VCol>
-                                <VCol cols="12" md="6">
+                                <VCol cols="12" md="6" class="pt-0">
                                     <VTextField
                                         placeholder="10000000"
                                         outlined
@@ -214,7 +221,7 @@
                         </VCol>
                     </VRow>
 
-                    <h3 class="text-uppercase mb-6">Options</h3>
+                    <h3 class="text-uppercase mb-6 filter-header">Options</h3>
                     <VRow>
                         <VCol cols="12" md="4">
                             <label>DoFollow</label>
@@ -290,26 +297,13 @@
                         </VCol>
                     </VRow>
 
-                    <VBtn
-                        color="#eaf3ff"
-                        depressed
-                        @click="openAdditionalFilters"
-                        v-if="additionalFiltersOpened"
-                    >
-                        <VIcon left color="#2f80ed">mdi-chevron-up</VIcon>
-                        <span style="color: #2f80ed">Hide</span>
-                    </VBtn>
-                    <VBtn
-                        color="#eaf3ff"
-                        depressed
-                        @click="openAdditionalFilters"
-                        v-else
-                    >
-                        <VIcon left color="#2f80ed">mdi-chevron-down</VIcon>
-                        <span style="color: #2f80ed">Additional Filters</span>
-                    </VBtn>
-                    <VRow v-if="additionalFiltersOpened" class="mt-4">
-                        <VTabs fixed-tabs v-model="tab">
+                    <h3 class="text-uppercase mb-6 filter-header mt-6">Additional filters</h3>
+
+                    <VRow class="mt-4">
+                        <VTabs fixed-tabs v-model="tab"
+                               height="44"
+                               class="tabs-block"
+                        >
                             <VTab key="Trust">
                                 <VBadge
                                     color="green"
@@ -381,7 +375,7 @@
                                 <span v-else>Facebook</span>
                             </VTab>
                         </VTabs>
-                        <VTabsItems v-model="tab" >
+                        <VTabsItems v-model="tab">
                             <VTabItem key="Trust">
                                 <VRow>
                                     <VCol cols="12" md="4">
@@ -391,7 +385,7 @@
                                                 message="Summary"
                                             />
                                             <VRow class="mb-0">
-                                                <VCol cols="12" class="mb-0">
+                                                <VCol cols="12" class="mb-0 pt-0">
                                                     <VSelect
                                                         outlined
                                                         dense
@@ -421,7 +415,7 @@
                                                 message="CheckTrust"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -439,7 +433,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100"
                                                         outlined
@@ -467,7 +461,7 @@
                                                 message="Spam"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -485,7 +479,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100"
                                                         outlined
@@ -513,7 +507,7 @@
                                                 message="PowerTrust"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -531,7 +525,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100"
                                                         outlined
@@ -563,7 +557,7 @@
                                                 message="Domain Authority (DA)"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -583,7 +577,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -612,7 +606,7 @@
                                                 message="Page Authority (PA)"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -632,7 +626,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -661,7 +655,7 @@
                                                 message="Moz Rank"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1"
                                                         outlined
@@ -681,7 +675,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100000"
                                                         outlined
@@ -710,7 +704,7 @@
                                                 message="Links In"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -730,7 +724,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -759,7 +753,7 @@
                                                 message="External Equity Links"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -779,7 +773,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -812,7 +806,7 @@
                                                 message="Rank"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1"
                                                         outlined
@@ -832,7 +826,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100000"
                                                         outlined
@@ -861,7 +855,7 @@
                                                 message="Country Rank"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1"
                                                         outlined
@@ -881,7 +875,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100000"
                                                         outlined
@@ -914,7 +908,7 @@
                                                 message="Rank"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1"
                                                         outlined
@@ -934,7 +928,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1000000"
                                                         outlined
@@ -963,7 +957,7 @@
                                                 message="Domain Rating"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -981,7 +975,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1000000"
                                                         outlined
@@ -1008,7 +1002,7 @@
                                                 message="External Backlinks"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1028,7 +1022,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1000000"
                                                         outlined
@@ -1057,7 +1051,7 @@
                                                 message="Referring Domains"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1076,7 +1070,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1000000"
                                                         outlined
@@ -1104,7 +1098,7 @@
                                                 message="Dofollow Backlinks"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1124,7 +1118,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1000000"
                                                         outlined
@@ -1157,7 +1151,7 @@
                                                 message="External Backlinks"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1177,7 +1171,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1206,7 +1200,7 @@
                                                 message="External Backlinks EDU"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1226,7 +1220,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1255,7 +1249,7 @@
                                                 message="External Backlinks GOV"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1275,7 +1269,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1304,7 +1298,7 @@
                                                 message="Referring Domains"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1324,7 +1318,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1353,7 +1347,7 @@
                                                 message="Referring Domains EDU"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1373,7 +1367,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1402,7 +1396,7 @@
                                                 message="Referring Domains GOV"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1422,7 +1416,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1451,7 +1445,7 @@
                                                 message="Trust Flow"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1469,7 +1463,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100"
                                                         outlined
@@ -1497,7 +1491,7 @@
                                                 message="Citation Flow"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1517,7 +1511,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100"
                                                         outlined
@@ -1551,7 +1545,7 @@
                                                 message="Rank"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="1"
                                                         outlined
@@ -1571,7 +1565,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="100000"
                                                         outlined
@@ -1600,7 +1594,7 @@
                                                 message="Keywords number"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1620,7 +1614,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1649,7 +1643,7 @@
                                                 message="Costs"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1667,7 +1661,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1698,7 +1692,7 @@
                                                 message="Facebook Comments"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1718,7 +1712,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1747,7 +1741,7 @@
                                                 message="Facebook Shares"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1767,7 +1761,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1796,7 +1790,7 @@
                                                 message="Facebook Reactions"
                                             />
                                             <VRow>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="0"
                                                         outlined
@@ -1816,7 +1810,7 @@
                                                     >
                                                     </VTextField>
                                                 </VCol>
-                                                <VCol cols="12" md="6">
+                                                <VCol cols="12" md="6" class="mb-0 pt-0">
                                                     <VTextField
                                                         placeholder="10000000"
                                                         outlined
@@ -1843,31 +1837,39 @@
                         </VTabsItems>
                     </VRow>
                 </VCol>
-                <VCol cols="12" md="3" style="background: #f9f9f9" class="px-4">
-                    <div style="position: sticky; top: 0">
+                <VCol cols="12" md="3" class="px-4 right-sidebar">
+                    <div>
                         <VRow>
                             <VCol cols="12" md="6">
-                                <h4 class="text-uppercase">{{ total }} Sites</h4>
-                                <span class="gray-text">Founded</span>
+                                <p class="pb-0 mb-0 right-sidebar-text">
+                                    <span class="text-uppercase">{{ total }} Sites</span><br>
+                                    <span class="gray-text">Founded</span>
+                                </p>
                             </VCol>
                             <VCol cols="12" md="6" class="text-right">
-                                <VBtn depressed color="#ebebeb" @click="filtersOpened = false">
+                                <VBtn
+                                    depressed
+                                    color="#ebebeb"
+                                    @click="filtersOpened = false"
+                                    width="36"
+                                    class="close-btn"
+                                >
                                     <VIcon>mdi-close</VIcon>
                                 </VBtn>
                             </VCol>
                         </VRow>
                         <VRow>
-                            <VCol cols="12">
+                            <VCol cols="12" class="pb-0">
                                 <VBtn
-                                    color="primary"
+                                    color="#2f80ed"
                                     depressed
                                     block
                                     @click="onShowResults"
                                 >
-                                    Show Results
+                                    <span class="white--text">Show Results</span>
                                 </VBtn>
                             </VCol>
-                            <VCol cols="12" md="6">
+                            <VCol cols="12" md="6" class="pt-0 mt-4">
                                 <VBtn
                                     depressed
                                     color="#ebebeb"
@@ -1888,7 +1890,7 @@
                                     Update
                                 </VBtn>
                             </VCol>
-                            <VCol cols="12" md="6">
+                            <VCol cols="12" md="6" class="pt-0 mt-4">
                                 <VBtn
                                     depressed
                                     color="#ebebeb"
@@ -1901,10 +1903,10 @@
                 </VCol>
             </VRow>
         </VCol>
-        <div class="elevation-2 pa-2 rounded-lg mb-4">
-            <p class="d-inline-block ma-0 pa-0 mr-6 font-14">
+        <div class="founded-platforms rounded-lg mb-4">
+            <div class="d-inline-block ma-0 pa-0 mr-8 font-14">
                 Founded: <b>{{ total }}</b> sites
-            </p>
+            </div>
             <FilterChipsIcons
                 @filter-item-deleted="filterItemDeleted"
                 @filter-item-deleted-array="filterItemArrayDeleted"
@@ -2478,6 +2480,9 @@ export default {
         },
         onFilterDeleted() {
 
+        },
+        onCreateFilter() {
+            this.filtersOpened = true;
         },
         async changeSortingAndDirection(sorting) {
             this.sorting = sorting;
@@ -3211,7 +3216,67 @@ export default {
 
 
 <style scoped>
-@import "../../assets/styles/table.css";
+@import '../../assets/styles/table.css';
+@import '../../assets/styles/filter-styles.css';
+
+.tabs-block {
+    border-bottom: 1px solid #f2f2f2;
+    border-top: 1px solid #f2f2f2;
+}
+
+.v-btn {
+    color: #333333;
+}
+
+.right-sidebar-text span:first-child {
+    line-height: 24px;
+    font-weight: 900;
+}
+
+.right-sidebar-text span:last-child {
+    line-height: 16px;
+    font-size: 12px;
+}
+
+.v-btn:not(.v-btn--round).v-size--default.close-btn {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 16px;
+}
+.right-sidebar {
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.right-sidebar > div{
+    position: sticky;
+    top: 0;
+}
+
+.founded-platforms {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.main-app {
+    margin-top: 80px;
+}
+
+.cm-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: #333333;
+    opacity: 0.6;
+}
+
+.h-1 {
+    font-weight: 900;
+    line-height: 36px;
+    font-size: 24px;
+    font-family: 'Roboto', sans-serif;
+    color: #333333;
+}
 .v-tooltip__content.menuable__content__active {
     background: #333333;
     opacity: 1 !important;
@@ -3263,8 +3328,7 @@ export default {
 
 .filters {
     border-radius: 10px;
-    border: 2px solid #2f80ed;
-    padding-left: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .not-uppercase {

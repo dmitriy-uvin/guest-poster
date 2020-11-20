@@ -11,17 +11,27 @@
             ></VTextField>
         </div>
         <div class="buttons">
-            <VBtn block color="blue" large @click="onResetForm" :loading="btnLoad">
-                RESET PASSWORD
+            <VBtn
+                block
+                color="#2f80ed"
+                large @click="onResetForm"
+                :loading="btnLoad"
+                class="mb-6"
+                depressed
+            >
+                <span class="white--text">RESET PASSWORD</span>
             </VBtn>
+            <div class="divider mb-6"></div>
             <RouterLink :to="{ name: 'SignIn' }">
                 <VBtn
                     block
                     color="#eaf3ff"
                     class="py-2"
                     large
+                    depressed
                 >
-                    CONTINUE
+                    <span v-if="user !== null">CONTINUE</span>
+                    <span v-else>Back to Sign In</span>
                 </VBtn>
             </RouterLink>
         </div>
@@ -31,8 +41,9 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, email } from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as getters from '@/store/modules/user/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 
 export default {
@@ -88,6 +99,9 @@ export default {
                 errors.push('Email must be valid!');
             return errors;
         },
+        ...mapGetters('user', {
+            user: getters.GET_LOGGED_USER
+        })
     }
 }
 </script>
@@ -113,5 +127,8 @@ export default {
 }
 .v-card {
     border-radius: 10px;
+}
+.divider {
+    border-bottom: 1px solid #f2f2f2;
 }
 </style>

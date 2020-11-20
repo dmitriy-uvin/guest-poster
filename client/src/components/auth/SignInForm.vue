@@ -1,12 +1,11 @@
 <template>
-    <VCard class="pa-12">
+    <VCard class="pb-10 pl-12 pr-12 pt-12">
         <VForm @submit.prevent="onSignIn">
             <span class="mb-6 font-weight-bold d-block card-title">Log In to your account</span>
-            <div>
+            <div class="mb-0 mt-0">
                 <VTextField
                     outlined
                     label="Email"
-                    placeholder="user-email@guest-poster.com"
                     v-model="userData.email"
                     :error-messages="emailErrors"
                     id="email"
@@ -24,21 +23,30 @@
                     aria-autocomplete="none"
                 ></VTextField>
             </div>
-            <div class="pb-7">
-                <RouterLink :to="{ name: 'ForgotPassword' }" class="forgot-password">Forgot password?</RouterLink>
+            <div class="mb-6">
+                <RouterLink
+                    :to="{ name: 'ForgotPassword' }"
+                    class="forgot-password"
+                >
+                    Forgot password?
+                </RouterLink>
             </div>
             <div class="buttons">
                 <VBtn block
-                      color="blue"
+                      color="#2f80ed"
                       large
                       type="submit"
+                      depressed
+                      class="mb-6"
                 >
-                    Sign In
+                    <span class="white--text">Sign In</span>
                 </VBtn>
+                <div class="divider mb-6"></div>
                 <RouterLink :to="{ name: 'SignUp' }">
                     <VBtn
                         block
                         color="#eaf3ff"
+                        depressed
                         class="py-2"
                         large
                     >
@@ -128,9 +136,14 @@ export default {
 </script>
 
 <style scoped>
+.divider {
+    border-bottom: 1px solid #f2f2f2;
+}
 .card-title {
     font-weight: bold;
     font-size: 20px;
+    line-height: 24px;
+    color: #333333;
 }
 .buttons > .v-btn {
     margin-bottom: 45px;
@@ -144,9 +157,11 @@ export default {
 }
 .forgot-password {
     color: #828282;
+    font-size: 14px;
+    line-height: 16px;
     text-decoration: underline;
 }
 .v-card {
-    border-radius: 10px;
+    border-radius: 8px;
 }
 </style>

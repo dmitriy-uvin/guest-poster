@@ -1,0 +1,17 @@
+div.filters .v-select.v-input--dense .v-chip {
+    margin: 0 4px 2px 4px;
+}
+
+div.filters .v-select.v-input--dense  .v-input__slot {
+    min-height: 36px !important;
+}
+
+div.filters .v-select__selections input,
+div.filters .v-text-field__slot input {
+    line-height: 22px;
+    font-size: 14px;
+}
+
+div.filters .v-text-field .v-input__slot {
+    min-height: 36px !important;
+}

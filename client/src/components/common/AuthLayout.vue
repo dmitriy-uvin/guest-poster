@@ -6,7 +6,7 @@
             </RouterLink>
         </div>
         <div class="d-flex align-center justify-center">
-            <VCol cols="12" md="3" sm="12" lg="3">
+            <VCol cols="12" md="4" sm="12" lg="4">
                 <div class="elevation-1 content">
                     <slot></slot>
                 </div>
@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .auth-bg {
-    background: #e5e5e5;
+    background: #f9f9f9;
     width: 100%;
     height: 100%;
     overflow-y: hidden;

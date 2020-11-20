@@ -4,7 +4,6 @@
             <h3 v-if="!verified">Email verification...</h3>
             <h3 v-else>Your email was verified!</h3>
         </div>
-
         <div class="buttons">
             <RouterLink :to="{ name: 'SignIn' }">
                 <VBtn
@@ -12,8 +11,10 @@
                     color="#eaf3ff"
                     class="py-2"
                     large
+                    depressed
                 >
-                    CONTINUE WORKING
+                    <span v-if="user !== null">Continue Working</span>
+                    <span v-else>Back to SignIn</span>
                 </VBtn>
             </RouterLink>
         </div>
@@ -21,8 +22,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as getters from '@/store/modules/user/types/getters';
 import notificationMixin from '@/mixins/notificationMixin';
 import authService from '@/services/auth/authService';
 
@@ -55,6 +57,11 @@ export default {
                 type: 'error'
             });
         }
+    },
+    computed: {
+        ...mapGetters('user', {
+            user: getters.GET_LOGGED_USER
+        })
     }
 }
 </script>

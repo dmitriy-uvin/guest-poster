@@ -1,9 +1,9 @@
 <template>
     <div class="">
         <UserHeader />
-        <div class="py-3 gray-bg" v-if="!isEmailVerified">
-            <p class="text-center red--text mb-0">Email not confirmed!</p>
-        </div>
+<!--        <div class="py-3 gray-bg" v-if="!isEmailVerified">-->
+<!--            <p class="text-center red&#45;&#45;text mb-0">Email not confirmed!</p>-->
+<!--        </div>-->
         <slot></slot>
     </div>
 </template>

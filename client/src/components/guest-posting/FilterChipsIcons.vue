@@ -1,10 +1,10 @@
 <template>
-    <div class="d-inline-block">
+    <span class="">
         <span v-for="(filterItem, key) in allFilterItems" :key="key">
              <VChip
                  v-if="!filterItem.items && (filterItem.value || filterItem.from || filterItem.to )"
                  label
-                 class="mr-1 mb-1"
+                 class="mr-2 mb-1 d-inline-block"
                  small
              >
                 <span v-if="key !== 'deadline'">{{ filterItem.name }}:</span>
@@ -24,14 +24,13 @@
                     mdi-close-circle
                 </VIcon>
             </VChip>
-            <span v-else>
-                <VChip
-                    label
-                    small
-                    v-for="(item, index) in filterItem.items"
-                    :key="index"
-                    class="mr-1 mb-1"
-                >
+            <VChip
+                label
+                small
+                v-for="(item, index) in filterItem.items"
+                :key="index"
+                class="mr-1 mb-1 d-inline-block"
+            >
                 {{ item }}
                 <VIcon
                     right
@@ -41,17 +40,16 @@
                     mdi-close-circle
                 </VIcon>
             </VChip>
-            </span>
         </span>
         <div
             v-if="!isEmpty"
             @click="clearAllFilters"
-            class="d-inline-block"
+            class="d-inline-block ml-3"
         >
             <VIcon color="#2f80ed" small>mdi-delete</VIcon>
             <span class="clear">Clear Filters</span>
         </div>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -101,10 +99,17 @@ export default {
 </script>
 
 <style scoped>
+
 .clear {
+    display: inline-block;
+    vertical-align: middle;
     font-weight: bold;
     font-size: 12px;
     color: #2f80ed;
     cursor: pointer;
+}
+
+.theme--light.v-chip:not(.v-chip--active) {
+    background: #f3f3f3;
 }
 </style>
