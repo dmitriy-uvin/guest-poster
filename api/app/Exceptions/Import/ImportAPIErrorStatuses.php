@@ -13,7 +13,7 @@ final class ImportAPIErrorStatuses
             'empty',
             'no_data',
             'error_internal',
-            'disallow'
+            'disallowed'
         ];
     }
 }
