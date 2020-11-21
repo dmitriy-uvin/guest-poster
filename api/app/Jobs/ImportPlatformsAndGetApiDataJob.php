@@ -40,6 +40,29 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
         $this->row = $row;
     }
 
+    private function getPlatformObj(array $platformData) {
+        $platform = new Platform();
+        $platform->protocol = $platformData['protocol'];
+        $platform->website_url = $platformData['website_url'];
+        $platform->organic_traffic = $platformData['organic_traffic'];
+        $platform->dofollow_active = $platformData['dofollow_active'];
+        $platform->free_home_featured_active = $platformData['free_home_featured_active'];
+        $platform->niche_edit_link_active = $platformData['niche_edit_link_active'];
+        $platform->money_anchor = $platformData['money_anchor'];
+        $platform->niche_edit_link_price = $platformData['niche_edit_link_price'];
+        $platform->article_writing_price = $platformData['article_writing_price'];
+        $platform->article_requirements = $platformData['article_requirements'];
+        $platform->deadline = $platformData['deadline'];
+        $platform->domain_zone = $platformData['domain_zone'];
+        $platform->price = $platformData['price'];
+        $platform->email = $platformData['email'];
+        $platform->description = $platformData['description'];
+        $platform->where_posted = $platformData['where_posted'];
+        $platform->contacts = $platformData['contacts'];
+        $platform->comment = $platformData['comment'];
+        return $platform;
+    }
+
     public function handle()
     {
         foreach ($this->platformsCollection as $platformData) {
@@ -73,11 +96,11 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         ->get('id')
                         ->map(fn($topic) => $topic->id)
                         ->all();
-                    $platform = new Platform($platformData);
+                    $platform = $this->getPlatformObj($platformData);
                     $platform->organic_traffic = null;
                     $platform->save();
-
                     $platform->topics()->attach($topicsIds);
+
                     $platform->organic_traffic =
                         in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
                             null : $mozSrAlexaFbData->sr_traffic;
