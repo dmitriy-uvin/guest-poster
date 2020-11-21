@@ -81,7 +81,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                     $url
                 );
                 if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses()) || !is_object($mozSrAlexaFbData)) {
-                    $message = "Failed to add platform " . $url .
+                    $message = "Failed to add platform " . $platformData['website_url'] .
                         " at line: " . $this->row . " ($mozSrAlexaFbData)";
 
                     broadcast(new PlatformImportCreatedEvent(
