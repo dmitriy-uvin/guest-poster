@@ -50,7 +50,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
             if (!$platform) {
                 $url = '';
                 if (mb_strpos('www', $platformData['protocol']) !== false) {
-                    $url = $platformData['protocol'] . '.' . $platformData['website_url'];
+                    $url = trim($platformData['protocol'], '.') . '.' . $platformData['website_url'];
                 } else {
                     $url = $platformData['protocol'] . $platformData['website_url'];
                 }
