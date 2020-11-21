@@ -12,7 +12,8 @@ final class ImportAPIErrorStatuses
             'not_found',
             'empty',
             'no_data',
-            'error_internal'
+            'error_internal',
+            'disallow'
         ];
     }
 }
