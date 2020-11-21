@@ -7,22 +7,25 @@
                     <p>Filling or editing of your personal data and password management</p>
                 </div>
 
-                <VRow class="email-not-confirmed align-center" v-if="!emailVerified">
-                    <VCol cols="12" md="6" class="text-left">
-                        <span>Your email is not confirmed</span>
-                    </VCol>
-                    <VCol cols="12" md="6" class="text-right">
-                        <VBtn
-                            depressed
-                            text
-                            @click="onConfirmEmail"
-                        >
-                            Confirm Email
-                        </VBtn>
-                    </VCol>
-                </VRow>
+                <VCol cols="12" v-if="!emailVerified">
+                    <VRow class="email-not-confirmed align-center">
+                        <VCol cols="12" md="6" class="text-left">
+                            <VIcon class="mr-4">mdi-alert-box-outline</VIcon>
+                            <span class="email-text">Your email is not confirmed</span>
+                        </VCol>
+                        <VCol cols="12" md="6" class="text-right">
+                            <VBtn
+                                depressed
+                                text
+                                @click="onConfirmEmail"
+                            >
+                                <span class="confirm-text">Confirm Email</span>
+                            </VBtn>
+                        </VCol>
+                    </VRow>
+                </VCol>
 
-                <VCol cols="12">
+                <VCol cols="12" class="mt-4">
                     <VTextField
                         label="Name"
                         append-icon="mdi-account"
@@ -54,7 +57,7 @@
                         v-model="website"
                     ></VTextField>
                 </VCol>
-                <VRow>
+                <VRow class="mt-2">
                     <VCol cols="12" md="6">
                         <VBtn
                             color="primary"
@@ -213,6 +216,23 @@ export default {
 </script>
 
 <style scoped>
+.profile-form-head h1 {
+    font-size: 24px;
+    line-height: 36px;
+    color: #333333;
+}
+
+.profile-form-head p {
+    color: #333333;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.email-text {
+    font-size: 14px;
+    color: #575757;
+}
+
 .profile-form-head p {
     margin: 0;
     font-size: 14px;
@@ -221,5 +241,10 @@ export default {
 }
 .email-not-confirmed {
     background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.confirm-text {
+    color: #333333;
 }
 </style>

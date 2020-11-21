@@ -4,9 +4,9 @@
             <span :class="colorClasses[keyString]" class="head">
                 {{ keyNames[keyString] }}
             </span>
-            <span>{{ CheckTrust === null ? 'N/A' : CheckTrust + ' CT' }}</span>
-            <span>{{ CheckTrustSpam === null ? 'N/A' : CheckTrustSpam + ' CS' }}</span>
-            <span>{{ PowerTrust === null ? 'N/A' : PowerTrust + ' PT' }}</span>
+            <span class="trust-item-span">{{ CheckTrust === null ? 'N/A' : CheckTrust + ' CT' }}</span>
+            <span class="trust-item-span">{{ CheckTrustSpam === null ? 'N/A' : CheckTrustSpam + ' CS' }}</span>
+            <span class="trust-item-span">{{ PowerTrust === null ? 'N/A' : PowerTrust + ' PT' }}</span>
         </div>
     </div>
 </template>
@@ -106,5 +106,8 @@ span {
 }
 .purple-text {
     color: #9B51E0;
+}
+.trust-item-span {
+    font-size: 10px;
 }
 </style>

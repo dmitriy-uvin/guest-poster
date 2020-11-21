@@ -25,17 +25,27 @@
             ></VTextField>
         </div>
         <div class="buttons">
-            <VBtn block color="blue" large @click="onResetPassword" :loading="btnLoad">
-                SAVE NEW PASSWORD
+            <VBtn
+                block
+                color="#2f80ed"
+                class="mb-6"
+                large
+                @click="onResetPassword"
+                :loading="btnLoad"
+            >
+                <span class="white--text">SAVE NEW PASSWORD</span>
             </VBtn>
+            <div class="divider mb-6"></div>
             <RouterLink :to="{ name: 'SignIn' }">
                 <VBtn
                     block
                     color="#eaf3ff"
                     class="py-2"
                     large
+                    depressed
                 >
-                    CONTINUE
+                    <span v-if="user !== null">CONTINUE</span>
+                    <span v-else>Back to SignIn</span>
                 </VBtn>
             </RouterLink>
         </div>
@@ -45,8 +55,9 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import {required, minLength, sameAs} from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as actions from '@/store/modules/user/types/actions';
+import * as getters from '@/store/modules/user/types/getters';
 import * as notifyActions from '@/store/modules/notification/types/actions';
 
 export default {
@@ -93,11 +104,15 @@ export default {
                         message: error,
                         type: 'error'
                     });
+                    this.btnLoad = false;
                 }
             }
         }
     },
     computed: {
+        ...mapGetters('user', {
+            user: getters.GET_LOGGED_USER
+        }),
         passwordErrors() {
             const errors = [];
             if (!this.$v.password.$dirty) {
@@ -125,6 +140,9 @@ export default {
 </script>
 
 <style scoped>
+.divider {
+    border-bottom: 1px solid #f2f2f2;
+}
 .card-title {
     font-weight: bold;
     font-size: 20px;

@@ -16,6 +16,9 @@ export default {
                 columnName: filterItem.columnName,
             }
         };
+        if (state.filterItems[filterItem.id]?.items.length) {
+            state.filterItems[filterItem.id].visible = true;
+        }
         if (filterItem.limit === 'from') {
             state.filterItems[filterItem.id].from = filterItem.from;
         }
@@ -170,9 +173,6 @@ export default {
     [mutations.DELETE_USER_FILTER]: (state, { id, getters }) => {
         const userFilters = state.userFilters;
         delete userFilters[id];
-        // console.log('mutations');
-        // console.log(getters[gettersTypes.GET_APPLIED_USER_FILTER]);
-        // console.log(id);
         if (Number(id) === Number(getters[gettersTypes.GET_APPLIED_USER_FILTER].id)) {
             state.appliedFilter = {};
         }

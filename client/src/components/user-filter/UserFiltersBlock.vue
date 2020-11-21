@@ -1,8 +1,8 @@
 <template>
-    <div class="d-inline-block ml-4">
+    <div class="d-inline-block user-filters-container">
         <div
             :class="{ 'active-border' : appliedFilterId === Number(id) }"
-            class="user-filter-block mr-2"
+            class="user-filter-block mr-3"
             v-for="(userFilter, id) in userFilters" :key="id"
             @click="onApplyFilter(id)"
         >
@@ -17,6 +17,10 @@
                 @edit-filter="onEditFilter(id)"
                 @filter-deleted="onFilterDeleted"
             />
+        </div>
+        <div class="d-inline-block create-filters" @click="onCreateFilter">
+            <VIcon color="#2f80ed">mdi-plus</VIcon>
+            <span>Create Filters</span>
         </div>
     </div>
 </template>
@@ -56,6 +60,9 @@ export default {
                     message: error
                 });
             }
+        },
+        onCreateFilter() {
+            this.$emit('create-filter');
         }
     },
     computed: {
@@ -75,14 +82,19 @@ export default {
 
 <style scoped>
 .user-filter-block {
-    border: 2px solid #dcdcdc;
+    border: 2px solid #F3F3F3;
     border-radius: 4px;
-    padding: 5px 8px;
+    padding: 4px 8px;
     display: inline-block;
     cursor: pointer;
 }
 
+.user-filters-container {
+    margin-left: 32px;
+}
+
 .user-filter-name {
+    line-height: 24px;
     font-size: 14px;
     font-weight: 500;
 }
@@ -93,5 +105,20 @@ export default {
 
 .active-text {
     color: #2f80ed;
+}
+.create-filters {
+    margin-left: 8px;
+    padding-left: 14px;
+}
+
+.create-filters span{
+    margin-left: 5px;
+    color: #2f80ed;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
 }
 </style>

@@ -62,7 +62,16 @@
             ></VTextField>
         </div>
         <div class="buttons">
-            <VBtn block color="blue" large @click="onSignUp">Sign Up</VBtn>
+            <VBtn
+                block
+                color="#2f80ed"
+                large
+                @click="onSignUp"
+                class="mb-6"
+            >
+                <span class="white--text">Sign Up</span>
+            </VBtn>
+            <div class="divider mb-6"></div>
             <RouterLink :to="{ name: 'SignIn' }">
                 <VBtn
                     block
@@ -130,6 +139,7 @@ export default {
                     this.regUserData.skype = '';
                     this.regUserData.website = '';
                     this.$v.$reset();
+                    this.$router.push({ name: 'SignIn' });
                 } catch (error) {
                     this.setNotification({
                         message: error,
@@ -187,6 +197,9 @@ export default {
 </script>
 
 <style scoped>
+.divider {
+    border-bottom: 1px solid #f2f2f2;
+}
 .card-title {
     font-weight: bold;
     font-size: 20px;

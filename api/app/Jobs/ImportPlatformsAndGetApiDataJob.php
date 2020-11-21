@@ -55,7 +55,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                 $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                     $url
                 );
-                if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses())) {
+                if (in_array($mozSrAlexaFbData, ImportAPIErrorStatuses::getStatuses()) || !is_object($mozSrAlexaFbData)) {
                     $message = "Failed to add platform " . $platformData['website_url'] .
                         " at line: " . $this->row . " ($mozSrAlexaFbData)";
 
