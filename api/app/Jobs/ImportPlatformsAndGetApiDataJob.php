@@ -40,27 +40,27 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
         $this->row = $row;
     }
 
-    private function getPlatformObj(array $platformData) {
-        $platform = new Platform();
-        $platform->protocol = $platformData['protocol'];
-        $platform->website_url = $platformData['website_url'];
-        $platform->organic_traffic = $platformData['organic_traffic'];
-        $platform->dofollow_active = $platformData['dofollow_active'];
-        $platform->free_home_featured_active = $platformData['free_home_featured_active'];
-        $platform->niche_edit_link_active = $platformData['niche_edit_link_active'];
-        $platform->money_anchor = $platformData['money_anchor'];
-        $platform->niche_edit_link_price = $platformData['niche_edit_link_price'];
-        $platform->article_writing_price = $platformData['article_writing_price'];
-        $platform->article_requirements = $platformData['article_requirements'];
-        $platform->deadline = $platformData['deadline'];
-        $platform->domain_zone = $platformData['domain_zone'];
-        $platform->price = $platformData['price'];
-        $platform->email = $platformData['email'];
-        $platform->description = $platformData['description'];
-        $platform->where_posted = $platformData['where_posted'];
-        $platform->contacts = $platformData['contacts'];
-        $platform->comment = $platformData['comment'];
-        return $platform;
+    private function getPlatformObj(array $platformData): Platform {
+        $platformObj = new Platform();
+        $platformObj->protocol = $platformData['protocol'];
+        $platformObj->website_url = $platformData['website_url'];
+        $platformObj->organic_traffic = $platformData['organic_traffic'];
+        $platformObj->dofollow_active = $platformData['dofollow_active'];
+        $platformObj->free_home_featured_active = $platformData['free_home_featured_active'];
+        $platformObj->niche_edit_link_active = $platformData['niche_edit_link_active'];
+        $platformObj->money_anchor = $platformData['money_anchor'];
+        $platformObj->niche_edit_link_price = $platformData['niche_edit_link_price'];
+        $platformObj->article_writing_price = $platformData['article_writing_price'];
+        $platformObj->article_requirements = $platformData['article_requirements'];
+        $platformObj->deadline = $platformData['deadline'];
+        $platformObj->domain_zone = $platformData['domain_zone'];
+        $platformObj->price = $platformData['price'];
+        $platformObj->email = $platformData['email'];
+        $platformObj->description = $platformData['description'];
+        $platformObj->where_posted = $platformData['where_posted'];
+        $platformObj->contacts = $platformData['contacts'];
+        $platformObj->comment = $platformData['comment'];
+        return $platformObj;
     }
 
     public function handle()
@@ -72,6 +72,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
 
             if (!$platform) {
                 $url = '';
+                $platformObj = '';
                 if (mb_strpos('www', $platformData['protocol']) !== false) {
                     $url = trim($platformData['protocol'], '.') . '.' . $platformData['website_url'];
                 } else {
@@ -96,20 +97,19 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         ->get('id')
                         ->map(fn($topic) => $topic->id)
                         ->all();
-                    $platform = $this->getPlatformObj($platformData);
-                    $platform->organic_traffic = null;
-                    $platform->save();
-                    $platform->topics()->attach($topicsIds);
+                    $platformObj = $this->getPlatformObj($platformData);
+                    $platformObj->save();
+                    $platformObj->topics()->attach($topicsIds);
 
-                    $platform->organic_traffic =
+                    $platformObj->organic_traffic =
                         in_array($mozSrAlexaFbData->sr_traffic, ImportErrorPropertyStatuses::getStatuses()) ?
                             null : $mozSrAlexaFbData->sr_traffic;
-                    $platform->save();
+                    $platformObj->save();
                     $moz = new Moz([
                         'pa' =>
                             in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->pa,
                         'da' =>
-                            in_array($mozSrAlexaFbData->pa, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
+                            in_array($mozSrAlexaFbData->da, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->da,
                         'rank' =>
                             in_array($mozSrAlexaFbData->mozrank, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->mozrank,
                         'links_in' =>
@@ -117,7 +117,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         'equity' =>
                             in_array($mozSrAlexaFbData->equity, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->equity,
                     ]);
-                    $platform->moz()->save($moz);
+                    $platformObj->moz()->save($moz);
 
                     $semrush = new SemRush([
                         'rank' =>
@@ -127,7 +127,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         'traffic_costs' =>
                             in_array($mozSrAlexaFbData->sr_costs, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->sr_costs,
                     ]);
-                    $platform->semrush()->save($semrush);
+                    $platformObj->semrush()->save($semrush);
 
                     $alexa = new Alexa([
                         'rank' =>
@@ -137,7 +137,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         'country_rank' =>
                             in_array($mozSrAlexaFbData->a_cnt_r, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->a_cnt_r,
                     ]);
-                    $platform->alexa()->save($alexa);
+                    $platformObj->alexa()->save($alexa);
 
                     $fb = new Facebook([
                         'fb_comments' =>
@@ -147,10 +147,10 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         'fb_shares' =>
                             in_array($mozSrAlexaFbData->fb_shares, ImportErrorPropertyStatuses::getStatuses()) ? null : $mozSrAlexaFbData->fb_shares,
                     ]);
-                    $platform->facebook()->save($fb);
+                    $platformObj->facebook()->save($fb);
 
                     $ahrefs = new Ahrefs();
-                    $platform->ahrefs()->save($ahrefs);
+                    $platformObj->ahrefs()->save($ahrefs);
                 }
 
 
@@ -159,7 +159,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                 );
                 if (in_array($majesticData, ImportAPIErrorStatuses::getStatuses()) || !is_object($majesticData)) {
                     $majestic = new Majestic();
-                    $platform->majestic()->save($majestic);
+                    $platformObj->majestic()->save($majestic);
                     $message = "Failed to fetch Majestic Data! {$majesticData} Line: {$this->row}.";
 
                     broadcast(new PlatformImportCreatedEvent(
@@ -186,7 +186,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
                         'refd_gov' =>
                             in_array($majesticData->RefDomainsGOV, ImportErrorPropertyStatuses::getStatuses()) ? null : $majesticData->RefDomainsGOV,
                     ]);
-                    $platform->majestic()->save($majestic);
+                    $platformObj->majestic()->save($majestic);
                 }
 
                 $checkTrustData = $this->checkTrustService->getDataFromApiByPlatform(
@@ -195,16 +195,16 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
 
                 if (is_object($checkTrustData)) {
                     if ($checkTrustData->success) {
-                        $platform->spam ??= $checkTrustData->summary->spam;
-                        $platform->trust ??= $checkTrustData->summary->trust;
-                        $platform->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
+                        $platformObj->spam ??= $checkTrustData->summary->spam;
+                        $platformObj->trust ??= $checkTrustData->summary->trust;
+                        $platformObj->lrt_power_trust ??= $checkTrustData->summary->lrtPowerTrust;
                         $summaryStatus = SummaryStatusService::getSummaryStatus(
-                            (int)$platform->trust,
-                            (int)$platform->spam,
-                            (int)$platform->lrt_power_trust
+                            (int)$platformObj->trust,
+                            (int)$platformObj->spam,
+                            (int)$platformObj->lrt_power_trust
                         );
-                        $platform->summary_status = $summaryStatus;
-                        $platform->save();
+                        $platformObj->summary_status = $summaryStatus;
+                        $platformObj->save();
                     } else {
                         broadcast(new PlatformImportCreatedEvent(
                             'error',
