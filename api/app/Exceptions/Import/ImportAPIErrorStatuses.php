@@ -8,7 +8,6 @@ final class ImportAPIErrorStatuses
     public static function getStatuses()
     {
         return [
-            '',
             'bad_url',
             'not_found',
             'empty',
