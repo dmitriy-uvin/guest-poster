@@ -20,7 +20,6 @@ final class SeoRankApiController extends ApiController
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
-        $response = json_decode($response);
         return $response;
     }
 
