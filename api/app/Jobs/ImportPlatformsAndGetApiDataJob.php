@@ -73,10 +73,10 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
             if (!$platform) {
                 $url = '';
                 $platformObj = '';
-                if (mb_strpos('www', $platformData['protocol']) !== false) {
-                    $url = trim($platformData['protocol'], '.') . '.' . $platformData['website_url'];
-                } else {
+                if (in_array($platformData['protocol'], ['http://', 'https://'])) {
                     $url = $platformData['protocol'] . $platformData['website_url'];
+                } else if (in_array($platformData['protocol'], ['http://www', 'https://www'])) {
+                    $url = trim($platformData['protocol'], '.') . '.' . $platformData['website_url'];
                 }
                 $mozSrAlexaFbData = $this->seoRankService->getDataForMozAlexaSemRushFb(
                     $url
