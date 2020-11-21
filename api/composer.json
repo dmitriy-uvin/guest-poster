@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.0",
         "pda/pheanstalk": "^4.0",
         "pusher/pusher-php-server": "^4.1",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
