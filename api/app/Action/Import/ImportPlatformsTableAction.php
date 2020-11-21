@@ -39,6 +39,8 @@ final class ImportPlatformsTableAction
         $this->getDataFromApi($platformsData);
 
         $this->deleteFile($request->getFile());
+
+        return new ImportResponse($platformsData);
     }
 
     private function getDataFromApi(array $platforms)
