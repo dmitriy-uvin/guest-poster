@@ -86,7 +86,7 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
 
                     broadcast(new PlatformImportCreatedEvent(
                         'error',
-                        $message
+                        $mozSrAlexaFbData
                     ));
                 }
                 else {
