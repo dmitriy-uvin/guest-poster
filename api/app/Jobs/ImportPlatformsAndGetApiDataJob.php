@@ -43,7 +43,9 @@ class ImportPlatformsAndGetApiDataJob implements ShouldQueue
     public function handle()
     {
         foreach ($this->platformsCollection as $platformData) {
-            $platform = Platform::where('website_url', '=', $platformData['website_url'])->get()->first();
+            $platform = Platform::where('website_url', '=', $platformData['website_url'])
+                ->get()
+                ->first();
 
             if (!$platform) {
                 $url = '';
