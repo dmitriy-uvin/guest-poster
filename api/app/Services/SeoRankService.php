@@ -15,7 +15,7 @@ final class SeoRankService
     {
         $url = $this->SEORANK_API_MOZ_ALEXA_SEMRUSH_FB . env("SEO_RANK_API_KEY") . '/' . $platform;
         $response = Http::get($url);
-        return $response->json();
+        return $response->object();
     }
 
     public function getDataForMajestic(string $platform)
