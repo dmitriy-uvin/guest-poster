@@ -3,8 +3,13 @@ import * as mutations from './types/mutations';
 import filterService from '@/services/filter/filterService';
 
 export default {
-    [actions.SET_FILTER_ITEM]: ({ commit, getters }, filterItem) => {
-        commit(mutations.SET_FILTER_ITEM, { filterItem, getters });
+    [actions.SET_FILTER_ITEMS]: ({ commit }, filterItems) => {
+        Object.keys(filterItems).map(key => {
+            commit(mutations.SET_FILTER_ITEM, filterItems[key]);
+        });
+    },
+    [actions.SET_FILTER_ITEM]: ({ commit }, filterItem) => {
+        commit(mutations.SET_FILTER_ITEM, filterItem);
     },
     [actions.DELETE_FILTER_ITEM]: ({ commit }, id) => {
         commit(mutations.DELETE_FILTER_ITEM, id);

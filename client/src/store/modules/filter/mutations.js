@@ -2,13 +2,13 @@ import * as mutations from './types/mutations';
 import * as gettersTypes from './types/getters';
 
 export default {
-    [mutations.SET_FILTER_ITEM]: (state, { filterItem }) => {
+    [mutations.SET_FILTER_ITEM]: (state, filterItem) => {
         state.filterItems = {
             ...state.filterItems,
             [filterItem.id]: {
-                ...state.filterItems[filterItem.id],
+                ...state.filterItems[filterItem?.id],
                 name: filterItem.name,
-                visible: filterItem.visible,
+                visible: true,
                 type: filterItem.type,
                 property: filterItem.property,
                 value: filterItem.value ? filterItem.value : '',
@@ -16,7 +16,7 @@ export default {
                 columnName: filterItem.columnName,
             }
         };
-        if (state.filterItems[filterItem.id]?.items.length) {
+        if (state.filterItems[filterItem.id]?.items?.length) {
             state.filterItems[filterItem.id].visible = true;
         }
         if (filterItem.limit === 'from') {
