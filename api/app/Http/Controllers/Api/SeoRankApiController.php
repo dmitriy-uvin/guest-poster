@@ -17,7 +17,7 @@ final class SeoRankApiController extends ApiController
         $domain = $request->query('protocol') . "://" . $request->query('domain');
         $url = self::SEORANK_API_MOZ_ALEXA_SEMRUSH . env('SEO_RANK_API_KEY') . '/' . $domain;
         $response = Http::get($url);
-        return $response;
+        return $response->body();
     }
 
     public function fetchInformationByDomainMajestic(Request $request)

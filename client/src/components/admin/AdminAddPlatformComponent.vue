@@ -1057,6 +1057,7 @@ export default {
                         Object.keys(this.semrush).map(key => {
                             this.semrush[key] = 'N/A';
                         });
+                        this.organicTraffic = 'N/A';
                         Object.keys(this.fb).map(key => {
                             this.fb[key] = 'N/A';
                         });
