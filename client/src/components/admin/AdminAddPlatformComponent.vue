@@ -136,7 +136,6 @@
                                 append-icon="mdi-currency-usd"
                                 :disabled="!nicheEditLink"
                                 v-model="nicheEditLinkDifference"
-                                :error-messages="nicheEditLinkDifferenceErrors"
                             ></VTextField>
                         </VCol>
                         <VCol cols="12" md="2">
@@ -880,16 +879,6 @@ export default {
         email: { email },
         contacts: { maxLength: maxLength(255) },
         comment: { maxLength: maxLength(255) },
-        nicheEditLinkPrice: {
-            required: requiredIf(function(){
-                return this.nicheEditLink;
-            })
-        },
-        nicheEditLinkDifference: {
-            required: requiredIf(function(){
-                return this.nicheEditLink;
-            })
-        },
         trust: { required, minValue: min_value },
         spam: { required, minValue: min_value },
         lrtPowerTrust: { required, minValue: min_value }
@@ -1343,15 +1332,6 @@ export default {
             }
             !this.$v.organicTraffic.required &&
                 errors.push('Organic Traffic is required!');
-            return errors;
-        },
-        nicheEditLinkDifferenceErrors() {
-            const errors = [];
-            if (!this.$v.nicheEditLinkDifference.$dirty) {
-                return errors;
-            }
-            !this.$v.nicheEditLinkDifference.required &&
-                errors.push('Niche Edit Link Difference is required!');
             return errors;
         },
         articleWritingPriceErrors() {
