@@ -2,8 +2,6 @@
     <div class="container main-app">
         <div class="">
             <div class="left">
-                {{ filterItemsObject }}
-                {{ chosenFiltersProperties }}
                 <h1 class="h-1 mb-0">Guest Posting platforms</h1>
                 <p class="mt-0 mb-8 cm-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
