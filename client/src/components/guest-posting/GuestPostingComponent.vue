@@ -2,6 +2,8 @@
     <div class="container main-app">
         <div class="">
             <div class="left">
+                {{ sorting }}
+                {{ direction }}
                 <h1 class="h-1 mb-0">Guest Posting platforms</h1>
                 <p class="mt-0 mb-8 cm-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
@@ -1903,15 +1905,17 @@
                 </VCol>
             </VRow>
         </VCol>
-        <div class="founded-platforms rounded-lg mb-4">
-            <div class="d-inline-block ma-0 pa-0 mr-8 font-14">
-                Founded: <b>{{ total }}</b> sites
+        <div class="founded-platforms rounded-lg mb-4 px-5 py-2">
+            <div class="my-1">
+                <div class="d-inline-block mr-8 font-14">
+                    <span class="d-inline-block">Founded: <b>{{ total }}</b> sites</span>
+                </div>
+                <FilterChipsIcons
+                    @filter-item-deleted="filterItemDeleted"
+                    @filter-item-deleted-array="filterItemArrayDeleted"
+                    @clear-all-filters="clearAllFilters('all')"
+                />
             </div>
-            <FilterChipsIcons
-                @filter-item-deleted="filterItemDeleted"
-                @filter-item-deleted-array="filterItemArrayDeleted"
-                @clear-all-filters="clearAllFilters('all')"
-            />
         </div>
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
@@ -1969,6 +1973,18 @@
                                 SemRush Traffic
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'semRush.traffic' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'semRush.traffic' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
                     <th class="value-column" @click="changeSortingAndDirection('ahrefs.dr')">
                         <VTooltip
@@ -1989,6 +2005,18 @@
                                 Ahrefs Domain Rating
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'ahrefs.dr' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'ahrefs.dr' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
                     <th class="value-column" @click="changeSortingAndDirection('semRush.traffic_costs')">
                         <VTooltip
@@ -2009,6 +2037,18 @@
                                 SemRush Traffic Costs
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'semRush.traffic_costs' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'semRush.traffic_costs' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
                     <th class="value-column" @click="changeSortingAndDirection('majestic.tf')">
                         <VTooltip
@@ -2029,12 +2069,25 @@
                                 Majestic Trust Flow
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'majestic.tf' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'majestic.tf' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
                     <template v-for="(column, index) in columns">
                         <th
                             v-if="column.visible"
                             :key="index"
                             @click="changeSortingAndDirection(column.property)"
+                            class="value-column"
                         >
                             <VTooltip
                                 top
@@ -2054,6 +2107,18 @@
                                     {{ getTooltip(column.property) }}
                                 </div>
                             </VTooltip>
+                            <VIcon
+                                small
+                                v-if="sorting === column.property && direction === 'desc'"
+                            >
+                                mdi-arrow-down-bold
+                            </VIcon>
+                            <VIcon
+                                small
+                                v-else-if="sorting === column.property && direction === 'asc'"
+                            >
+                                mdi-arrow-up-bold
+                            </VIcon>
                         </th>
                     </template>
                     <th class="features">Features</th>
@@ -2756,7 +2821,6 @@ export default {
         },
         async onShowResults() {
             this.showFilterItems();
-            this.showColumns();
             this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
@@ -2789,6 +2853,7 @@ export default {
                     this.reCalculatePages();
                     this.initializeChosenPlatformsState();
                     this.setFilterItems(this.filterItemsObject);
+                    this.showColumns();
                 } catch(error) {
                     this.setNotification({
                         type: 'error',
