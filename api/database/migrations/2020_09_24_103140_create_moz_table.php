@@ -16,11 +16,11 @@ class CreateMozTable extends Migration
         Schema::create('moz', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('platform_id');
-            $table->integer('pa')->nullable();
-            $table->integer('da')->nullable();
+            $table->unsignedBigInteger('pa')->nullable();
+            $table->unsignedBigInteger('da')->nullable();
             $table->double('rank')->nullable();
-            $table->integer('links_in')->nullable();
-            $table->integer('equity')->nullable();
+            $table->unsignedBigInteger('links_in')->nullable();
+            $table->unsignedBigInteger('equity')->nullable();
 
             $table
                 ->foreign('platform_id')
