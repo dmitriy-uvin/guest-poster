@@ -784,7 +784,7 @@ import {
     required,
     maxLength, email,
     minValue, maxValue,
-    url, requiredIf
+    url
 } from 'vuelidate/lib/validators';
 import requestExternalService from '@/services/requestExternalService';
 import { ErrorStatus, PropertyNotFound } from '@/services/requestExternalService';
