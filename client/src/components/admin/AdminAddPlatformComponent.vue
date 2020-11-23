@@ -1003,7 +1003,6 @@ export default {
                     this.fillMajesticLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
                     const responseData = response?.data;
-                    console.log(responseData);
                     if (ErrorStatus.includes(responseData)) {
                         this.setNotification({
                             message: "Status: " + responseData,

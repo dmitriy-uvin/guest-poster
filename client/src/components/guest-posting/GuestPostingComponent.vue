@@ -2878,7 +2878,6 @@ export default {
                     }
                 });
                 this.chosenAdditionalFilters = result;
-                console.log(this.chosenAdditionalFilters);
             },
             deep: true
         },
