@@ -36,7 +36,7 @@ const requestExternalService = {
     }
 };
 
-export const ErrorStatus = ['bad_url', 'not_found', 'empty', 'no_data', 'error_internal'];
+export const ErrorStatus = ['bad_url', 'not_found', 'empty', 'no_data', 'error_internal', 'disallowed'];
 export const PropertyNotFound = [
     'notfound',
     'N/A',
