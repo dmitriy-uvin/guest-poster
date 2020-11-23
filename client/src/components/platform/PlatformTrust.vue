@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-center">
+    <div class="">
         <div class="text-left">
             <span :class="colorClasses[keyString]" class="head">
                 {{ keyNames[keyString] }}

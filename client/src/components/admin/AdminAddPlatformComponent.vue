@@ -147,7 +147,6 @@
                                 :disabled="!nicheEditLink"
                                 readonly
                                 v-model="nicheEditLinkPrice"
-                                :error-messages="nicheEditLinkPriceErrors"
                             >
                             </VTextField>
                         </VCol>
@@ -1003,7 +1002,6 @@ export default {
                     this.fillMajesticLoading = true;
                     const response = await requestExternalService.fetchSeoRankInfoForDomainMajestic(this.websiteUrl);
                     const responseData = response?.data;
-                    console.log(responseData);
                     if (ErrorStatus.includes(responseData)) {
                         this.setNotification({
                             message: "Status: " + responseData,
@@ -1119,9 +1117,9 @@ export default {
                         organic_traffic: this.organicTraffic,
                         dofollow_active: this.doFollow,
                         free_home_featured_active: this.freeHomeFeatured,
-                        niche_edit_link_active: this.nicheEditLink,
-                        article_writing_price: this.articleWritingPrice,
-                        niche_edit_link_price: this.nicheEditLinkPrice,
+                        niche_edit_link_active: this.nicheEditLink ,
+                        article_writing_price: this.articleWritingPrice ? this.articleWritingPrice : null,
+                        niche_edit_link_price: this.nicheEditLinkPrice ? this.nicheEditLinkPrice : null,
                         contacts: this.contacts,
                         price: this.price,
                         description: this.description,
@@ -1345,15 +1343,6 @@ export default {
             }
             !this.$v.organicTraffic.required &&
                 errors.push('Organic Traffic is required!');
-            return errors;
-        },
-        nicheEditLinkPriceErrors() {
-            const errors = [];
-            if (!this.$v.nicheEditLinkPrice.$dirty) {
-                return errors;
-            }
-            !this.$v.nicheEditLinkPrice.required &&
-            errors.push('Niche Edit Link Price is required!');
             return errors;
         },
         nicheEditLinkDifferenceErrors() {

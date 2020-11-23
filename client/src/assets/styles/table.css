@@ -19,57 +19,35 @@
 
 .guest-poster-table th:nth-child(2),
 .guest-poster-table td:nth-child(2) {
-    width: 15%;
+    width: 16%;
 }
 
 .guest-poster-table th:nth-child(3),
 .guest-poster-table td:nth-child(3) {
-    padding: 15px 8px;
-    min-width: 6%;
-    max-width: 9%;
+    width: 5%;
+    text-align: left;
 }
 
-.guest-poster-table th:nth-child(4),
-.guest-poster-table td:nth-child(4),
-.guest-poster-table th:nth-child(5),
-.guest-poster-table td:nth-child(5),
-.guest-poster-table th:nth-child(6),
-.guest-poster-table td:nth-child(6),
-.guest-poster-table th:nth-child(7),
-.guest-poster-table td:nth-child(7),
-.guest-poster-table th:nth-child(8),
-.guest-poster-table td:nth-child(8),
-.guest-poster-table th:nth-child(9),
-.guest-poster-table td:nth-child(9),
-.guest-poster-table th:nth-child(10),
-.guest-poster-table td:nth-child(10),
-.guest-poster-table tr th:nth-child(11),
-.guest-poster-table tr td:nth-child(11),
-.guest-poster-table tr th:nth-child(12),
-.guest-poster-table tr td:nth-child(12)
-{
-    min-width: 5%;
-    max-width: 9%;
-}
-
-.guest-poster-table tr th:nth-child(13),
-.guest-poster-table tr td:nth-child(13) {
-    max-width: 11%;
-}
-
-.guest-poster-table tr th:nth-child(14),
-.guest-poster-table tr td:nth-child(14) {
-    max-width: 18%;
+tbody td {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
 }
 
 th.features,
 td.features {
-    width: 10%;
+    margin-left: 10px;
+    width: 11%;
+}
+th.value-column,
+td.value-column {
+    min-width: 5%;
+    max-width: 8%;
+    text-align: center;
 }
 
 th.editorial-fee,
 td.editorial-fee {
-    width: 14%;
+    width: 13%;
 }
 
 .guest-poster-table th,
@@ -86,11 +64,7 @@ td.editorial-fee {
 }
 
 th, td {
-    text-align: center;
-}
-
-th.trust {
-    text-align: center;
+    text-align: left;
 }
 
 th.website,
@@ -113,9 +87,9 @@ td.editorial-fee {
 
 td div.link .website-link{
     display: inline-block;
-    max-width: 100%;
-    font-size: 14px;
-    font-weight: bold;
+    max-width: 70%;
+    /*font-size: 14px;*/
+    /*font-weight: bold;*/
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -169,12 +143,12 @@ td .fee:hover .right {
 
 td .fee .left {
     text-align: center;
-    padding: 6px 3px;
+    padding: 8px 3px;
     font-size: 14px;
     color: #BDBDBD;
     border: 2px solid #BDBDBD;
     border-radius: 4px;
-    margin-right: 3px;
+    margin-right: 4px;
     transition: 0.5s;
     width: 70px;
     margin-top: 0;
@@ -196,11 +170,15 @@ td .fee-active .right{
     color: #333333;
 }
 
-tbody tr {
+tbody tr, thead tr {
     border-bottom: 1px solid #eeedee;
 }
 
 .underline {
     text-decoration: underline;
+}
+
+tbody > tr:hover {
+    background: #efefef;
 }
 

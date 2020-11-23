@@ -17,7 +17,7 @@ class CreatePlatformsTable extends Migration
             $table->id();
             $table->string('protocol');
             $table->string('website_url')->unique();
-            $table->integer('organic_traffic')->nullable();
+            $table->unsignedBigInteger('organic_traffic')->nullable();
             $table->boolean('dofollow_active');
             $table->boolean('free_home_featured_active');
             $table->boolean('niche_edit_link_active');
@@ -33,9 +33,9 @@ class CreatePlatformsTable extends Migration
             $table->string('where_posted');
             $table->string('contacts')->nullable();
             $table->string('comment')->nullable();
-            $table->integer('trust')->nullable();
+            $table->unsignedBigInteger('trust')->nullable();
             $table->double('spam')->nullable();
-            $table->integer('lrt_power_trust')->nullable();
+            $table->unsignedBigInteger('lrt_power_trust')->nullable();
             $table->string('summary_status')->nullable();
             $table->boolean('in_trash')->default(false);
             $table->timestamps();

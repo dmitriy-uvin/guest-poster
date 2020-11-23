@@ -18,9 +18,9 @@ class CreateAhrefsTable extends Migration
             $table->unsignedBigInteger('platform_id');
             $table->double('rank')->nullable();
             $table->double('dr')->nullable();
-            $table->integer('ext_backlinks')->nullable();
-            $table->integer('refd')->nullable();
-            $table->integer('dofollow')->nullable();
+            $table->unsignedBigInteger('ext_backlinks')->nullable();
+            $table->unsignedBigInteger('refd')->nullable();
+            $table->unsignedBigInteger('dofollow')->nullable();
 
             $table
                 ->foreign('platform_id')

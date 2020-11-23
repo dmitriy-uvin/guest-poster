@@ -18,7 +18,7 @@ class CreateAlexaTable extends Migration
             $table->unsignedBigInteger('platform_id');
             $table->double('rank')->nullable();
             $table->string('country')->nullable();
-            $table->integer('country_rank')->nullable();
+            $table->unsignedBigInteger('country_rank')->nullable();
 
             $table
                 ->foreign('platform_id')

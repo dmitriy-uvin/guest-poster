@@ -2,6 +2,8 @@
     <div class="container main-app">
         <div class="">
             <div class="left">
+                {{ sorting }}
+                {{ direction }}
                 <h1 class="h-1 mb-0">Guest Posting platforms</h1>
                 <p class="mt-0 mb-8 cm-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
@@ -1903,15 +1905,17 @@
                 </VCol>
             </VRow>
         </VCol>
-        <div class="founded-platforms rounded-lg mb-4">
-            <div class="d-inline-block ma-0 pa-0 mr-8 font-14">
-                Founded: <b>{{ total }}</b> sites
+        <div class="founded-platforms rounded-lg mb-4 px-5 py-2">
+            <div class="my-1">
+                <div class="d-inline-block mr-8 font-14">
+                    <span class="d-inline-block">Founded: <b>{{ total }}</b> sites</span>
+                </div>
+                <FilterChipsIcons
+                    @filter-item-deleted="filterItemDeleted"
+                    @filter-item-deleted-array="filterItemArrayDeleted"
+                    @clear-all-filters="clearAllFilters('all')"
+                />
             </div>
-            <FilterChipsIcons
-                @filter-item-deleted="filterItemDeleted"
-                @filter-item-deleted-array="filterItemArrayDeleted"
-                @clear-all-filters="clearAllFilters('all')"
-            />
         </div>
         <table class="guest-poster-table" v-if="Object.keys(platforms).length">
             <thead>
@@ -1950,7 +1954,7 @@
                             </div>
                         </VTooltip>
                     </th>
-                    <th @click="changeSortingAndDirection('semRush.traffic')">
+                    <th class="value-column" @click="changeSortingAndDirection('semRush.traffic')">
                         <VTooltip
                             top
                             open-on-hover
@@ -1969,8 +1973,20 @@
                                 SemRush Traffic
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'semRush.traffic' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'semRush.traffic' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
-                    <th @click="changeSortingAndDirection('ahrefs.dr')">
+                    <th class="value-column" @click="changeSortingAndDirection('ahrefs.dr')">
                         <VTooltip
                             top
                             open-on-hover
@@ -1989,8 +2005,20 @@
                                 Ahrefs Domain Rating
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'ahrefs.dr' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'ahrefs.dr' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
-                    <th @click="changeSortingAndDirection('semRush.traffic_costs')">
+                    <th class="value-column" @click="changeSortingAndDirection('semRush.traffic_costs')">
                         <VTooltip
                             top
                             open-on-hover
@@ -2009,8 +2037,20 @@
                                 SemRush Traffic Costs
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'semRush.traffic_costs' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'semRush.traffic_costs' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
-                    <th @click="changeSortingAndDirection('majestic.tf')">
+                    <th class="value-column" @click="changeSortingAndDirection('majestic.tf')">
                         <VTooltip
                             top
                             open-on-hover
@@ -2029,12 +2069,25 @@
                                 Majestic Trust Flow
                             </div>
                         </VTooltip>
+                        <VIcon
+                            small
+                            v-if="sorting === 'majestic.tf' && direction === 'desc'"
+                        >
+                            mdi-arrow-down-bold
+                        </VIcon>
+                        <VIcon
+                            small
+                            v-else-if="sorting === 'majestic.tf' && direction === 'asc'"
+                        >
+                            mdi-arrow-up-bold
+                        </VIcon>
                     </th>
                     <template v-for="(column, index) in columns">
                         <th
                             v-if="column.visible"
                             :key="index"
                             @click="changeSortingAndDirection(column.property)"
+                            class="value-column"
                         >
                             <VTooltip
                                 top
@@ -2054,6 +2107,18 @@
                                     {{ getTooltip(column.property) }}
                                 </div>
                             </VTooltip>
+                            <VIcon
+                                small
+                                v-if="sorting === column.property && direction === 'desc'"
+                            >
+                                mdi-arrow-down-bold
+                            </VIcon>
+                            <VIcon
+                                small
+                                v-else-if="sorting === column.property && direction === 'asc'"
+                            >
+                                mdi-arrow-up-bold
+                            </VIcon>
                         </th>
                     </template>
                     <th class="features">Features</th>
@@ -2075,23 +2140,26 @@
                     </td>
                     <td class="website">
                         <div class="link website-block">
+                            <img
+                                v-if="platform.alexa.country"
+                                :src="require('../../assets/svg/country-flags/' +
+                                             platform.alexa.country.toLowerCase()
+                                              + '.svg')"
+                                :alt="platform.alexa.country"
+                                class="platform-country-image d-inline-block"
+                            >
+                            <span class="website-link">{{ platform.websiteUrl }}</span>
                             <VTooltip
                                 right
                                 open-on-hover
                                 max-width="350px"
                             >
                                 <template v-slot:activator="{ on, attrs }">
-                                    <span class="website-link" v-bind="attrs"
-                                          v-on="on">
-                                        <img
-                                            v-if="platform.alexa.country"
-                                            :src="require('../../assets/svg/country-flags/' +
-                                             platform.alexa.country.toLowerCase()
-                                              + '.svg')"
-                                            :alt="platform.alexa.country"
-                                            class="platform-country-image"
-                                        >
-                                        {{ platform.websiteUrl }}
+                                    <span v-bind="attrs"
+                                          v-on="on"
+                                          class="website-icon"
+                                    >
+                                        <VIcon small color="blue">mdi-message-text</VIcon>
                                     </span>
                                 </template>
                                 <div class="pa-5">
@@ -2111,14 +2179,10 @@
                             </VTooltip>
                         </div>
                         <div class="topics">
-                            <VChip small
-                                   label
-                                   class="pa-0 px-1 mr-1 mb-1 chip"
-                                   v-for="(topic, id) in platform.topics"
-                                   :key="id"
-                            >
+                            <span class="custom-chip" v-for="(topic, id) in platform.topics"
+                                  :key="id">
                                 {{ topic.name }}
-                            </VChip>
+                            </span>
                         </div>
                     </td>
                     <td class="trust">
@@ -2128,22 +2192,22 @@
                             :power-trust="platform.powertrust"
                         />
                     </td>
-                    <td>
+                    <td class="value-column">
                         <span class="table-value">
                             {{ platform.organicTraffic | notAvailableFilter | formatNumberFilter }}
                         </span>
                     </td>
-                    <td>
+                    <td class="value-column">
                         <span class="table-value">
                             {{ (platform.ahrefs ? platform.ahrefs.dr : null) | notAvailableFilter }}
                         </span>
                     </td>
-                    <td>
+                    <td class="value-column">
                         <span class="table-value">
                             {{ platform.semRush.trafficCosts | notAvailableFilter | formatNumberFilter }}
                         </span>
                     </td>
-                    <td>
+                    <td class="value-column">
                         <span class="table-value">
                             {{ platform.majestic.tf | notAvailableFilter }}
                         </span>
@@ -2152,6 +2216,7 @@
                         <td
                             v-if="column.visible"
                             :key="index"
+                            class="value-column"
                         >
                             <span class="table-value">
                                 {{ platform[column.property.split('.')[0]][column.property.split('.')[1]] | notAvailableFilter | formatNumberFilter }}
@@ -2348,6 +2413,7 @@ export default {
         tab: 'Ahrefs',
         filtersOpened: false,
         filtersApplied: false,
+        filterItemsObject: {},
         additionalFiltersOpened: false,
         filterNameDialog: false,
         filterData: {},
@@ -2454,6 +2520,7 @@ export default {
             }
         },
         filterQuery: {},
+        chosenAdditionalFilters: []
     }),
     mixins: [
         rolemixin,
@@ -2475,6 +2542,37 @@ export default {
         this.initializeDisabledFields();
     },
     methods: {
+        setFilterItemToObject(value, type, name, property, limit = '', columnName = '') {
+            const filterItem = {
+                id: name.toLowerCase()
+                    .replace(/\s/g, '_')
+                    .replace(/\./g, ''),
+                name,
+                type,
+                visible: false,
+                property,
+                limit,
+                columnName
+            };
+            const radioKeys = [
+                'deadline',
+                'dofollow',
+                'niche_edit_link',
+                'home_featured',
+                'money_anchor',
+            ];
+            this.filterItemsObject = {
+                ...this.filterItemsObject,
+                [filterItem.id]: {
+                    ...filterItem,
+                    ...this.filterItemsObject[filterItem.id]
+                }
+            }
+            if (limit === 'from') this.filterItemsObject[filterItem.id].from = value;
+            if (limit === 'to') this.filterItemsObject[filterItem.id].to = value;
+            if (radioKeys.includes(filterItem.id)) this.filterItemsObject[filterItem.id].value = value;
+            if (['Topics', 'Country', 'Domains', 'Summary'].includes(name)) this.filterItemsObject[filterItem.id].items = value;
+        },
         getTooltip(property) {
             return tooltips[property];
         },
@@ -2523,6 +2621,7 @@ export default {
         },
         ...mapActions('filter', {
             setFilterItem: filterActions.SET_FILTER_ITEM,
+            setFilterItems: filterActions.SET_FILTER_ITEMS,
             showFilterItems: filterActions.SHOW_FILTER_ITEMS,
             clearFilterItems: filterActions.CLEAR_FILTER_ITEMS,
             setColumn: filterActions.SET_COLUMN,
@@ -2534,11 +2633,19 @@ export default {
             updateFilterById: filterActions.UPDATE_USER_FILTER_BY_ID
         }),
         async filterItemArrayDeleted(type, value, property) {
+            let id = '';
+            Object.keys(this.filterItemsObject).map(key => {
+                if (this.filterItemsObject[key].property === property) {
+                    id = key;
+                }
+            });
             const subFilterName = property.split('.')[0];
             const filterPropertyName = property.split('.')[1];
             if (this.filter[subFilterName][filterPropertyName]) {
                 this.filter[subFilterName][filterPropertyName] =
                     this.filter[subFilterName][filterPropertyName].filter(item => item !== value);
+                this.filterItemsObject[id].items =
+                    this.filterItemsObject[id].items.filter(item => item !== value);
             }
             await this.onShowResults();
         },
@@ -2559,7 +2666,7 @@ export default {
                                 keyProperty = key.split('_to')[0];
                             }
                             if (keyProperty) {
-                                if (!this.chosenFiltersProperties.includes(addFilterKey + '.' + keyProperty)) {
+                                if (!this.chosenAdditionalFilters.includes(addFilterKey + '.' + keyProperty)) {
                                     this.disabledFilterFields[addFilterKey][key] = true;
                                     this.filter[addFilterKey][key] = '';
                                 } else {
@@ -2572,6 +2679,13 @@ export default {
             });
         },
         async filterItemDeleted(name) {
+            const result = {};
+            Object.keys(this.filterItemsObject).map(key => {
+                 if (this.filterItemsObject[key].property !== name) {
+                     result[key] = this.filterItemsObject[key];
+                 }
+            });
+            this.filterItemsObject = result;
             const subFilterName = name.split('.')[0];
             const filterPropertyName = name.split('.')[1];
             const filterItemNameFrom = filterPropertyName + '_from';
@@ -2632,8 +2746,8 @@ export default {
         },
         onInputFilter(value, type, name, property, limit = '', columnName = '') {
             if (type === 'additional' && columnName) {
-                if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
-                    this.setFilterItemFromInput(
+                if (this.chosenAdditionalFilters.length < maxAdditionalFilters) {
+                    this.setFilterItemToObject(
                         value,
                         type,
                         name,
@@ -2642,8 +2756,8 @@ export default {
                         columnName
                     );
                 } else {
-                    if (this.chosenFiltersProperties.includes(property)) {
-                        this.setFilterItemFromInput(
+                    if (this.chosenAdditionalFilters.includes(property)) {
+                        this.setFilterItemToObject(
                             value,
                             type,
                             name,
@@ -2661,7 +2775,7 @@ export default {
                     }
                 }
             } else {
-                this.setFilterItemFromInput(
+                this.setFilterItemToObject(
                     value,
                     type,
                     name,
@@ -2677,6 +2791,7 @@ export default {
         async clearAllFilters(mode = 'filters') {
             this.$v.$reset();
             this.clearFilterItems(mode);
+            this.filterItemsObject = {};
             this.filterData = {};
             this.sorting = this.direction = '';
             Object.keys(this.filter.majestic).forEach(key => this.filter.majestic[key] = '');
@@ -2706,41 +2821,66 @@ export default {
         },
         async onShowResults() {
             this.showFilterItems();
-            this.showColumns();
             this.filtersOpened = false;
             this.$v.$touch();
             if (!this.$v.$invalid) {
-                this.filterQuery = {
-                    ...this.filter,
-                    platform: {
-                        ...this.filter.platform,
-                        topics: this.filter.platform.topics.length ?
-                            this.filter.platform.topics.map(topic => this.topics[topic]) : [],
-                        deadline: this.filter.platform.deadline ?
-                            this.deadlineList[this.filter.platform.deadline] : '',
-                    },
-                    trust: {
-                        ...this.filter.trust,
-                        summary: this.filter.trust.summary.length ?
-                            this.filter.trust.summary.map(item => this.trustSummaryList[item]) : []
-                    },
-                    alexa: {
-                        ...this.filter.alexa,
-                        country: this.filter.alexa.country.length ?
-                            this.filter.alexa.country.map(country => countries[country])
-                            : []
-                    },
-                };
-                const response = await this.loadPlatforms();
-                this.currentPage = response.current_page;
-                this.lastPage = response.last_page;
-                this.total = response.total;
-                this.reCalculatePages();
-                this.initializeChosenPlatformsState();
+                try {
+                    this.filterQuery = {
+                        ...this.filter,
+                        platform: {
+                            ...this.filter.platform,
+                            topics: this.filter.platform.topics.length ?
+                                this.filter.platform.topics.map(topic => this.topics[topic]) : [],
+                            deadline: this.filter.platform.deadline ?
+                                this.deadlineList[this.filter.platform.deadline] : '',
+                        },
+                        trust: {
+                            ...this.filter.trust,
+                            summary: this.filter.trust.summary.length ?
+                                this.filter.trust.summary.map(item => this.trustSummaryList[item]) : []
+                        },
+                        alexa: {
+                            ...this.filter.alexa,
+                            country: this.filter.alexa.country.length ?
+                                this.filter.alexa.country.map(country => countries[country])
+                                : []
+                        },
+                    };
+                    const response = await this.loadPlatforms();
+                    this.currentPage = response.current_page;
+                    this.lastPage = response.last_page;
+                    this.total = response.total;
+                    this.reCalculatePages();
+                    this.initializeChosenPlatformsState();
+                    this.setFilterItems(this.filterItemsObject);
+                    this.showColumns();
+                } catch(error) {
+                    this.setNotification({
+                        type: 'error',
+                        message: error
+                    });
+                }
             }
         }
     },
     watch: {
+        filterItemsObject: {
+            handler() {
+                const result = [];
+
+                Object.keys(this.filterItemsObject).map(key => {
+                    if (this.filterItemsObject[key].type === 'additional') {
+                        if (this.filterItemsObject[key].from || this.filterItemsObject[key].to) {
+                            if (this.filterItemsObject[key].columnName) {
+                                result.push(this.filterItemsObject[key].property);
+                            }
+                        }
+                    }
+                });
+                this.chosenAdditionalFilters = result;
+            },
+            deep: true
+        },
         async page() {
             this.chosen = {};
             await this.loadPlatforms();
@@ -2756,8 +2896,8 @@ export default {
             this.reCalculatePages();
             this.initializeChosenPlatformsState();
         },
-        chosenFiltersProperties() {
-            if (this.chosenFiltersProperties.length < maxAdditionalFilters) {
+        chosenAdditionalFilters() {
+            if (this.chosenAdditionalFilters.length < maxAdditionalFilters) {
                 this.initializeDisabledFields();
             }
         },
@@ -3219,6 +3359,18 @@ export default {
 @import '../../assets/styles/table.css';
 @import '../../assets/styles/filter-styles.css';
 
+.custom-chip {
+    background: #f3f3f3;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: 8px;
+}
+
 .tabs-block {
     border-bottom: 1px solid #f2f2f2;
     border-top: 1px solid #f2f2f2;
@@ -3343,9 +3495,19 @@ label {
 .font-14 {
     font-size: 14px;
 }
-
+.topics {
+    margin-top: 14px;
+}
 .platform-country-image {
     width: 18px;
     height: 13px;
+    margin-right: 8px;
+}
+
+.website-icon {
+    vertical-align: top;
+    text-align: right;
+    display: inline-block;
+    width: 14%;
 }
 </style>
